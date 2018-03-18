@@ -1,0 +1,30 @@
+version: '2'
+services:
+  # Shared Server Containers
+  # Also we can use this container to build the aplication frontend (Angular/ReactJS)
+  node:
+    container_name: node
+    build: ./node
+    ports:
+      - 3000:3000
+    volumes:
+      - ../shared-server:/usr/src/app
+      - ./logs/npm:/root/.npm/_logs
+    command: bash -c "npm install && npm run start-dev"
+    depends_on:
+      - postgresql
+  postgresql:
+    container_name: postgresql
+    image: postgres:10.3
+    volumes:
+      - ./data/postgresql:/var/lib/postgresql/data
+    environment: 
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=0000
+
+  # Application Server Containers
+  #mongo:
+  #  container_name: mongo
+  #  image: mongo:3.0.14
+  #  volumes:
+  #    - ./data/mongo:/data/db

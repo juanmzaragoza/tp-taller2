@@ -1,0 +1,14 @@
+# Logs
+logs
+*.log
+
+# Config
+
+# WebStorm
+.idea
+.directory
+../.directory
+
+controller/.hidden
+bin/.hidden
+routes/.hidden

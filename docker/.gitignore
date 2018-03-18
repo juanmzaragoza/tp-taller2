@@ -1,0 +1,6 @@
+data/mongo/*
+!data/mongo/.hidden
+data/postgresql/*
+!data/postgresql/.hidden
+logs/*
+!logs/.hidden
