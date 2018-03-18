@@ -63,3 +63,11 @@ docker rmi $(docker images -q) [Elimina todas las imagenes]
 docker exec -it 'nombre_or_id_container' bash [entras al contenedor]
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id" [Muestra IP de un contenedor]
 ping nombre_or_id_container [cmando dentro de algun contendor para saber la ip de este].
+
+Troubleshooting
+----------------------------------
+```ERROR: Couldn't connect to Docker daemon at http+docker://localunixsocket - is it running?
+
+If it's at a non-standard location, specify the URL with the DOCKER_HOST environment variable.```
+
+Al usar docker-compose -> correr con sudo
