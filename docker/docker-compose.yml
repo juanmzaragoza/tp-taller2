@@ -23,8 +23,18 @@ services:
       - POSTGRES_PASSWORD=0000
 
   # Application Server Containers
-  #mongo:
-  #  container_name: mongo
-  #  image: mongo:3.0.14
-  #  volumes:
-  #    - ./data/mongo:/data/db
+  gunicorn:
+    container_name: gunicorn
+    build: ./gunicorn
+    ports:
+      - 5858:5858
+    volumes:
+      - ../application-server:/usr/src/app
+    command: bash -c "pip install -r requirements.txt && gunicorn -c gunicorn.conf server:app"
+    depends_on:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo:3.0.14
+    volumes:
+      - ./data/mongo:/data/db
