@@ -5,10 +5,11 @@
  *
  */
 const express = require('express');
+var config = require('config');
 
-// Constants
-const PORT = 3000;
-const HOST = '0.0.0.0';
+//Constants
+const PORT = config.get('server.port');
+const HOST = config.get('server.host');
 
 // App
 const app = express();
