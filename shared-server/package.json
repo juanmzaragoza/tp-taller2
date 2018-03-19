@@ -9,12 +9,17 @@
   },
   "scripts": {
     "start": "node server.js",
-    "start-dev": "./node_modules/nodemon/bin/nodemon.js server.js"
+    "start-dev": "./node_modules/nodemon/bin/nodemon.js server.js",
+    "test": "mocha"
   },
   "dependencies": {
     "express": "^4.16.3"
   },
   "devDependencies": {
-    "nodemon": "^1.17.2"
+    "chai": "^4.1.2",
+    "config": "^1.30.0",
+    "mocha": "^5.0.4",
+    "nodemon": "^1.17.2",
+    "request": "^2.85.0"
   }
 }
