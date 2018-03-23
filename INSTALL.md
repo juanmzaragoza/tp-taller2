@@ -4,6 +4,6 @@
 
 ## Instalación
 
-Por el momento, ver `docker/README.md`. 
+Por el momento, para desarrollo, ver `docker/README.md`.
 
 ## Pruebas
