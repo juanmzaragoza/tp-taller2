@@ -1,5 +1,7 @@
 # Stories - Taller de Programacion II
 
+
+[![Build Status](https://travis-ci.org/juanmzaragoza/tp-taller2.svg?branch=master)](https://travis-ci.org/juanmzaragoza/tp-taller2.svg?branch=master)
 ## Especificaciones
 
 ## Instalación
