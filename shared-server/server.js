@@ -6,7 +6,7 @@ const express = require('express');
 var config = require('config');
 
 //Constants
-const PORT = config.get('server.port');
+const PORT = process.env.PORT || config.get('server.port');
 const HOST = config.get('server.host');
 
 const app = express();
