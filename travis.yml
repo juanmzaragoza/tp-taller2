@@ -7,8 +7,8 @@ language: python
 python:
   - "3.6"
 install:
-  - cd $TRAVIS_BUILD_DIR/application-server/ && pip install -r requirements.txt
+  - cd application-server/ && pip install -r requirements.txt
 script:
-  - cd $TRAVIS_BUILD_DIR/application-server/test/ && python -m unittest discover
+  - cd application-server/test/ && python -m unittest discover
 
 
