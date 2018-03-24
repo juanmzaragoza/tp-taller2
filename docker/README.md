@@ -46,6 +46,8 @@ Sobre los directorios:
 
   * node: configuracion del contenedor de node
 
+  * gunicorn: configuracion del contenedor gunicorn
+
 Comandos utiles
 ----------------------------------
 docker-compose up [Lee archivo docker-compose.yml e incia los servicios configurados]
