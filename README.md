@@ -6,7 +6,11 @@
 
 ## Instalación
 
-Ver `INSTALL.md`
+Ver [INSTALL.md](INSTALL.md)
+
+## Deploy en Heroku
+
+Ver [DEPLOY.md](DEPLOY.md)
 
 ## Estructura de carpetas
 
