@@ -17,6 +17,12 @@ routes/.hidden
 
 
 # web
+/web/src/app/**/*.js
+/web/src/app/**/*.map
+/web/src/main.js
+/web/src/main.js.map
+/web/src/dist/
+
 # dependencies
 /web/node_modules
 
