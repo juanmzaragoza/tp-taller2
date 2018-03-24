@@ -12,3 +12,22 @@ logs
 controller/.hidden
 bin/.hidden
 routes/.hidden
+
+
+
+
+# web
+# dependencies
+/web/node_modules
+
+# compiled output
+/web/dist
+/web/dist-server
+/web/tmp
+/web/out-tsc
+
+/web/typings
+
+# e2e
+/web/e2e/*.js
+/web/e2e/*.map
