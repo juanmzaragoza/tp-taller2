@@ -1,8 +1,7 @@
 language: node_js
 node_js:
-  - "iojs"
-  - "8"
+  - "8.10"
 install:
-  -npm install
+  - cd $TRAVIS_BUILD_DIR/shared-server/ && npm install
 script: 
-  -cd shared-server/ && npm test
+  - cd $TRAVIS_BUILD_DIR/shared-server/ && npm test
