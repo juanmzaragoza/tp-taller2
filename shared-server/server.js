@@ -1,8 +1,6 @@
 'use strict';
 /*
  * This is only an express server example
- * Ask for Loopback.js
- *
  */
 const express = require('express');
 var config = require('config');
@@ -11,11 +9,16 @@ var config = require('config');
 const PORT = config.get('server.port');
 const HOST = config.get('server.host');
 
-// App
 const app = express();
+
+// App config
 app.get('/', (req, res) => {
   res.send('Hello world\n');
 });
 
-app.listen(PORT, HOST);
-console.log(`Running on http://${HOST}:${PORT}`);
+//start
+var server = app.listen(PORT, HOST);
+console.log('server atarted and listening on ' + PORT + ':' + HOST);
+
+//to start and stop in tests
+module.exports = server;
