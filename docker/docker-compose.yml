@@ -6,7 +6,7 @@ services:
     container_name: node
     build: ./node
     ports:
-      - 3000:3000
+      - 8081:8081
     volumes:
       - ../shared-server:/usr/src/app
       - ./logs/npm:/root/.npm/_logs
@@ -21,6 +21,7 @@ services:
     environment: 
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=0000
+      - PGDATA=/tmp
 
   # Application Server Containers
   gunicorn:
@@ -30,7 +31,7 @@ services:
       - 5858:5858
     volumes:
       - ../application-server:/usr/src/app
-    command: bash -c "pip install -r requirements.txt && gunicorn -c gunicorn.conf server:app"
+    command: bash -c "pip install -r requirements.txt && gunicorn -c gunicorn.conf example:app"
     depends_on:
       - mongo
   mongo:
