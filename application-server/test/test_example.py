@@ -1,8 +1,9 @@
 import unittest
-import example
 import requests
 import json
 import sys
+#import example for local test
+import app.example
 
 class TestFlaskApiUsingRequests(unittest.TestCase):
     def test_hello_world(self):
@@ -12,7 +13,7 @@ class TestFlaskApiUsingRequests(unittest.TestCase):
 
 class TestFlaskApi(unittest.TestCase):
     def setUp(self):
-        self.app = example.app.test_client()
+        self.app = app.example.app.test_client()
 
     def test_hello_world(self):
         response = self.app.get('/')
