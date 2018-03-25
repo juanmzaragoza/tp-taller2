@@ -14,7 +14,8 @@ before_install:
 install:
   - cd $TRAVIS_BUILD_DIR/application-server/ && pip install -r requirements.txt
 script:
-  - cd $TRAVIS_BUILD_DIR/application-server/ && FLASK_APP=example.py flask run --host=0.0.0.0 --port=5858
+  - cd $TRAVIS_BUILD_DIR/application-server/ 
+  - python example.py &
   - cd $TRAVIS_BUILD_DIR/application-server/test/ && py.test
 after_success: coveralls
 
