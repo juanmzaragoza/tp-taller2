@@ -2,8 +2,8 @@ import unittest
 import requests
 import json
 import sys
-#import example for local test
-import app.example
+import example #for local test
+#import app.example#for docker test
 
 class TestFlaskApiUsingRequests(unittest.TestCase):
     def test_hello_world(self):
@@ -13,7 +13,8 @@ class TestFlaskApiUsingRequests(unittest.TestCase):
 
 class TestFlaskApi(unittest.TestCase):
     def setUp(self):
-        self.app = app.example.app.test_client()
+        self.app = example.app.test_client()
+	#self.app = app.example.app.test_client()#for docker test
 
     def test_hello_world(self):
         response = self.app.get('/')
