@@ -2,6 +2,7 @@
 
 
 [![Build Status](https://travis-ci.org/juanmzaragoza/tp-taller2.svg?branch=master)](https://travis-ci.org/juanmzaragoza/tp-taller2.svg?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/juanmzaragoza/tp-taller2/badge.svg?branch=master)](https://coveralls.io/github/juanmzaragoza/tp-taller2?branch=master)
 ## Especificaciones
 
 ## Instalación
