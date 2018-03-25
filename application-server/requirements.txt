@@ -3,3 +3,6 @@ flask
 flask_restful
 gunicorn
 requests
+pytest 
+pytest-cov
+coveralls
