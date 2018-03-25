@@ -19,4 +19,3 @@ script:
    - cd $TRAVIS_BUILD_DIR/application-server/test/ && py.test
 after_success: coveralls
 
-
