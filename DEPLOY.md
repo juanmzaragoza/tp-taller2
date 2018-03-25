@@ -112,6 +112,40 @@ cuyos logs se pueden ver haciendo
 heroku logs --remote heroku-applicationserver --tail
 ```
 
+#### Paso 4: Subir frontend al cloud
+
+Loguearse en la aplicación ingresando las credenciales del frontend
+
+```bash
+heroku login
+```
+
+o bien, seteando el usuario del frontend
+
+```bash
+heroku accounts:add web
+heroku accounts:set web
+```
+
+y subir el código a la nube
+
+```bash
+heroku create heroku-storiesweb
+git subtree push --prefix web heroku-storiesweb master
+```
+
+De este modo estaremos deployando la carpeta `/web` al master de heroku que se pueda consultar ejecutando
+
+```bash
+heroku open --remote heroku-storiesweb
+```
+
+cuyos logs se pueden ver haciendo
+
+```bash
+heroku logs --remote heroku-storiesweb --tail
+```
+
 ### Deployment en un paso
 
 Para evitar realizar el deploy manual, es conveniente ejecutar un script que realiza los pasos anteriores automáticamente.
