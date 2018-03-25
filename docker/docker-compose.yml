@@ -39,3 +39,13 @@ services:
     image: mongo:3.0.14
     volumes:
       - ./data/mongo:/data/db
+
+  # Heroku deployment container
+  heroku:
+    container_name: heroku
+    build: ./heroku
+    volumes:
+      - ../shared-server:/usr/src/shared-server
+      - ../application-server:/usr/src/application-server
+      - ../web:/usr/src/web
+    tty: true
