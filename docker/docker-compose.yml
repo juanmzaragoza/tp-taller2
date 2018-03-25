@@ -29,7 +29,7 @@ services:
       - 3000:3000
     volumes:
       - ../web:/usr/src/web-app
-    command: bash -c "npm start"
+    command: bash -c "npm install && npm start"
     depends_on:
       - node
 
