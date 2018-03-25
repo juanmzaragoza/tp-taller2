@@ -1,14 +1,15 @@
-language: generic
+language: python
 python:
   - "3.6"
-node:
+node_js:
   - "8.10"
+before_install:
+    - pip install pytest pytest-cov
+    - pip install coveralls
 install:
-  - cd $TRAVIS_BUILD_DIR/shared-server/ && npm install
   - cd $TRAVIS_BUILD_DIR/application-server/ && pip install -r requirements.txt
+  - cd $TRAVIS_BUILD_DIR/shared-server/ && npm install
 script:
+  - cd $TRAVIS_BUILD_DIR/application-server/test/ && py.test
   - cd $TRAVIS_BUILD_DIR/shared-server/ && npm test
-  - cd $TRAVIS_BUILD_DIR/application-server/test/ && python -m unittest discover
-  after_success:
-    - NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
-    - coveralls
+after_success: coveralls
