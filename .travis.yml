@@ -9,6 +9,7 @@ before_install:
 install:
   - cd $TRAVIS_BUILD_DIR/application-server/ && pip install -r requirements.txt
   - cd $TRAVIS_BUILD_DIR/shared-server/ && npm install
+  - cd $TRAVIS_BUILD_DIR/shared-server/ && npm install -g istanbul
 script:
   - cd $TRAVIS_BUILD_DIR/application-server/ 
   - python example.py &
