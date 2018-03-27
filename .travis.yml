@@ -10,12 +10,14 @@ before_install:
 install:
   - cd $TRAVIS_BUILD_DIR/application-server/ && pip install -r requirements.txt
   - cd $TRAVIS_BUILD_DIR/shared-server/ && npm install
-  - cd $TRAVIS_BUILD_DIR/shared-server/ && npm install -g istanbul
+  - npm install -g istanbul
+  - npm install -g codecov
 script:
   - cd $TRAVIS_BUILD_DIR/application-server/ 
   - python example.py &
   - cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=./
-  - codecov --token=888067ea-0ef4-4c0a-bf7a-6855aa1923ff
+  - codecov
   - cd $TRAVIS_BUILD_DIR/shared-server/ && npm test
 after_success:
-  - NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+  - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
+  - codecov
