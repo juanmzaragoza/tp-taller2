@@ -5,4 +5,4 @@ gunicorn
 requests
 pytest 
 pytest-cov
-coveralls
+codecov
