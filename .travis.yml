@@ -14,7 +14,7 @@ install:
 script:
   - cd $TRAVIS_BUILD_DIR/application-server/ 
   - python example.py &
-  - cd $TRAVIS_BUILD_DIR/application-server/test/ && py.test --cov=$(pwd)
+  - cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=$(pwd)
   - cd $TRAVIS_BUILD_DIR/shared-server/ && npm test
 after_success:
   - codecov --token=888067ea-0ef4-4c0a-bf7a-6855aa1923ff
