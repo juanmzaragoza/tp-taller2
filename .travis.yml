@@ -6,6 +6,7 @@ node_js:
 before_install:
     - pip install pytest pytest-cov
     - pip install coverage
+    - pip install codecov
 install:
   - cd $TRAVIS_BUILD_DIR/application-server/ && pip install -r requirements.txt
   - cd $TRAVIS_BUILD_DIR/shared-server/ && npm install
@@ -16,5 +17,5 @@ script:
   - cd $TRAVIS_BUILD_DIR/application-server/test/ && py.test --cov=$(pwd)
   - cd $TRAVIS_BUILD_DIR/shared-server/ && npm test
 after_success:
-  - codecov --token=888067ea-0ef4-4c0a-bf7a-6855aa1923ff
+  - codecov --cov=./
   - NODE_ENV=test istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
