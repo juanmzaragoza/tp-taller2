@@ -18,6 +18,5 @@ script:
   - cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=./
   - codecov
   - cd $TRAVIS_BUILD_DIR/shared-server/ && npm test
-after_success:
   - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
   - codecov
