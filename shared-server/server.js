@@ -4,6 +4,7 @@
  */
 const express = require('express');
 var config = require('config');
+var routes = require('./app/routes/auth');
 
 //Constants
 const PORT = process.env.PORT || config.get('server.port');
@@ -15,6 +16,9 @@ const app = express();
 app.get('/', (req, res) => {
   res.send('Hello world\n');
 });
+
+//routes
+app.use(routes);
 
 //start
 var server = app.listen(PORT, HOST);
