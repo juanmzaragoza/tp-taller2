@@ -4,7 +4,7 @@
  */
 const express = require('express');
 var config = require('config');
-var routes = require('./app/routes/auth');
+var routes = require('./app/routes/auth.route');
 
 //Constants
 const PORT = process.env.PORT || config.get('server.port');

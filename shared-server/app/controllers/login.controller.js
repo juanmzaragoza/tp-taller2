@@ -1,12 +1,22 @@
 "use strict";
 
+var loginServ = require("../services/login.service")
+
 class LoginController {
     constructor() {
         this.token = (req, res, next) => {
-            res.json({token: '0923U45NI2J45HUGHFWE94U839H'});
-            next();
+            
+            res.json(req.pausername);
+            /*loginServ.auth(req.body, req.username,req.password, (ticket)=>{
+                if(ticket){
+                    res.json(ticket);
+                }
+                else{
+                    res.sendstatus(401);
+                }
+                next();
+            });*/
         };
-        //intance services
     }
 }
 module.exports = new LoginController();
