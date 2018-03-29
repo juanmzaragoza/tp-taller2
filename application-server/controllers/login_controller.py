@@ -11,8 +11,8 @@ class LoginController(flask_restful.Resource):
 
 	def post(self):
 		#parser = reqparse.RequestParser()
-		self.parser.add_argument('username')
-		self.parser.add_argument('password')
+		self.parser.add_argument('username', required=True, help="username cannot be blank!")
+		self.parser.add_argument('password', required=True, help="password cannot be blank!")
 
 		args = self.parser.parse_args()
 		return {
