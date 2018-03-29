@@ -1,5 +1,5 @@
 "use strict";
-
+var AuthService = require('./auth.service')
 
 
 class LoginService {
@@ -7,7 +7,7 @@ class LoginService {
         this.auth = ( user, psw, next) => {
             var result = undefined;
             if(user == psw){
-                result =  { token: '0923U45NI2J45HUGHFWE94U839H'};
+                result =  { token: AuthService.token(user) };
             }
             next(result);
         };

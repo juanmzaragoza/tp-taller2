@@ -16,13 +16,14 @@ const app = express();
 // set middleware 
 app.use(bodyParser.json({ type: 'application/json' }));
 
+//routes
+app.use('/api/v1', routes);
+
 // App config
 app.get('/', (req, res) => {
   res.send('Hello world\n');
 });
 
-//routes
-app.use(routes);
 
 //start
 var server = app.listen(PORT, HOST);

@@ -2,5 +2,9 @@
 	"server": {
 		"host": "0.0.0.0",
 		"port": 8081
-	}
+	},
+	"auth": {
+        "tokenSecret": "tokenSecret",
+        "timeExp": "1h"
+    }
 }
