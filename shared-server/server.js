@@ -4,6 +4,8 @@
  */
 const express = require('express');
 var config = require('config');
+var routes = require('./app/routes/auth.route');
+var bodyParser = require('body-parser');
 
 //Constants
 const PORT = process.env.PORT || config.get('server.port');
@@ -11,10 +13,17 @@ const HOST = config.get('server.host');
 
 const app = express();
 
+// set middleware 
+app.use(bodyParser.json({ type: 'application/json' }));
+
+//routes
+app.use('/api/v1', routes);
+
 // App config
 app.get('/', (req, res) => {
   res.send('Hello world\n');
 });
+
 
 //start
 var server = app.listen(PORT, HOST);
