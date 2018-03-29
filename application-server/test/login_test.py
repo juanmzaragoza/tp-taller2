@@ -77,6 +77,15 @@ class TestFlaskApi(unittest.TestCase):
         self.assertEqual(response_data["token"]["expiresAt"], 0)
         self.assertEqual(response_data["token"]["token"], "string")
 
+    def test_invalid_user(self):
+        data = {"username": "invalid_username", "password": "valid_password"}
+        response = self.__make_post_request(data)
+        
+        self.assertEqual(response.status_code,401)
+
+        #response_data = self.__get_response_data(response)
+        #self.assertIn("message", response_data)
+
 
 if __name__ == "__main__":
     unittest.main()
