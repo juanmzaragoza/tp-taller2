@@ -5,17 +5,16 @@ var loginServ = require("../services/login.service")
 class LoginController {
     constructor() {
         this.token = (req, res, next) => {
-            
-            res.json(req.pausername);
-            /*loginServ.auth(req.body, req.username,req.password, (ticket)=>{
+            loginServ.auth(req.body.username,req.body.password, (ticket)=>{
                 if(ticket){
                     res.json(ticket);
                 }
                 else{
-                    res.sendstatus(401);
+                    res.status(401);
+                    res.send('user or password incorrect');
                 }
                 next();
-            });*/
+            });
         };
     }
 }
