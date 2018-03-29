@@ -5,6 +5,7 @@
 const express = require('express');
 var config = require('config');
 var routes = require('./app/routes/auth.route');
+var f = require('./app/routes/file.route');
 var bodyParser = require('body-parser');
 
 //Constants
@@ -17,7 +18,7 @@ const app = express();
 app.use(bodyParser.json({ type: 'application/json' }));
 
 //routes
-app.use('/api/v1', routes);
+app.use('/api/v1', [routes,f]);
 
 // App config
 app.get('/', (req, res) => {
