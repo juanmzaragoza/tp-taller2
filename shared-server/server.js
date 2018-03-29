@@ -4,8 +4,9 @@
  */
 const express = require('express');
 var config = require('config');
-var routes = require('./app/routes/auth.route');
-var f = require('./app/routes/file.route');
+var routerNode = require('express').Router();
+                 require('./app/routes/config.route');
+var RouterHandler = require('./app/routes/router')
 var bodyParser = require('body-parser');
 
 //Constants
@@ -14,11 +15,12 @@ const HOST = config.get('server.host');
 
 const app = express();
 
-// set middleware 
+// set middleware parse json
 app.use(bodyParser.json({ type: 'application/json' }));
 
 //routes
-app.use('/api/v1', [routes,f]);
+RouterHandler.loadRoutes(routerNode)
+app.use('/api/v1', routerNode);
 
 // App config
 app.get('/', (req, res) => {
