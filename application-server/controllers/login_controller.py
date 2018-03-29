@@ -5,7 +5,6 @@ class LoginController(flask_restful.Resource):
 	def __init__(self):
 		self.parser = reqparse.RequestParser()
 
-
 	def get(self):
 		return "llalala"
 
@@ -14,10 +13,15 @@ class LoginController(flask_restful.Resource):
 		self.parser.add_argument('password', required=True, help="password cannot be blank!")
 
 		args = self.parser.parse_args()
-		# return {
-		# 	"password": args['password']
-		# }
+		
 
+		# TODO
+		if ((args["username"] != "valid_username") or (args["password"] != "valid_password")):
+			return self.__unauthorized_response()
+
+		return self.__authenticated_token_response()
+
+	def __authenticated_token_response(self):
 		response_data =  {
 			"metadata": {
 				"version": "string"
@@ -27,7 +31,10 @@ class LoginController(flask_restful.Resource):
 				"token": "string"
 			}
 		}
-
 		return response_data, 201
 
+	def __unauthorized_response(self):
+		return {
+			"message": "invalid"
+		}, 401
 
