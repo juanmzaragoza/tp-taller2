@@ -6,18 +6,18 @@ node_js:
 services:
   - mongodb
 before_install:
-    - pip install pytest pytest-cov
-    - pip install codecov
+  - pip install pytest pytest-cov
+  - pip install codecov
 install:
   - cd $TRAVIS_BUILD_DIR/application-server/ && pip install -r requirements.txt
   - cd $TRAVIS_BUILD_DIR/shared-server/ && npm install
   - npm install -g istanbul
   - npm install -g codecov
 script:
+  - cd $TRAVIS_BUILD_DIR/shared-server/ && npm test
+  - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
+  - codecov
   - cd $TRAVIS_BUILD_DIR/application-server/ 
   - python app.py &
   - cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=./
-  - codecov
-  - cd $TRAVIS_BUILD_DIR/shared-server/ && npm test
-  - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
   - codecov
