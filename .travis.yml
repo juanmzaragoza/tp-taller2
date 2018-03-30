@@ -3,6 +3,8 @@ python:
   - "3.6"
 node_js:
   - "8.10"
+services:
+  - mongodb
 before_install:
     - pip install pytest pytest-cov
     - pip install codecov
