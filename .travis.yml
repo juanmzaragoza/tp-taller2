@@ -19,6 +19,6 @@ script:
   - codecov
   - cd $TRAVIS_BUILD_DIR/application-server/ 
   - python app.py &
-  - mongo --eval "db.adminCommand('listDatabases')"
+  - mongo --eval "db.test.find()"
   - cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=./
   - codecov
