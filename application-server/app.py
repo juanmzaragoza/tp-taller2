@@ -1,13 +1,15 @@
 import flask
 import flask_restful
 from flask_pymongo import PyMongo
+import os
 
 app = flask.Flask(__name__)
 with app.app_context():
 
 	app.config['MONGO_DBNAME'] = 'test'
-	app.config['MONGO_URI'] = 'mongodb://localhost:27017/test'
-	#app.config['MONGO_URI'] = 'mongodb://mongo:27017/test';#for docker test
+	app.config['MONGO_URI'] = os.environ['MONGO_URI']
+	#set env var MONGO_URI 'mongodb://localhost:27017/test' for local test
+	#set env var MONGO_URI 'mongodb://mongo:27017/test' for docker test
 
 	api = flask_restful.Api(app)
 	mongo = PyMongo(app)

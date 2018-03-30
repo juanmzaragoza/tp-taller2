@@ -39,6 +39,8 @@ services:
     volumes:
       - ../application-server:/usr/src/app
     command: bash -c "pip install -r requirements.txt && gunicorn -w 4 -b 0.0.0.0:5858 app:app --log-file=-"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/test
     links:
       - mongo:mongo
   mongo:
