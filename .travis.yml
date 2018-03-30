@@ -18,7 +18,7 @@ script:
   - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
   - codecov
   - cd $TRAVIS_BUILD_DIR/application-server/ 
-  - python app.py &
+  - python app.py
   - mongo --eval "db.test.find()"
   - cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=./
   - codecov
