@@ -1,7 +1,13 @@
 FROM teracy/angular-cli
-RUN apt-get update && apt-get install -y git
 
-RUN mkdir -p /usr/src/web-app
-WORKDIR /usr/src/web-app
+ENV HOME=/home/nodejs
+ENV APP_NAME=web
 
-EXPOSE 3000
+
+# before switching to user we need to set permission properly
+
+WORKDIR $HOME/$APP_NAME
+
+RUN npm install
+
+CMD ["ng", "serve", "--host", "0.0.0.0" ]

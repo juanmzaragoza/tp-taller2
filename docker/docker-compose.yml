@@ -26,10 +26,9 @@ services:
     container_name: angular
     build: ./web
     ports:
-      - 3000:3000
+      - '4200:4200'
     volumes:
-      - ../web:/usr/src/web-app
-    command: bash -c "npm install && npm start"
+      - ../web:/home/nodejs/web
     depends_on:
       - node
 
