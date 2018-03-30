@@ -11,11 +11,11 @@ with app.app_context():
 
 	api = flask_restful.Api(app)
 	mongo = PyMongo(app)
-	doc = mongo.db.test.insert({'user':'Jose'})
+	doc = mongo.db.test.insert({'user':'root', 'name':'Jose'})
 
 	class HelloWorld(flask_restful.Resource):
 		def get(self):
-			root = mongo.db.test.find_one_or_404({'user': 'Jose'})
+			root = mongo.db.test.find_one_or_404({'user': 'root'})
 			root_name = root.get('name')
 			return {'hello': root_name}
 
