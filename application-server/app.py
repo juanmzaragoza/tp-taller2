@@ -6,18 +6,18 @@ import os
 app = flask.Flask(__name__)
 with app.app_context():
 
-	app.config['MONGO_DBNAME'] = 'application-server'
+	app.config['MONGO_DBNAME'] = 'appserverdb'
 	app.config['MONGO_URI'] = os.environ['MONGO_URI']
-	#set env var MONGO_URI 'mongodb://localhost:27017/test' for local test
-	#set env var MONGO_URI 'mongodb://mongo:27017/test' for docker test
+	#set env var MONGO_URI 'mongodb://localhost:27017/appserverdb' for local test
+	#set env var MONGO_URI 'mongodb://mongo:27017/appserverdb' for docker test
 
 	api = flask_restful.Api(app)
 	mongo = PyMongo(app)
-	doc = mongo.db.test.insert({'user':'root', 'name':'Jose'})
+	doc = mongo.db.appserverdb.insert({'user':'root', 'name':'Jose'})
 
 	class HelloWorld(flask_restful.Resource):
 		def get(self):
-			root = mongo.db.test.find_one_or_404({'user': 'root'})
+			root = mongo.db.appserverdb.find_one_or_404({'user': 'root'})
 			root_name = root.get('name')
 			return {'hello': root_name}
 
