@@ -13,7 +13,7 @@ with app.app_context():
 
 	api = flask_restful.Api(app)
 	mongo = PyMongo(app)
-	doc = mongo.db.appserverdb.insert({'user':'root', 'name':'Jose'})
+	doc = mongo.db.appserverdb.insert({'user':'root', 'name':'Vk'})
 
 	class HelloWorld(flask_restful.Resource):
 		def get(self):
