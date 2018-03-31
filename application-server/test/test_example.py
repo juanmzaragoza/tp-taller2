@@ -2,19 +2,19 @@ import unittest
 import requests
 import json
 import sys
-import app #for local test
-#import app.app#for docker test
+#import app #for local test
+import app.app#for docker test
 
 class TestFlaskApiUsingRequests(unittest.TestCase):
-    def est_hello_world(self):
+    def test_hello_world(self):
         response = requests.get('http://0.0.0.0:5858')
         self.assertEqual(response.json(), {'hello': 'Jose'})
 
 
 class TestFlaskApi(unittest.TestCase):
     def setUp(self):
-        self.app = app.app.test_client()#for local test
-        #self.app = app.app.app.test_client()#for docker test
+        #self.app = app.app.test_client()#for local test
+        self.app = app.app.app.test_client()#for docker test
 
     def test_hello_world(self):
         response = self.app.get('/')

@@ -1,8 +1,9 @@
 import flask
 import flask_restful
-from controllers.login_controller import LoginController
 from flask_pymongo import PyMongo
 import os
+
+from controllers.login_controller import LoginController
 
 app = flask.Flask(__name__)
 with app.app_context():

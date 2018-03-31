@@ -3,17 +3,14 @@ import unittest.mock as mock
 import requests
 import json
 import sys
-import app #for local test
-#import app.app#for docker test
-
-from api_client.shared_api_client import SharedApiClient
-
+#import app #for local test
+import app.app#for docker test
 
 class TestFlaskApi(unittest.TestCase):
 
     def setUp(self):
-        self.app = app.app.test_client()
-        #self.app = app.app.app.test_client()#for docker test
+        #self.app = app.app.test_client()
+        self.app = app.app.app.test_client()#for docker test
 
     def __make_post_request(self, data):
         url = "/token"
@@ -64,7 +61,7 @@ class TestFlaskApi(unittest.TestCase):
         
 
     def test_token(self):
-        data = {"username": "valid_username", "password": "valid_password"}
+        data = {"username": "Erik", "password": "Erik"}
         response = self.__make_post_request(data)
 
         self.assertEqual(response.status_code,201)
@@ -78,15 +75,8 @@ class TestFlaskApi(unittest.TestCase):
         self.assertIn("expiresAt", response_data["token"])
         self.assertIn("token", response_data["token"])
         self.assertEqual(response_data["token"]["expiresAt"], 0)
-        self.assertEqual(response_data["token"]["token"], "string")
 
-    #@mock.patch("api_client.shared_api_client")
     def test_invalid_user_should_status_401(self):
-
-        #mock_shared_api_client.return_value.login.return_value = False
-        #print(mock_shared_api_client.return_value)
-
-        #self.assertEqual(mock_shared_api_client.login(), False)
 
         data = {"username": "invalid_username", "password": "valid_password"}
         response = self.__make_post_request(data)
@@ -97,7 +87,7 @@ class TestFlaskApi(unittest.TestCase):
         self.assertIn("message", response_data)
         self.assertEqual(response_data["message"], "invalid")
 
-    def est_invalid_password_should_status_401(self):
+    def test_invalid_password_should_status_401(self):
         data = {"username": "valid_username", "password": "invalid_password"}
         response = self.__make_post_request(data)
         

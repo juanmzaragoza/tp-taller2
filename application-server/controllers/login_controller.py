@@ -16,10 +16,6 @@ class LoginController(flask_restful.Resource):
 
 		args = self.parser.parse_args()
 		
-
-		# TODO
-		#if ((args["username"] != "valid_username") or (args["password"] != "valid_password")):
-			#return self.__unauthorized_response()
 		response = self.shared_api_client.login(args["username"],args["password"])
 		if not response:
 			return self.__unauthorized_response()
@@ -27,7 +23,6 @@ class LoginController(flask_restful.Resource):
 		return self.__authenticated_token_response(response)
 
 	def __authenticated_token_response(self, response_data):
-		
 		return response_data, 201
 
 	def __unauthorized_response(self):
