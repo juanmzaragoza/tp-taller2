@@ -8,5 +8,9 @@
     <string name="wrong_credentials">Wrong Credentials</string>
     <string name="login_title">Stories</string>
 
+    <string name="text_home">Home</string>
+    <string name="action_account">Account</string>
+    <string name="text_add_content">Take it!</string>
+
 
 </resources>
