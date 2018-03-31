@@ -1,8 +1,12 @@
 <resources>
     <string name="app_name">Stories</string>
+
     <string name="user_placeholder">Insert your user</string>
     <string name="password_placeholder">Insert your password</string>
     <string name="button_signin">Sign In</string>
     <string name="button_signup">Sign Up</string>
+    <string name="wrong_credentials">Wrong Credentials</string>
     <string name="login_title">Stories</string>
+
+
 </resources>
