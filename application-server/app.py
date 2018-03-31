@@ -6,7 +6,7 @@ import os
 app = flask.Flask(__name__)
 with app.app_context():
 
-	app.config['MONGO_DBNAME'] = 'test'
+	app.config['MONGO_DBNAME'] = 'application-server'
 	app.config['MONGO_URI'] = os.environ['MONGO_URI']
 	#set env var MONGO_URI 'mongodb://localhost:27017/test' for local test
 	#set env var MONGO_URI 'mongodb://mongo:27017/test' for docker test
