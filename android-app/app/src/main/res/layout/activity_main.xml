@@ -7,73 +7,26 @@
     android:layout_height="match_parent"
     tools:context="tallerii.stories.MainActivity">
 
-    <EditText
-        android:id="@+id/usernameText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="@string/user_placeholder"
-        android:inputType="textWebEmailAddress"
-        android:selectAllOnFocus="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <EditText
-        android:id="@+id/passwordText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="@string/password_placeholder"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/usernameText" />
-
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/labelView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="monospace"
-        android:text="@string/login_title"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="64dp"
+        android:text="Logueado como "
+        android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/submitButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="118dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="16dp"
-        android:onClick="login"
-        android:text="@string/button_signin"
-        app:layout_constraintEnd_toStartOf="@+id/signupButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordText" />
-
-    <Button
-        android:id="@+id/signupButton"
-        android:layout_width="118dp"
+    <TextView
+        android:id="@+id/usernameView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="@string/button_signup"
-        app:layout_constraintBaseline_toBaselineOf="@+id/submitButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/submitButton" />
+        android:layout_marginStart="28dp"
+        android:text="TextView"
+        android:textAppearance="@android:style/TextAppearance.Material.Display3"
+        android:textColor="@android:color/holo_red_dark"
+        app:layout_constraintBaseline_toBaselineOf="@+id/labelView"
+        app:layout_constraintStart_toEndOf="@+id/labelView" />
 
 </android.support.constraint.ConstraintLayout>
