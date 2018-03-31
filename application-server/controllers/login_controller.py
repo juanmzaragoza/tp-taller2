@@ -1,9 +1,11 @@
 import flask_restful
 from flask_restful import reqparse
+from api_client.shared_api_client import SharedApiClient
 
 class LoginController(flask_restful.Resource):
 	def __init__(self):
 		self.parser = reqparse.RequestParser()
+		self.shared_api_client = SharedApiClient()
 
 	def get(self):
 		return "llalala"
@@ -16,21 +18,16 @@ class LoginController(flask_restful.Resource):
 		
 
 		# TODO
-		if ((args["username"] != "valid_username") or (args["password"] != "valid_password")):
+		#if ((args["username"] != "valid_username") or (args["password"] != "valid_password")):
+			#return self.__unauthorized_response()
+		response = self.shared_api_client.login(args["username"],args["password"])
+		if not response:
 			return self.__unauthorized_response()
 
-		return self.__authenticated_token_response()
+		return self.__authenticated_token_response(response)
 
-	def __authenticated_token_response(self):
-		response_data =  {
-			"metadata": {
-				"version": "string"
-			},
-			"token": {
-				"expiresAt": 0,
-				"token": "string"
-			}
-		}
+	def __authenticated_token_response(self, response_data):
+		
 		return response_data, 201
 
 	def __unauthorized_response(self):

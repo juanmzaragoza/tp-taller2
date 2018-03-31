@@ -1,8 +1,7 @@
 import flask
 import flask_restful
 from controllers.login_controller import LoginController
-#import controllers.login_controller as LoginController
-#import login_controller as LoginController
+
 
 app = flask.Flask(__name__)
 api = flask_restful.Api(app)
