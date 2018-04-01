@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+.container  {
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .container .row {
+    margin: 0 auto;
+  }
