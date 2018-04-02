@@ -3,14 +3,14 @@ import unittest.mock as mock
 import requests
 import json
 import sys
-#import app #for local test
-import app.app#for docker test
+import app #for local test
+#import app.app#for docker test
 
 class TestFlaskApi(unittest.TestCase):
 
     def setUp(self):
-        #self.app = app.app.test_client()
-        self.app = app.app.app.test_client()#for docker test
+        self.app = app.app.test_client()
+        #self.app = app.app.app.test_client()#for docker test
 
     def __make_post_request(self, data):
         url = "/token"
