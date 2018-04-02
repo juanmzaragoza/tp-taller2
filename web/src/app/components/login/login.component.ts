@@ -16,6 +16,7 @@ export class LoginComponent {
               console.log('logeado');
               console.log('User: ' + user.username);
               console.log('pass: ' + user.password);
+              console.info(val);
           }
           else{
               console.info('credencial incorrecta');

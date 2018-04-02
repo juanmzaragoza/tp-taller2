@@ -15,13 +15,11 @@ export class LoginService {
   }
   token(user :User): Observable<string> {
     const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
-    };
-    //return Observable.of(true).delay(1000);
-    //const req = this.http.post('localhost:8081/api/v1/token', {
-      return this.http.post<any>('http://localhost:8081/api/v1/token', 
-      user, httpOptions).map(response => response.json());
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json'
+        })
+      };
+      return this.http.post<any>('http://127.0.0.1:8081/api/v1/token', 
+      user, httpOptions);
   }
 }

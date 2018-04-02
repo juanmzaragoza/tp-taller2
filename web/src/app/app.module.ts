@@ -17,10 +17,10 @@ import { LoginComponent } from './components/login/login.component'
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     MaterializeModule,
     RoutingModule,
-    FormsModule,
-    HttpClientModule
+    FormsModule    
   ],
   providers: [],
   bootstrap: [AppComponent]
