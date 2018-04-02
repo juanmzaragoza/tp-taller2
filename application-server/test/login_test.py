@@ -21,21 +21,6 @@ class TestFlaskApi(unittest.TestCase):
     def __get_response_data(self, response):
         return json.loads(response.get_data().decode(sys.getdefaultencoding()))
 
-    # def test_e(self):
-    #     url = "/token"
-    #     data = {"username": "aaaaa", "password": "beeeee"}
-    #     headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-    #     response = self.app.post(url, data=json.dumps(data), headers=headers)
-    #     self.assertEqual(response.status_code,200)
-
-    #     response_data = self.__get_response_data(response)
-    #     self.assertEqual(
-    #         response_data,
-    #         {
-    #             "password":  "beeeee"
-    #         }
-    #     )
-
 
     def test_missing_username_should_status_400(self):
         data = {"password": "beeeee"}
@@ -44,9 +29,10 @@ class TestFlaskApi(unittest.TestCase):
         self.assertEqual(response.status_code,400)
 
         response_data = self.__get_response_data(response)
+        self.assertIn("code", response_data)
+        self.assertEqual(0,response_data["code"])
         self.assertIn("message", response_data)
-        self.assertIn("username", response_data["message"])
-        self.assertEqual(response_data["message"]["username"], "username cannot be blank!")
+
 
     def test_missing_password_should_status_400(self):
         data = {"username": "bob"}
@@ -55,9 +41,9 @@ class TestFlaskApi(unittest.TestCase):
         self.assertEqual(response.status_code,400)
 
         response_data = self.__get_response_data(response)
+        self.assertIn("code", response_data)
+        self.assertEqual(0,response_data["code"])
         self.assertIn("message", response_data)
-        self.assertIn("password", response_data["message"])
-        self.assertEqual(response_data["message"]["password"], "password cannot be blank!")
         
 
     def test_token(self):
@@ -76,16 +62,19 @@ class TestFlaskApi(unittest.TestCase):
         self.assertIn("token", response_data["token"])
         self.assertEqual(response_data["token"]["expiresAt"], 0)
 
-    def test_invalid_user_should_status_401(self):
 
+    def test_invalid_user_should_status_401(self):
         data = {"username": "invalid_username", "password": "valid_password"}
         response = self.__make_post_request(data)
         
         self.assertEqual(response.status_code,401)
 
         response_data = self.__get_response_data(response)
+        self.assertIn("code", response_data)
+        self.assertEqual(0,response_data["code"])
         self.assertIn("message", response_data)
         self.assertEqual(response_data["message"], "invalid")
+
 
     def test_invalid_password_should_status_401(self):
         data = {"username": "valid_username", "password": "invalid_password"}
@@ -94,6 +83,8 @@ class TestFlaskApi(unittest.TestCase):
         self.assertEqual(response.status_code,401)
 
         response_data = self.__get_response_data(response)
+        self.assertIn("code", response_data)
+        self.assertEqual(0,response_data["code"])
         self.assertIn("message", response_data)
         self.assertEqual(response_data["message"], "invalid")
 

@@ -2,8 +2,6 @@ import flask
 import flask_restful
 from flask_pymongo import PyMongo
 import os
-
-
 from controllers.login_controller import LoginController
 
 app = flask.Flask(__name__)
