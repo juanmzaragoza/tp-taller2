@@ -3,11 +3,12 @@ import flask_restful
 from flask_pymongo import PyMongo
 import os
 
+
 from controllers.login_controller import LoginController
 
 app = flask.Flask(__name__)
-with app.app_context():
 
+with app.app_context():
 	app.config['MONGO_DBNAME'] = 'application-server'
 	app.config['MONGO_URI'] = os.environ['MONGO_URI']
 	#set env var MONGO_URI 'mongodb://localhost:27017/test' for local test
