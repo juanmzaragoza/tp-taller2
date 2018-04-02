@@ -6,8 +6,10 @@
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
+    "noImplicitAny": true,
     "experimentalDecorators": true,
-    "target": "es5",
+    "suppressImplicitAnyIndexErrors": true,
+    "target": "es6",
     "typeRoots": [
       "node_modules/@types"
     ],

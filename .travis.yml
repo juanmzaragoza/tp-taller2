@@ -18,7 +18,7 @@ script:
   - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
   - codecov
   - cd $TRAVIS_BUILD_DIR/application-server/ 
-  - export MONGO_URI=mongodb://localhost:27017/application-server
+  - export MONGO_URI=mongodb://localhost:27017/appserverdb
   - python app.py &
   - cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=./
   - codecov

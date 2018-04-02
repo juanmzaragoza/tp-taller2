@@ -18,6 +18,14 @@ const app = express();
 // set middleware parse json
 app.use(bodyParser.json({ type: 'application/json' }));
 
+//user-defined middleware
+app.use((req, res, next) => {
+  res.append('Access-Control-Allow-Origin', ['*']);
+  res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.append('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
 //routes
 RouterHandler.loadRoutes(routerNode)
 app.use('/api/v1', routerNode);
@@ -26,7 +34,6 @@ app.use('/api/v1', routerNode);
 app.get('/', (req, res) => {
   res.send('Hello world\n');
 });
-
 
 //start
 var server = app.listen(PORT, HOST);
