@@ -5,7 +5,7 @@ var config = require('config');
 
 const PORT = config.get('server.port');
 const HOST = config.get('server.host');
-const PREFIX_PATH = '/api/v1';
+const PREFIX_PATH = '/api';
 
 describe('endpoints', function(){
 	var server;
@@ -37,7 +37,7 @@ describe('endpoints', function(){
 		}, 
 		(err, httpResponse, body) => {
 			assert.exists(JSON.parse(body)['token']);
-			assert.equal(JSON.parse(body)['token'].length, 163);
+			assert.equal(JSON.parse(body)['token']['token'].length, 163);
 			done(err);
 		});
 	});
@@ -48,7 +48,7 @@ describe('endpoints', function(){
 			formData: '{"username":"Erik","password":"Erik"}'
 		}, 
 		(err, httpResponse, body) => {
-			var token = JSON.parse(body)['token'];
+			var token = JSON.parse(body)['token']['token'];
 			request.get({
 				url:`http://${HOST}:${PORT}${PREFIX_PATH}`+'/files', 
 				headers: { Authorization:"Bearer " + token }

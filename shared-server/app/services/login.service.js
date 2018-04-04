@@ -7,7 +7,10 @@ class LoginService {
         this.auth = ( user, psw, next) => {
             var result = undefined;
             if(user == psw){
-                result =  { token: AuthService.token(user) };
+                result =  { 
+                    token: AuthService.token(user),
+                    expiresAt: 3600
+                };
             }
             next(result);
         };
