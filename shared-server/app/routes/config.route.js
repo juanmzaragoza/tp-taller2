@@ -16,3 +16,8 @@ RouterHandler.addEndpointWithAuth({
     handler: FileCtrl.get
 });
 
+RouterHandler.addEndpointWithAuth({
+    verb: 'post',
+    path: '/files',
+    handler: FileCtrl.post
+});

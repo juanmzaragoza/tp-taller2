@@ -13,6 +13,9 @@ var bodyParser = require('body-parser');
 const PORT = process.env.PORT || config.get('server.port');
 const HOST = config.get('server.host');
 
+
+var fireBaseServ = require("./app/services/fire.base.service")
+
 const app = express();
 
 // set middleware parse json
@@ -34,6 +37,8 @@ app.use('/api', routerNode);
 app.get('/', (req, res) => {
   res.send('Hello world\n');
 });
+
+fireBaseServ.upload();
 
 //start
 var server = app.listen(PORT, HOST);
