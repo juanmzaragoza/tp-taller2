@@ -28,7 +28,9 @@ export class LoginService {
       return this.http.post<Boolean>(url, user, httpOptions).map(
         res =>{
             delete user.password;
+            user.token = res["token"]["token"]
             this.UserServ.setUser(user);
+            console.info(res);
             return true;
         });
   }

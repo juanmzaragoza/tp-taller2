@@ -17,10 +17,6 @@ export class LoginComponent {
     login(user: User) {
         this.loginServ.token(user).subscribe((val) => {
           if(val){
-              console.log('logeado');
-              console.log('User: ' + user.username);
-              console.log('pass: ' + user.password);
-              console.info(val);
               this.RouterServ.navigate(['/home']);
           }
           else{

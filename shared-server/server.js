@@ -28,7 +28,7 @@ app.use((req, res, next) => {
 
 //routes
 RouterHandler.loadRoutes(routerNode)
-app.use('/api/v1', routerNode);
+app.use('/api', routerNode);
 
 // App config
 app.get('/', (req, res) => {
