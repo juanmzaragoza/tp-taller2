@@ -16,7 +16,7 @@ RouterHandler.addEndpointWithAuth({
     handler: FileCtrl.get
 });
 
-RouterHandler.addEndpointWithAuth({
+RouterHandler.addEndpointWithOutAuth({
     verb: 'post',
     path: '/files',
     handler: FileCtrl.post
