@@ -8,8 +8,8 @@ class FileController{
             res.status(200);
             res.json({file: 'file.jpg'})
         }
-        this.post = (req, res, next)=>{
-            FireBaseService.upload(req.body.resource, (err, url) =>{
+        this.postUpload = (req, res, next)=>{
+            FireBaseService.upload2(req.body, (err, url) =>{
                 res.status(200);
                 res.json({url: url})
             });
