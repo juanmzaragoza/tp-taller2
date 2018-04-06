@@ -7,5 +7,10 @@
 	"auth": {
         "tokenSecret": "tokenSecret",
         "timeExp": "1h"
-    }
+	},
+	"firebase":{
+		"keyFilename": "./private_key.json",
+		"projectId": "storageservice-d467a",
+		"storage": "@google-cloud/storage"
+	}
 }
