@@ -9,6 +9,7 @@
     <string name="wrong_credentials">Wrong Credentials</string>
     <string name="login_fb_canceled_by_user">Login Canceled by User</string>
     <string name="login_fb_error">Error on Login: </string>
+    <string name="login_user_exists"> already was created! Please, login with username and password</string>
     <string name="login_title">Stories</string>
 
     <string name="text_home">Home</string>

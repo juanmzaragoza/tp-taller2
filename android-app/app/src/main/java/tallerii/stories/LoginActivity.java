@@ -3,6 +3,7 @@ package tallerii.stories;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,13 +15,22 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import tallerii.stories.network.AdapterApplicationApiRest;
+import tallerii.stories.network.EndpointsApplicationApiRest;
+import tallerii.stories.network.tallerii.stories.network.apimodels.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -83,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(FacebookException exception) {
-                    Toast.makeText(LoginActivity.this, R.string.login_fb_error + exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, getApplicationContext().getResources().getString(R.string.login_fb_error) +" "+ exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
     }
@@ -97,22 +107,24 @@ public class LoginActivity extends AppCompatActivity {
                     try {
                         long fbId = object.getLong(FIELD_ID);
                         String fbEmail = object.getString(FIELD_EMAIL);
+                        String fbAccessToken = AccessToken.getCurrentAccessToken().getToken();
 
                         /*
-                         * TODO: check in the application server if the user id is registered
+                         * check in the application server if the user id is registered
                          * if not => startRegistrationActivity()
                          *   -> recieve fields
                          *   -> ask for password and repeat
                          *   -> send POST request to registration
                          *   -> recieve JWT if all is OK!
-                         * else => request JWT and startMainActivity
+                         * else => display error
                          */
-                        startMainActivity(fbEmail);
+                        checkUserExists(fbId);
+
 
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
-                        Toast.makeText(LoginActivity.this, "Error " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Application Error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -122,6 +134,46 @@ public class LoginActivity extends AppCompatActivity {
         parameters.putString("fields", "id, name, email, gender");
         request.setParameters(parameters);
         request.executeAsync();
+
+    }
+
+    /** call api rest and check if the user id exists **/
+    protected void checkUserExists(long fbId) {
+
+        AdapterApplicationApiRest applicationApiRestAdapter = new AdapterApplicationApiRest();
+        Gson gson = applicationApiRestAdapter.convertUserToGson();
+        EndpointsApplicationApiRest endpointsApi = applicationApiRestAdapter.setConnectionApplicationRestApi(gson);
+
+        Call<User> responseCall = endpointsApi.getUserById(fbId);
+
+        responseCall.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                User user = response.body();
+
+                // if user exists
+                if (user != null) {
+                    // log out from FB
+                    if (AccessToken.getCurrentAccessToken() != null) {
+                        LoginManager.getInstance().logOut();
+                    }
+                    // show error message
+                    Toast.makeText(LoginActivity.this, user.getUsername() +" "+ getApplicationContext().getResources().getString(R.string.login_user_exists), Toast.LENGTH_SHORT).show();
+                } else{
+                    // TODO: if user doesn't exists => we create it
+                    // start activity that ask for new password
+                    startMainActivity(user.getUsername());
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.e("Error", t.toString());
+                Toast.makeText(LoginActivity.this, "Error on getUserById()" + t.toString(), Toast.LENGTH_LONG).show();
+
+            }
+        });
 
     }
 

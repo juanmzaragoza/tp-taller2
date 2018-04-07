@@ -26,10 +26,12 @@ public class AuthorizationMainActivity extends AppCompatActivity {
         /* TODO:  when the token is stored
         // go straight to main if a token is stored
         if (Util.getTokenx() != null) {*/
+
         if(false){
             activityIntent = new Intent(this, MainActivity.class);
         } else {// else not logged in
             // clean fb access token because we handle the access to the application
+
             if (AccessToken.getCurrentAccessToken() != null) {
                 LoginManager.getInstance().logOut();
             }
