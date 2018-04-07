@@ -19,7 +19,7 @@ matrix:
     - language: android
       jdk: oraclejdk8
       env:
-        - ANDROID_TARGET=android-26
+        - ANDROID_TARGET=android-22
         - ANDROID_ABI=armeabi-v7a
       android:
         components:
@@ -27,6 +27,7 @@ matrix:
         - platform-tools
         - build-tools-26.0.2
         - android-26
+        - android-22
         - extra-android-m2repository
         - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
       script:
