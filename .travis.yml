@@ -1,4 +1,4 @@
-language: python
+language: android
 env:
   global:
     - ANDROID_TARGET=android-15
