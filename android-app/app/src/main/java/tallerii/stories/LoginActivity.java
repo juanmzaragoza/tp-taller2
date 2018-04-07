@@ -28,6 +28,9 @@ public class LoginActivity extends AppCompatActivity {
     private static final String EMAIL = "email";
     private static final String PUBLIC_PROFILE = "public_profile";
 
+    private static final String FIELD_ID = "id";
+    private static final String FIELD_EMAIL = "email";
+
     private Button submitButton;
     private LoginButton fbButton;
     private CallbackManager callbackManager;
@@ -92,9 +95,18 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onCompleted(JSONObject object, GraphResponse response) {
                     try {
-                        long fbId = object.getLong("id");
-                        String fbEmail = object.getString("email");
+                        long fbId = object.getLong(FIELD_ID);
+                        String fbEmail = object.getString(FIELD_EMAIL);
 
+                        /*
+                         * TODO: check in the application server if the user id is registered
+                         * if not => startRegistrationActivity()
+                         *   -> recieve fields
+                         *   -> ask for password and repeat
+                         *   -> send POST request to registration
+                         *   -> recieve JWT if all is OK!
+                         * else => request JWT and startMainActivity
+                         */
                         startMainActivity(fbEmail);
 
                     } catch (JSONException e) {
