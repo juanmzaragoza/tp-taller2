@@ -1,5 +1,7 @@
 import unittest
 import unittest.mock as mock
+from unittest.mock import patch
+# from unittest.mock import MagicMock
 import requests
 import json
 import sys
@@ -11,6 +13,15 @@ class TestFlaskApi(unittest.TestCase):
     def setUp(self):
         self.app = app.app.test_client()
         #self.app = app.app.app.test_client()#for docker test
+
+        # self.shared_api_client_mock = MagicMock()
+        # self.shared_api_client_mock.login.return_value = False
+        # modules = {
+        #     'api_client.shared_api_client': self.shared_api_client_mock,
+        # }
+        # self.module_patcher = patch.dict('sys.modules', modules)
+        # self.module_patcher.start()
+
 
     def __make_post_request(self, data):
         url = "/token"
@@ -75,18 +86,21 @@ class TestFlaskApi(unittest.TestCase):
     #     self.assertIn("message", response_data)
     #     self.assertEqual(response_data["message"], "invalid")
 
+    # @patch('api_client.shared_api_client')
+    @patch('api_client.shared_api_client.requests.post')
+    def test_invalid_password_should_status_401(self, mock_post):
+        data = {"username": "valid_username", "password": "invalid_password"}
+        mock_post.return_value.status_code = 401
 
-    # def test_invalid_password_should_status_401(self):
-    #     data = {"username": "valid_username", "password": "invalid_password"}
-    #     response = self.__make_post_request(data)
+        response = self.__make_post_request(data)
         
-    #     self.assertEqual(response.status_code,401)
+        self.assertEqual(response.status_code,401)
 
-    #     response_data = self.__get_response_data(response)
-    #     self.assertIn("code", response_data)
-    #     self.assertEqual(0,response_data["code"])
-    #     self.assertIn("message", response_data)
-    #     self.assertEqual(response_data["message"], "invalid")
+        response_data = self.__get_response_data(response)
+        self.assertIn("code", response_data)
+        self.assertEqual(0,response_data["code"])
+        self.assertIn("message", response_data)
+        self.assertEqual(response_data["message"], "invalid")
 
 
 if __name__ == "__main__":
