@@ -1,0 +1,1 @@
+SHARED_SERVER_URL = 'http://172.17.0.1:8081/api'

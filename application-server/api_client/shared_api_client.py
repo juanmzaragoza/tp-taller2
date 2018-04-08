@@ -1,14 +1,18 @@
+import flask
 import requests
 import json
 from .request_exception import RequestException
+from constants import SHARED_SERVER_URL
+
+app = flask.Flask(__name__)
 
 class SharedApiClient():
 
 	def __init__(self):
-		self.url = 'http://172.17.0.1:8081/api/token'
-		#self.url = 'http://0.0.0.0:8081/api/v1/token'
+		self.url = SHARED_SERVER_URL + '/token'
 
 	def login(self, username, password):
+		# app.logger.error('url: %s', self.url)
 		try:
 			data = {'username': username,'password': password}
 			headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
