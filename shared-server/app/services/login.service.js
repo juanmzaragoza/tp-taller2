@@ -1,18 +1,30 @@
 "use strict";
-var AuthService = require('./auth.service')
+const AuthService   = require('./auth.service')
+const StorageServ   = require('./storage.service')
+const bcrypt        = require('bcrypt');
 
 
 class LoginService {
     constructor() {
-        this.auth = ( user, psw, next) => {
-            var result = undefined;
-            if(user == psw){
-                result =  { 
-                    token: AuthService.token(user),
-                    expiresAt: 3600
-                };
-            }
-            next(result);
+        this.auth = ( username, password, next) => {
+            StorageServ.load('user', "username", username, (usr)=>{
+                if(usr){
+                    bcrypt.compare(password, usr.password, function(err, res) {
+                        var result = undefined;
+                        if(res == true){
+                            result =  { 
+                                token: AuthService.token(usr),
+                                expiresAt: 3600
+                            };
+                        }
+                        next(result);
+                    });
+                }
+                else{
+                    console.info('usr not exist')
+                    next(undefined);
+                }
+            });
         };
     }
 }

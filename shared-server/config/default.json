@@ -12,5 +12,8 @@
 		"keyFilename": "./private_key.json",
 		"projectId": "storageservice-d467a",
 		"storage": "@google-cloud/storage"
+	},
+	"bcrypt":{
+		"saltRounds": 1
 	}
 }
