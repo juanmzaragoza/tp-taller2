@@ -1,10 +1,16 @@
 {
 	"server": {
 		"host": "0.0.0.0",
-		"port": 8081
+		"port": 8081,
+		"version": "v1"
 	},
 	"auth": {
         "tokenSecret": "tokenSecret",
         "timeExp": "1h"
-    }
+	},
+	"firebase":{
+		"keyFilename": "./private_key.json",
+		"projectId": "storageservice-d467a",
+		"storage": "@google-cloud/storage"
+	}
 }

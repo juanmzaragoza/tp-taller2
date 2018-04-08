@@ -1,13 +1,26 @@
 'use strict'
 var RouterHandler = require('../routes/router');
 
-var FileCtrl = require('../controllers/file.controller');
-var LoginCont = require('../controllers/login.controller');
+var FileCtrl    = require('../controllers/file.controller');
+var LoginCont   = require('../controllers/login.controller');
+var UserCtrl    = require('../controllers/user.controller');
 
 RouterHandler.addEndpointWithOutAuth({
     verb: 'post',
     path: '/token',
     handler: LoginCont.token
+});
+RouterHandler.addEndpointWithOutAuth({
+    verb: 'post',
+    path: '/user',
+    handler: UserCtrl.user
+});
+
+
+RouterHandler.addEndpointWithAuth({
+    verb: 'get',
+    path: '/user/:id',
+    handler: UserCtrl.getById
 });
 
 RouterHandler.addEndpointWithAuth({
@@ -16,3 +29,8 @@ RouterHandler.addEndpointWithAuth({
     handler: FileCtrl.get
 });
 
+RouterHandler.addEndpointWithAuth({
+    verb: 'post',
+    path: '/files/upload',
+    handler: FileCtrl.postUpload
+});
