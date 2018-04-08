@@ -12,7 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class AdapterApplicationApiRest {
 
     /** control method where we define the URL BASE of the API REST **/
-    public EndpointsApplicationApiRest setConnectionApplicationRestApi(Gson gson) {
+    public static EndpointsApplicationApiRest setConnectionApplicationRestApi(Gson gson) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ConstantsApplicationApiRest.ROOT_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
@@ -22,11 +22,14 @@ public class AdapterApplicationApiRest {
     }
 
     /** convert yours object response class to gson objects **/
-    public Gson convertUserToGson() {
-        GsonBuilder gsonBuldier = new GsonBuilder();
-        gsonBuldier.registerTypeAdapter(User.class, new UserDeserializer());
+    public static Gson convertUserToGson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(User.class, new UserDeserializer());
 
-        return gsonBuldier.create();
+        return gsonBuilder.create();
     }
 
+    public static EndpointsApplicationApiRest getUserEndpoint() {
+        return setConnectionApplicationRestApi(convertUserToGson());
+    }
 }

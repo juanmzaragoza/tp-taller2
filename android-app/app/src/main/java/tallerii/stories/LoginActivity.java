@@ -3,7 +3,6 @@ package tallerii.stories;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,19 +17,11 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import tallerii.stories.network.AdapterApplicationApiRest;
-import tallerii.stories.network.EndpointsApplicationApiRest;
-import tallerii.stories.network.tallerii.stories.network.apimodels.User;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -40,10 +31,15 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String FIELD_ID = "id";
     private static final String FIELD_EMAIL = "email";
+    private final LoginController controller;
 
     private Button submitButton;
     private LoginButton fbButton;
     private CallbackManager callbackManager;
+
+    public LoginActivity() {
+        this.controller = new LoginController(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +84,12 @@ public class LoginActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancel() {
-                    Toast.makeText(LoginActivity.this, R.string.login_fb_canceled_by_user, Toast.LENGTH_SHORT).show();
+                     showMessage(R.string.login_fb_canceled_by_user);
                 }
 
                 @Override
                 public void onError(FacebookException exception) {
-                    Toast.makeText(LoginActivity.this, getApplicationContext().getResources().getString(R.string.login_fb_error) +" "+ exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                    showMessage(getApplicationContext().getResources().getString(R.string.login_fb_error) +" "+ exception.getLocalizedMessage(), Toast.LENGTH_SHORT);
                 }
             });
     }
@@ -108,27 +104,12 @@ public class LoginActivity extends AppCompatActivity {
                         long fbId = object.getLong(FIELD_ID);
                         String fbEmail = object.getString(FIELD_EMAIL);
                         String fbAccessToken = AccessToken.getCurrentAccessToken().getToken();
-
-                        /*
-                         * check in the application server if the user id is registered
-                         * if not => startRegistrationActivity()
-                         *   -> recieve fields
-                         *   -> ask for password and repeat
-                         *   -> send POST request to registration
-                         *   -> recieve JWT if all is OK!
-                         * else => display error
-                         */
-                        checkUserExists(fbId);
-
-
+                        controller.checkFBUserExists(fbId, fbEmail);
                     } catch (JSONException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
-                        Toast.makeText(LoginActivity.this, "Application Error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        showMessage("Application Error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT);
                     }
-
                 }
-
             });
         Bundle parameters = new Bundle();
         parameters.putString("fields", "id, name, email, gender");
@@ -137,50 +118,26 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    /** call api rest and check if the user id exists **/
-    protected void checkUserExists(long fbId) {
+    public void showMessage(int resId) {
+        Toast.makeText(LoginActivity.this, resId, Toast.LENGTH_SHORT).show();
+    }
 
-        AdapterApplicationApiRest applicationApiRestAdapter = new AdapterApplicationApiRest();
-        Gson gson = applicationApiRestAdapter.convertUserToGson();
-        EndpointsApplicationApiRest endpointsApi = applicationApiRestAdapter.setConnectionApplicationRestApi(gson);
+    public void showMessage(String text) {
+        Toast.makeText(LoginActivity.this, text, Toast.LENGTH_SHORT).show();
+    }
 
-        Call<User> responseCall = endpointsApi.getUserById(fbId);
+    public void showMessage(String text, int length) {
+        Toast.makeText(LoginActivity.this, text, length).show();
+    }
 
-        responseCall.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                User user = response.body();
-
-                // if user exists
-                if (user != null) {
-                    // log out from FB
-                    if (AccessToken.getCurrentAccessToken() != null) {
-                        LoginManager.getInstance().logOut();
-                    }
-                    // show error message
-                    Toast.makeText(LoginActivity.this, user.getUsername() +" "+ getApplicationContext().getResources().getString(R.string.login_user_exists), Toast.LENGTH_SHORT).show();
-                } else{
-                    // TODO: if user doesn't exists => we create it
-                    // start activity that ask for new password
-                    startMainActivity(user.getUsername());
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Log.e("Error", t.toString());
-                Toast.makeText(LoginActivity.this, "Error on getUserById()" + t.toString(), Toast.LENGTH_LONG).show();
-
-            }
-        });
-
+    public void logOutFromFB() {
+        if (AccessToken.getCurrentAccessToken() != null) {
+            LoginManager.getInstance().logOut();
+        }
     }
 
     /** Called when the user taps the Submit button **/
     private void login(View view) {
-
-        Intent intent = new Intent(this, MainActivity.class);
 
         EditText usernameText = (EditText) findViewById(R.id.usernameText);
         EditText passwordText = (EditText) findViewById(R.id.passwordText);
@@ -188,25 +145,26 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
 
+        //TODO delegate to testable class that manages login logic
         if(username.equals("john") && password.equals("doe")){ // username & password correct
-
             this.startMainActivity(username);
-
         } else{
-
             Toast.makeText(getApplicationContext(), R.string.wrong_credentials, Toast.LENGTH_SHORT).show();
-
         }
 
     }
 
     protected void startMainActivity(String username) {
-
         Intent intent = new Intent(this, MainActivity.class);
-
         intent.putExtra(EXTRA_MESSAGE, username);
         startActivity(intent);
         finish();
+    }
 
+    protected void startRegistrationActivity(String username) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, username);
+        startActivity(intent);
+        finish();
     }
 }
