@@ -1,6 +1,7 @@
 const config      = require('../../config/default')
 const messages    = require('../../config/messages')
 const StorageServ = require('../services/storage.service')
+const AuthServ    = require('../services/auth.service')
 const User        = require('../models/user')
 const ResServ     = require('../services/response.service')
 const ResEnum     = require('../common/response.enum')
@@ -12,10 +13,11 @@ class UserController {
             StorageServ.save('user',usr, (id)=>{
                 if(id){
                     usr.id = id;
+                    usr["token"] = AuthServ.token(usr.username)
                     ResServ.ok(ResEnum.Value, "user", usr, res, next);
                 }
                 else{
-                    ResServ.error(500, messages.common.error, res, next);
+                    ResServ.error(500, 2, messages.common.error, res, next);
                 }
             });
         };
@@ -26,7 +28,7 @@ class UserController {
                     ResServ.ok(ResEnum.Value, "user", usr, res, next);
                 }
                 else{
-                    ResServ.error(500, messages.common.error, res, next);
+                    ResServ.error(401, 1, messages.user.notExist, res, next);
                 }
             });
         };
