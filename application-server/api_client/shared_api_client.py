@@ -5,8 +5,8 @@ from .request_exception import RequestException
 class SharedApiClient():
 
 	def __init__(self):
-		#self.url = 'http://172.17.0.1:8081/api/v1/token'
-		self.url = 'http://0.0.0.0:8081/api/v1/token'
+		self.url = 'http://172.17.0.1:8081/api/v1/token'
+		#self.url = 'http://0.0.0.0:8081/api/v1/token'
 
 	def login(self, username, password):
 		try:
