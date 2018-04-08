@@ -30,35 +30,110 @@ describe('endpoints', function(){
 			done();
 		});
 	});
-	it('/token', function(done) {
-		request.post({
-			url:`http://${HOST}:${PORT}${PREFIX_PATH}`+'/token', 
-			formData: '{"username":"Erik","password":"Erik"}'
-		}, 
-		(err, httpResponse, body) => {
-			assert.exists(JSON.parse(body)['token']);
-			assert.equal(JSON.parse(body)['token']['token'].length, 163);
+	it('/user', function(done) {
+		var data = {
+			"id": "string",
+			"_rev": "string",
+			"password": "clave",
+			"applicationOwner": "app1",
+			"username": "erik"
+		};
+		request.post({url:`http://${HOST}:${PORT}${PREFIX_PATH}`+'/user', 
+		form: data}, 
+		function(err,httpResponse,body){
+			assert.exists(JSON.parse(body)['user']['id']);
+			assert.equal(JSON.parse(body)['user']['id'].length, 36);
 			done(err);
-		});
+		}) 
+	});
+	
+	it('/token', function(done) {
+		var data = {
+			"id": "string",
+			"_rev": "string",
+			"password": "clave",
+			"applicationOwner": "app1",
+			"username": "erik"
+		};
+		request.post({url:`http://${HOST}:${PORT}${PREFIX_PATH}`+'/user', 
+		form: data}, 
+		function(err,httpResponse,body){
+			var data2 = {
+				"password": "clave",
+				"username": "erik"
+			}
+			request.post({url:`http://${HOST}:${PORT}${PREFIX_PATH}`+'/token', 
+			form: data2}, 
+			function(err,httpResponse,body){
+				assert.exists(JSON.parse(body)['token']['token']);
+				assert.equal(JSON.parse(body)['token']['token'].length, 417);
+				done(err);
+			}) 
+		})
+		
 	});
 
 	it('/files', function(done) {
-		request.post({
-			url:`http://${HOST}:${PORT}${PREFIX_PATH}`+'/token', 
-			formData: '{"username":"Erik","password":"Erik"}'
-		}, 
-		(err, httpResponse, body) => {
-			var token = JSON.parse(body)['token']['token'];
-			request.get({
-				url:`http://${HOST}:${PORT}${PREFIX_PATH}`+'/files', 
-				headers: { Authorization:"Bearer " + token }
-			}, 
-			(err, httpResponse, body) => {
-				assert.exists(JSON.parse(body)['file']);
-				assert.equal(JSON.parse(body)['file'], 'file.jpg');
-				done(err);
-			});
-		});
+		var data = {
+			"id": "string",
+			"_rev": "string",
+			"password": "clave",
+			"applicationOwner": "app1",
+			"username": "erik"
+		};
+		request.post({url:`http://${HOST}:${PORT}${PREFIX_PATH}`+'/user', 
+		form: data}, 
+		function(err,httpResponse,body){
+			var data2 = {
+				"password": "clave",
+				"username": "erik"
+			}
+			request.post({url:`http://${HOST}:${PORT}${PREFIX_PATH}`+'/token', 
+			form: data2}, 
+			function(err,httpResponse,body){
+				var token = JSON.parse(body)['token']['token'];
+				request.get({
+					url:`http://${HOST}:${PORT}${PREFIX_PATH}`+'/files', 
+					headers: { Authorization:"Bearer " + token }
+				}, 
+				(err, httpResponse, body) => {
+					assert.exists(JSON.parse(body)['servers']);
+					assert.equal(JSON.parse(body)['servers'][0].filename, 'file.jpg');
+					done(err);
+				});
+			}) 
+		})
+	});
+	it('/user/:id', function(done) {
+		var data = {
+			"id": "string",
+			"_rev": "string",
+			"password": "clave",
+			"applicationOwner": "app1",
+			"username": "erik"
+		};
+		request.post({url:`http://${HOST}:${PORT}${PREFIX_PATH}`+'/user', 
+		form: data}, 
+		function(err,httpResponse,res){
+			let id = JSON.parse(res).user.id
+			var data2 = {
+				"password": "clave",
+				"username": "erik"
+			}
+			request.post({url:`http://${HOST}:${PORT}${PREFIX_PATH}`+'/token', 
+			form: data2}, 
+			function(err,httpResponse,body){
+				var token = JSON.parse(body)['token']['token'];
+				request.get({
+					url:`http://${HOST}:${PORT}${PREFIX_PATH}`+'/user/'+id, 
+					headers: { Authorization:"Bearer " + token }
+				}, 
+				(err, httpResponse, body) => {
+					assert.equal(JSON.parse(body)['user'].username, 'erik');
+					done(err);
+				});
+			}) 
+		})
 	});
 	
 })

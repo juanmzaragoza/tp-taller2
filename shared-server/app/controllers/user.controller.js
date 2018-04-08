@@ -1,6 +1,9 @@
-var config      = require('../../config/default')
-var StorageServ = require('../services/storage.service')
-var User        = require('../models/user')
+const config      = require('../../config/default')
+const messages    = require('../../config/messages')
+const StorageServ = require('../services/storage.service')
+const User        = require('../models/user')
+const ResServ     = require('../services/response.service')
+const ResEnum     = require('../common/response.enum')
 
 class UserController {
     constructor() {
@@ -8,46 +11,23 @@ class UserController {
             var usr = new User(req.body);
             StorageServ.save('user',usr, (id)=>{
                 if(id){
-                    res.json({
-                        metadata:{
-                            version: config.server.version
-                        },
-                        "user": {
-                            "id": id,
-                            "_rev": "string",
-                            "applicationOwner": usr.applicationOwner,
-                            "username": usr.username
-                          }
-                    });
+                    usr.id = id;
+                    ResServ.ok(ResEnum.Value, "user", usr, res, next);
                 }
                 else{
-                    res.status(500);
-                    res.send('Error');
+                    ResServ.error(500, messages.common.error, res, next);
                 }
-                next();
             });
         };
         this.getById = (req, res, next) => {
             var id = req.params.id;
-            StorageServ.load('user',id, (usr)=>{
+            StorageServ.load('user', "id", id, (usr)=>{
                 if(usr){
-                    res.json({
-                        metadata:{
-                            version: config.server.version
-                        },
-                        "user": {
-                            "id": usr.id,
-                            "_rev": "string",
-                            "applicationOwner": usr.applicationOwner,
-                            "username": usr.username
-                          }
-                    });
+                    ResServ.ok(ResEnum.Value, "user", usr, res, next);
                 }
                 else{
-                    res.status(500);
-                    res.send('user not exist');
+                    ResServ.error(500, messages.common.error, res, next);
                 }
-                next();
             });
         };
     }
