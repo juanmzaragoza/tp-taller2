@@ -17,6 +17,7 @@ const app = express();
 
 // set middleware parse json
 app.use(bodyParser.json({ type: 'application/json' }));
+app.use(bodyParser.urlencoded({ extended: true })); 
 
 //user-defined middleware
 app.use((req, res, next) => {
