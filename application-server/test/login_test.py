@@ -73,20 +73,20 @@ class TestFlaskApi(unittest.TestCase):
     #     self.assertIn("token", response_data["token"])
     #     self.assertEqual(response_data["token"]["expiresAt"], 3600)
 
+    @patch('api_client.shared_api_client.requests.post')
+    def test_invalid_user_should_status_401(self, mock_post):
+        data = {"username": "invalid_username", "password": "valid_password"}
+        mock_post.return_value.status_code = 401
 
-    # def test_invalid_user_should_status_401(self):
-    #     data = {"username": "invalid_username", "password": "valid_password"}
-    #     response = self.__make_post_request(data)
+        response = self.__make_post_request(data)
         
-    #     self.assertEqual(response.status_code,401)
+        self.assertEqual(response.status_code,401)
+        response_data = self.__get_response_data(response)
+        self.assertIn("code", response_data)
+        self.assertEqual(0,response_data["code"])
+        self.assertIn("message", response_data)
+        self.assertEqual(response_data["message"], "invalid")
 
-    #     response_data = self.__get_response_data(response)
-    #     self.assertIn("code", response_data)
-    #     self.assertEqual(0,response_data["code"])
-    #     self.assertIn("message", response_data)
-    #     self.assertEqual(response_data["message"], "invalid")
-
-    # @patch('api_client.shared_api_client')
     @patch('api_client.shared_api_client.requests.post')
     def test_invalid_password_should_status_401(self, mock_post):
         data = {"username": "valid_username", "password": "invalid_password"}
@@ -95,7 +95,6 @@ class TestFlaskApi(unittest.TestCase):
         response = self.__make_post_request(data)
         
         self.assertEqual(response.status_code,401)
-
         response_data = self.__get_response_data(response)
         self.assertIn("code", response_data)
         self.assertEqual(0,response_data["code"])
