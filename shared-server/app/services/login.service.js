@@ -21,7 +21,6 @@ class LoginService {
                     });
                 }
                 else{
-                    console.info('usr not exist')
                     next(undefined);
                 }
             });

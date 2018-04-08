@@ -14,7 +14,7 @@ class LoginController {
                     ResServ.ok(ResEnum.Value, "token", ticket, res, next);
                 }
                 else{
-                    ResServ.error(500, messages.user.wrong, res, next)
+                    ResServ.error(401, 0, messages.user.wrong, res, next)
                 }
             });
         };
