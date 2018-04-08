@@ -11,7 +11,7 @@ En ubuntu:
 ## Instalación
 
 android app:
-	-
+	-cd android-app/ && ./gradlew build jacocoTestReport assembleAndroidTest
 
 shared server:
 	- cd shared-server/ && npm install
@@ -24,10 +24,10 @@ Por el momento, para desarrollo, ver `docker/README.md`.
 ## Pruebas
 
 android app:
-	- 
+	- cd android-app/ && ./gradlew test
 
 shared server:
 	- cd shared-server/ && npm test
 
 application server:
-	-
+	-cd application-server/ && test
