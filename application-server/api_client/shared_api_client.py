@@ -5,7 +5,7 @@ from .request_exception import RequestException
 class SharedApiClient():
 
 	def __init__(self):
-		self.url = 'http://172.17.0.1:8081/api/v1/token'
+		self.url = 'http://172.17.0.1:8081/api/token'
 		#self.url = 'http://0.0.0.0:8081/api/v1/token'
 
 	def login(self, username, password):
@@ -27,13 +27,14 @@ class SharedApiClient():
 			raise RequestException("internal error")
 
 	def __get_response_data(self, response):
+		parsed_response = response.json()
 		response_data = {
 			"metadata": {
-				"version": "string"
+				"version": parsed_response['metadata']['version']
 			},
 			"token": {
-				"expiresAt": 0,
-				"token": response.json()['token']
+				"expiresAt": parsed_response['token']['expiresAt'],
+				"token": parsed_response['token']['token']
 			}
 		}
 		return response_data

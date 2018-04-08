@@ -55,12 +55,12 @@ class TestFlaskApi(unittest.TestCase):
         response_data = self.__get_response_data(response)
         self.assertIn("metadata", response_data)
         self.assertIn("version", response_data["metadata"])
-        self.assertEqual(response_data["metadata"]["version"], "string")
+        self.assertEqual(response_data["metadata"]["version"], "v1")
 
         self.assertIn("token", response_data)
         self.assertIn("expiresAt", response_data["token"])
         self.assertIn("token", response_data["token"])
-        self.assertEqual(response_data["token"]["expiresAt"], 0)
+        self.assertEqual(response_data["token"]["expiresAt"], 3600)
 
 
     def test_invalid_user_should_status_401(self):
