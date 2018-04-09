@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     private static final String FIELD_EMAIL = "email";
     private final LoginController controller;
 
-    private Button submitButton;
     private LoginButton fbButton;
     private CallbackManager callbackManager;
 
@@ -46,14 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // adding event to submit button
-        this.submitButton = (Button)findViewById(R.id.submitButton);
-        this.submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                login(v);
-            }
-        });
 
         // adding event to login facebook button
         // a callback manager handle all response from init session
@@ -137,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /** Called when the user taps the Submit button **/
-    private void login(View view) {
+    public void login(View view) {
 
         EditText usernameText = (EditText) findViewById(R.id.usernameText);
         EditText passwordText = (EditText) findViewById(R.id.passwordText);
