@@ -13,10 +13,7 @@ import java.io.IOException;
 
 import tallerii.stories.network.ConstantsApplicationApiRest;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
@@ -47,7 +44,6 @@ public class LoginControllerTest {
 
         server.enqueue(new MockResponse().setBody("{\"username\":\"user\"}"));
 
-        int requests = server.getRequestCount();
         verify(mockActivity, timeout(2000).times(1)).showMessage(anyString());
     }
 
@@ -60,7 +56,6 @@ public class LoginControllerTest {
 
         server.enqueue(new MockResponse());
 
-        int requests = server.getRequestCount();
         verify(mockActivity, timeout(2000).times(1)).startRegistrationActivity(anyString());
     }
 }
