@@ -25,7 +25,6 @@ import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity {
 
-    public static final String EXTRA_MESSAGE = "tallerii.stories.loginactivity.MESSAGE";
     private static final String EMAIL = "email";
     private static final String PUBLIC_PROFILE = "public_profile";
 
@@ -44,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
 
         // adding event to login facebook button
         // a callback manager handle all response from init session
@@ -145,9 +143,16 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    //TODO extract activity change to common method for all activities
+    // I imagine a parent class with constants of all available activities,
+    // and a method to get activities that the specific class should access, to check if it should
+    // actually switch to them. Then for parameters we just use a map, and each activity that
+    // receives parameters has constants for the keys that it can/should receive.
+    // Such a class would be the one accessed by the 'controllers' that i made up,
+    // and it would have as public the methods used by them, and protected the other common methods.
     protected void startMainActivity(String username) {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, username);
+        intent.putExtra(MainActivity.EXTRA_MESSAGE, username);
         startActivity(intent);
         finish();
     }
