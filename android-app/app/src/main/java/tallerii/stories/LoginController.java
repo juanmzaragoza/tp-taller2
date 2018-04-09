@@ -1,6 +1,5 @@
 package tallerii.stories;
 
-import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 import retrofit2.Call;

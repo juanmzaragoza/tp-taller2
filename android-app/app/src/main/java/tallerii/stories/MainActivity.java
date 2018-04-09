@@ -25,8 +25,7 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(message);
 
         // get bottom navigation menu
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         // on click one, change content
         bottomNavigationView.setOnNavigationItemSelectedListener(
