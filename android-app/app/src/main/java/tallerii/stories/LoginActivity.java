@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         // adding event to login facebook button
         // a callback manager handle all response from init session
         this.callbackManager = CallbackManager.Factory.create();
-        this.fbButton = (LoginButton) findViewById(R.id.facebookButton);
+        this.fbButton = findViewById(R.id.facebookButton);
         // set what we want to read
         this.fbButton.setReadPermissions(Arrays.asList(EMAIL,PUBLIC_PROFILE));
         // what we do when response comes back
@@ -130,8 +130,8 @@ public class LoginActivity extends AppCompatActivity {
     /** Called when the user taps the Submit button **/
     public void login(View view) {
 
-        EditText usernameText = (EditText) findViewById(R.id.usernameText);
-        EditText passwordText = (EditText) findViewById(R.id.passwordText);
+        EditText usernameText = findViewById(R.id.usernameText);
+        EditText passwordText = findViewById(R.id.passwordText);
 
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
