@@ -11,21 +11,28 @@ import { SharedService } from '../../services/common/shared.service'
 })
 export class LoginComponent {
     private user:User = new User('','');
+    private message: string
     constructor(public loginServ :LoginService, 
                 public RouterServ : Router,
                 public Location: Location,
-                public SharedServ: SharedService){}
+                public SharedServ: SharedService){
+                  this.message = ''
+                }
 
     login(user: User) {
         this.loginServ.token(user).subscribe((val) => {
           if(val){
+                this.message = ""
                 this.SharedServ.startAccount.emit(user.username);
                 this.RouterServ.navigate(['/home']);
           }
           else{
-                console.info('credencial incorrecta');
+            this.message = "wrong user or password"
           }
-        });
+        },
+      error =>{
+        this.message = "wrong user or password"
+      });
       }
       back(){
         //this.Location.back();
