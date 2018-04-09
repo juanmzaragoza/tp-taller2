@@ -3,8 +3,9 @@
 
     <string name="user_placeholder">Enter your user</string>
     <string name="password_placeholder">Enter your password</string>
-    <string name="button_signin">Sign In</string>
-    <string name="button_signup">Sign Up</string>
+    <string name="confirmPassword_placeholder">Confirm your password</string>
+    <string name="button_signIn">Sign In</string>
+    <string name="button_signUp">Sign Up</string>
     <string name="button_facebook">Enter with Facebook</string>
     <string name="wrong_credentials">Wrong Credentials</string>
     <string name="login_fb_canceled_by_user">Login Canceled by User</string>
