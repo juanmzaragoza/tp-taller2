@@ -2,15 +2,12 @@ package tallerii.stories;
 
 import android.util.Log;
 
-import com.google.gson.JsonObject;
-import com.squareup.okhttp.ResponseBody;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
-import tallerii.stories.network.tallerii.stories.network.apimodels.User;
+import tallerii.stories.network.tallerii.stories.network.apimodels.RegistrationResult;
 
 public class RegistrationController {
     RegistrationActivity activity;
@@ -22,19 +19,21 @@ public class RegistrationController {
     /** call api rest and check if the user id exists **/
     public void register(final String username, final String password) {
         EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRegistrationEndpoint();
-        Call<ResponseBody> responseCall = endpointsApi.postRegistration(username, password);
+        Call<RegistrationResult> responseCall = endpointsApi.postRegistration(username, password);
 
-        responseCall.enqueue(new Callback<ResponseBody>() {
+        responseCall.enqueue(new Callback<RegistrationResult>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                JsonObject postResponse = new JsonObject().get(response.body().toString()).getAsJsonObject();
-                // TODO manage app server possible errors
-                activity.showMessage("Registration successful\nWelcome to stories " + username + "!!");
-                activity.startMainActivity(username);
+            public void onResponse(Call<RegistrationResult> call, Response<RegistrationResult> response) {
+                RegistrationResult registrationResult = response.body();
+                if (registrationResult != null) {
+                    activity.showMessage("Registration successful\nWelcome to stories " + registrationResult.getUsername() + "!!");
+                    activity.startMainActivity(username);
+                }
+                // TODO manage app server possible errors and etc
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<RegistrationResult> call, Throwable t) {
                 Log.e("Error", t.toString());
                 activity.showMessage(t.toString());
             }

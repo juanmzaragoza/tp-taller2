@@ -1,14 +1,13 @@
 package tallerii.stories.network;
 
-import com.squareup.okhttp.ResponseBody;
-
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import tallerii.stories.network.tallerii.stories.network.apimodels.RegistrationResult;
 import tallerii.stories.network.tallerii.stories.network.apimodels.User;
 
 public interface EndpointsApplicationApiRest {
@@ -17,7 +16,8 @@ public interface EndpointsApplicationApiRest {
     Call<User> getUserById(@Query("id") long user_id);
 
     @FormUrlEncoded
+    @Headers({"Accept:application/json"})
     @POST(ConstantsApplicationApiRest.POST_REGISTRATION)
-    Call<ResponseBody> postRegistration(@Field("user")String username,
-                                        @Field("password")String password);
+    Call<RegistrationResult> postRegistration(@Field("user")String username,
+                                              @Field("password")String password);
 }
