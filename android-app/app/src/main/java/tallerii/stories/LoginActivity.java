@@ -158,8 +158,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     protected void startRegistrationActivity(String username) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(EXTRA_MESSAGE, username);
+        Intent intent = new Intent(this, RegistrationActivity.class);
+        intent.putExtra(RegistrationActivity.USERNAME, username);
         startActivity(intent);
         finish();
     }
