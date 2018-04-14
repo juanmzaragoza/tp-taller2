@@ -21,6 +21,13 @@ class UserController(flask_restful.Resource):
 			self.parser.add_argument('username', required=True, help="Field username is mandatory") # fb email
 			self.parser.add_argument('password', required=True, help="Field password is mandatory")
 
+			args = self.parser.parse_args()
+
+		except BadRequest as ex:
+			return ErrorHandler.create_error_response("Fields id, username and password are mandatory", 400)
+
+		try:
+			# save optionals fields on app server
 			self.parser.add_argument('name', required=False)
 			self.parser.add_argument('first_name', required=False)
 			self.parser.add_argument('last_name', required=False)
@@ -28,7 +35,6 @@ class UserController(flask_restful.Resource):
 			self.parser.add_argument('picture', required=False)
 			self.parser.add_argument('facebookAccount', required=False)
 
-			args = self.parser.parse_args()
 			response = self.shared_api_client.userCreate(args["id"],args["username"],args["password"])
 			if not response:
 				return ErrorHandler.create_error_response("You haven't authorization", 401)
@@ -39,5 +45,5 @@ class UserController(flask_restful.Resource):
 			return ErrorHandler.create_error_response(str(e), 500)
 
 		except BadRequest as ex:
-			return ErrorHandler.create_error_response("Fields id, username and password are mandatory", 400)
+			return ErrorHandler.create_error_response(str(ex), 400)
 
