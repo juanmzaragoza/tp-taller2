@@ -1,7 +1,7 @@
 package tallerii.stories.network;
 
-import tallerii.stories.network.tallerii.stories.network.apimodels.User;
-import tallerii.stories.network.tallerii.stories.network.apimodels.UserDeserializer;
+import tallerii.stories.network.apimodels.User;
+import tallerii.stories.network.apimodels.UserDeserializer;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

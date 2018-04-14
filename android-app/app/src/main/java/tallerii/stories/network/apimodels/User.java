@@ -1,4 +1,4 @@
-package tallerii.stories.network.tallerii.stories.network.apimodels;
+package tallerii.stories.network.apimodels;
 
 public class User {
 

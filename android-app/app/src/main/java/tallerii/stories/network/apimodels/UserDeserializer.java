@@ -1,6 +1,5 @@
-package tallerii.stories.network.tallerii.stories.network.apimodels;
+package tallerii.stories.network.apimodels;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;

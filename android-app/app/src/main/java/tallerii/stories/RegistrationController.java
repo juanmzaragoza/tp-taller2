@@ -7,7 +7,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
-import tallerii.stories.network.tallerii.stories.network.apimodels.RegistrationResult;
+import tallerii.stories.network.apimodels.RegistrationResult;
 
 public class RegistrationController {
     RegistrationActivity activity;
