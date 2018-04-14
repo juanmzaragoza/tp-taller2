@@ -38,7 +38,7 @@ services:
       - 5858:5858
     volumes:
       - ../application-server:/usr/src/app
-    command: bash -c "pip install -r requirements.txt && gunicorn -w 4 -b 0.0.0.0:5858 app:app --log-file=-"
+    command: bash -c "pip install -r requirements.txt && gunicorn -w 4 -b 0.0.0.0:5858 app:app --log-file=- --reload"
     environment:
       - MONGO_URI=mongodb://mongo:27017/appserverdb
     links:
@@ -61,3 +61,11 @@ services:
       - ../application-server:/usr/src/application-server
       - ../web:/usr/src/web
     tty: true
+
+  # swagger container
+  swaggerui:
+    container_name: swaggerui
+    image: swaggerapi/swagger-editor
+    ports:
+      - 81:8080
+

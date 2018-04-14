@@ -14,6 +14,8 @@ Para loggear en flask:
 
 ## Unit Tests
 
+La idea es siempre utilizar en los entornos de desarrollo Docker, para evitar conflicto de versiones.
+
 ### Local
 * Desde el directorio /test ejecutar: `pytest` 
 
