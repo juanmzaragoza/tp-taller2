@@ -15,7 +15,7 @@ const gcs = require(config.firebase.storage)({
 class FireBaseService{
     constructor(){
         var me = this;
-        this.upload2 = (data, cb) =>{
+        this.upload = (data, cb) =>{
             var bufferStream = new stream.PassThrough();
             bufferStream.end(new Buffer(data.resource, 'base64'));
             var CurrentDate = moment().toDate().getTime();

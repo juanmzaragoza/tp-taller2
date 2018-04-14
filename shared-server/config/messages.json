@@ -1,0 +1,9 @@
+{
+    "common":{
+        "error": "unknown error"
+    },
+    "user":{
+        "wrong": "wrong user or password",
+        "notExist": "user not exist"
+    }
+}

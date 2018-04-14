@@ -1,0 +1,3 @@
+
+<li *ngIf="!showUser" ><a routerLink="login" title="Log In">{{name}}</a></li>
+<li *ngIf="showUser"><a (click)="logOut()" title="Log Out"> <span class="Tiny material-icons">account_circle</span>{{name}}</a></li>

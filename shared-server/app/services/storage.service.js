@@ -2,6 +2,8 @@
 const localStorage  = require('localStorage')
 const JsonStorage   = require('json-storage').JsonStorage
 const uuidv4        = require('uuid/v4');
+const bcrypt        = require('bcrypt');
+const config        = require('../../config/default')
 
 class StorageService {
     constructor() {
@@ -10,28 +12,30 @@ class StorageService {
             stringify: true 
         });
         this.save = (key, entity, cb) => {
+            var me = this;
             entity.id =  uuidv4().toUpperCase();
-            var arr = this.store.get(key);
-            if(arr){
-                arr.push(entity);
-                this.store.set(key, arr);
-            }
-            else
-            {
-                this.store.set(key, [entity]);
-            }
-            cb(entity.id);
+            bcrypt.hash(entity.password, config.bcrypt.saltRounds, function(err, hash) { 
+                entity.password = hash;
+                var arr = me.store.get(key);
+                if(arr){
+                    arr.push(entity);
+                    me.store.set(key, arr);
+                }
+                else
+                {
+                    me.store.set(key, [entity]);
+                }
+                delete entity.password
+                cb(entity.id);
+            });
         };
-        this.load = (key, id, cb) =>{
+        this.load = (key, keySearch, value, cb) =>{
             var arr = this.store.get(key);
-            var usr;
+            var entity = undefined;
             if(arr){
-                usr = arr.find(item => item.id == id)
+                entity = arr.find(item => item[keySearch] == value)
             }
-            else{
-                throw new Error("the key not exist")
-            }
-            cb(usr);
+            cb(entity);
         }
     }
 }

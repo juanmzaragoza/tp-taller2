@@ -1,25 +1,21 @@
 "use strict";
 
-var loginServ = require("../services/login.service")
-var config = require('../../config/default')
-
+var loginServ   = require("../services/login.service")
+var config      = require('../../config/default')
+var messages    = require('../../config/messages')
+var ResServ     = require('../services/response.service')
+var ResEnum     = require('../common/response.enum')
+ 
 class LoginController {
     constructor() {
         this.token = (req, res, next) => {
             loginServ.auth(req.body.username,req.body.password, (ticket)=>{
                 if(ticket){
-                    res.json({
-                        metadata:{
-                            version: config.server.version
-                        },
-                        token: ticket
-                    });
+                    ResServ.ok(ResEnum.Value, "token", ticket, res, next);
                 }
                 else{
-                    res.status(401);
-                    res.send('user or password incorrect');
+                    ResServ.error(401, 0, messages.user.wrong, res, next)
                 }
-                next();
             });
         };
     }
