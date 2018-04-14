@@ -5,6 +5,7 @@ import os
 
 from controllers.login_controller import LoginController
 from controllers.user_controller import UserController
+from controllers.ping_controller import PingController
 
 app = flask.Flask(__name__)
 
@@ -28,6 +29,7 @@ with app.app_context():
 	api.add_resource(HelloWorld, '/')
 	api.add_resource(LoginController, '/token')
 	api.add_resource(UserController, '/user')
-
+	api.add_resource(PingController, '/ping')
+	
 	if __name__ == "__main__":
     		app.run(host='0.0.0.0', port=5858,debug=True)
