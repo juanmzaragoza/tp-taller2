@@ -1,24 +1,50 @@
-language: python
-python:
-  - "3.6"
-node_js:
-  - "8.10"
-services:
-  - mongodb
-before_install:
-  - pip install pytest pytest-cov
-  - pip install codecov
-install:
-  - cd $TRAVIS_BUILD_DIR/application-server/ && pip install -r requirements.txt
-  - cd $TRAVIS_BUILD_DIR/shared-server/ && npm install
-  - npm install -g istanbul
-  - npm install -g codecov
-script:
-  - cd $TRAVIS_BUILD_DIR/shared-server/ && npm test
-  - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
-  - codecov
-  - cd $TRAVIS_BUILD_DIR/application-server/ 
-  - export MONGO_URI=mongodb://localhost:27017/appserverdb
-  - python app.py &
-  - cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=./
-  - codecov
+matrix:
+  include:
+    - language: python
+      python: 3.6
+      services:
+        - mongodb
+      before_install:
+        - pip install pytest pytest-cov
+        - pip install codecov
+      install:
+        - cd $TRAVIS_BUILD_DIR/application-server/ && pip install -r requirements.txt
+      script:
+        - cd $TRAVIS_BUILD_DIR/application-server/
+        - export MONGO_URI=mongodb://localhost:27017/appserverdb
+        - python app.py &
+        - cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=./
+        - codecov
+
+    - language: android
+      jdk: oraclejdk8
+      env:
+        - ANDROID_TARGET=android-22
+        - ANDROID_ABI=armeabi-v7a
+      android:
+        components:
+        - tools
+        - platform-tools
+        - build-tools-26.0.2
+        - android-26
+        - extra-android-m2repository
+        - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
+      script:
+        - cd $TRAVIS_BUILD_DIR/android-app/
+        - ./gradlew build jacocoTestReport assembleAndroidTest
+        - ./gradlew test
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
+
+    - language: node_js
+      node_js:
+        - "8.10"
+      install:
+        - cd $TRAVIS_BUILD_DIR/shared-server/ && npm install
+        - npm install -g istanbul
+        - npm install -g codecov
+      script:
+        - cd $TRAVIS_BUILD_DIR/shared-server/ && npm test
+        - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
+        - codecov
+

@@ -31,12 +31,9 @@ class StorageService {
         };
         this.load = (key, keySearch, value, cb) =>{
             var arr = this.store.get(key);
-            var entity;
+            var entity = undefined;
             if(arr){
                 entity = arr.find(item => item[keySearch] == value)
-            }
-            else{
-                throw new Error("the key not exist")
             }
             cb(entity);
         }

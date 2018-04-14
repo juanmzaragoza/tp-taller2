@@ -3,6 +3,7 @@
         "error": "unknown error"
     },
     "user":{
-        "wrong": "wrong user or password"
+        "wrong": "wrong user or password",
+        "notExist": "user not exist"
     }
 }

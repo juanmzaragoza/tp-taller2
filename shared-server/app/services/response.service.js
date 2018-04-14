@@ -19,14 +19,14 @@ class ResponseService {
             res.json(data);
             next();
         };
-        this.error = (code, msg, res, next) =>{
+        this.error = (status, code, msg, res, next) =>{
             /*switch(code){
                 case 400: next(new createError.BadRequest()); break;
                 case 401: next(new createError.Unauthorized()); break;
                 case 500: next(new createError.ExpectationFailed(msg)); break;
                 default:  next(new createError.ExpectationFailed());
             }*/
-            res.status(code).json({ code: code, message: msg });
+            res.status(status).json({ code: code, message: msg });
             next();
         }
     }

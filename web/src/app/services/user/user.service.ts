@@ -10,7 +10,13 @@ export class UserService {
     setUser = (u:User)=>{
         this.user = u;
     }
+    getUser = ()=>{
+        return this.user;
+    }
     getToken = ()=>{
         return this.user.getToken();
+    }
+    clean = () =>{
+        this.user = undefined;
     }
 }
