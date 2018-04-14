@@ -13,7 +13,7 @@ with app.app_context():
 	#set env var MONGO_URI 'mongodb://localhost:27017/test' for local test
 	#set env var MONGO_URI 'mongodb://mongo:27017/test' for docker test
 
-	api = flask_restful.Api(app)
+	api = flask_restful.Api(app, prefix="/api/v1")
 	mongo = PyMongo(app)
 	doc = mongo.db.test.insert({'user':'root', 'name':'Jose'})
 
