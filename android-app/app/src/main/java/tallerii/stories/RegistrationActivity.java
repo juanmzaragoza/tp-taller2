@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import tallerii.stories.controller.RegistrationController;
+
 public class RegistrationActivity extends AppCompatActivity {
     public static final String USERNAME = "username";
     private final RegistrationController controller;
@@ -50,7 +52,7 @@ public class RegistrationActivity extends AppCompatActivity {
         Toast.makeText(RegistrationActivity.this, text, Toast.LENGTH_SHORT).show();
     }
 
-    protected void startMainActivity(String username) {
+    public void startMainActivity(String username) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_MESSAGE, username);
         startActivity(intent);

@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -22,6 +21,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
+
+import tallerii.stories.controller.LoginController;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -157,7 +158,7 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    protected void startRegistrationActivity(String username) {
+    public void startRegistrationActivity(String username) {
         Intent intent = new Intent(this, RegistrationActivity.class);
         intent.putExtra(RegistrationActivity.USERNAME, username);
         startActivity(intent);

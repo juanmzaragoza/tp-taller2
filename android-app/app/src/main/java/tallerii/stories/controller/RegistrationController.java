@@ -1,10 +1,11 @@
-package tallerii.stories;
+package tallerii.stories.controller;
 
 import android.util.Log;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tallerii.stories.RegistrationActivity;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
 import tallerii.stories.network.apimodels.RegistrationResult;
