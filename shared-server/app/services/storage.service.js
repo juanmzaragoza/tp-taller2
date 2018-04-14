@@ -29,6 +29,20 @@ class StorageService {
                 cb(entity.id);
             });
         };
+        this.saveServer  = (key, entity, cb) => {
+            var me = this;
+            entity.id =  uuidv4().toUpperCase();
+            var arr = me.store.get(key);
+            if(arr){
+                arr.push(entity);
+                me.store.set(key, arr);
+            }
+            else
+            {
+                me.store.set(key, [entity]);
+            }
+            cb(entity.id);
+        };
         this.load = (key, keySearch, value, cb) =>{
             var arr = this.store.get(key);
             var entity = undefined;

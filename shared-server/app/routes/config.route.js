@@ -4,6 +4,7 @@ var RouterHandler = require('../routes/router');
 var FileCtrl    = require('../controllers/file.controller');
 var LoginCont   = require('../controllers/login.controller');
 var UserCtrl    = require('../controllers/user.controller');
+var ServerCtrl  = require('../controllers/server.controller');
 
 RouterHandler.addEndpointWithOutAuth({
     verb: 'post',
@@ -33,4 +34,10 @@ RouterHandler.addEndpointWithAuth({
     verb: 'post',
     path: '/files/upload',
     handler: FileCtrl.postUpload
+});
+
+RouterHandler.addEndpointWithAuth({
+    verb: 'post',
+    path: '/servers',
+    handler: ServerCtrl.post
 });

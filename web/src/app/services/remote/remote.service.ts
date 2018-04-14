@@ -35,6 +35,7 @@ export class RemoteService {
   }
   post(endPoint :string, data: any): Observable<any> {
     var me: any = this;
+    console.info(me.url + endPoint)
       return this.http.post<any>(me.url + endPoint, data, me.getHeaders());
   }
   put(endPoint :string, data: any): Observable<any> {
