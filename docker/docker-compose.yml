@@ -61,3 +61,11 @@ services:
       - ../application-server:/usr/src/application-server
       - ../web:/usr/src/web
     tty: true
+
+  # swagger container
+  swaggerui:
+    container_name: swaggerui
+    image: swaggerapi/swagger-editor
+    ports:
+      - 81:8080
+
