@@ -13,6 +13,8 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component'
 import { HomeComponent } from './components/home/home.component'
 import { UserComponent } from './components/user/user.component'
+import { ServerComponent } from './components/server/server.component'
+import { NavBarComponent } from './components/navbar/navbar.component'
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { UserComponent } from './components/user/user.component'
     AppComponent,
     LoginComponent,
     HomeComponent,
-    UserComponent
+    UserComponent,
+    ServerComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,
