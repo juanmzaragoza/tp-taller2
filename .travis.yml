@@ -11,7 +11,7 @@ matrix:
         - cd $TRAVIS_BUILD_DIR/application-server/ && pip install -r requirements.txt
       script:
         - cd $TRAVIS_BUILD_DIR/application-server/
-        - export MONGO_URI=mongodb://localhost:27017/appserverdb
+        - mongo appserverdb --eval 'db.createUser({user:"app_user", pwd:"app_pass", "roles":["dbOwner"]});'
         - python app.py &
         - cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=./
         - codecov
