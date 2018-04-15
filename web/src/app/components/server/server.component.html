@@ -2,11 +2,11 @@
 
 <table class="hide-on-small-only">
   <tr> 
-    <th> name </th> 
-    <th> createdBy </th> 
-    <th> createdTime </th> 
-    <th> lastConnection </th> 
-    <th> Url </th>
+    <th class="indigo-text"> name </th> 
+    <th class="indigo-text"> createdBy </th> 
+    <th class="indigo-text"> createdTime </th> 
+    <th class="indigo-text"> lastConnection </th> 
+    <th class="indigo-text"> Url </th>
   </tr>
   <tr *ngFor="let server of servers">
     <td> {{server.name}} </td>
@@ -17,6 +17,20 @@
   </tr>
 </table>
 
+<div class="show-for-small-only hide-on-med-only hide-on-large-only">
+  <div style="border-bottom:1px solid #3f51b5" class="row" *ngFor="let server of servers">
+    <div class="indigo-text left-align col s4">name:</div>
+    <div class="left-align col s8">{{server.name}}</div>
+    <div class="indigo-text left-align col s4">createdBy:</div>
+    <div class="left-align col s8">{{server.createdBy}}</div>
+    <div class="indigo-text left-align col s4">createdTime:</div>
+    <div class="left-align col s8">{{server.createdTime}}</div>
+    <div class="indigo-text left-align col s4">lastConnection:</div>
+    <div class="left-align col s8">{{server.lastConnection}}</div>
+    <div class="indigo-text left-align col s4">url:</div>
+    <div class="left-align col s8">{{server.host}}:{{server.port}}{{server.pingUrl}}</div>
+  </div>
+</div>
 
 <!-- 
       "id": "string",
