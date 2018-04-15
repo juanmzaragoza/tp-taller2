@@ -1,5 +1,6 @@
 package tallerii.stories;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,9 +12,14 @@ import android.widget.Toast;
 
 import tallerii.stories.controller.RegistrationController;
 
-public class RegistrationActivity extends AppCompatActivity {
+public class RegistrationActivity extends StoriesAppActivity {
     public static final String USERNAME = "username";
     private final RegistrationController controller;
+
+    @Override
+    protected Context getContext() {
+        return RegistrationActivity.this;
+    }
 
     public RegistrationActivity() {
         this.controller= new RegistrationController(this);
@@ -41,21 +47,5 @@ public class RegistrationActivity extends AppCompatActivity {
         } else {
             controller.register(username, password);
         }
-    }
-
-    private String getStringFrom(int resourceId) {
-        EditText editText = findViewById(resourceId);
-        return editText.getText().toString();
-    }
-
-    public void showMessage(String text) {
-        Toast.makeText(RegistrationActivity.this, text, Toast.LENGTH_SHORT).show();
-    }
-
-    public void startMainActivity(String username) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_MESSAGE, username);
-        startActivity(intent);
-        finish();
     }
 }

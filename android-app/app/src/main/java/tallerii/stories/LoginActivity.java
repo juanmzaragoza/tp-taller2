@@ -1,5 +1,6 @@
 package tallerii.stories;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,17 +25,21 @@ import java.util.Arrays;
 
 import tallerii.stories.controller.LoginController;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends StoriesAppActivity {
 
     private static final String EMAIL = "email";
     private static final String PUBLIC_PROFILE = "public_profile";
-
     private static final String FIELD_ID = "id";
     private static final String FIELD_EMAIL = "email";
     private final LoginController controller;
 
     private LoginButton fbButton;
     private CallbackManager callbackManager;
+
+    @Override
+    protected Context getContext() {
+        return LoginActivity.this;
+    }
 
     public LoginActivity() {
         this.controller = new LoginController(this);
@@ -108,18 +113,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    public void showMessage(int resId) {
-        Toast.makeText(LoginActivity.this, resId, Toast.LENGTH_SHORT).show();
-    }
-
-    public void showMessage(String text) {
-        Toast.makeText(LoginActivity.this, text, Toast.LENGTH_SHORT).show();
-    }
-
-    public void showMessage(String text, int length) {
-        Toast.makeText(LoginActivity.this, text, length).show();
-    }
-
     public void logOutFromFB() {
         if (AccessToken.getCurrentAccessToken() != null) {
             LoginManager.getInstance().logOut();
@@ -128,31 +121,8 @@ public class LoginActivity extends AppCompatActivity {
 
     /** Called when the user taps the Submit button **/
     public void login(View view) {
-        EditText usernameText = findViewById(R.id.usernameText);
-        EditText passwordText = findViewById(R.id.passwordText);
-        String username = usernameText.getText().toString();
-        String password = passwordText.getText().toString();
+        String username = getStringFrom(R.id.usernameText);
+        String password = getStringFrom(R.id.passwordText);
         controller.login(username, password);
-    }
-
-    //TODO extract activity change to common method for all activities
-    // I imagine a parent class with constants of all available activities,
-    // and a method to get activities that the specific class should access, to check if it should
-    // actually switch to them. Then for parameters we just use a map, and each activity that
-    // receives parameters has constants for the keys that it can/should receive.
-    // Such a class would be the one accessed by the 'controllers' that i made up,
-    // and it would have as public the methods used by them, and protected the other common methods.
-    public void startMainActivity(String username) {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra(MainActivity.EXTRA_MESSAGE, username);
-        startActivity(intent);
-        finish();
-    }
-
-    public void startRegistrationActivity(String username) {
-        Intent intent = new Intent(this, RegistrationActivity.class);
-        intent.putExtra(RegistrationActivity.USERNAME, username);
-        startActivity(intent);
-        finish();
     }
 }
