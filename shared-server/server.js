@@ -27,6 +27,13 @@ app.use((req, res, next) => {
   next();
 });
 
+var dbAbstraction = require('./app/models/').init();
+app.use(function (req, res, next) { // to load the db models for each request
+    req.models = dbAbstraction.models;
+    req.db     = dbAbstraction.db;
+    return next();
+});
+
 //routes
 RouterHandler.loadRoutes(routerNode)
 app.use('/api', routerNode);
@@ -36,39 +43,14 @@ app.get('/', (req, res) => {
   res.send('Hello world\n');
 });
 
-// Database
-const Sequelize = require('sequelize');
-const sequelize = new Sequelize(
-	config.get('database.database'),
-	config.get('database.username'),
-	config.get('database.password'),
-	{
-		host: config.get('database.host'),
-		port : config.get('database.port'),
-		dialect: config.get('database.dialect'),
-		operatorsAliases: false,
-		pool: {
-			max: 5,
-			min: 0,
-			acquire: 30000,
-			idle: 10000
-		},
-	});
-
-sequelize
-	.authenticate()
-	.then(() => {
-		console.log('Connection has been established successfully.');
-
-
-		sequelize.query("SELECT * FROM prueba", { type: sequelize.QueryTypes.SELECT})
-		.then(prueba => {
-			console.log("prueba:", prueba);
-		})
+app.get('/users', (req, res) => {
+	req.models.user.findAll().then(users => {
+		console.log("encontre usuarios");
+		console.log(users);
+		res.send(users);
 	})
-	.catch(err => {
-		console.error('Unable to connect to the database:', err);
-	});
+});
+
 
 
 //start
