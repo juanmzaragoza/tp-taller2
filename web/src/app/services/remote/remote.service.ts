@@ -19,8 +19,8 @@ export class RemoteService {
   getHeaders():any{
     var me: any = this;
     return { headers: new HttpHeaders({
-                'Content-Type':  'application/json',
-                'Authorization': 'Bearer ' + me.UserServ.getToken()
+                'Content-Type':  'application/json'//,
+            //    'authorization': 'Bearer ' + me.UserServ.getToken()
             })
     };
   }
