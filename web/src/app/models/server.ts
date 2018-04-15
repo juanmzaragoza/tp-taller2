@@ -5,7 +5,7 @@ export class Server{
     port: string
     pingUrl: string
     createdTime: number
-    createdby: string
+    createdBy: string
     lastConnection: number
     constructor(){
         this.clean()
@@ -16,7 +16,7 @@ export class Server{
         this.name = ''
         this.pingUrl = ''
         this.createdTime = 0
-        this.createdby = ''
+        this.createdBy = ''
         this.lastConnection = 0
     }
 }

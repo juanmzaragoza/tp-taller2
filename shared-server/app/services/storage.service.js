@@ -51,6 +51,13 @@ class StorageService {
             }
             cb(entity);
         }
+        this.loadAll = (key, cb) =>{
+            var arr = this.store.get(key);
+            if(arr){
+                cb(arr);
+            }
+            cb([]);
+        }
     }
 }
 module.exports = new StorageService();

@@ -1,5 +1,32 @@
 
 
+<table class="hide-on-small-only">
+  <tr> 
+    <th> name </th> 
+    <th> createdBy </th> 
+    <th> createdTime </th> 
+    <th> lastConnection </th> 
+    <th> Url </th>
+  </tr>
+  <tr *ngFor="let server of servers">
+    <td> {{server.name}} </td>
+    <td> {{server.createdBy}} </td>
+    <td> {{server.createdTime}} </td>
+    <td> {{server.lastConnection}} </td>
+    <td> {{server.host}}:{{server.port}}{{server.pingUrl}} </td>
+  </tr>
+</table>
+
+
+<!-- 
+      "id": "string",
+      "_rev": "string",
+      "createdBy": "string",
+      "createdTime": 0,
+      "name": "string",
+      "lastConnection": 0
+
+-->
 
 <!-- Modal Structure -->
 <div id="modal1" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
@@ -41,6 +68,7 @@
 
 
 <footer style="position:fixed;bottom:1em;left:-1em;width:100%;">
+<div class="left" style="margin-left: 1.8em"><h4>{{title}}</h4></div>
   <a (click)="open()" class="btn-floating btn-small waves-effect waves-light #3f51b5 indigo right"><i class="material-icons">add</i></a>
 </footer>
 
