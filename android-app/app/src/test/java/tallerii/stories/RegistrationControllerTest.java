@@ -1,5 +1,8 @@
 package tallerii.stories;
 
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -12,18 +15,24 @@ import org.junit.runners.JUnit4;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import tallerii.stories.controller.LoginController;
 import tallerii.stories.controller.RegistrationController;
 import tallerii.stories.network.ConstantsApplicationApiRest;
+import tallerii.stories.network.apimodels.ServerError;
 
 import static junit.framework.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.verify;
 
 @RunWith(JUnit4.class)
 public class RegistrationControllerTest {
 
     private MockWebServer server;
+    private Gson gson = new Gson();
 
     @Before
     public void setUp() throws IOException {
@@ -62,4 +71,24 @@ public class RegistrationControllerTest {
         return new JsonParser().parse(json).getAsJsonObject();
     }
 
+    @Test
+    public void testRegistrationErrors() {
+        RegistrationActivity mockActivity = mock(RegistrationActivity.class);
+        RegistrationController controller = new RegistrationController(mockActivity);
+        testErrorCode(mockActivity, controller, 400);
+        testErrorCode(mockActivity, controller, 401);
+        testErrorCode(mockActivity, controller, 500);
+    }
+
+    private void testErrorCode(RegistrationActivity mockActivity, RegistrationController controller, int errorCode) {
+        String errorMessage = "some error message";
+        ServerError error = new ServerError();
+        error.setCode(errorCode);
+        error.setMessage(errorMessage);
+        server.enqueue(new MockResponse().setResponseCode(errorCode).setBody(gson.toJson(error)));
+
+        controller.register("username", "password");
+
+        verify(mockActivity, timeout(2000).times(1)).showMessage(errorMessage);
+    }
 }
