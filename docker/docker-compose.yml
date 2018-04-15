@@ -29,6 +29,7 @@ services:
       - '4200:4200'
     volumes:
       - ../web:/home/nodejs/web
+    command: bash -c "npm install && ng serve --host 0.0.0.0"
     depends_on:
       - node
   gunicorn:
@@ -67,4 +68,4 @@ services:
     container_name: swaggerui
     image: swaggerapi/swagger-editor
     ports:
-      - 81:8080
+- 81:8080
