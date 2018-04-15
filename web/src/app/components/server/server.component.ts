@@ -15,14 +15,18 @@ declare var $ :any;
     templateUrl: './server.component.html'
 })
 export class ServerComponent {
+  title: string;
+  servers: Array<any>;
   private server:Server = new Server();
   constructor(public UserServ: UserService,
               public RemoteServ: RemoteService){
       $('.modal').modal();
+      this.servers = []
+      this.title = 'Servers'
   }
   
   ngOnInit() {
-
+    this.get()
   }
 
   open(){
@@ -31,14 +35,23 @@ export class ServerComponent {
           $('.btn-floating div').remove();
       }, 500);
   }
+  get(){
+    var me = this
+    me.RemoteServ.get('/servers').subscribe((res) => {
+      me.servers = res.servers
+    },
+    error =>{
+      console.log(error)
+    });
+  }
   save(serv :Server){
     var me = this
     serv.createdTime = Date.now()
     serv.lastConnection = 0
-    serv.createdby = me.UserServ.getUser().username
+    serv.createdBy = me.UserServ.getUser().username
     console.log(serv)
     me.RemoteServ.post('/servers', serv).subscribe((res) => {
-      console.log(res)
+      me.servers.push(res.server)
     },
     error =>{
       console.log(error)

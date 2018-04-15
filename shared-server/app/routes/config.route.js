@@ -41,3 +41,9 @@ RouterHandler.addEndpointWithAuth({
     path: '/servers',
     handler: ServerCtrl.post
 });
+
+RouterHandler.addEndpointWithAuth({
+    verb: 'get',
+    path: '/servers',
+    handler: ServerCtrl.get
+});

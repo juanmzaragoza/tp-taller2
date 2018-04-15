@@ -20,6 +20,16 @@ class ServerController {
                 }
             });
         };
+        this.get = (req, res, next) => {
+            StorageServ.loadAll('server', (arr)=>{
+                if(arr){
+                    ResServ.ok(ResEnum.Values, "servers", arr, res, next);
+                }
+                else{
+                    ResServ.error(500, 2, messages.common.error, res, next);
+                }
+            });
+        };
     }
 }
 module.exports = new ServerController();
