@@ -1,8 +1,5 @@
 package tallerii.stories;
 
-import com.squareup.okhttp.mockwebserver.MockResponse;
-import com.squareup.okhttp.mockwebserver.MockWebServer;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +8,8 @@ import org.junit.runners.JUnit4;
 
 import java.io.IOException;
 
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
 import tallerii.stories.controller.LoginController;
 import tallerii.stories.network.ConstantsApplicationApiRest;
 
@@ -55,7 +54,7 @@ public class LoginControllerTest {
 
         controller.checkFBUserExists(1, "");
 
-        server.enqueue(new MockResponse());
+        server.enqueue(new MockResponse().setResponseCode(404));
 
         verify(mockActivity, timeout(2000).times(1)).startRegistrationActivity(anyString());
     }
