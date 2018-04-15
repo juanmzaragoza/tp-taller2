@@ -106,6 +106,6 @@ public class LoginControllerTest {
 
         controller.login("username", "password");
 
-        verify(mockActivity, timeout(2000).times(1)).showMessage(errorMessage, Toast.LENGTH_LONG);
+        verify(mockActivity, timeout(2000).times(1)).showMessage(errorMessage);
     }
 }
