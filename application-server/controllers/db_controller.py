@@ -1,7 +1,7 @@
 import flask
 import flask_restful
 import pymongo
-from constants import MONGODB_LOCAL_URI
+from constants import MONGODB_LOCAL_URI, MONGODB_DOCKER_URI
 
 class MongoController(flask_restful.Resource):
 	@staticmethod

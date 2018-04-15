@@ -2,11 +2,7 @@ import unittest
 import requests
 import json
 import sys
-
-try:
-    import app.app as app #for docker test
-except ImportError:
-    import app #for local test
+import app
     
 class TestFlaskApiUsingRequests(unittest.TestCase):
     def test_hello_world(self):
