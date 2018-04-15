@@ -73,14 +73,14 @@ public class RegistrationControllerTest {
 
     @Test
     public void testRegistrationErrors() {
-        RegistrationActivity mockActivity = mock(RegistrationActivity.class);
-        RegistrationController controller = new RegistrationController(mockActivity);
-        testErrorCode(mockActivity, controller, 400);
-        testErrorCode(mockActivity, controller, 401);
-        testErrorCode(mockActivity, controller, 500);
+        testErrorCode(400);
+        testErrorCode(401);
+        testErrorCode(500);
     }
 
-    private void testErrorCode(RegistrationActivity mockActivity, RegistrationController controller, int errorCode) {
+    private void testErrorCode(int errorCode) {
+        RegistrationActivity mockActivity = mock(RegistrationActivity.class);
+        RegistrationController controller = new RegistrationController(mockActivity);
         String errorMessage = "some error message";
         ServerError error = new ServerError();
         error.setCode(errorCode);

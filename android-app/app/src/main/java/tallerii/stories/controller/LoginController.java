@@ -64,8 +64,7 @@ public class LoginController {
         responseCall.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                int code = response.code();
-                if (code == 201) {
+                if (response.isSuccessful()) {
                     activity.startMainActivity(username);
                 } else{
                     activity.logOutFromFB();

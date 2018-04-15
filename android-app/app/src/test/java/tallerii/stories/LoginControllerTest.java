@@ -90,14 +90,14 @@ public class LoginControllerTest {
 
     @Test
     public void testLoginErrors() {
-        LoginActivity mockActivity = mock(LoginActivity.class);
-        LoginController controller = new LoginController(mockActivity);
-        testErrorCode(mockActivity, controller, 400);
-        testErrorCode(mockActivity, controller, 401);
-        testErrorCode(mockActivity, controller, 500);
+        testErrorCode(400);
+        testErrorCode(401);
+        testErrorCode(500);
     }
 
-    private void testErrorCode(LoginActivity mockActivity, LoginController controller, int errorCode) {
+    private void testErrorCode(int errorCode) {
+        LoginActivity mockActivity = mock(LoginActivity.class);
+        LoginController controller = new LoginController(mockActivity);
         String errorMessage = "some error message";
         ServerError error = new ServerError();
         error.setCode(errorCode);
