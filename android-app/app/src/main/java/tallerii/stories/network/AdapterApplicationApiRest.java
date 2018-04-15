@@ -33,7 +33,7 @@ public class AdapterApplicationApiRest {
         return setConnectionApplicationRestApi(convertUserToGson());
     }
 
-    public static EndpointsApplicationApiRest getRegistrationEndpoint() {
+    public static EndpointsApplicationApiRest getRawEndpoint() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ConstantsApplicationApiRest.ROOT_URL)
                 .addConverterFactory(GsonConverterFactory.create())

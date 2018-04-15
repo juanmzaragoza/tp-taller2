@@ -21,7 +21,7 @@ public class RegistrationController {
 
     /** call api rest and check if the user id exists **/
     public void register(final String username, final String password) {
-        EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRegistrationEndpoint();
+        EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
         JsonObject parameters = new JsonObject();
         parameters.addProperty("username", username);
         parameters.addProperty("password", password);

@@ -59,6 +59,40 @@ paths:
             $ref: "#/definitions/Error"
       summary: "Generar token de usuario de negocio"      
             
+  /user:
+       post:
+        tags:
+          - user
+        description: "Registra creenciales de un usuario de aplicación"
+        parameters:
+          - description: "informacion del usuario"
+            in: body
+            name: body
+            required: true
+            schema:
+              $ref: '#/definitions/ApplicationUserWithPassword'
+        responses:
+          200:
+            description: "Validación correcta"
+            schema:
+              properties:
+                metadata:
+                  $ref: '#/definitions/EntityMetadata'
+                user:
+                  $ref: '#/definitions/ApplicationUser'
+          400:
+            description: "Incumplimiento de precondiciones (parámetros faltantes) o validación fallida"
+            schema:
+              $ref: "#/definitions/Error"
+          401:
+            description: Unauthorized
+            schema:
+                $ref: '#/definitions/Error'
+          500:
+            description: "Unexpected error"
+            schema:
+              $ref: "#/definitions/Error"
+        summary: "Registra usuario de aplicación"
 definitions:
   Version:
     type: string
@@ -158,6 +192,16 @@ definitions:
       username: 
         description: Nombre del usuario en la aplicación
         type: string
-        
-      
-        
+  ApplicationUserWithPassword:
+    properties:
+      id:
+        $ref: '#/definitions/Id'
+      _rev:
+        $ref: '#/definitions/Ref'
+      password:
+        type: string
+      applicationOwner:
+        $ref: '#/definitions/Id'
+      username:
+        description: Nombre del usuario en la aplicación
+        type: string

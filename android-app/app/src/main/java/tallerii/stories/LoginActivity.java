@@ -128,20 +128,11 @@ public class LoginActivity extends AppCompatActivity {
 
     /** Called when the user taps the Submit button **/
     public void login(View view) {
-
         EditText usernameText = findViewById(R.id.usernameText);
         EditText passwordText = findViewById(R.id.passwordText);
-
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
-
-        //TODO delegate to testable class that manages login logic
-        if(username.equals("john") && password.equals("doe")){ // username & password correct
-            this.startMainActivity(username);
-        } else{
-            Toast.makeText(getApplicationContext(), R.string.wrong_credentials, Toast.LENGTH_SHORT).show();
-        }
-
+        controller.login(username, password);
     }
 
     //TODO extract activity change to common method for all activities
@@ -151,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
     // receives parameters has constants for the keys that it can/should receive.
     // Such a class would be the one accessed by the 'controllers' that i made up,
     // and it would have as public the methods used by them, and protected the other common methods.
-    protected void startMainActivity(String username) {
+    public void startMainActivity(String username) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_MESSAGE, username);
         startActivity(intent);
