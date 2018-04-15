@@ -1,0 +1,46 @@
+
+
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+  <div class="modal-content">
+    <h4>New Server</h4>
+    <div class="row">
+      <form class="col s12">
+          <div class="row">
+              <div class="input-field col s12">
+                  <input name='name' [(ngModel)]="server.name" type="text" class="validate">
+                  <label for="name">Name</label>
+              </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s8">
+                <input name='host' [(ngModel)]="server.host" type="text" class="validate">
+                <label for="host">Host</label>
+            </div>
+            <div class="input-field col s4">
+                <input name='port' [(ngModel)]="server.port" type="text" class="validate">
+                <label for="port">Port</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+                <input name='pingUrl' [(ngModel)]="server.pingUrl" type="text" class="validate">
+                <label for="pingUrl">Ping Url</label>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Close</a>
+    <a (click)="save(server)" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+  </div>
+</div>
+
+
+
+<footer style="position:fixed;bottom:1em;left:-1em;width:100%;">
+  <a (click)="open()" class="btn-floating btn-small waves-effect waves-light #3f51b5 indigo right"><i class="material-icons">add</i></a>
+</footer>
+

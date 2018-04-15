@@ -5,6 +5,7 @@ import { User }         from '../../models/user'
 import { Observable }   from 'rxjs/Observable';
 import { Location }     from '@angular/common';
 import { SharedService } from '../../services/common/shared.service'
+declare var $ :any;
 
 @Component({
     templateUrl: './login.component.html'
@@ -18,12 +19,14 @@ export class LoginComponent {
                 public SharedServ: SharedService){
                   this.message = ''
                 }
-
+    ngAfterViewInit() {
+      $('input[name=name]').focus()
+    }
     login(user: User) {
         this.loginServ.token(user).subscribe((val) => {
           if(val){
                 this.message = ""
-                this.SharedServ.startAccount.emit(user.username);
+                this.SharedServ.startAccount.emit(user);
                 this.RouterServ.navigate(['/home']);
           }
           else{
