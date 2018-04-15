@@ -1,0 +1,88 @@
+
+
+<table class="hide-on-small-only">
+  <tr> 
+    <th class="indigo-text"> name </th> 
+    <th class="indigo-text"> createdBy </th> 
+    <th class="indigo-text"> createdTime </th> 
+    <th class="indigo-text"> lastConnection </th> 
+    <th class="indigo-text"> Url </th>
+  </tr>
+  <tr *ngFor="let server of servers">
+    <td> {{server.name}} </td>
+    <td> {{server.createdBy}} </td>
+    <td> {{server.createdTime}} </td>
+    <td> {{server.lastConnection}} </td>
+    <td> {{server.host}}:{{server.port}}{{server.pingUrl}} </td>
+  </tr>
+</table>
+
+<div class="show-for-small-only hide-on-med-only hide-on-large-only">
+  <div style="border-bottom:1px solid #3f51b5" class="row" *ngFor="let server of servers">
+    <div class="indigo-text left-align col s4">name:</div>
+    <div class="left-align col s8">{{server.name}}</div>
+    <div class="indigo-text left-align col s4">createdBy:</div>
+    <div class="left-align col s8">{{server.createdBy}}</div>
+    <div class="indigo-text left-align col s4">createdTime:</div>
+    <div class="left-align col s8">{{server.createdTime}}</div>
+    <div class="indigo-text left-align col s4">lastConnection:</div>
+    <div class="left-align col s8">{{server.lastConnection}}</div>
+    <div class="indigo-text left-align col s4">url:</div>
+    <div class="left-align col s8">{{server.host}}:{{server.port}}{{server.pingUrl}}</div>
+  </div>
+</div>
+
+<!-- 
+      "id": "string",
+      "_rev": "string",
+      "createdBy": "string",
+      "createdTime": 0,
+      "name": "string",
+      "lastConnection": 0
+
+-->
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+  <div class="modal-content">
+    <h4>New Server</h4>
+    <div class="row">
+      <form class="col s12">
+          <div class="row">
+              <div class="input-field col s12">
+                  <input name='name' [(ngModel)]="server.name" type="text" class="validate">
+                  <label for="name">Name</label>
+              </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s8">
+                <input name='host' [(ngModel)]="server.host" type="text" class="validate">
+                <label for="host">Host</label>
+            </div>
+            <div class="input-field col s4">
+                <input name='port' [(ngModel)]="server.port" type="text" class="validate">
+                <label for="port">Port</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+                <input name='pingUrl' [(ngModel)]="server.pingUrl" type="text" class="validate">
+                <label for="pingUrl">Ping Url</label>
+            </div>
+          </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Close</a>
+    <a (click)="save(server)" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+  </div>
+</div>
+
+
+
+<footer style="position:fixed;bottom:1em;left:-1em;width:100%;">
+<div class="left" style="margin-left: 1.8em"><h4>{{title}}</h4></div>
+  <a (click)="open()" class="btn-floating btn-small waves-effect waves-light #3f51b5 indigo right"><i class="material-icons">add</i></a>
+</footer>
+

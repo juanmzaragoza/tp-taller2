@@ -1,0 +1,16 @@
+
+<nav class="#3f51b5 indigo" role="navigation">
+  <div class="nav-wrapper">
+      <a id="logo-container" href="#" class="brand-logo">AppMaker</a>
+    <ul class="right hide-on-med-and-down">
+      <li *ngIf="role=='admin'"><a routerLink="server" title="view servers">Servers</a></li>
+      <app-user></app-user>
+    </ul>
+
+    <ul id="nav-mobile" class="right side-nav" style="transform: translateX(-100%);">
+        <app-user></app-user>
+        <li><a routerLink="server" title="view servers">Servers</a></li>
+    </ul>
+    <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+  </div>
+</nav>
