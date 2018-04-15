@@ -87,4 +87,25 @@ public class LoginControllerTest {
 
         verify(mockActivity, timeout(2000).times(1)).startMainActivity(username);
     }
+
+    @Test
+    public void testLoginErrors() {
+        LoginActivity mockActivity = mock(LoginActivity.class);
+        LoginController controller = new LoginController(mockActivity);
+        testErrorCode(mockActivity, controller, 400);
+        testErrorCode(mockActivity, controller, 401);
+        testErrorCode(mockActivity, controller, 500);
+    }
+
+    private void testErrorCode(LoginActivity mockActivity, LoginController controller, int errorCode) {
+        String errorMessage = "some error message";
+        ServerError error = new ServerError();
+        error.setCode(errorCode);
+        error.setMessage(errorMessage);
+        server.enqueue(new MockResponse().setResponseCode(errorCode).setBody(gson.toJson(error)));
+
+        controller.login("username", "password");
+
+        verify(mockActivity, timeout(2000).times(1)).showMessage(errorMessage, Toast.LENGTH_LONG);
+    }
 }

@@ -69,6 +69,13 @@ public class LoginController {
                     activity.startMainActivity(username);
                 } else{
                     activity.logOutFromFB();
+                    assert response.errorBody() != null;
+                    try {
+                        ServerError error = gson.fromJson(response.errorBody().string(), ServerError.class);
+                        activity.showMessage(error.getMessage(), Toast.LENGTH_LONG);
+                    } catch (Exception e) {
+                        activity.showMessage(e.getMessage(), Toast.LENGTH_LONG);
+                    }
                 }
             }
 
