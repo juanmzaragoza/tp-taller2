@@ -1,14 +1,10 @@
 package tallerii.stories;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import tallerii.stories.controller.RegistrationController;
 
@@ -16,13 +12,13 @@ public class RegistrationActivity extends StoriesAppActivity {
     public static final String USERNAME = "username";
     private final RegistrationController controller;
 
+    public RegistrationActivity() {
+        this.controller = new RegistrationController(this);
+    }
+
     @Override
     protected Context getContext() {
         return RegistrationActivity.this;
-    }
-
-    public RegistrationActivity() {
-        this.controller= new RegistrationController(this);
     }
 
     @Override
@@ -30,7 +26,7 @@ public class RegistrationActivity extends StoriesAppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null && bundle.getString(USERNAME)!= null) {
+        if (bundle != null && bundle.getString(USERNAME) != null) {
             TextView t = findViewById(R.id.usernameText);
             t.setText(bundle.getString(USERNAME));
         }

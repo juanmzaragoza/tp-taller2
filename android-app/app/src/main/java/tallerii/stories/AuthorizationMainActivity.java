@@ -1,8 +1,8 @@
 package tallerii.stories;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
@@ -27,7 +27,7 @@ public class AuthorizationMainActivity extends AppCompatActivity {
         // go straight to main if a token is stored
         if (Util.getTokenx() != null) {*/
 
-        if(false){
+        if (false) {
             activityIntent = new Intent(this, MainActivity.class);
         } else {// else not logged in
             // clean fb access token because we handle the access to the application

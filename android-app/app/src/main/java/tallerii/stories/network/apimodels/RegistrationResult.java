@@ -1,6 +1,10 @@
 package tallerii.stories.network.apimodels;
 
 public class RegistrationResult {
+    private String errors;
+    private String username;
+    private String success;
+
     public String getErrors() {
         return errors;
     }
@@ -24,8 +28,4 @@ public class RegistrationResult {
     public void setSuccess(String success) {
         this.success = success;
     }
-
-    private String errors;
-    private String username;
-    private String success;
 }

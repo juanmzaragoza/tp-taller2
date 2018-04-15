@@ -2,10 +2,8 @@ package tallerii.stories;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -36,13 +34,13 @@ public class LoginActivity extends StoriesAppActivity {
     private LoginButton fbButton;
     private CallbackManager callbackManager;
 
+    public LoginActivity() {
+        this.controller = new LoginController(this);
+    }
+
     @Override
     protected Context getContext() {
         return LoginActivity.this;
-    }
-
-    public LoginActivity() {
-        this.controller = new LoginController(this);
     }
 
     @Override
@@ -55,7 +53,7 @@ public class LoginActivity extends StoriesAppActivity {
         this.callbackManager = CallbackManager.Factory.create();
         this.fbButton = findViewById(R.id.facebookButton);
         // set what we want to read
-        this.fbButton.setReadPermissions(Arrays.asList(EMAIL,PUBLIC_PROFILE));
+        this.fbButton.setReadPermissions(Arrays.asList(EMAIL, PUBLIC_PROFILE));
         // what we do when response comes back
         this.fbCallBackRegister();
 
@@ -90,7 +88,7 @@ public class LoginActivity extends StoriesAppActivity {
     }
 
     /** get user profile using GraphRequest **/
-    private void getUserProfileWith(AccessToken accessToken){
+    private void getUserProfileWith(AccessToken accessToken) {
         GraphRequest request = GraphRequest.newMeRequest(accessToken,
             new GraphRequest.GraphJSONObjectCallback() {
                 @Override
