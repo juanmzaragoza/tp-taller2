@@ -17,6 +17,11 @@ export class UserComponent {
         var me = this;
         this.name = 'Log In'
         this.showUser = false
+        var u = this.UserServ.getUser();
+        if(u){
+            this.name = u.username
+            this.showUser = true
+        }
         this.SharedServ.startAccount.subscribe(
             (data: any) => { me.logIn() });
     }
@@ -29,6 +34,7 @@ export class UserComponent {
         this.UserServ.clean()
         this.name = 'Log In'
         this.showUser = false
+        this.SharedServ.logOff.emit();
         this.RouterServ.navigate(['/login']);
     }
 }
