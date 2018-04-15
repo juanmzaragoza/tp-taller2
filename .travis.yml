@@ -12,6 +12,7 @@ matrix:
       script:
         - cd $TRAVIS_BUILD_DIR/application-server/
         - mongo appserverdb --eval 'db.createUser({user:"app_user", pwd:"app_pass", "roles":["dbOwner"]});'
+        - mongo appserverdb --eval 'db.users.insert({user:"root", name:"Juan"});'
         - python app.py &
         - cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=./
         - codecov
