@@ -1,13 +1,19 @@
 import flask_restful
+from constants import MONGODB_USER, MONGODB_PASSWD
+from controllers.db_controller import MongoController
 from controllers.response_builder import ResponseBuilder
-
-import json
+from controllers.error_handler import ErrorHandler
 
 class PingController(flask_restful.Resource):
 	
 	def get(self):
-		response = self.__ping_successful_response()
-		return ResponseBuilder.build_response(response, 200)
+		try:
+			db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+			response = self.__ping_successful_response()
+			code = 200
+			return ResponseBuilder.build_response(response, code)
+		except Exception as e:
+			return ErrorHandler.create_error_response(str(e), 500)
 		
 	def __ping_successful_response(self):
 		return {
