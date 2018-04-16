@@ -7,7 +7,7 @@ class MongoController(flask_restful.Resource):
 	@staticmethod
 	def get_mongodb_instance(user, passwd):
 		try:
-			conn=pymongo.MongoClient(MONGODB_HEROKU_URI)
+			conn=pymongo.MongoClient(MONGODB_LOCAL_URI)
 			conn.appserverdb.authenticate(user, passwd, mechanism = 'SCRAM-SHA-1')
 			db = conn.appserverdb
 			return db
