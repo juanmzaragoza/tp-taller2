@@ -1,33 +1,29 @@
 import flask
 import flask_restful
-from flask_pymongo import PyMongo
 import os
-
+from constants import MONGODB_USER, MONGODB_PASSWD
+from controllers.db_controller import MongoController
 from controllers.login_controller import LoginController
 from controllers.user_controller import UserController
+from controllers.ping_controller import PingController
 
 app = flask.Flask(__name__)
 
 with app.app_context():
-	app.config['MONGO_DBNAME'] = 'application-server'
-	app.config['MONGO_URI'] = os.environ['MONGO_URI']
-	app.logger.error('%s logged in successfully', 'lalal')
-	#set env var MONGO_URI 'mongodb://localhost:27017/test' for local test
-	#set env var MONGO_URI 'mongodb://mongo:27017/test' for docker test
-
 	api = flask_restful.Api(app, prefix="/api/v1")
-	mongo = PyMongo(app)
-	doc = mongo.db.test.insert({'user':'root', 'name':'Jose'})
 
 	class HelloWorld(flask_restful.Resource):
 		def get(self):
-			root = mongo.db.test.find_one_or_404({'user': 'root'})
+			app.logger.error('%s logged in successfully', 'lalal')
+			db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+			root = db.users.find_one({'user': 'root'})
 			root_name = root.get('name')
 			return {'hello': root_name}
 
 	api.add_resource(HelloWorld, '/')
 	api.add_resource(LoginController, '/token')
 	api.add_resource(UserController, '/user')
-
+	api.add_resource(PingController, '/ping')
+	
 	if __name__ == "__main__":
     		app.run(host='0.0.0.0', port=5858,debug=True)

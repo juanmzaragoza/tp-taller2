@@ -23,6 +23,9 @@ tags:
   - name: user
     description: |
       Llamados que puede realizar los usuarios 
+  - name: server activity
+    description: |
+          Llamados para conocer la actividad del servidor
 paths:
   /token:
     post:
@@ -58,7 +61,23 @@ paths:
           schema: 
             $ref: "#/definitions/Error"
       summary: "Generar token de usuario de negocio"      
-            
+  
+  /ping:
+    get:
+      tags:
+        - server activity
+      description: "Brinda una respuesta rápida para conocer si el servidor esta activo"
+      responses: 
+        200: 
+          description: "Servidor Activo"
+          schema: 
+            $ref: '#/definitions/ApplicationState'
+        500: 
+          description: "Could not connect to MongoDB"
+          schema: 
+            $ref: "#/definitions/Error"
+      summary: "Permite saber si el servidor esta activo"
+           
 definitions:
   Version:
     type: string
@@ -158,6 +177,7 @@ definitions:
       username: 
         description: Nombre del usuario en la aplicación
         type: string
-        
-      
-        
+  ApplicationState:
+    properties:
+      state:
+        type: string
