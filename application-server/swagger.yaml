@@ -71,12 +71,13 @@ paths:
         200: 
           description: "Servidor Activo"
           schema: 
-            properties: 
-              metadata:
-                $ref: '#/definitions/EntityMetadata'
-              server:
-                $ref: '#/definitions/ApplicationState'
-      summary: "Permite saber si el servidor esta activo"            
+            $ref: '#/definitions/ApplicationState'
+        500: 
+          description: "Could not connect to MongoDB"
+          schema: 
+            $ref: "#/definitions/Error"
+      summary: "Permite saber si el servidor esta activo"
+           
 definitions:
   Version:
     type: string
