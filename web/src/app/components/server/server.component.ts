@@ -44,6 +44,15 @@ export class ServerComponent {
       console.log(error)
     });
   }
+  edit(serv: Server){
+    console.info(serv)
+  }
+  delete(id:string){
+    console.info(id)
+  }
+  viewToken(token: string){
+    console.info(token)
+  }
   save(serv :Server){
     var me = this
     serv.createdTime = Date.now()
