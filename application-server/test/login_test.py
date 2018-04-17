@@ -4,11 +4,7 @@ from unittest.mock import patch
 import requests
 import json
 import sys
-
-try:
-    import app.app as app #for docker test
-except ImportError:
-    import app #for local test
+import app
 
 class TestFlaskLoginApi(unittest.TestCase):
 

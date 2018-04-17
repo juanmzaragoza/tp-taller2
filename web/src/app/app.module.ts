@@ -18,6 +18,8 @@ import { UserComponent } from './components/user/user.component'
 import { ServerComponent } from './components/server/server.component'
 import { NavBarComponent } from './components/navbar/navbar.component'
 
+import { EventKeyDirective } from './directives/event.key.directive'
+
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { NavBarComponent } from './components/navbar/navbar.component'
     HomeComponent,
     UserComponent,
     ServerComponent,
-    NavBarComponent
+    NavBarComponent,
+    EventKeyDirective
   ],
   imports: [
     BrowserModule,

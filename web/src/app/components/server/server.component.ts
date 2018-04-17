@@ -17,7 +17,7 @@ declare var $ :any;
 export class ServerComponent {
   title: string;
   servers: Array<any>;
-  private server:Server = new Server();
+  public server:Server = new Server();
   constructor(public UserServ: UserService,
               public RemoteServ: RemoteService){
       $('.modal').modal();
@@ -43,6 +43,15 @@ export class ServerComponent {
     error =>{
       console.log(error)
     });
+  }
+  edit(serv: Server){
+    console.info(serv)
+  }
+  delete(id:string){
+    console.info(id)
+  }
+  viewToken(token: string){
+    console.info(token)
   }
   save(serv :Server){
     var me = this
