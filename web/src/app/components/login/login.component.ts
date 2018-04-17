@@ -12,9 +12,9 @@ declare var $ :any;
     templateUrl: './login.component.html'
 })
 export class LoginComponent {
-    private user:User = new User('','');
-    private message: string
-    private globalActions = new EventEmitter<string|MaterializeAction>();
+    public user:User = new User('','');
+    public message: string
+    public globalActions = new EventEmitter<string|MaterializeAction>();
     constructor(public loginServ :LoginService, 
                 public RouterServ : Router,
                 public Location: Location,
