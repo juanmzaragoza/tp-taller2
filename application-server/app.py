@@ -2,9 +2,13 @@ import flask
 import flask_restful
 import os
 from constants import MONGODB_USER, MONGODB_PASSWD
+
 from controllers.db_controller import MongoController
+
 from controllers.login_controller import LoginController
 from controllers.user_controller import UserController
+from controllers.user_detail_controller import UserDetailController
+
 from controllers.ping_controller import PingController
 
 app = flask.Flask(__name__)
@@ -21,8 +25,13 @@ with app.app_context():
 			return {'hello': root_name}
 
 	api.add_resource(HelloWorld, '/')
+
+	# user's endpoints
 	api.add_resource(LoginController, '/token')
 	api.add_resource(UserController, '/user')
+	api.add_resource(UserDetailController, '/user/<string:user_id>')
+
+	# for shared-server endpoints
 	api.add_resource(PingController, '/ping')
 	
 	if __name__ == "__main__":

@@ -10,7 +10,7 @@ services:
     volumes:
       - ../shared-server:/usr/src/app
       - ./logs/npm:/root/.npm/_logs
-    command: bash -c "npm install && npm run start-dev"
+    command: bash -c "rm -rf node_modules/* && npm install && npm run start-dev"
     depends_on:
       - postgresql
   postgresql:
@@ -68,4 +68,4 @@ services:
     container_name: swaggerui
     image: swaggerapi/swagger-editor
     ports:
-- 81:8080
+      - 81:8080

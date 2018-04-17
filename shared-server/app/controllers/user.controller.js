@@ -13,7 +13,7 @@ class UserController {
             StorageServ.save('user',usr, (id)=>{
                 if(id){
                     usr.id = id;
-                    usr["token"] = AuthServ.token(usr.username)
+                    usr["token"] = AuthServ.token(usr)
                     ResServ.ok(ResEnum.Value, "user", usr, res, next);
                 }
                 else{
@@ -28,7 +28,7 @@ class UserController {
                     ResServ.ok(ResEnum.Value, "user", usr, res, next);
                 }
                 else{
-                    ResServ.error(401, 1, messages.user.notExist, res, next);
+                    ResServ.error(404, 1, messages.user.notExist, res, next);
                 }
             });
         };
