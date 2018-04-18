@@ -61,6 +61,25 @@ paths:
           schema: 
             $ref: "#/definitions/Error"
       summary: "Generar token de usuario de negocio"      
+  /profile/{userId}:
+    get:
+      tags:
+        - user
+      description: "Endpoint para obtener los datos de perfil de un determinado usuario"
+      responses: 
+        200: 
+          description: "Se obtienen los datos correctamente"
+          schema:
+            $ref: "#/definitions/ApplicationProfile"
+        404:
+          description: "Data Not Found"
+          schema:
+              $ref: '#/definitions/Error'
+        500: 
+          description: "Could not connect to DB"
+          schema: 
+            $ref: "#/definitions/Error"
+      summary: "Obtener perfil de un usuario"      
   
   /ping:
     get:
@@ -73,7 +92,7 @@ paths:
           schema: 
             $ref: '#/definitions/ApplicationState'
         500: 
-          description: "Could not connect to MongoDB"
+          description: "Could not connect to DB"
           schema: 
             $ref: "#/definitions/Error"
       summary: "Permite saber si el servidor esta activo"
@@ -181,3 +200,23 @@ definitions:
     properties:
       state:
         type: string
+  ApplicationProfile:
+    properties:
+      last_name:
+        type: string
+      name:
+        type: string
+      email:
+        type: string
+      profile_picture:
+        type: string
+      stories:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: integer
+            story:
+              type: string
+
