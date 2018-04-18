@@ -2,6 +2,7 @@ import flask
 import flask_restful
 import pymongo
 from constants import MONGODB_LOCAL_URI, MONGODB_DOCKER_URI, MONGODB_HEROKU_URI
+from api_client.db_connection_error import DBConnectionError
 
 class MongoController(flask_restful.Resource):
 	@staticmethod
@@ -12,4 +13,4 @@ class MongoController(flask_restful.Resource):
 			db = conn.appserverdb
 			return db
 		except pymongo.errors.ConnectionFailure as e:
-			raise Exception('Could not connect to MongoDB %s' % e)
+			raise DBConnectionError(e)
