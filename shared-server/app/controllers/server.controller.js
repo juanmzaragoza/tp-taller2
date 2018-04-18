@@ -30,6 +30,18 @@ class ServerController {
                 }
             });
         };
+        this.delete = (req, res, next) => {
+            console.info("z")
+            var id = req.params.id;
+            StorageServ.delete('server', id, (ok)=>{
+                if(ok){
+                    ResServ.ok(ResEnum.OnlyValue, undefined, "Baja correcta", res, next);
+                }
+                else{
+                    ResServ.error(500, 2, messages.common.error, res, next);
+                }
+            });
+        };
     }
 }
 module.exports = new ServerController();
