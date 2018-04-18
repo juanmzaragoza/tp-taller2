@@ -12,7 +12,7 @@ class TestFlaskGetUserApi(unittest.TestCase):
         self.app = app.app.test_client()
 
     def __make_get_request(self, userId):
-        url = "api/v1/user/"+userId
+        url = "api/v1/user/"+str(userId)
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         response = self.app.get(url, headers=headers)
         return response
