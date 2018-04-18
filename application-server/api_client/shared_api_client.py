@@ -23,7 +23,7 @@ class SharedApiClient():
 			if (response.status_code == 500):
 				raise RequestException("shared server error")
 
-			if (response.status_code == 404):
+			if ((response.status_code == 404) or (response.status_code == 401)):
 				return False
 
 			return response.json()
