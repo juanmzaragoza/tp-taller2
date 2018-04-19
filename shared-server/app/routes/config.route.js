@@ -18,7 +18,7 @@ RouterHandler.addEndpointWithOutAuth({
 });
 
 
-RouterHandler.addEndpointWithAuth({
+RouterHandler.addEndpointWithOutAuth({
     verb: 'get',
     path: '/user/:id',
     handler: UserCtrl.getById
