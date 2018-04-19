@@ -36,7 +36,7 @@ class LoginService {
                         token: AuthService.token(user),
                         expiresAt: 3600
                     };
-                    next(result);
+                    next(undefined, result);
                 }
                 else{
                     next({code: -3, message:"password incorrect"});
