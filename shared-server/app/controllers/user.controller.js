@@ -40,7 +40,7 @@ class UserController {
                     ResServ.ok(ResEnum.Value, "user", usr, res, next);
                 }
                 else{
-                    ResServ.error(401, 1, messages.user.notExist, res, next);
+                    ResServ.error(404, 1, messages.user.notExist, res, next);
                 }
             });*/
         };

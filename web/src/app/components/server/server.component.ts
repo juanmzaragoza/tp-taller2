@@ -17,7 +17,7 @@ declare var $ :any;
 export class ServerComponent {
   title: string;
   servers: Array<any>;
-  private server:Server = new Server();
+  public server:Server = new Server();
   constructor(public UserServ: UserService,
               public RemoteServ: RemoteService){
       $('.modal').modal();

@@ -30,7 +30,7 @@ class ResponseService {
                 case 500: next(new createError.ExpectationFailed(msg)); break;
                 default:  next(new createError.ExpectationFailed());
             }*/
-            res.status(status).json({ code: code, message: msg });
+            res.status(status).send({ code: code, message: msg });
             next();
         }
     }
