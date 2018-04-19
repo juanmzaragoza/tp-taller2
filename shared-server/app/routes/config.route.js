@@ -47,3 +47,9 @@ RouterHandler.addEndpointWithAuth({
     path: '/servers',
     handler: ServerCtrl.get
 });
+
+RouterHandler.addEndpointWithAuth({
+    verb: 'delete',
+    path: '/servers/:id',
+    handler: ServerCtrl.delete
+});

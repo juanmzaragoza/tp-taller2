@@ -10,6 +10,7 @@ class Server{
         this.host = data.host;
         this.port = data.port;
         this.pingUrl = data.pingUrl;
+        this.token
     }
 }
 

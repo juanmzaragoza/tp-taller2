@@ -9,12 +9,12 @@ var ResEnum     = require('../common/response.enum')
 class LoginController {
     constructor() {
         this.token = (req, res, next) => {
-            loginServ.auth(req.body.username,req.body.password, (ticket)=>{
-                if(ticket){
-                    ResServ.ok(ResEnum.Value, "token", ticket, res, next);
+            loginServ.auth(req.body.username,req.body.password, (err, ticket)=>{
+                if(err){
+                    ResServ.error(401, 0, messages.user.wrong, res, next)
                 }
                 else{
-                    ResServ.error(401, 0, messages.user.wrong, res, next)
+                    ResServ.ok(ResEnum.Value, "token", ticket, res, next)
                 }
             });
         };

@@ -9,7 +9,7 @@ class LoginService {
     constructor() {
         this.auth = ( username, password, next) => {
             var me = this;
-            StorageServ.load('user', "username", username, (usr)=>{
+            StorageServ.load('user', "username", username, (err, usr)=>{
                 if(usr){
                     //users of the application-server
                     me.generateToken(usr, password, next);
@@ -22,7 +22,7 @@ class LoginService {
                         }
                         else{
                             //unknown
-                            next(undefined);
+                            next(err);
                         }
                     })
                 }
@@ -36,8 +36,11 @@ class LoginService {
                         token: AuthService.token(user),
                         expiresAt: 3600
                     };
+                    next(undefined, result);
                 }
-                next(result);
+                else{
+                    next({code: -3, message:"password incorrect"});
+                }
             });
         }
     }
