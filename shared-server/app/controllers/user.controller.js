@@ -8,16 +8,20 @@ const ResEnum     = require('../common/response.enum')
 class UserController {
     constructor() {
         this.user = (req, res, next) => {
-            var usr = new User(req.body);
-            StorageServ.save('user',usr, (id)=>{
-                if(id){
-                    usr.id = id;
-                    ResServ.ok(ResEnum.Value, "user", usr, res, next);
-                }
-                else{
-                    ResServ.error(500, messages.common.error, res, next);
-                }
-            });
+            var usr = {
+                id: 2
+            };
+            ResServ.ok(ResEnum.Value, "user", usr, res, next);
+            // var usr = new User(req.body);
+            // StorageServ.save('user',usr, (id)=>{
+            //     if(id){
+            //         usr.id = id;
+            //         ResServ.ok(ResEnum.Value, "user", usr, res, next);
+            //     }
+            //     else{
+            //         ResServ.error(500, messages.common.error, res, next);
+            //     }
+            // });
         };
         this.getById = (req, res, next) => {
             var id = req.params.id;

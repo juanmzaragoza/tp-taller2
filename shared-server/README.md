@@ -10,3 +10,8 @@ Para conectarse a la DB dockerizada puede hacer utilizando el el psql desde dent
 - Instalación: https://medium.com/@philip.mutua/postgresql-install-pgadmin-4-desktop-mode-in-ubuntu-16-04-6faca19f0cfe
 - Para la conexión son los mismos datos, excepto el host. Para el host tuve que fijarme la ip del container de postgresql usando `docker inspect`
 
+### Run PGAdmin
+- cd ~/pgadmin4
+- source bin/activate
+- python lib/python2.7/site-packages/pgadmin4/pgAdmin4.py
+

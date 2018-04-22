@@ -13,5 +13,5 @@ WITH (
     OIDS = FALSE
 );
 
-ALTER TABLE public.users
-    OWNER to postgres;
+INSERT INTO users (username, password) VALUES 
+('admin','$2b$10$dtJNzWyXhAQa6PdglSjug.XMlNLuf.58cORvB5UAEQmY8vf38DVHG');
