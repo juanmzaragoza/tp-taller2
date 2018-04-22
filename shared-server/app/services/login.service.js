@@ -1,7 +1,8 @@
 "use strict";
-const AuthService   = require('./auth.service')
-const StorageServ   = require('./storage.service')
-const bcrypt        = require('bcrypt');
+const AuthService       = require('./auth.service')
+const StorageServ       = require('./storage.service')
+const LocalStorageServ  = require('./local.storage.service')
+const bcrypt            = require('bcrypt');
 
 const USER_NOT_FOUND = "not-found";
 const INVALID_PASSWORD = "invalid-password";

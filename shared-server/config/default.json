@@ -2,7 +2,14 @@
 	"server": {
 		"host": "0.0.0.0",
 		"port": 8081,
-		"version": "v1"
+		"version": "v1",
+		"Users":[
+			{ "username": "erikschmoll", "role": "admin", "password": "$2b$04$X/1z1pL/h1IjCrGhHSWxYOA9tMe8EabIkJsW7eHk6CsccS4M0dnPi"},
+			{ "username": "juanmzaragoza", "role": "admin", "password": "$2b$04$X/1z1pL/h1IjCrGhHSWxYOA9tMe8EabIkJsW7eHk6CsccS4M0dnPi"},
+			{ "username": "nicolas7885", "role": "admin", "password": "$2b$04$X/1z1pL/h1IjCrGhHSWxYOA9tMe8EabIkJsW7eHk6CsccS4M0dnPi"},
+			{ "username": "mevk", "role": "admin", "password": "$2b$04$X/1z1pL/h1IjCrGhHSWxYOA9tMe8EabIkJsW7eHk6CsccS4M0dnPi"},
+			{ "username": "kaoruheanna", "role": "admin", "password": "$2b$04$X/1z1pL/h1IjCrGhHSWxYOA9tMe8EabIkJsW7eHk6CsccS4M0dnPi"}
+		]
 	},
 	"auth": {
         "tokenSecret": "tokenSecret",

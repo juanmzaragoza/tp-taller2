@@ -1,1 +1,7 @@
-SHARED_SERVER_URL = 'http://172.17.0.1:8081/api'
+SHARED_SERVER_URL  = 'http://172.17.0.1:8081/api'
+APPLICATION_OWNER  = 'app1'
+MONGODB_LOCAL_URI  = 'mongodb://localhost:27017'
+MONGODB_DOCKER_URI = 'mongodb://mongo:27017'
+MONGODB_HEROKU_URI = 'mongodb://ds231199.mlab.com:31199'
+MONGODB_USER	   = 'app_user'
+MONGODB_PASSWD	   = 'app_pass'

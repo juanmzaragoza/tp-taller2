@@ -19,6 +19,9 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -31,3 +34,15 @@ dependencies {
     implementation 'com.android.support:cardview-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
 }
+
+buildscript {
+    repositories {
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
+    }
+}
+apply plugin: 'jacoco-android'

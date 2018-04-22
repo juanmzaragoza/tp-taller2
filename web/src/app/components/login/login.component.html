@@ -4,8 +4,8 @@
     <div class="row valign-wrapper">
         <div class="col s9 offset-s3 valign">
             <div class="card">
-                <span class="card-title"><strong>Login</strong></span>
-                <a (click)="back()" class="waves-effect waves-light btn-small right" ><i class="material-icons left">clear</i></a>
+                <span class="card-title indigo-text"><strong>Log In</strong></span>
+                <a [eventClickbyKey]="27" (click)="back()" class="waves-effect waves-light btn-small right indigo" ><i class="material-icons center-align">clear</i></a>
                 <div class="card-content">
                     <div class="row">
                         <form class="col s12">
@@ -21,14 +21,17 @@
                                     <label for="password">password</label>
                                 </div>
                             </div>
+                            <div class="row">
+                                    <span style="color: #ff1744;">{{message}}</span>
+                                </div>
                         </form>
                     </div>
                 </div>
-                <div class="card-action pointer">
-                    <a (click)="login(user)">Iniciar Sesión</a>
+                <div [eventClickbyKey]="13" (click)="login(user)" class="card-action pointer">
+                    <a class="center-align indigo-text">AGREE</a>
                 </div>
         </div>
- 
+        <div materialize [materializeParams]="['wrong user or password',4000]" [materializeActions]="globalActions"></div>
     </div>
     </div>
 

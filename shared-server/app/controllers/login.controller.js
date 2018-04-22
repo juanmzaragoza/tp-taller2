@@ -16,9 +16,9 @@ class LoginController {
             .catch((reason) => {
                 console.log('Handle rejected promise ('+reason+') here.');
                 if (reason == 'unauthorized'){
-                    ResServ.error(401, messages.user.wrong, res, next);    
+                    ResServ.error(401, "err", messages.user.wrong, res, next);    
                 } else {
-                    ResServ.error(500, messages.common.error, res, next);    
+                    ResServ.error(500, "err", messages.common.error, res, next);    
                 }
             });
         };

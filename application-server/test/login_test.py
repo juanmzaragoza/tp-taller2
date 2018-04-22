@@ -4,19 +4,15 @@ from unittest.mock import patch
 import requests
 import json
 import sys
+import app
 
-try:
-    import app.app as app #for docker test
-except ImportError:
-    import app #for local test
-
-class TestFlaskApi(unittest.TestCase):
+class TestFlaskLoginApi(unittest.TestCase):
 
     def setUp(self):
         self.app = app.app.test_client()
 
     def __make_post_request(self, data):
-        url = "/token"
+        url = "api/v1/token"
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         response = self.app.post(url, data=json.dumps(data), headers=headers)
         return response
@@ -34,7 +30,7 @@ class TestFlaskApi(unittest.TestCase):
         self.assertEqual(response.status_code,400)
         response_data = self.__get_response_data(response)
         self.assertIn("code", response_data)
-        self.assertEqual(0,response_data["code"])
+        self.assertEqual(400,response_data["code"])
         self.assertIn("message", response_data)
 
 
@@ -47,7 +43,7 @@ class TestFlaskApi(unittest.TestCase):
         self.assertEqual(response.status_code,400)
         response_data = self.__get_response_data(response)
         self.assertIn("code", response_data)
-        self.assertEqual(0,response_data["code"])
+        self.assertEqual(400,response_data["code"])
         self.assertIn("message", response_data)
         
     @patch('api_client.shared_api_client.requests.post')
@@ -88,9 +84,9 @@ class TestFlaskApi(unittest.TestCase):
         self.assertEqual(response.status_code,401)
         response_data = self.__get_response_data(response)
         self.assertIn("code", response_data)
-        self.assertEqual(0,response_data["code"])
+        self.assertEqual(401,response_data["code"])
         self.assertIn("message", response_data)
-        self.assertEqual(response_data["message"], "invalid")
+        self.assertEqual(response_data["message"], "You haven't authorization")
 
     @patch('api_client.shared_api_client.requests.post')
     def test_invalid_password_should_status_401(self, mock_post):
@@ -103,9 +99,9 @@ class TestFlaskApi(unittest.TestCase):
         self.assertEqual(response.status_code,401)
         response_data = self.__get_response_data(response)
         self.assertIn("code", response_data)
-        self.assertEqual(0,response_data["code"])
+        self.assertEqual(401,response_data["code"])
         self.assertIn("message", response_data)
-        self.assertEqual(response_data["message"], "invalid")
+        self.assertEqual(response_data["message"], "You haven't authorization")
 
     @patch('api_client.shared_api_client.requests.post')
     def test_remote_server_down_should_status_500(self, mock_post):
@@ -118,7 +114,7 @@ class TestFlaskApi(unittest.TestCase):
         self.assertEqual(response.status_code,500)
         response_data = self.__get_response_data(response)
         self.assertIn("code", response_data)
-        self.assertEqual(0,response_data["code"])
+        self.assertEqual(500,response_data["code"])
         self.assertIn("message", response_data)
         self.assertEqual(response_data["message"], "internal error")
 

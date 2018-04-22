@@ -89,13 +89,23 @@ describe('endpoints', function(){
 	// 		form: data2}, 
 	// 		function(err,httpResponse,body){
 	// 			assert.exists(JSON.parse(body)['token']['token']);
-	// 			assert.equal(JSON.parse(body)['token']['token'].length, 417);
 	// 			done(err);
 	// 		}) 
 	// 	})
 		
 	// });
-
+	// it('/token (admin)', function(done) {
+	// 	var data = {
+	// 		"password": "root",
+	// 		"username": "erikschmoll"
+	// 	}
+	// 	request.post({url:`http://${HOST}:${PORT}${PREFIX_PATH}`+'/token', 
+	// 	form: data}, 
+	// 	function(err,httpResponse,body){
+	// 		assert.exists(JSON.parse(body)['token']['token']);
+	// 		done(err);
+	// 	})
+	// });
 	// it('/files', function(done) {
 	// 	var data = {
 	// 		"id": "string",
@@ -127,7 +137,6 @@ describe('endpoints', function(){
 	// 		}) 
 	// 	})
 	// });
-
 	// it('/user/:id', function(done) {
 	// 	var data = {
 	// 		"id": "string",
@@ -159,5 +168,4 @@ describe('endpoints', function(){
 	// 		}) 
 	// 	})
 	// });
-	
 });

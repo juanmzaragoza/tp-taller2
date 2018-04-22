@@ -5,8 +5,8 @@ var config = require('../../config/default')
 
 class AuthService {
     constructor(){
-        this.token = (username) => {
-            var token = auth0.sign({ data: { username: username, role: 'default' } }, 
+        this.token = (usr) => {
+            var token = auth0.sign({ data: { username: usr.username, role: usr.role } }, 
             config.auth.tokenSecret, { expiresIn: config.auth.timeExp });
             return token;
         }

@@ -8,25 +8,29 @@ class ResponseService {
     constructor() {
         this.ok = (type, key, val, res, next) => {
             var data = {};
+            var status = 200
             data["metadata"] = {"version": config.server.version }
             data[key] = val;
             if(ResEnum.Value == type){ }
             else if(ResEnum.Values == type){
                 data["metadata"]["total"] = val.length;
             }
+            else if(ResEnum.OnlyValue == type){
+                data = val;
+            }
             else{ data = { "code": 0, "message": "No especifico el tipo." } }
-            res.status(200);
+            res.status(status);
             res.json(data);
             next();
         };
-        this.error = (code, msg, res, next) =>{
+        this.error = (status, code, msg, res, next) =>{
             /*switch(code){
                 case 400: next(new createError.BadRequest()); break;
                 case 401: next(new createError.Unauthorized()); break;
                 case 500: next(new createError.ExpectationFailed(msg)); break;
                 default:  next(new createError.ExpectationFailed());
             }*/
-            res.status(code).json({ code: code, message: msg });
+            res.status(status).send({ code: code, message: msg });
             next();
         }
     }
