@@ -5,6 +5,11 @@ Existe el archivo de constantes [constants.py](constants.py)
 Para utilizar una constante del mismo:
 * Importar la constante: `from constants import SHARED_SERVER_URL`
 
+## MONGODB
+Para establecer la conexion a la base de datos, se debe indicar la URI a traves de una variable de entorno.  
+* HEROKU export MONGO_URI='mongodb://ds231199.mlab.com:31199'   
+* LOCAL  export MONGO_URI='mongodb://localhost:27017'  
+* DOCKER export MONGO_URI='mongodb://mongo:27017'  
 
 ## Logging
 Para loggear en flask:
