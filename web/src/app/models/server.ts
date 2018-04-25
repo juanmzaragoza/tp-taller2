@@ -1,5 +1,6 @@
 
 export class Server{
+    id: string
     name: string
     host: string
     port: string

@@ -20,7 +20,7 @@ class ServerService {
             })
         }
         this.update = (server, cb)=>{
-            StorageServ.save("server", server, (err, id)=>{
+            StorageServ.update("server", server, (err, server)=>{
                 if(err){
                     console.log(err)
                     cb(err);

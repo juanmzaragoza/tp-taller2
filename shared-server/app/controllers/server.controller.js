@@ -46,6 +46,18 @@ class ServerController {
                 }
             });*/
         };
+        this.put = (req, res, next) => {
+            var srv = new Server(req.body);
+            srv.id = req.params.id;
+            ServerService.update(srv, (err, server)=>{
+                if(err){
+                    ResServ.error(404, 2, messages.common.error, res, next);
+                }
+                else{
+                    ResServ.ok(ResEnum.Value, "server", server, res, next);
+                }
+            })
+        };
         this.delete = (req, res, next) => {
             var id = req.params.id;
             ServerService.delete(id, (err, message)=>{

@@ -6,6 +6,7 @@ import { MaterializeDirective,
 import { Server }             from '../../models/server'
 import { UserService }        from '../../services/user/user.service'
 import { RemoteService }      from '../../services/remote/remote.service'
+import { JsonService }      from '../../services/common/json.service'
 
 
 
@@ -19,7 +20,8 @@ export class ServerComponent {
   servers: Array<any>;
   public server:Server = new Server();
   constructor(public UserServ: UserService,
-              public RemoteServ: RemoteService){
+              public RemoteServ: RemoteService,
+              public JsonServ: JsonService){
       $('.modal').modal();
       this.servers = []
       this.title = 'Servers'
@@ -45,13 +47,15 @@ export class ServerComponent {
     });
   }
   edit(serv: Server){
-    console.info(serv)
+    var me = this
+    me.server = serv
+    console.log(serv)
+    this.openModal();
   }
   delete(id:string){
     var me = this
     me.RemoteServ.delete('/servers/'+id).subscribe((res) => {
-      me.servers = []
-      me.get()
+      me.servers = me.JsonServ.removeItem(me.servers, {id:id})
     },
     error =>{
       console.log(error)
@@ -62,10 +66,31 @@ export class ServerComponent {
   }
   save(serv :Server){
     var me = this
+    if(serv.id){
+      console.log("edit")
+      me.update(serv);
+    }
+    else{
+      console.log("create")
+      me.create(serv);
+    }
+  }
+  update(serv: Server){
+    var me = this
+    me.RemoteServ.put('/servers/'+serv.id, serv).subscribe((res) => {
+      me.servers = me.JsonServ.removeItem(me.servers, {id:serv.id})
+      me.servers.push(res.server)
+      me.server = new Server()
+    },
+    error =>{
+      console.log(error)
+    });
+  }
+  create(serv: Server){
+    var me = this
     serv.createdTime = Date.now()
     serv.lastConnection = 0
     serv.createdBy = me.UserServ.getUser().username
-    console.log(serv)
     me.RemoteServ.post('/servers', serv).subscribe((res) => {
       me.servers.push(res.server)
       me.server = new Server()
@@ -73,7 +98,6 @@ export class ServerComponent {
     error =>{
       console.log(error)
     });
-    //me.server.clean()
   }
   modalActions = new EventEmitter<string|MaterializeAction>();
   openModal() {

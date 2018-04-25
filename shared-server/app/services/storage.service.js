@@ -90,22 +90,28 @@ class StorageService {
             try{
                 var me = this
                 var entities = this.store.get(key);
-                var entityOld = undefined;
+                var newList = []
                 if(entities){
+                    entities.forEach(entitySave => {
+                        if(entitySave.id != entity.id){
+                            newList.push(entitySave)
+                        }
+                        else{
+                            newList.push(entity)
+                        }
+                    });
+                    me.store.set(key, newList);
+                    cb(undefined, entity);
+                    /*
                     entityOld = entities.find(item => item["id"] == entity.id)
                     if(entityOld){
-                        entityOld.createdBy = entity.createdBy
-                        entityOld.createdTime = entity.createdTime
-                        entityOld.name = entity.name
-                        entityOld.host = entity.host
-                        entityOld.port = entity.port
-                        entityOld.pingUrl = entity.pingUrl
+                        entityOld = entity
                         me.store.set(key, entities);
-                        cb(undefined, entity);
+                        cb(undefined, entityOld);
                     }
                     else{
                         cb({code: -1, message: "not found"});
-                    }
+                    }*/
                 }
                 else{
                     cb({code: -1, message: "not found"});

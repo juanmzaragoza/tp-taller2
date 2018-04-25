@@ -7,6 +7,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RoutingModule } from './routing.module'
 
 import { SharedService } from './services/common/shared.service'
+import { JsonService } from './services/common/json.service'
 import { RemoteService } from './services/remote/remote.service'
 import { CookieService } from 'ngx-cookie-service';
 import { TokenInterceptor } from './services/remote/token.interceptor'
@@ -46,7 +47,8 @@ import { EventKeyDirective } from './directives/event.key.directive'
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
       multi: true
-    }
+    },
+    JsonService
   ],
   bootstrap: [AppComponent]
 })
