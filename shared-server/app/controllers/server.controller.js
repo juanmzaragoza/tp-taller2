@@ -18,15 +18,6 @@ class ServerController {
                     ResServ.ok(ResEnum.Value, "server", server, res, next);
                 }
             })
-            /*StorageServ.saveServer('server',srv, (id)=>{
-                if(id){
-                    srv.id = id;
-                    ResServ.ok(ResEnum.Value, "server", srv, res, next);
-                }
-                else{
-                    ResServ.error(500, 2, messages.common.error, res, next);
-                }
-            });*/
         };
         this.get = (req, res, next) => {
             ServerService.get((err, servers)=>{
@@ -37,14 +28,6 @@ class ServerController {
                     ResServ.ok(ResEnum.Values, "servers", servers, res, next);
                 }
             })
-            /*StorageServ.loadAll('server', (arr)=>{
-                if(arr){
-                    ResServ.ok(ResEnum.Values, "servers", arr, res, next);
-                }
-                else{
-                    ResServ.error(500, 2, messages.common.error, res, next);
-                }
-            });*/
         };
         this.put = (req, res, next) => {
             var srv = new Server(req.body);

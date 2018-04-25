@@ -107,39 +107,3 @@ export class ServerComponent {
     this.modalActions.emit({action:"modal",params:['close']});
   } 
 }
-
-
-
-/* 
-
-modalActions1 = new EventEmitter<string|MaterializeAction>();
-        modalActions2 = new EventEmitter<string|MaterializeAction>();
-        globalActions = new EventEmitter<string|MaterializeAction>();
-        params:Array<any> = []
-      
-        model1Params = [
-          {
-            dismissible: false,
-            complete: function() { console.log('Closed'); }
-          }
-        ]
-      
-        printSomething() {
-          console.log("tooltip button clicked!");
-        }
-        triggerToast() {
-          this.globalActions.emit('toast')
-        }
-        openModal1() {
-          this.modalActions1.emit({action:"modal",params:['open']});
-        }
-        closeModal1() {
-          this.modalActions1.emit({action:"modal",params:['close']});
-        }
-        openModal2() {
-          this.modalActions2.emit({action:"modal",params:['open']});
-        }
-        closeModal2() {
-          this.modalActions2.emit({action:"modal",params:['close']});
-        }
-*/

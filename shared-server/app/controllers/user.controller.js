@@ -34,15 +34,6 @@ class UserController {
                     ResServ.ok(ResEnum.Value, "user", user, res, next);
                 }
             })
-            
-            /*StorageServ.load('user', "id", id, (usr)=>{
-                if(usr){
-                    ResServ.ok(ResEnum.Value, "user", usr, res, next);
-                }
-                else{
-                    ResServ.error(404, 1, messages.user.notExist, res, next);
-                }
-            });*/
         };
     }
 }
