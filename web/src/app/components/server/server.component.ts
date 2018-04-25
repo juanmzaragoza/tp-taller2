@@ -48,7 +48,14 @@ export class ServerComponent {
     console.info(serv)
   }
   delete(id:string){
-    console.info(id)
+    var me = this
+    me.RemoteServ.delete('/servers/'+id).subscribe((res) => {
+      me.servers = []
+      me.get()
+    },
+    error =>{
+      console.log(error)
+    });
   }
   viewToken(token: string){
     console.info(token)
@@ -61,6 +68,7 @@ export class ServerComponent {
     console.log(serv)
     me.RemoteServ.post('/servers', serv).subscribe((res) => {
       me.servers.push(res.server)
+      me.server = new Server()
     },
     error =>{
       console.log(error)

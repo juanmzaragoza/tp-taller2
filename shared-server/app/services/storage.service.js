@@ -67,12 +67,16 @@ class StorageService {
                 var me = this;
                 var entities = this.store.get(key);
                 me.load(key, 'id', id, (err, entityToDelete)=>{
-                    var newEntities;
+                    var newEntities = [];
                     if(err){
                         cb(err)
                     }
                     else{
-                        newEntities = entities.find(entity => entity["id"] != entityToDelete.id)
+                        entities.forEach(entity => {
+                            if(entity["id"] != entityToDelete.id){
+                                newEntities.push(entity)
+                            }
+                        });
                     }
                     me.store.set(key, newEntities);
                     cb(undefined, id)
