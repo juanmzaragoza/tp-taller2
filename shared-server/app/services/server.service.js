@@ -19,14 +19,40 @@ class ServerService {
                 }
             })
         }
-        this.update = (server, cb)=>{
-            StorageServ.update("server", server, (err, server)=>{
+        this.refreshToken = (id, cb)=>{
+            var me = this
+            me.getById(id, (err, server)=>{
                 if(err){
                     console.log(err)
                     cb(err);
                 }else{
-                    cb(undefined, server);
+                    server["token"]  =  { 
+                        token: AuthService.token(server.name),
+                        expiresAt: 3600
+                    };
+                    StorageServ.update("server", server, (err, server)=>{
+                        if(err){
+                            console.log(err)
+                            cb(err);
+                        }else{
+                            cb(undefined, server);
+                        }
+                    })
                 }
+            })
+        }
+        this.update = (server, cb)=>{
+            var me = this
+            me.getById(server.id, (err, serverOld)=>{
+                server.token = serverOld.token
+                StorageServ.update("server", server, (err, server)=>{
+                    if(err){
+                        console.log(err)
+                        cb(err);
+                    }else{
+                        cb(undefined, server);
+                    }
+                })
             })
         }
         this.delete = (id, cb)=>{

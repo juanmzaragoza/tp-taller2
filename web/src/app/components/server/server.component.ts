@@ -2,7 +2,8 @@ import { Component,
          OnInit, 
          EventEmitter }       from '@angular/core'
 import { MaterializeDirective,
-         MaterializeAction}   from "angular2-materialize";
+         MaterializeAction,
+         toast}               from "angular2-materialize";
 import { Server }             from '../../models/server'
 import { UserService }        from '../../services/user/user.service'
 import { RemoteService }      from '../../services/remote/remote.service'
@@ -42,6 +43,7 @@ export class ServerComponent {
   get(){
     var me = this
     me.RemoteServ.get('/servers').subscribe((res) => {
+      console.log(res.servers)
       me.servers = res.servers
     },
     error =>{
@@ -63,8 +65,20 @@ export class ServerComponent {
       console.log(error)
     });
   }
-  viewToken(token: any){
+  copyToken(token: any){
     this.ClipBoardServ.copy(token.token)
+    toast("copy to clipboard",4000)
+  }
+  refreshToken(id:string){
+    var me = this
+    me.RemoteServ.post('/servers/'+id,{id:id}).subscribe((res) => {
+      me.servers = me.JsonServ.removeItem(me.servers, {id:id})
+      me.servers.push(res.server)
+      toast("the token was updated",4000)
+    },
+    error =>{
+      console.log(error)
+    });
   }
   save(serv :Server){
     var me = this

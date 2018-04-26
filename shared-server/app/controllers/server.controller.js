@@ -29,6 +29,16 @@ class ServerController {
                 }
             })
         };
+        this.refreshToken = (req, res, next) => {
+            ServerService.refreshToken(req.params.id, (err, server)=>{
+                if(err){
+                    ResServ.error(404, 2, messages.common.error, res, next);
+                }
+                else{
+                    ResServ.ok(ResEnum.Value, "server", server, res, next);
+                }
+            })
+        }
         this.put = (req, res, next) => {
             var srv = new Server(req.body);
             srv.id = req.params.id;
