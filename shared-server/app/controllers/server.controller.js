@@ -19,6 +19,16 @@ class ServerController {
                 }
             })
         };
+        this.getById = (req, res, next)=>{
+            ServerService.getById(req.params.id, (err, server)=>{
+                if(err){
+                    ResServ.error(404, 2, messages.common.error, res, next);
+                }
+                else{
+                    ResServ.ok(ResEnum.Values, "server", server, res, next);
+                }
+            })
+        }
         this.get = (req, res, next) => {
             ServerService.get((err, servers)=>{
                 if(err){

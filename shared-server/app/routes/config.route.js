@@ -55,6 +55,12 @@ RouterHandler.addEndpointWithAuth({
 });
 
 RouterHandler.addEndpointWithAuth({
+    verb: 'get',
+    path: '/servers/:id',
+    handler: ServerCtrl.getById
+});
+
+RouterHandler.addEndpointWithAuth({
     verb: 'put',
     path: '/servers/:id',
     handler: ServerCtrl.put
