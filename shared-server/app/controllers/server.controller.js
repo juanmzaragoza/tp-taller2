@@ -18,16 +18,17 @@ class ServerController {
                     ResServ.ok(ResEnum.Value, "server", server, res, next);
                 }
             })
-            /*StorageServ.saveServer('server',srv, (id)=>{
-                if(id){
-                    srv.id = id;
-                    ResServ.ok(ResEnum.Value, "server", srv, res, next);
+        };
+        this.getById = (req, res, next)=>{
+            ServerService.getById(req.params.id, (err, server)=>{
+                if(err){
+                    ResServ.error(404, 2, messages.common.error, res, next);
                 }
                 else{
-                    ResServ.error(500, 2, messages.common.error, res, next);
+                    ResServ.ok(ResEnum.Values, "server", server, res, next);
                 }
-            });*/
-        };
+            })
+        }
         this.get = (req, res, next) => {
             ServerService.get((err, servers)=>{
                 if(err){
@@ -37,14 +38,28 @@ class ServerController {
                     ResServ.ok(ResEnum.Values, "servers", servers, res, next);
                 }
             })
-            /*StorageServ.loadAll('server', (arr)=>{
-                if(arr){
-                    ResServ.ok(ResEnum.Values, "servers", arr, res, next);
+        };
+        this.refreshToken = (req, res, next) => {
+            ServerService.refreshToken(req.params.id, (err, server)=>{
+                if(err){
+                    ResServ.error(404, 2, messages.common.error, res, next);
                 }
                 else{
-                    ResServ.error(500, 2, messages.common.error, res, next);
+                    ResServ.ok(ResEnum.Value, "server", server, res, next);
                 }
-            });*/
+            })
+        }
+        this.put = (req, res, next) => {
+            var srv = new Server(req.body);
+            srv.id = req.params.id;
+            ServerService.update(srv, (err, server)=>{
+                if(err){
+                    ResServ.error(404, 2, messages.common.error, res, next);
+                }
+                else{
+                    ResServ.ok(ResEnum.Value, "server", server, res, next);
+                }
+            })
         };
         this.delete = (req, res, next) => {
             var id = req.params.id;

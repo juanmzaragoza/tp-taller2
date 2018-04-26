@@ -67,12 +67,16 @@ class StorageService {
                 var me = this;
                 var entities = this.store.get(key);
                 me.load(key, 'id', id, (err, entityToDelete)=>{
-                    var newEntities;
+                    var newEntities = [];
                     if(err){
                         cb(err)
                     }
                     else{
-                        newEntities = entities.find(entity => entity["id"] != entityToDelete.id)
+                        entities.forEach(entity => {
+                            if(entity["id"] != entityToDelete.id){
+                                newEntities.push(entity)
+                            }
+                        });
                     }
                     me.store.set(key, newEntities);
                     cb(undefined, id)
@@ -86,22 +90,18 @@ class StorageService {
             try{
                 var me = this
                 var entities = this.store.get(key);
-                var entityOld = undefined;
+                var newList = []
                 if(entities){
-                    entityOld = entities.find(item => item["id"] == entity.id)
-                    if(entityOld){
-                        entityOld.createdBy = entity.createdBy
-                        entityOld.createdTime = entity.createdTime
-                        entityOld.name = entity.name
-                        entityOld.host = entity.host
-                        entityOld.port = entity.port
-                        entityOld.pingUrl = entity.pingUrl
-                        me.store.set(key, entities);
-                        cb(undefined, entity);
-                    }
-                    else{
-                        cb({code: -1, message: "not found"});
-                    }
+                    entities.forEach(entitySave => {
+                        if(entitySave.id != entity.id){
+                            newList.push(entitySave)
+                        }
+                        else{
+                            newList.push(entity)
+                        }
+                    });
+                    me.store.set(key, newList);
+                    cb(undefined, entity);
                 }
                 else{
                     cb({code: -1, message: "not found"});
@@ -111,76 +111,6 @@ class StorageService {
                 cb(e);
             }
         }
-
-        /*
-        this.save = (key, entity, cb) => {
-            var me = this;
-            entity.id =  uuidv4().toUpperCase();
-            bcrypt.hash(entity.password, config.bcrypt.saltRounds, function(err, hash) { 
-                entity.password = hash;
-                var arr = me.store.get(key);
-                if(arr){
-                    arr.push(entity);
-                    me.store.set(key, arr);
-                }
-                else
-                {
-                    me.store.set(key, [entity]);
-                }
-                delete entity.password
-                cb(entity.id);
-            });
-        };
-        this.saveServer  = (key, entity, cb) => {
-            var me = this;
-            entity.id =  uuidv4().toUpperCase();
-            entity[token]  =  { 
-                token: AuthService.token(entity.name),
-                expiresAt: 3600
-            };
-            var arr = me.store.get(key);
-            if(arr){
-                arr.push(entity);
-                me.store.set(key, arr);
-            }
-            else
-            {
-                me.store.set(key, [entity]);
-            }
-            cb(entity.id);
-        };
-        this.load = (key, keySearch, value, cb) =>{
-            var arr = this.store.get(key);
-            var entity = undefined;
-            if(arr){
-                entity = arr.find(item => item[keySearch] == value)
-            }
-            cb(entity);
-        }
-        this.delete = (key, id, cb) =>{
-            var me = this;
-            var arr = []
-            me.load(key, 'id', id, (entityToDelete)=>{
-                console.log(entityToDelete)
-                me.loadAll(key, (entities)=>{
-                    entities.forEach(entity => {
-                        if(entity.id != entityToDelete.id){
-                            arr.push(entity)
-                        }
-                    })
-                    me.store.set(key, arr);
-                    cb("ok")
-                })
-            })
-            cb(undefined)
-        }
-        this.loadAll = (key, cb) =>{
-            var arr = this.store.get(key);
-            if(arr){
-                cb(arr);
-            }
-            cb([]);
-        }*/
     }
 }
 module.exports = new StorageService();
