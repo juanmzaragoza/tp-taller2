@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule }    from '@angular/forms';
+import { CommonModule, DatePipe } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RoutingModule } from './routing.module'
 
@@ -38,7 +39,8 @@ import { EventKeyDirective } from './directives/event.key.directive'
     HttpClientModule,
     MaterializeModule,
     RoutingModule,
-    FormsModule    
+    FormsModule,
+    CommonModule
   ],
   providers: [
     SharedService,
@@ -50,7 +52,8 @@ import { EventKeyDirective } from './directives/event.key.directive'
       multi: true
     },
     JsonService,
-    ClipBoardService
+    ClipBoardService,
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })
