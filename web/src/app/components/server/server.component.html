@@ -35,18 +35,15 @@
     <div class="left-align col s8">{{server.lastConnection}}</div>
     <div class="indigo-text left-align col s4">url:</div>
     <div class="left-align col s8">{{server.host}}:{{server.port}}{{server.pingUrl}}</div>
+    <div class="indigo-text left-align col s4">Token:</div>
+    <div (click)="copyToken(server.token)" class="left-align col s8 pointer"><a><i class="material-icons">content_copy</i></a></div>
+    <div class="indigo-text left-align col s4">Refresh Token:</div>
+    <div (click)="refreshToken(server.id)" class="left-align col s8 pointer"><a><i class="material-icons">update</i></a></div>
+    <div class="indigo-text left-align col s4">Drop:</div>
+    <div (click)="delete(server.id)" class="left-align col s8 pointer"><a><i class="material-icons">delete</i></a></div>
   </div>
 </div>
 
-<!-- 
-      "id": "string",
-      "_rev": "string",
-      "createdBy": "string",
-      "createdTime": 0,
-      "name": "string",
-      "lastConnection": 0
-
--->
 
 <!-- Modal Structure -->
 <div id="modal1" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
