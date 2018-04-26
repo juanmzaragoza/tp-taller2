@@ -11,6 +11,7 @@ import { JsonService } from './services/common/json.service'
 import { RemoteService } from './services/remote/remote.service'
 import { CookieService } from 'ngx-cookie-service';
 import { TokenInterceptor } from './services/remote/token.interceptor'
+import { ClipBoardService } from './services/common/clipboard.service'
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component'
@@ -48,7 +49,8 @@ import { EventKeyDirective } from './directives/event.key.directive'
       useClass: TokenInterceptor,
       multi: true
     },
-    JsonService
+    JsonService,
+    ClipBoardService
   ],
   bootstrap: [AppComponent]
 })

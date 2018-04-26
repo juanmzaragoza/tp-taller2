@@ -6,7 +6,8 @@ import { MaterializeDirective,
 import { Server }             from '../../models/server'
 import { UserService }        from '../../services/user/user.service'
 import { RemoteService }      from '../../services/remote/remote.service'
-import { JsonService }      from '../../services/common/json.service'
+import { JsonService }        from '../../services/common/json.service'
+import { ClipBoardService }   from '../../services/common/clipboard.service'
 
 
 
@@ -21,7 +22,8 @@ export class ServerComponent {
   public server:Server = new Server();
   constructor(public UserServ: UserService,
               public RemoteServ: RemoteService,
-              public JsonServ: JsonService){
+              public JsonServ: JsonService,
+              public ClipBoardServ: ClipBoardService){
       $('.modal').modal();
       this.servers = []
       this.title = 'Servers'
@@ -61,8 +63,8 @@ export class ServerComponent {
       console.log(error)
     });
   }
-  viewToken(token: string){
-    console.info(token)
+  viewToken(token: any){
+    this.ClipBoardServ.copy(token.token)
   }
   save(serv :Server){
     var me = this
