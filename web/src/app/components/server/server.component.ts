@@ -60,6 +60,7 @@ export class ServerComponent {
     var me = this
     me.RemoteServ.delete('/servers/'+id).subscribe((res) => {
       me.servers = me.JsonServ.removeItem(me.servers, {id:id})
+      toast("the server was deleted",4000)
     },
     error =>{
       console.log(error)
@@ -97,6 +98,7 @@ export class ServerComponent {
       me.servers = me.JsonServ.removeItem(me.servers, {id:serv.id})
       me.servers.push(res.server)
       me.server = new Server()
+      toast("the server was updated",4000)
     },
     error =>{
       console.log(error)
@@ -110,6 +112,7 @@ export class ServerComponent {
     me.RemoteServ.post('/servers', serv).subscribe((res) => {
       me.servers.push(res.server)
       me.server = new Server()
+      toast("the server was created",4000)
     },
     error =>{
       console.log(error)
@@ -120,6 +123,8 @@ export class ServerComponent {
     this.modalActions.emit({action:"modal",params:['open']});
   }
   closeModal() {
+    var me = this
+    me.server = new Server()
     this.modalActions.emit({action:"modal",params:['close']});
   } 
 }
