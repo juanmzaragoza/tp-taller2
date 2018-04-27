@@ -46,6 +46,7 @@ services:
       - mongo:mongo
   mongo:
     container_name: mongo
+    build: ./mongo
     image: mongo:3.0.14
     volumes:
       - ./data/mongo:/data/db

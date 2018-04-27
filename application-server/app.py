@@ -1,6 +1,5 @@
 import flask
 import flask_restful
-import os
 from constants import MONGODB_USER, MONGODB_PASSWD
 
 from controllers.db_controller import MongoController
@@ -18,7 +17,6 @@ with app.app_context():
 
 	class HelloWorld(flask_restful.Resource):
 		def get(self):
-			app.logger.error('%s logged in successfully', 'lalal')
 			db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 			root = db.users.find_one({'user': 'root'})
 			root_user = root.get('user')
