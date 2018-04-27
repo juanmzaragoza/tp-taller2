@@ -18,7 +18,7 @@ RouterHandler.addEndpointWithOutAuth({
 });
 
 
-RouterHandler.addEndpointWithAuth({
+RouterHandler.addEndpointWithOutAuth({
     verb: 'get',
     path: '/user/:id',
     handler: UserCtrl.getById
@@ -43,7 +43,31 @@ RouterHandler.addEndpointWithAuth({
 });
 
 RouterHandler.addEndpointWithAuth({
+    verb: 'post',
+    path: '/servers/:id',
+    handler: ServerCtrl.refreshToken
+});
+
+RouterHandler.addEndpointWithAuth({
     verb: 'get',
     path: '/servers',
     handler: ServerCtrl.get
+});
+
+RouterHandler.addEndpointWithAuth({
+    verb: 'get',
+    path: '/servers/:id',
+    handler: ServerCtrl.getById
+});
+
+RouterHandler.addEndpointWithAuth({
+    verb: 'put',
+    path: '/servers/:id',
+    handler: ServerCtrl.put
+});
+
+RouterHandler.addEndpointWithAuth({
+    verb: 'delete',
+    path: '/servers/:id',
+    handler: ServerCtrl.delete
 });

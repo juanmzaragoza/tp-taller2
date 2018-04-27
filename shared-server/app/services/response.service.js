@@ -8,14 +8,18 @@ class ResponseService {
     constructor() {
         this.ok = (type, key, val, res, next) => {
             var data = {};
+            var status = 200
             data["metadata"] = {"version": config.server.version }
             data[key] = val;
             if(ResEnum.Value == type){ }
             else if(ResEnum.Values == type){
                 data["metadata"]["total"] = val.length;
             }
+            else if(ResEnum.OnlyValue == type){
+                data = val;
+            }
             else{ data = { "code": 0, "message": "No especifico el tipo." } }
-            res.status(200);
+            res.status(status);
             res.json(data);
             next();
         };
@@ -26,7 +30,7 @@ class ResponseService {
                 case 500: next(new createError.ExpectationFailed(msg)); break;
                 default:  next(new createError.ExpectationFailed());
             }*/
-            res.status(status).json({ code: code, message: msg });
+            res.status(status).send({ code: code, message: msg });
             next();
         }
     }

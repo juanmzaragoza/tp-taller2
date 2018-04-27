@@ -2,54 +2,53 @@
 
 <table class="hide-on-small-only">
   <tr> 
-    <th class="indigo-text"> name </th> 
-    <th class="indigo-text"> createdBy </th> 
-    <th class="indigo-text"> createdTime </th> 
-    <th class="indigo-text"> lastConnection </th> 
+    <th class="indigo-text"> Name </th> 
+    <th class="indigo-text"> CreatedBy </th> 
+    <th class="indigo-text"> CreatedTime </th> 
+    <th class="indigo-text"> LastConnection </th> 
     <th class="indigo-text"> Url </th>
     <th class="indigo-text"> Token </th>
+    <th class="indigo-text"> Refresh Token </th>
     <th class="indigo-text"> Drop </th>
   </tr>
   <tr class="pointer" *ngFor="let server of servers">
     <td (click)="edit(server)"> {{server.name}} </td>
     <td (click)="edit(server)"> {{server.createdBy}} </td>
-    <td (click)="edit(server)"> {{server.createdTime}} </td>
+    <td (click)="edit(server)"> {{server.createdTime | date: 'dd/MM/yyyy'}} </td>
     <td (click)="edit(server)"> {{server.lastConnection}} </td>
-    <td (click)="edit(server)"> {{server.host}}:{{server.port}}{{server.pingUrl}} </td>
-    <td (click)="viewToken(server.token)"><a><i class="material-icons">visibility</i></a></td>
+    <td (click)="edit(server)"> {{server.host}}{{server.pingUrl}} </td>
+    <td (click)="copyToken(server.token)"><a><i class="material-icons">content_copy</i></a></td>
+    <td (click)="refreshToken(server.id)"><a><i class="material-icons">update</i></a></td>
     <td (click)="delete(server.id)"><a><i class="material-icons">delete</i></a></td>
   </tr>
 </table>
 
 <div class="show-for-small-only hide-on-med-only hide-on-large-only">
-  <div style="border-bottom:1px solid #3f51b5" class="row" *ngFor="let server of servers">
-    <div class="indigo-text left-align col s4">name:</div>
-    <div class="left-align col s8">{{server.name}}</div>
-    <div class="indigo-text left-align col s4">createdBy:</div>
-    <div class="left-align col s8">{{server.createdBy}}</div>
-    <div class="indigo-text left-align col s4">createdTime:</div>
-    <div class="left-align col s8">{{server.createdTime}}</div>
-    <div class="indigo-text left-align col s4">lastConnection:</div>
-    <div class="left-align col s8">{{server.lastConnection}}</div>
-    <div class="indigo-text left-align col s4">url:</div>
-    <div class="left-align col s8">{{server.host}}:{{server.port}}{{server.pingUrl}}</div>
+  <div style="border-bottom:1px solid #3f51b5" class="row pointer" *ngFor="let server of servers">
+    <div (click)="edit(server)" class="indigo-text left-align col s4">name:</div>
+    <div (click)="edit(server)" class="left-align col s8">{{server.name}}</div>
+    <div (click)="edit(server)" class="indigo-text left-align col s4">createdBy:</div>
+    <div (click)="edit(server)" class="left-align col s8">{{server.createdBy}}</div>
+    <div (click)="edit(server)" class="indigo-text left-align col s4">createdTime:</div>
+    <div (click)="edit(server)" class="left-align col s8">{{server.createdTime | date: 'dd/MM/yyyy'}}</div>
+    <div (click)="edit(server)" class="indigo-text left-align col s4">lastConnection:</div>
+    <div (click)="edit(server)" class="left-align col s8">{{server.lastConnection}}</div>
+    <div (click)="edit(server)" class="indigo-text left-align col s4">url:</div>
+    <div (click)="edit(server)" class="left-align col s8">{{server.host}}{{server.pingUrl}}</div>
+    <div class="indigo-text left-align col s4">Token:</div>
+    <div (click)="copyToken(server.token)" class="left-align col s8"><a><i class="material-icons">content_copy</i></a></div>
+    <div class="indigo-text left-align col s4">Refresh Token:</div>
+    <div (click)="refreshToken(server.id)" class="left-align col s8"><a><i class="material-icons">update</i></a></div>
+    <div class="indigo-text left-align col s4">Drop:</div>
+    <div (click)="delete(server.id)" class="left-align col s8"><a><i class="material-icons">delete</i></a></div>
   </div>
 </div>
 
-<!-- 
-      "id": "string",
-      "_rev": "string",
-      "createdBy": "string",
-      "createdTime": 0,
-      "name": "string",
-      "lastConnection": 0
-
--->
 
 <!-- Modal Structure -->
 <div id="modal1" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
   <div class="modal-content">
-    <h4>New Server</h4>
+    <h4 class="indigo-text">New Server</h4>
     <div class="row">
       <form class="col s12">
           <div class="row">
@@ -64,14 +63,8 @@
                 <label for="host">Host</label>
             </div>
             <div class="input-field col s4">
-                <input name='port' [(ngModel)]="server.port" type="text" class="validate">
-                <label for="port">Port</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-                <input name='pingUrl' [(ngModel)]="server.pingUrl" type="text" class="validate">
-                <label for="pingUrl">Ping Url</label>
+              <input name='pingUrl' [(ngModel)]="server.pingUrl" type="text" class="validate">
+              <label for="pingUrl">Ping Url</label>
             </div>
           </div>
       </form>

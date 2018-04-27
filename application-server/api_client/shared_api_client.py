@@ -23,7 +23,7 @@ class SharedApiClient():
 			if (response.status_code == 500):
 				raise RequestException("shared server error")
 
-			if (response.status_code == 401):
+			if ((response.status_code == 404) or (response.status_code == 401)):
 				return False
 
 			return response.json()
@@ -55,6 +55,23 @@ class SharedApiClient():
 				raise RequestException("shared server error")
 
 			if (response.status_code == 401):
+				return False
+
+			return response.json()
+		except:
+			raise RequestException("internal error")
+
+	def getUserById(self, userId):
+		try:
+			data = {'id': userId}
+			url = self.url + '/user/' + userId
+
+			response = requests.get(url, data=json.dumps(data), headers=self.headers)
+
+			if (response.status_code == 500):
+				raise RequestException("shared server error")
+
+			if (response.status_code == 404):
 				return False
 
 			return response.json()
