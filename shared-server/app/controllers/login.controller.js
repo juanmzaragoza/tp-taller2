@@ -22,8 +22,8 @@ class LoginController {
                                 ResServ.error(res, messages.Unauthorized);
                                 break;
                             case "fb_user_not_exist":
-                                msg = "fb_user_not_exist";
-                                ResServ.error(res, messages.BadRequest, msg);
+                                msg = "Facebook User doesn't exists";
+                                ResServ.error(res, messages.Conflict, msg);
                                 break;
                             default: ResServ.error(res, messages.Unauthorized);
                         }
