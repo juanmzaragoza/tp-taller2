@@ -23,15 +23,12 @@ class ResponseService {
             res.json(data);
             next();
         };
-        this.error = (status, code, msg, res, next) =>{
-            /*switch(code){
-                case 400: next(new createError.BadRequest()); break;
-                case 401: next(new createError.Unauthorized()); break;
-                case 500: next(new createError.ExpectationFailed(msg)); break;
-                default:  next(new createError.ExpectationFailed());
-            }*/
-            res.status(status).send({ code: code, message: msg });
-            next();
+        this.error = (res, err, msg) =>{
+            var body = err.body
+            if(msg){
+                body.message = msg
+            }
+            res.status(err.codeHttp).send(body);
         }
     }
 }

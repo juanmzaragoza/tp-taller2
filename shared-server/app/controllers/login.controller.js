@@ -11,7 +11,8 @@ class LoginController {
         this.token = (req, res, next) => {
             loginServ.auth(req.body.username,req.body.password, (err, ticket)=>{
                 if(err){
-                    ResServ.error(401, 0, messages.user.wrong, res, next)
+                    var msg = "wrong user or password"
+                    ResServ.error(res, messages.Unauthorized, msg);
                 }
                 else{
                     ResServ.ok(ResEnum.Value, "token", ticket, res, next)
