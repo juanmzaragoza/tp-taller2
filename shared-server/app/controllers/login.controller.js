@@ -9,12 +9,16 @@ var ResEnum     = require('../common/response.enum')
 class LoginController {
     constructor() {
         this.token = (req, res, next) => {
-            loginServ.auth(req.body.username,req.body.password, (err, ticket)=>{
-                if(err){
-                    ResServ.error(401, 0, messages.user.wrong, res, next)
-                }
-                else{
-                    ResServ.ok(ResEnum.Value, "token", ticket, res, next)
+            loginServ.auth(req.body.username,req.body.password, req.models)
+            .then((ticket) => {
+                ResServ.ok(ResEnum.Value, "token", ticket, res, next);
+            })
+            .catch((reason) => {
+                console.log('Handle rejected promise ('+reason+') here.');
+                if (reason == 'unauthorized'){
+                    ResServ.error(401, "err", messages.user.wrong, res, next);    
+                } else {
+                    ResServ.error(500, "err", messages.common.error, res, next);    
                 }
             });
         };
