@@ -3,7 +3,8 @@ const AuthService       = require('./auth.service')
 const StorageServ       = require('./storage.service')
 const LocalStorageServ  = require('./local.storage.service')
 const bcrypt            = require('bcrypt');
-
+var request             = require('request');
+var config              = require('../../config/default')
 
 class LoginService {
     constructor() {
@@ -51,8 +52,8 @@ class LoginService {
                 }
                 else{
                     if(res == true){
-                        StorageServ.load('user', "username", username, (err, usr)=>{
-                            if(usr){
+                        StorageServ.load('user', "username", username, (err, user)=>{
+                            if(user){
                                 //users of the application-server
                                 next(undefined, me.generateToken(user));
                             }
@@ -92,9 +93,15 @@ class LoginService {
             });
         }
         this.isValidFB = (tokenFB, next) =>{
-            //TODO falta impelmentar la llamada a fb
             var token = tokenFB.split(" ")[1]
-            next(undefined,true)
+            var url = 'https://graph.facebook.com/debug_token'
+            + "?input_token=" + token //"EAAexY6t49L0BAD1JqZB3m2DiPGlqaTbugtzyUSyTIB0LHUZBISfjwh8X9TI9VkChxZByVW0ZAm4S8RgBPMkP0Bq16ZAFfhBR4KztRsMfWH4CbNRfoaP0ToZBkXCa2ZADW6BtxnPc5gwGZBPAHwiWPiuZCj2SHGzvgWRWjp3dJdZB8tZBTv1HiCTyRW7ZAjq1crLyxAsZD"
+            + "&access_token=" + config.auth.facebook.access_token //"2165366473684157|2juX9BXHUZNqRZVJSGjd6gOyRzE"
+            request.get({ url:url }, 
+            (err, httpResponse, body) => {
+                var res = JSON.parse(body)
+                next(undefined,res.data.is_valid)
+            });
         }
     }
 }
