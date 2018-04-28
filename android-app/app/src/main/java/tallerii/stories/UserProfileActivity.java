@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -27,7 +29,6 @@ public class UserProfileActivity extends AppCompatActivity {
     private ImageView imageView;
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
-    FirebaseStorage storage;
     StorageReference storageReference;
 
     @Override
@@ -36,8 +37,13 @@ public class UserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         imageView = findViewById(R.id.profile_picture);
-        storage = FirebaseStorage.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+
+        Glide.with(this /* context */)
+                .using(new FirebaseImageLoader())
+                .load(storageReference.child("images/profile"))
+                .into(imageView);
     }
 
     public void chooseImage(View view) {
@@ -69,7 +75,7 @@ public class UserProfileActivity extends AppCompatActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("images/"+ UUID.randomUUID().toString());
+            StorageReference ref = storageReference.child("images/profile");
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
