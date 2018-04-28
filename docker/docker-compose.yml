@@ -16,6 +16,8 @@ services:
   postgresql:
     container_name: postgresql
     image: postgres:10.3
+    ports:
+      - '5432:5432'
     volumes:
       - ./data/postgresql:/var/lib/postgresql/data
     environment: 

@@ -23,7 +23,9 @@ class UserController {
             catch(e){
                 ResServ.error(res, messages.InternalServerError);
             }
+
         };
+        
         this.getById = (req, res, next) => {
             var id = req.params.id;
             UserService.getById(id,(err, user)=>{
