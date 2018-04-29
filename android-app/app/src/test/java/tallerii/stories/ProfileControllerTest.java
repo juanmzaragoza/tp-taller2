@@ -1,0 +1,66 @@
+package tallerii.stories;
+
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+import tallerii.stories.controller.ProfileController;
+import tallerii.stories.network.ConstantsApplicationApiRest;
+import tallerii.stories.network.apimodels.ApplicationProfile;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.timeout;
+import static org.mockito.Mockito.verify;
+
+@RunWith(MockitoJUnitRunner.class)
+public class ProfileControllerTest {
+
+    private MockWebServer server;
+    private Gson gson = new Gson();
+    private String mockProfile;
+
+    @Before
+    public void setUp() throws IOException {
+        server = new MockWebServer();
+        server.start();
+        ConstantsApplicationApiRest.ROOT_URL = server.url("/").toString();
+        try {
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(classLoader.getResource("mockResponses").getFile());
+            JSONObject apiMockResponses = new JSONObject(new String(Files.readAllBytes(file.toPath())));
+            mockProfile = apiMockResponses.getJSONObject("ApplicationProfile").toString();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @After
+    public void tearDown() throws IOException {
+        server.shutdown();
+    }
+
+    @Test
+    public void testGetUserSuccess() {
+        UserProfileActivity mockActivity = mock(UserProfileActivity.class);
+        ProfileController controller = new ProfileController(mockActivity);
+        server.enqueue(new MockResponse().setBody(mockProfile));
+
+        controller.getUser("nico");
+
+        verify(mockActivity, timeout(2000).times(1)).initializeProfile(any(ApplicationProfile.class));
+    }
+}
