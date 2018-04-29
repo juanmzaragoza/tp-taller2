@@ -1,9 +1,79 @@
 {
-    "common":{
-        "error": "unknown error"
+    "BadRequest":{
+        "codeHttp": 400,
+        "body":{
+            "code": 50,
+            "message": "Bad Request"
+        }
     },
-    "user":{
-        "wrong": "wrong user or password",
-        "notExist": "user not exist"
+    "Unauthorized":{
+        "codeHttp": 401,
+        "body":{
+            "code": 51,
+            "message": "Unauthorized"
+        }
+    },
+    "PaymentRequired":{
+        "codeHttp": 402,
+        "body":{
+            "code": 52,
+            "message": "Payment Required"
+        }
+    },
+    "Forbidden":{
+        "codeHttp": 403,
+        "body":{
+            "code": 53,
+            "message": "Forbidden"
+        }
+    },
+    "NotFound":{
+        "codeHttp": 404,
+        "body":{
+            "code": 54,
+            "message": "Not Found"
+        }
+    },
+    "MethodNotAllowed":{
+        "codeHttp": 405,
+        "body":{
+            "code": 55,
+            "message": "Method Not Allowed"
+        }
+    },
+    "NotAcceptable":{
+        "codeHttp": 406,
+        "body":{
+            "code": 56,
+            "message": "Not Acceptable"
+        }
+    },
+    "ProxyAuthenticationRequired":{
+        "codeHttp": 407,
+        "body":{
+            "code": 57,
+            "message": "Proxy Authentication Required"
+        }
+    },
+    "RequestTimeout":{
+        "codeHttp": 408,
+        "body":{
+            "code": 58,
+            "message": "Request Timeout"
+        }
+    },
+    "Conflict":{
+        "codeHttp": 409,
+        "body":{
+            "code": 59,
+            "message": "Conflict"
+        }
+    },
+    "InternalServerError":{
+        "codeHttp": 500,
+        "body":{
+            "code": 100,
+            "message": "Internal Server Error"
+        }
     }
 }

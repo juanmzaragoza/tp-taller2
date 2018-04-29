@@ -13,7 +13,10 @@
 	},
 	"auth": {
         "tokenSecret": "tokenSecret",
-        "timeExp": "1h"
+		"timeExp": "1h",
+		"facebook":{
+			"access_token":"2165366473684157|2juX9BXHUZNqRZVJSGjd6gOyRzE"
+		}
 	},
 	"firebase":{
 		"keyFilename": "./private_key.json",
@@ -22,5 +25,13 @@
 	},
 	"bcrypt":{
 		"saltRounds": 1
+	},
+	"database": {
+		"database": "postgres",
+		"username": "postgres",
+		"password": "0000",
+		"host": "postgresql",
+		"port": 5432,
+		"dialect": "postgres"
 	}
 }
