@@ -15,7 +15,7 @@ const INVALID_ACCESS_TOKEN  = "invalid-access-token";
 
 class LoginService {
     constructor() {
-        function authByFB(username, password){
+        function authByFB(username, password, models){
             return new Promise((resolve, reject)=>{
                 isValidFB(password)
                 .then(function(valid){
@@ -29,14 +29,7 @@ class LoginService {
                             resolve(result);
                         })
                         .catch(function(err){
-                            var reason = 'unexpected';
-                            if (err == USER_NOT_FOUND){
-                                reason = "fb_user_not_exist";
-                            }
-                            else if(err == INVALID_PASSWORD){
-                                reason = 'unauthorized';
-                            }
-                            reject(reason);
+                            reject(handleErr(err));
                         })
                     }
                     else{
@@ -44,11 +37,7 @@ class LoginService {
                     }
                 })
                 .catch(function(err){
-                    var reason = 'unexpected';
-                    if (err == USER_NOT_FOUND || err == INVALID_PASSWORD){
-                        reason = 'unauthorized';
-                    }
-                    reject(reason);
+                    reject(handleErr(err));
                 })
             });
         };
@@ -65,6 +54,7 @@ class LoginService {
                     }
                     else{
                         var res = JSON.parse(body);
+                        //console.log(res.data.is_valid)
                         resolve(res.data.is_valid);
                     }
                 })
@@ -97,10 +87,7 @@ class LoginService {
                     resolve(result);
                 })
                 .catch(function(err){
-                    var reason = 'unexpected';
-                    if (err == USER_NOT_FOUND || err == INVALID_PASSWORD){
-                        reason = 'unauthorized';
-                    }
+                    var reason = handleErr(err)
                     reject(reason);
                 })
             });
@@ -143,11 +130,22 @@ class LoginService {
 
         this.auth = (username, password, models) => {
             if(isUserFB(password)){
-                    resolve({token:"ticket fb"}) //authByFB(username, password, models);
+                return authByFB(username, password, models);
             }
             else{
                 return authByApp(username, password, models)
             }
+        }
+        function handleErr(err){
+            console.log(err)
+            var reason = 'unexpected';
+            if (err == USER_NOT_FOUND){
+                reason = "fb_user_not_exist";
+            }
+            else if(err == INVALID_PASSWORD){
+                reason = 'unauthorized';
+            }
+            return reason
         }
 
     }
