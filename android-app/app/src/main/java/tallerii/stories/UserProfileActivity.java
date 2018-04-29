@@ -21,6 +21,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -49,7 +50,7 @@ public class UserProfileActivity extends StoriesAppActivity {
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.get(PROFILE_OBJECT) != null) {
-            ApplicationProfile profile = (ApplicationProfile) bundle.get(PROFILE_OBJECT);
+            ApplicationProfile profile = new Gson().fromJson(bundle.getString(PROFILE_OBJECT), ApplicationProfile.class);
             initializeProfile(profile);
         } else if (bundle != null && bundle.get(PROFILE_ID) != null) {
             controller.getUser(bundle.getString(PROFILE_ID));
@@ -122,7 +123,7 @@ public class UserProfileActivity extends StoriesAppActivity {
         username.setText(applicationProfile.getFullName());
 
         TextView friendsCount = findViewById(R.id.friend_count);
-        friendsCount.setText(applicationProfile.getFriends().size());
+        friendsCount.setText(String.valueOf(applicationProfile.getFriends().size()));
 
         //try to obtain profile pic from Firebase
         Glide.with(this /* context */)

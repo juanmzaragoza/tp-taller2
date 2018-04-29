@@ -1,5 +1,7 @@
 package tallerii.stories.network.apimodels;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 public class ApplicationProfile {
@@ -7,9 +9,11 @@ public class ApplicationProfile {
     public String id;
     public String rev;
     public String userId;
+    @SerializedName("last_name")
     public String lastName;
     public String name;
     public String email;
+    @SerializedName("profile_picture")
     public String profilePicture;
     public List<Story> stories = null;
     public List<Friend> friends = null;
