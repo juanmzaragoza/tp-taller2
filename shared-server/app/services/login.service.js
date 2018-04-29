@@ -85,8 +85,7 @@ class LoginService {
         };
         function authByApp(username, password, models){
             return new Promise((resolve, reject) => {
-
-                return getUserByUsername(username, models)
+                getUserByUsername(username, models)
                 .then( function(user){
                     return checkValidPassword(password, user)
                 })
@@ -112,11 +111,17 @@ class LoginService {
                     { where: {username: username} }
                 ).then(function(user){
                     if (user === null) {
-                        return getAdminUser(username);
+                        getAdminUser(username).then(userAdmin=>{
+                            resolve(userAdmin)
+                        }).catch(err =>{
+                            reject(err)
+                        })
                     } else{
                         // console.log("user:",user.toJSON());    
                         resolve(user);  
                     }
+                }).catch(err =>{
+                    reject(err)
                 })
             });
         };
@@ -137,14 +142,12 @@ class LoginService {
         };
 
         this.auth = (username, password, models) => {
-            return new Promise((resolve, reject) => {
-                if(isUserFB(password)){
-                    return authByFB(username, password, models);
-                }
-                else{
-                    return authByApp(username, password, models);
-                }
-            });
+            if(isUserFB(password)){
+                    resolve({token:"ticket fb"}) //authByFB(username, password, models);
+            }
+            else{
+                return authByApp(username, password, models)
+            }
         }
 
     }

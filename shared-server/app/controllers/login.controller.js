@@ -31,11 +31,6 @@ class LoginController {
                             break;
                         default: ResServ.error(res, messages.Unauthorized);
                     }
-                    /*if (reason == 'unauthorized'){
-                        ResServ.error(401, "err", messages.user.wrong, res, next);    
-                    } else {
-                        ResServ.error(500, "err", messages.common.error, res, next);    
-                    }*/
                 });
             }
             else{
