@@ -22,13 +22,5 @@
 	},
 	"bcrypt":{
 		"saltRounds": 1
-	},
-	"database": {
-		"database": "postgres",
-		"username": "postgres",
-		"password": "0000",
-		"host": "postgresql",
-		"port": 5432,
-		"dialect": "postgres"
 	}
 }
