@@ -80,7 +80,7 @@ public class UserProfileActivity extends StoriesAppActivity {
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("images/profile");
+            StorageReference ref = storageReference.child("images/" + UUID.randomUUID());
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
