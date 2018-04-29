@@ -1,41 +1,48 @@
-module.exports = function (Sequelize, sequelize, models) {
-    const User = sequelize.define('user', {
+'use strict';
+module.exports = (sequelize, DataTypes) => {
+    var User = sequelize.define('User', {
         id: {
-            type: Sequelize.INTEGER,
+            type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
         username: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: false
         },
         password: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: false
         },
+        rev: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
         token: {
-            type: Sequelize.STRING,
+            type: DataTypes.STRING,
             allowNull: true
         },
-        token_expiration: {
-            type: Sequelize.DATE,
+        role: {
+            type: DataTypes.STRING,
             allowNull: true
         },
-    });
-// class User{
-//     constructor(data){
-//         this.id;
-//         this._rev = data._rev;
-//         this.password = data.password;
-//         this.username = data.username;
-//         this.token;
-//         this.role = 'default'
-//         this.tokenFace
-//         this.type;
-//         this.applicationOwner = data.applicationOwner;
-//     }
-// }
-    models.user = User;
+        tokenFace: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        type: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        applicationOwner: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+    }, {});
+    
+    User.associate = function(models) {
+        // associations can be defined here
+    };
+
+    return User;
 };
-
-
