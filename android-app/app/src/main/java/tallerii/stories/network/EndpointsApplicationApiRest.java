@@ -33,5 +33,5 @@ public interface EndpointsApplicationApiRest {
 
     @Headers({"Accept:application/json"})
     @PUT(ConstantsApplicationApiRest.PROFILE_ENDPOINT)
-    Call<ApplicationProfile> putProfileById(@Path("id") String user_id, @Body JsonObject profile);
+    Call<JsonObject> putProfileById(@Path("id") String user_id, @Body JsonObject profile);
 }

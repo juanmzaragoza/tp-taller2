@@ -1,7 +1,5 @@
 package tallerii.stories.controller;
 
-import com.google.gson.Gson;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
@@ -16,11 +14,12 @@ import java.nio.file.Files;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import okhttp3.mockwebserver.RecordedRequest;
 import tallerii.stories.UserProfileActivity;
-import tallerii.stories.controller.ProfileController;
 import tallerii.stories.network.ConstantsApplicationApiRest;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 
+import static junit.framework.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
@@ -30,7 +29,6 @@ import static org.mockito.Mockito.verify;
 public class ProfileControllerTest {
 
     private MockWebServer server;
-    private Gson gson = new Gson();
     private String mockProfile;
 
     @Before
@@ -55,7 +53,7 @@ public class ProfileControllerTest {
     }
 
     @Test
-    public void testGetUserSuccess() {
+    public void testGetUserSuccess() throws InterruptedException {
         UserProfileActivity mockActivity = mock(UserProfileActivity.class);
         ProfileController controller = new ProfileController(mockActivity);
         server.enqueue(new MockResponse().setBody(mockProfile));
@@ -63,5 +61,7 @@ public class ProfileControllerTest {
         controller.getUser("nico");
 
         verify(mockActivity, timeout(2000).times(1)).initializeProfile(any(ApplicationProfile.class));
+        final RecordedRequest request = server.takeRequest();
+        assertEquals("/profile/nico", request.getPath());
     }
 }

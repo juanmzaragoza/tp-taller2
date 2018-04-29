@@ -71,4 +71,8 @@ public class ApplicationProfile {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

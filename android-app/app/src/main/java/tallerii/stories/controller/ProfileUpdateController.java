@@ -2,6 +2,7 @@ package tallerii.stories.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import retrofit2.Call;
@@ -21,11 +22,11 @@ public class ProfileUpdateController extends ProfileController {
     public void putApplicationProfile(final ApplicationProfile profile) {
         EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
         JsonElement jsonElement = new JsonParser().parse(new Gson().toJson(profile));
-        Call<ApplicationProfile> responseCall = endpointsApi.putProfileById(profile.getUserId(), jsonElement.getAsJsonObject());
+        Call<JsonObject> responseCall = endpointsApi.putProfileById(profile.getUserId(), jsonElement.getAsJsonObject());
 
-        responseCall.enqueue(new DefaultCallback<ApplicationProfile>(activity) {
+        responseCall.enqueue(new DefaultCallback<JsonObject>(activity) {
             @Override
-            public void onResponse(Response<ApplicationProfile> response) {
+            public void onResponse(Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     activity.showMessage("Successfully updated profile");
                 } else {
