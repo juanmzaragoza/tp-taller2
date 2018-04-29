@@ -7,6 +7,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import tallerii.stories.network.apimodels.ApplicationProfile;
@@ -27,6 +28,10 @@ public interface EndpointsApplicationApiRest {
     @POST(ConstantsApplicationApiRest.POST_LOGIN)
     Call<JsonObject> postLogin(@Body JsonObject parameters);
 
-    @GET(ConstantsApplicationApiRest.GET_PROFILE)
+    @GET(ConstantsApplicationApiRest.PROFILE_ENDPOINT)
     Call<ApplicationProfile> getProfileById(@Path("id") String user_id);
+
+    @Headers({"Accept:application/json"})
+    @PUT(ConstantsApplicationApiRest.PROFILE_ENDPOINT)
+    Call<ApplicationProfile> putProfileById(@Path("id") String user_id, @Body JsonObject profile);
 }

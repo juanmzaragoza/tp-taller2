@@ -8,7 +8,7 @@ public final class ConstantsApplicationApiRest {
     public static final String KEY_GET_USER_BY_ID = "get?username=juanzaragoza@live.com.ar&password=gk3nxmbkif&facebookAuthToken=gaksrgnnbxc";
     public static final String POST_REGISTRATION = "user";
     public static final String POST_LOGIN = "token";
-    public static final String GET_PROFILE = "profile/{id}";
+    public static final String PROFILE_ENDPOINT = "profile/{id}";
 
     public static final String URL_GET_USER_BY_ID = REST_API + KEY_GET_USER_BY_ID;
 }

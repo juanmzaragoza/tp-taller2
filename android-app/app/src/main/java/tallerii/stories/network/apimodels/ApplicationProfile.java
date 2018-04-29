@@ -6,17 +6,17 @@ import java.util.List;
 
 public class ApplicationProfile {
 
-    public String id;
-    public String rev;
-    public String userId;
+    private String id;
+    private String rev;
+    private String userId;
     @SerializedName("last_name")
-    public String lastName;
-    public String name;
-    public String email;
+    private String lastName;
+    private String name;
+    private String email;
     @SerializedName("profile_picture")
-    public String profilePicture;
-    public List<Story> stories = null;
-    public List<Friend> friends = null;
+    private String profilePicture;
+    private List<Story> stories = null;
+    private List<Friend> friends = null;
 
     public List<Friend> getFriends() {
         return friends;

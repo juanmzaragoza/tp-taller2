@@ -1,32 +1,35 @@
 package tallerii.stories.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import retrofit2.Call;
 import retrofit2.Response;
-import tallerii.stories.ProfileActivity;
+import tallerii.stories.UserProfileActivity;
+import tallerii.stories.UserProfileUpdateActivity;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 
-public class ProfileController {
-    protected ProfileActivity activity;
+public class ProfileUpdateController extends ProfileController {
 
-    public ProfileController(ProfileActivity activity) {
-        this.activity = activity;
+    public ProfileUpdateController(UserProfileUpdateActivity activity) {
+        super(activity);
     }
 
     /**call api rest and get the user**/
-    public void getUser(final String username) {
+    public void putApplicationProfile(final ApplicationProfile profile) {
         EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
-        Call<ApplicationProfile> responseCall = endpointsApi.getProfileById(username);
+        JsonElement jsonElement = new JsonParser().parse(new Gson().toJson(profile));
+        Call<ApplicationProfile> responseCall = endpointsApi.putProfileById(profile.getUserId(), jsonElement.getAsJsonObject());
 
         responseCall.enqueue(new DefaultCallback<ApplicationProfile>(activity) {
             @Override
             public void onResponse(Response<ApplicationProfile> response) {
                 if (response.isSuccessful()) {
-                    ApplicationProfile applicationProfile = response.body();
-                    if (applicationProfile != null) {
-                        activity.initializeProfile(applicationProfile);
-                    }
+                    activity.showMessage("Successfully updated profile");
                 } else {
                     manageErrors(response);
                 }
