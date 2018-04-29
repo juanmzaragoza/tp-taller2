@@ -12,6 +12,11 @@ public class ApplicationProfile {
     public String email;
     public String profilePicture;
     public List<Story> stories = null;
+    public List<Friend> friends = null;
+
+    public List<Friend> getFriends() {
+        return friends;
+    }
 
     public String getId() {
         return id;
@@ -46,6 +51,6 @@ public class ApplicationProfile {
     }
 
     public String getFullName() {
-        return String.join(" ", name, lastName);
+        return name + " " + lastName;
     }
 }

@@ -1,15 +1,16 @@
 package tallerii.stories;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -24,8 +25,11 @@ import com.google.firebase.storage.UploadTask;
 import java.io.IOException;
 import java.util.UUID;
 
-public class UserProfileActivity extends AppCompatActivity {
+import tallerii.stories.network.apimodels.ApplicationProfile;
 
+public class UserProfileActivity extends StoriesAppActivity {
+
+    public static final String PROFILE = "profile";
     private ImageView imageView;
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
@@ -36,14 +40,15 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        imageView = findViewById(R.id.profile_picture);
         FirebaseStorage storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
+        imageView = findViewById(R.id.profile_picture);
 
-        Glide.with(this /* context */)
-                .using(new FirebaseImageLoader())
-                .load(storageReference.child("images/profile"))
-                .into(imageView);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null && bundle.get(PROFILE) != null) {
+            ApplicationProfile profile = (ApplicationProfile) bundle.get(PROFILE);
+            initializeProfile(profile);
+        }
     }
 
     public void chooseImage(View view) {
@@ -100,5 +105,25 @@ public class UserProfileActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    @Override
+    protected Context getContext() {
+        return UserProfileActivity.this;
+    }
+
+    public void initializeProfile(ApplicationProfile applicationProfile) {
+        TextView username = findViewById(R.id.user_name);
+        username.setText(applicationProfile.getFullName());
+
+        TextView friendsCount = findViewById(R.id.friend_count);
+        friendsCount.setText(applicationProfile.getFriends().size());
+
+        //try to obtain profile pic from firebase
+        Glide.with(this /* context */)
+                .using(new FirebaseImageLoader())
+                .load(storageReference.child("images/" + applicationProfile.getProfilePicture()))
+                .into(imageView)
+        ;
     }
 }
