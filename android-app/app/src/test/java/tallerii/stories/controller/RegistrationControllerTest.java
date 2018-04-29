@@ -1,4 +1,4 @@
-package tallerii.stories;
+package tallerii.stories.controller;
 
 import android.widget.Toast;
 
@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
+import tallerii.stories.RegistrationActivity;
 import tallerii.stories.controller.LoginController;
 import tallerii.stories.controller.RegistrationController;
 import tallerii.stories.network.ConstantsApplicationApiRest;

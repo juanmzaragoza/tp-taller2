@@ -1,4 +1,4 @@
-package tallerii.stories;
+package tallerii.stories.controller;
 
 import com.google.gson.Gson;
 
@@ -16,6 +16,7 @@ import java.nio.file.Files;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import tallerii.stories.UserProfileActivity;
 import tallerii.stories.controller.ProfileController;
 import tallerii.stories.network.ConstantsApplicationApiRest;
 import tallerii.stories.network.apimodels.ApplicationProfile;
