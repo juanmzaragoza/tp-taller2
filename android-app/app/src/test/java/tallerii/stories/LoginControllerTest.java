@@ -1,7 +1,5 @@
 package tallerii.stories;
 
-import android.widget.Toast;
-
 import com.google.gson.Gson;
 
 import org.junit.After;
@@ -64,7 +62,7 @@ public class LoginControllerTest {
 
         controller.checkFBUserExists(1, "");
 
-        verify(mockActivity, timeout(2000).times(1)).startRegistrationActivity(anyString());
+        verify(mockActivity, timeout(2000).times(1)).startRegistrationActivity(anyString(), id);
     }
 
     @Test

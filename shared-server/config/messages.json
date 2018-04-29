@@ -66,7 +66,14 @@
         "codeHttp": 409,
         "body":{
             "code": 59,
-            "message": "Conflict"
+            "message": "Valid FB Token but User is not Registered"
+        }
+    },
+    "BadRequestEmptyFields":{
+        "codeHttp": 400,
+        "body":{
+            "code": 50,
+            "message": "Bad Request: The fields are mandatory"
         }
     },
     "InternalServerError":{

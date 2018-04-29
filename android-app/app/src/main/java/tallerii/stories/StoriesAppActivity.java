@@ -33,9 +33,10 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
         finish();
     }
 
-    public void startRegistrationActivity(String username) {
+    public void startRegistrationActivity(String username, long id) {
         Intent intent = new Intent(this, RegistrationActivity.class);
         intent.putExtra(RegistrationActivity.USERNAME, username);
+        intent.putExtra(RegistrationActivity.FBID, id);
         startActivity(intent);
         finish();
     }

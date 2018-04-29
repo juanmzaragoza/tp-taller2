@@ -17,9 +17,10 @@ public class RegistrationController {
     }
 
     /**call api rest and register the user**/
-    public void register(final String username, final String password) {
+    public void register(final long id, final String username, final String password) {
         EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
         JsonObject parameters = new JsonObject();
+        parameters.addProperty("id", id);
         parameters.addProperty("username", username);
         parameters.addProperty("password", password);
         Call<RegistrationResult> responseCall = endpointsApi.postRegistration(parameters);

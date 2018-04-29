@@ -9,8 +9,13 @@ import android.widget.TextView;
 import tallerii.stories.controller.RegistrationController;
 
 public class RegistrationActivity extends StoriesAppActivity {
+
     public static final String USERNAME = "username";
+    public static final String FBID = "id";
+
     private final RegistrationController controller;
+
+    private long id;
 
     public RegistrationActivity() {
         this.controller = new RegistrationController(this);
@@ -30,6 +35,7 @@ public class RegistrationActivity extends StoriesAppActivity {
             TextView t = findViewById(R.id.usernameText);
             t.setText(bundle.getString(USERNAME));
         }
+        this.id = bundle.getLong(FBID);
     }
 
     public void register(View v) {
@@ -41,7 +47,7 @@ public class RegistrationActivity extends StoriesAppActivity {
         } else if (!password.equals(confirmPassword)) {
             showMessage("Passwords do not match");
         } else {
-            controller.register(username, password);
+            controller.register(this.id, username, password);
         }
     }
 }
