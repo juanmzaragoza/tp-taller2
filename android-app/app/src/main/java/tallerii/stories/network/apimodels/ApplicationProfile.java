@@ -3,6 +3,7 @@ package tallerii.stories.network.apimodels;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ApplicationProfile {
 
@@ -17,6 +18,7 @@ public class ApplicationProfile {
     private String profilePicture;
     private List<Story> stories = null;
     private List<Friend> friends = null;
+    private String firstName;
 
     public List<Friend> getFriends() {
         return friends;
@@ -56,5 +58,17 @@ public class ApplicationProfile {
 
     public String getFullName() {
         return name + " " + lastName;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

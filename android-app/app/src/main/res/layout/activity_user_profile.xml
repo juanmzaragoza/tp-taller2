@@ -25,28 +25,33 @@
                 app:srcCompat="@drawable/ic_account_circle_white_24dp" />
         </FrameLayout>
 
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User name" />
+
+        <Button
+            android:id="@+id/edit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="editProfile"
+            android:text="Edit" />
         <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center_horizontal"
             android:orientation="horizontal">
-
             <TextView
-                android:id="@+id/user_name"
+                android:id="@+id/friend_count_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User name" />
-
-            <Button
-                android:id="@+id/edit_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edit" />
-
+                android:text="Number of friends: " />
             <TextView
-                android:id="@+id/friend_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="FriendCounts" />
+            android:id="@+id/friend_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FriendCounts" />
         </LinearLayout>
 
         <!--Insert StoriesFragment here??-->

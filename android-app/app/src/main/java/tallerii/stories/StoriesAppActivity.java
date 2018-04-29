@@ -39,4 +39,11 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    public void startProfileUpdateActivity(String profile) {
+        Intent intent = new Intent(this, UserProfileUpdateActivity.class);
+        intent.putExtra(ProfileActivity.PROFILE_OBJECT, profile);
+        startActivity(intent);
+        finish();
+    }
 }

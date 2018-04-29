@@ -16,11 +16,13 @@ import tallerii.stories.network.apimodels.ApplicationProfile;
 public abstract class ProfileActivity extends StoriesAppActivity {
     public static final String PROFILE_OBJECT = "profile";
     public static final String PROFILE_ID = "profileId";
+
     protected final int PICK_IMAGE_REQUEST = 71;
     protected ImageView imageView;
-    StorageReference storageReference;
+    protected StorageReference storageReference;
+    protected ProfileController controller;
 
-    ProfileController controller;
+    protected ApplicationProfile applicationProfile;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public abstract class ProfileActivity extends StoriesAppActivity {
     protected abstract void initWithChildResource();
 
     public void initializeProfile(ApplicationProfile applicationProfile) {
+        this.applicationProfile = applicationProfile;
         TextView friendsCount = findViewById(R.id.friend_count);
         friendsCount.setText(String.valueOf(applicationProfile.getFriends().size()));
         setUserName(applicationProfile);

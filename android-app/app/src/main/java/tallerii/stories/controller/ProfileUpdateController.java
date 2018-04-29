@@ -2,12 +2,10 @@ package tallerii.stories.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import retrofit2.Call;
 import retrofit2.Response;
-import tallerii.stories.UserProfileActivity;
 import tallerii.stories.UserProfileUpdateActivity;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;

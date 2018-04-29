@@ -32,7 +32,7 @@
 
             <Button
                 android:id="@+id/btnChoose"
-                android:text="Choose"
+                android:text="@string/choose_picture"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -42,28 +42,43 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
 
             <EditText
-                android:id="@+id/user_name"
+                android:id="@+id/first_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="User name" />
-
+                android:inputType="text"/>
+            <EditText
+                android:id="@+id/last_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/friend_count_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/number_of_friends" />
             <TextView
                 android:id="@+id/friend_count"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="FriendCounts" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
         <Button
             android:id="@+id/btnUpload"
-            android:text="Upload"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:onClick="uploadImage"/>
+            android:onClick="upload"
+            android:text="@string/save_changes" />
         <!--Insert StoriesFragment here??-->
     </LinearLayout>
 

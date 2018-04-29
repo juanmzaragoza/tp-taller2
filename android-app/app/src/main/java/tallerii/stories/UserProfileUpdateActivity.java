@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -28,24 +27,21 @@ import tallerii.stories.network.apimodels.ApplicationProfile;
 public class UserProfileUpdateActivity extends ProfileActivity {
 
     private Uri filePath;
-    StorageReference storageReference;
-    EditText userName;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        userName = findViewById(R.id.user_name);
-    }
+    private EditText firstName;
+    private EditText lastName;
 
     @Override
     protected void initWithChildResource() {
         setContentView(R.layout.activity_user_update_profile);
         imageView = findViewById(R.id.profile_picture);
+        firstName = findViewById(R.id.first_name);
+        lastName = findViewById(R.id.last_name);
     }
 
     @Override
     protected void setUserName(ApplicationProfile applicationProfile) {
-        userName.setText(applicationProfile.getName());
+        firstName.setText(applicationProfile.getName());
+        lastName.setText(applicationProfile.getLastName());
     }
 
 
@@ -72,13 +68,13 @@ public class UserProfileUpdateActivity extends ProfileActivity {
         }
     }
 
-    public void uploadImage(View view) {
+    private void uploadImage(String imageName) {
         if(filePath != null) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child("images/" + UUID.randomUUID());
+            StorageReference ref = storageReference.child("images/" + imageName);
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -113,5 +109,15 @@ public class UserProfileUpdateActivity extends ProfileActivity {
     @Override
     protected ProfileController getController() {
         return new ProfileUpdateController(this);
+    }
+
+    public void upload(View view) {
+        applicationProfile.setFirstName(getStringFrom(R.id.first_name));
+        applicationProfile.setLastName(getStringFrom(R.id.last_name));
+        applicationProfile.setProfilePicture(UUID.randomUUID().toString());
+
+        uploadImage(applicationProfile.getProfilePicture());
+
+        ((ProfileUpdateController)controller).putApplicationProfile(applicationProfile);
     }
 }
