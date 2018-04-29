@@ -1,41 +1,41 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
+module.exports = (Sequelize, sequelize, models) => {
     var User = sequelize.define('User', {
         id: {
-            type: DataTypes.INTEGER,
+            type: Sequelize.INTEGER,
             autoIncrement: true,
             primaryKey: true
         },
         username: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             allowNull: false
         },
         password: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             allowNull: false
         },
         rev: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             allowNull: true
         },
         token: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             allowNull: true
         },
         role: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             allowNull: true
         },
         tokenFace: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             allowNull: true
         },
         type: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             allowNull: true
         },
         applicationOwner: {
-            type: DataTypes.STRING,
+            type: Sequelize.STRING,
             allowNull: true
         },
     }, {});
@@ -44,5 +44,5 @@ module.exports = (sequelize, DataTypes) => {
         // associations can be defined here
     };
 
-    return User;
+    models.user = User;
 };
