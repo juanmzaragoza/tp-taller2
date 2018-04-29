@@ -9,31 +9,28 @@ const UserService = require('../services/user.service')
 class UserController {
     constructor() {
         this.user = (req, res, next) => {
-            var usr = {
-                id: 2
-            };
-            ResServ.ok(ResEnum.Value, "user", usr, res, next);
-            // try{
-            //     var usr = new User(req.body);
-            //     UserService.add(usr,(err, user)=>{
-            //         if(err){
-            //             ResServ.error(404, 10, "Not Found", res, next);
-            //         }
-            //         else{
-            //             ResServ.ok(ResEnum.Value, "user", user, res, next);
-            //         }
-            //     })
-            // }
-            // catch(e){
-            //     ResServ.error(500, 10, "Unexpected error", res, next);
-            // }
+            try{
+                var usr = new User(req.body);
+                UserService.add(usr,(err, user)=>{
+                    if(err){
+                        ResServ.error(res, messages.NotFound);
+                    }
+                    else{
+                        ResServ.ok(ResEnum.Value, "user", user, res, next);
+                    }
+                })
+            }
+            catch(e){
+                ResServ.error(res, messages.InternalServerError);
+            }
+
         };
         
         this.getById = (req, res, next) => {
             var id = req.params.id;
             UserService.getById(id,(err, user)=>{
                 if(err){
-                    ResServ.error(404, 2, messages.common.error, res, next);
+                    ResServ.error(res, messages.NotFound);
                 }
                 else{
                     ResServ.ok(ResEnum.Value, "user", user, res, next);

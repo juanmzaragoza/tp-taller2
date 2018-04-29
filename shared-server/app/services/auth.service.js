@@ -14,10 +14,16 @@ class AuthService {
             if(req.headers.authorization){
                 var token = req.headers.authorization.split(" ");
                 auth0.verify(token[token.length - 1], config.auth.tokenSecret, (error, decoded)=>{
-                    return next(error)
+                    if(error){
+                        res.status(407).send({ code: -2, message: error.message });
+                    }
+                    else{
+                        return next()
+                    }
                 })
             }else{
-                return next(new createError.Unauthorized());
+                res.status(401).send({ code: -5, message: 'Unauthorized' });
+                
             }
         }
     }

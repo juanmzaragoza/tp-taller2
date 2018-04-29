@@ -12,7 +12,7 @@ class ServerController {
             var srv = new Server(req.body);
             ServerService.add(srv, (err, server)=>{
                 if(err){
-                    ResServ.error(404, 2, messages.common.error, res, next);
+                    ResServ.error(res, messages.NotFound);
                 }
                 else{
                     ResServ.ok(ResEnum.Value, "server", server, res, next);
@@ -22,7 +22,7 @@ class ServerController {
         this.getById = (req, res, next)=>{
             ServerService.getById(req.params.id, (err, server)=>{
                 if(err){
-                    ResServ.error(404, 2, messages.common.error, res, next);
+                    ResServ.error(res, messages.NotFound);
                 }
                 else{
                     ResServ.ok(ResEnum.Values, "server", server, res, next);
@@ -32,7 +32,7 @@ class ServerController {
         this.get = (req, res, next) => {
             ServerService.get((err, servers)=>{
                 if(err){
-                    ResServ.error(404, 2, messages.common.error, res, next);
+                    ResServ.error(res, messages.NotFound);
                 }
                 else{
                     ResServ.ok(ResEnum.Values, "servers", servers, res, next);
@@ -42,7 +42,7 @@ class ServerController {
         this.refreshToken = (req, res, next) => {
             ServerService.refreshToken(req.params.id, (err, server)=>{
                 if(err){
-                    ResServ.error(404, 2, messages.common.error, res, next);
+                    ResServ.error(res, messages.NotFound);
                 }
                 else{
                     ResServ.ok(ResEnum.Value, "server", server, res, next);
@@ -54,7 +54,7 @@ class ServerController {
             srv.id = req.params.id;
             ServerService.update(srv, (err, server)=>{
                 if(err){
-                    ResServ.error(404, 2, messages.common.error, res, next);
+                    ResServ.error(res, messages.NotFound);
                 }
                 else{
                     ResServ.ok(ResEnum.Value, "server", server, res, next);
@@ -66,7 +66,7 @@ class ServerController {
             ServerService.delete(id, (err, message)=>{
                 console.info(err)
                 if(err){
-                    ResServ.error(404, 2, messages.common.error, res, next);
+                    ResServ.error(res, messages.NotFound);
                 }
                 else{
                     ResServ.ok(ResEnum.OnlyValue, undefined, message, res, next);
