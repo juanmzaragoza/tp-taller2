@@ -53,7 +53,7 @@ describe('endpoints', function(){
 		});
 	});
 	
-	it('/user', function(done) {
+	/*it('/user', function(done) {
 		var data = {
 			"id": "string",
 			"_rev": "string",
@@ -68,7 +68,7 @@ describe('endpoints', function(){
 			// assert.equal(JSON.parse(body)['user']['id'].length, 36);
 			done(err);
 		}) 
-	});
+	});*/
 	
 	// it('/token', function(done) {
 	// 	var data = {

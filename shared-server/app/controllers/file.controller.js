@@ -36,7 +36,7 @@ class FileController{
                     ResServ.ok(ResEnum.Value, "server", server, res, next);
                 }
                 else{
-                    ResServ.error(500, 2, messages.common.error, res, next);
+                    ResServ.error(res, messages.NotFound);
                 }
             });
         }
