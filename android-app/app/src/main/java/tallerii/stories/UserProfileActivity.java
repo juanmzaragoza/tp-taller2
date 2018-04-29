@@ -25,15 +25,18 @@ import com.google.firebase.storage.UploadTask;
 import java.io.IOException;
 import java.util.UUID;
 
+import tallerii.stories.controller.ProfileController;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 
 public class UserProfileActivity extends StoriesAppActivity {
 
-    public static final String PROFILE = "profile";
+    public static final String PROFILE_OBJECT = "profile";
+    public static final String PROFILE_ID = "profileId";
     private ImageView imageView;
     private Uri filePath;
     private final int PICK_IMAGE_REQUEST = 71;
     StorageReference storageReference;
+    ProfileController controller = new ProfileController(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +48,11 @@ public class UserProfileActivity extends StoriesAppActivity {
         imageView = findViewById(R.id.profile_picture);
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null && bundle.get(PROFILE) != null) {
-            ApplicationProfile profile = (ApplicationProfile) bundle.get(PROFILE);
+        if (bundle != null && bundle.get(PROFILE_OBJECT) != null) {
+            ApplicationProfile profile = (ApplicationProfile) bundle.get(PROFILE_OBJECT);
             initializeProfile(profile);
+        } else if (bundle != null && bundle.get(PROFILE_ID) != null) {
+            controller.getUser(bundle.getString(PROFILE_ID));
         }
     }
 
@@ -119,7 +124,7 @@ public class UserProfileActivity extends StoriesAppActivity {
         TextView friendsCount = findViewById(R.id.friend_count);
         friendsCount.setText(applicationProfile.getFriends().size());
 
-        //try to obtain profile pic from firebase
+        //try to obtain profile pic from Firebase
         Glide.with(this /* context */)
                 .using(new FirebaseImageLoader())
                 .load(storageReference.child("images/" + applicationProfile.getProfilePicture()))
