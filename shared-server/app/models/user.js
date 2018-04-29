@@ -1,5 +1,6 @@
-module.exports = function (Sequelize, sequelize, models) {
-    const User = sequelize.define('user', {
+'use strict';
+module.exports = (Sequelize, sequelize, models) => {
+    var User = sequelize.define('User', {
         id: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
@@ -13,29 +14,35 @@ module.exports = function (Sequelize, sequelize, models) {
             type: Sequelize.STRING,
             allowNull: false
         },
+        rev: {
+            type: Sequelize.STRING,
+            allowNull: true
+        },
         token: {
             type: Sequelize.STRING,
             allowNull: true
         },
-        token_expiration: {
-            type: Sequelize.DATE,
+        role: {
+            type: Sequelize.STRING,
             allowNull: true
         },
-    });
-// class User{
-//     constructor(data){
-//         this.id;
-//         this._rev = data._rev;
-//         this.password = data.password;
-//         this.username = data.username;
-//         this.token;
-//         this.role = 'default'
-//         this.tokenFace
-//         this.type;
-//         this.applicationOwner = data.applicationOwner;
-//     }
-// }
+        tokenFace: {
+            type: Sequelize.STRING,
+            allowNull: true
+        },
+        type: {
+            type: Sequelize.STRING,
+            allowNull: true
+        },
+        applicationOwner: {
+            type: Sequelize.STRING,
+            allowNull: true
+        },
+    }, {});
+    
+    User.associate = function(models) {
+        // associations can be defined here
+    };
+
     models.user = User;
 };
-
-

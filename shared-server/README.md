@@ -15,3 +15,43 @@ Para conectarse a la DB dockerizada puede hacer utilizando el el psql desde dent
 - source bin/activate
 - python lib/python2.7/site-packages/pgadmin4/pgAdmin4.py
 
+
+# Migration
+http://docs.sequelizejs.com/manual/tutorial/migrations.html
+Para correr las migraciones y los seeds, basta con hacer
+`docker-compose exec 'node' sh migrations.sh`
+
+## Crear migrations
+`node_modules/.bin/sequelize model:generate --name User --attributes firstName:string,lastName:string,email:string`
+
+## Run migration
+`node_modules/.bin/sequelize db:migrate`
+
+
+## Undo migration
+
+### La mas reciente
+`node_modules/.bin/sequelize db:migrate:undo`
+
+### Todas
+`node_modules/.bin/sequelize db:migrate:undo:all`
+
+### Hasta una migration especifica
+`node_modules/.bin/sequelize db:migrate:undo:all --to XXXXXXXXXXXXXX-create-posts.js`
+
+
+## Crear seed
+`node_modules/.bin/sequelize seed:generate --name demo-user`
+
+
+## Run seeds
+`node_modules/.bin/sequelize db:seed:all`
+
+
+## Undo seed
+
+## La mas reciente
+node_modules/.bin/sequelize db:seed:undo
+
+## Todas
+node_modules/.bin/sequelize db:seed:undo:all
