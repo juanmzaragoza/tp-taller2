@@ -29,7 +29,7 @@ class LoginService {
                             resolve(result);
                         })
                         .catch(function(err){
-                            reject(handleErr(err));
+                            reject(handleErrFB(err));
                         })
                     }
                     else{
@@ -37,7 +37,7 @@ class LoginService {
                     }
                 })
                 .catch(function(err){
-                    reject(handleErr(err));
+                    reject(handleErrFB(err));
                 })
             });
         };
@@ -87,7 +87,7 @@ class LoginService {
                     resolve(result);
                 })
                 .catch(function(err){
-                    var reason = handleErr(err)
+                    var reason = handleErrAPP(err)
                     reject(reason);
                 })
             });
@@ -136,13 +136,16 @@ class LoginService {
                 return authByApp(username, password, models)
             }
         }
-        function handleErr(err){
-            console.log(err)
-            var reason = 'unexpected';
+        function handleErrFB(err){
+            var reason = handleErrAPP(err)
             if (err == USER_NOT_FOUND){
                 reason = "fb_user_not_exist";
             }
-            else if(err == INVALID_PASSWORD){
+            return reason
+        }
+        function handleErrAPP(err){
+            var reason = 'unexpected';
+            if (err == USER_NOT_FOUND || err == INVALID_PASSWORD){
                 reason = 'unauthorized';
             }
             return reason
