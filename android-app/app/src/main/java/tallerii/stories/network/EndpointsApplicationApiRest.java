@@ -19,7 +19,7 @@ public interface EndpointsApplicationApiRest {
 
     @Headers({"Accept:application/json"})
     @POST(ConstantsApplicationApiRest.POST_REGISTRATION)
-    Call<RegistrationResult> postRegistration(@Body JsonObject parameters);
+    Call<JsonObject> postRegistration(@Body JsonObject parameters);
 
     @Headers({"Accept:application/json"})
     @POST(ConstantsApplicationApiRest.POST_LOGIN)

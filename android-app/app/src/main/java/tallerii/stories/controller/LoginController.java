@@ -1,10 +1,12 @@
 package tallerii.stories.controller;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.Response;
 import tallerii.stories.LoginActivity;
+import tallerii.stories.helpers.Store;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
 
@@ -36,6 +38,18 @@ public class LoginController {
             public void onResponse(Response<JsonObject> response) {
                 // if username and password match
                 if (response.isSuccessful() && response.code() == 201) {
+                    /* Response
+                     *  {
+                     *      "metadata": {
+                     *          "version": "v1"
+                     *      },
+                     *      "token": {
+                     *          "expiresAt": 3600,
+                     *          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7fSwiaWF0IjoxNTI1MDQ5NjkxLCJleHAiOjE1MjUwNTMyOTF9.enwol4ZJS1qBgkaNmvxZkrewGBR053icNWho_f3gK0k"
+                     *      }
+                     *  }
+                     */
+                    Store.save("token",response.body().getAsJsonObject("token").get("token").getAsString());
                     activity.startMainActivity(username);
                     // if fb token is ok but user doesnt exists
                 } else if(response.code() == 409){

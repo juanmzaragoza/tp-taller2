@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import retrofit2.Call;
 import retrofit2.Response;
 import tallerii.stories.RegistrationActivity;
+import tallerii.stories.helpers.Store;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
 import tallerii.stories.network.apimodels.RegistrationResult;
@@ -23,15 +24,15 @@ public class RegistrationController {
         parameters.addProperty("id", id);
         parameters.addProperty("username", username);
         parameters.addProperty("password", password);
-        Call<RegistrationResult> responseCall = endpointsApi.postRegistration(parameters);
+        Call<JsonObject> responseCall = endpointsApi.postRegistration(parameters);
 
-        responseCall.enqueue(new DefaultCallback<RegistrationResult>(activity) {
+        responseCall.enqueue(new DefaultCallback<JsonObject>(activity) {
             @Override
-            public void onResponse(Response<RegistrationResult> response) {
+            public void onResponse(Response<JsonObject> response) {
                 if (response.isSuccessful()) {
-                    RegistrationResult registrationResult = response.body();
-                    if (registrationResult != null) {
-                        activity.showMessage("Registration successful\nWelcome to stories " + registrationResult.getUsername() + "!!");
+                    if (response.body() != null) {
+                        Store.save("token",response.body().getAsJsonObject("token").get("token").getAsString());
+                        activity.showMessage("Registration successful\nWelcome to stories!!");
                         activity.startMainActivity(username);
                     }
                 } else {

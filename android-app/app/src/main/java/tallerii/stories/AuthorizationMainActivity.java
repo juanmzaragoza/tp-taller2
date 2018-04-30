@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 
+import tallerii.stories.helpers.Store;
+
 /*
  * -----------------
  * Troubleshooting
@@ -25,8 +27,8 @@ public class AuthorizationMainActivity extends AppCompatActivity {
 
         /* TODO:  when the token is stored
         // go straight to main if a token is stored
-        if (Util.getTokenx() != null) {*/
-
+        if ( Store.get("token") != null) {
+        */
         if (false) {
             activityIntent = new Intent(this, MainActivity.class);
         } else {// else not logged in
