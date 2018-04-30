@@ -4,6 +4,7 @@ from werkzeug.exceptions import BadRequest
 
 from api_client.shared_api_client import SharedApiClient
 from api_client.request_exception import RequestException
+from api_client.user_not_exists_exception import UserNotExistsException
 
 from controllers.response_builder import ResponseBuilder
 from controllers.error_handler import ErrorHandler
@@ -23,7 +24,7 @@ class LoginController(flask_restful.Resource):
 			response = self.shared_api_client.login(args["username"],args["password"])
 			if not response:
 				return ErrorHandler.create_error_response("You haven't authorization", 401)
-			
+
 			return ResponseBuilder.build_response(response, 201)
 
 		except RequestException as e:
@@ -31,4 +32,7 @@ class LoginController(flask_restful.Resource):
 
 		except BadRequest as ex:
 			return ErrorHandler.create_error_response("Fields username and password are mandatory", 400)
+
+		except UserNotExistsException as e:
+			return ErrorHandler.create_error_response(str(e), 409)
 

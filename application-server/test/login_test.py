@@ -116,7 +116,7 @@ class TestFlaskLoginApi(unittest.TestCase):
         self.assertIn("code", response_data)
         self.assertEqual(500,response_data["code"])
         self.assertIn("message", response_data)
-        self.assertEqual(response_data["message"], "internal error")
+        self.assertEqual(response_data["message"], "shared server error")
 
 
 if __name__ == "__main__":

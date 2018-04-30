@@ -96,8 +96,10 @@ public class LoginActivity extends StoriesAppActivity {
                     try {
                         long fbId = object.getLong(FIELD_ID);
                         String fbEmail = object.getString(FIELD_EMAIL);
-                        String fbAccessToken = AccessToken.getCurrentAccessToken().getToken();
-                        controller.checkFBUserExists(fbId, fbEmail);
+                        String fbAccessToken = "fb " + AccessToken.getCurrentAccessToken().getToken();
+                        //controller.checkFBUserExists(fbId, fbEmail);
+                        // the server check if the token is valid for the user fbEmail
+                        controller.login(fbEmail, fbAccessToken, fbId);
                     } catch (JSONException e) {
                         e.printStackTrace();
                         showMessage("Application Error: " + e.getLocalizedMessage(), Toast.LENGTH_SHORT);

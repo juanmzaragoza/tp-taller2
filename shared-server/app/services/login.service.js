@@ -19,6 +19,7 @@ class LoginService {
             return new Promise((resolve, reject)=>{
                 isValidFB(password)
                 .then(function(valid){
+
                     if(valid){
                         return getUserByUsername(username, models)
                         .then( function(user){
@@ -97,6 +98,8 @@ class LoginService {
                 models.user.findOne(
                     { where: {username: username} }
                 ).then(function(user){
+
+            console.log("hola",username, )
                     if (user === null) {
                         getAdminUser(username).then(userAdmin=>{
                             resolve(userAdmin)

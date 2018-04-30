@@ -1,7 +1,5 @@
 package tallerii.stories.controller;
 
-import android.widget.Toast;
-
 import com.google.gson.Gson;
 
 import org.junit.After;
@@ -23,7 +21,6 @@ import tallerii.stories.network.apimodels.LoginResult;
 import tallerii.stories.network.apimodels.ServerError;
 import tallerii.stories.network.apimodels.Token;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
@@ -47,28 +44,6 @@ public class LoginControllerTest {
     }
 
     @Test
-    public void testCheckFBUserExistsWithExistingUserShowsError() {
-        LoginActivity mockActivity = mock(LoginActivity.class);
-        LoginController controller = new LoginController(mockActivity);
-        server.enqueue(new MockResponse().setBody("{\"username\":\"user\"}"));
-
-        controller.checkFBUserExists(1, "");
-
-        verify(mockActivity, timeout(2000).times(1)).showMessage(anyString());
-    }
-
-    @Test
-    public void testSuccessfulCheckFBUserCallsRegistrationActivity() {
-        LoginActivity mockActivity = mock(LoginActivity.class);
-        LoginController controller = new LoginController(mockActivity);
-        server.enqueue(new MockResponse().setResponseCode(404));
-
-        controller.checkFBUserExists(1, "");
-
-        verify(mockActivity, timeout(2000).times(1)).startRegistrationActivity(anyString());
-    }
-
-    @Test
     public void testLoginSuccess() {
         LoginActivity mockActivity = mock(LoginActivity.class);
         LoginController controller = new LoginController(mockActivity);
@@ -76,7 +51,8 @@ public class LoginControllerTest {
         EntityMetadata metadata = new EntityMetadata();
         metadata.setVersion("1");
         Token token = new Token();
-        token.setToken("t0k3n");
+        String tokenString = "t0k3n";
+        token.setToken(tokenString);
         token.setExpiresAt(Instant.now().plusSeconds(10).toEpochMilli());
         LoginResult loginResult = new LoginResult();
         loginResult.setMetadata(metadata);
@@ -86,7 +62,7 @@ public class LoginControllerTest {
 
         controller.login(username, "password");
 
-        verify(mockActivity, timeout(2000).times(1)).startMainActivity(username);
+        verify(mockActivity, timeout(2000).times(1)).startMainActivity(username, tokenString);
     }
 
     @Test

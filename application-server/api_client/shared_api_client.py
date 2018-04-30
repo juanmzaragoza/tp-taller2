@@ -1,7 +1,9 @@
+import sys
 import flask
 import requests
 import json
 from .request_exception import RequestException
+from api_client.user_not_exists_exception import UserNotExistsException
 from constants import SHARED_SERVER_URL, APPLICATION_OWNER
 
 app = flask.Flask(__name__)
@@ -15,20 +17,27 @@ class SharedApiClient():
 	def login(self, username, password):
 		# app.logger.error('url: %s', self.url)
 		try:
+
 			data = {'username': username,'password': password}
 			url = self.url + '/token'
 
 			response = requests.post(url, data=json.dumps(data), headers=self.headers)
 
-			if (response.status_code == 500):
-				raise RequestException("shared server error")
-
-			if ((response.status_code == 404) or (response.status_code == 401)):
-				return False
-
-			return response.json()
 		except:
+			print("Unexpected error:", sys.exc_info()[0])
 			raise RequestException("internal error")
+
+		if (response.status_code == 500):
+			raise RequestException("shared server error")
+
+		if (response.status_code == 409):
+			# "The FB Token is Valid but user doesn't exists"
+			raise UserNotExistsException()
+
+		if ((response.status_code == 404) or (response.status_code == 401)):
+			return False
+
+		return response.json()
 
 	def __get_response_data(self, response):
 		parsed_response = response.json()

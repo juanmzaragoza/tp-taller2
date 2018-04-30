@@ -12,6 +12,7 @@ class LoginController {
             if(req.body.username && req.body.password){ 
                 loginServ.auth(req.body.username,req.body.password, req.models)
                 .then((ticket) => {
+                    console.log(ticket)
                     ResServ.ok(ResEnum.Value, "token", ticket, res, next);
                 })
                 .catch((reason) => {
@@ -34,7 +35,7 @@ class LoginController {
                 });
             }
             else{
-                ResServ.error(res, messages.BadRequest);
+                ResServ.error(res, messages.BadRequestEmptyFields);
             }
         };
     }
