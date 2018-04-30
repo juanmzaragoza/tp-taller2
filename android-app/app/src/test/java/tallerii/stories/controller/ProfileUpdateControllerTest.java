@@ -54,7 +54,7 @@ public class ProfileUpdateControllerTest {
 
         verify(mockActivity, timeout(2000).times(1)).showMessage("Successfully updated profile");
         final RecordedRequest request = server.takeRequest();
-        assertEquals("/profile/1234", request.getPath());
+        assertEquals("/api/v1/profile/1234", request.getPath());
         JSONAssert.assertEquals(gson.toJson(profile), request.getBody().readUtf8(), JSONCompareMode.LENIENT);
     }
 }

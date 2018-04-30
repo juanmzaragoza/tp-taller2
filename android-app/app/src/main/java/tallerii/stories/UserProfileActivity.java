@@ -11,7 +11,6 @@ import tallerii.stories.network.apimodels.ApplicationProfile;
 
 public class UserProfileActivity extends ProfileActivity {
 
-
     @Override
     protected void initWithChildResource() {
         setContentView(R.layout.activity_user_profile);
