@@ -99,7 +99,7 @@ class LoginService {
                     { where: {username: username} }
                 ).then(function(user){
 
-            console.log("hola",username, )
+            //console.log("hola",username, )
                     if (user === null) {
                         getAdminUser(username).then(userAdmin=>{
                             resolve(userAdmin)

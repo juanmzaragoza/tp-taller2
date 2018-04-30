@@ -27,7 +27,7 @@ class LoginController {
                             ResServ.error(res, messages.Unauthorized);
                             break;
                         case "fb_user_not_exist":
-                            msg = "Facebook User doesn't exists";
+                            msg = "Valid FB Token but User is not Registered";
                             ResServ.error(res, messages.Conflict, msg);
                             break;
                         default: ResServ.error(res, messages.Unauthorized);
