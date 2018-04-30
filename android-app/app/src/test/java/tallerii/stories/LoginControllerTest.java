@@ -44,28 +44,6 @@ public class LoginControllerTest {
     }
 
     @Test
-    public void testCheckFBUserExistsWithExistingUserShowsError() {
-        LoginActivity mockActivity = mock(LoginActivity.class);
-        LoginController controller = new LoginController(mockActivity);
-        server.enqueue(new MockResponse().setBody("{\"username\":\"user\"}"));
-
-        controller.checkFBUserExists(1, "");
-
-        verify(mockActivity, timeout(2000).times(1)).showMessage(anyString());
-    }
-
-    @Test
-    public void testSuccessfulCheckFBUserCallsRegistrationActivity() {
-        LoginActivity mockActivity = mock(LoginActivity.class);
-        LoginController controller = new LoginController(mockActivity);
-        server.enqueue(new MockResponse().setResponseCode(404));
-
-        controller.checkFBUserExists(1, "");
-
-        verify(mockActivity, timeout(2000).times(1)).startRegistrationActivity(anyString(), id);
-    }
-
-    @Test
     public void testLoginSuccess() {
         LoginActivity mockActivity = mock(LoginActivity.class);
         LoginController controller = new LoginController(mockActivity);

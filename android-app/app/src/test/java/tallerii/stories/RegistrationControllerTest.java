@@ -54,14 +54,16 @@ public class RegistrationControllerTest {
     public void testRegistrationCompliesWithSchema() throws InterruptedException {
         RegistrationActivity mockActivity = mock(RegistrationActivity.class);
         RegistrationController controller = new RegistrationController(mockActivity);
+        long id = 41235152;
         String username = "pepe";
         String password = "p3p3";
 
-        controller.register(username, password);
+        controller.register(id,username, password);
         RecordedRequest received = server.takeRequest(1, TimeUnit.SECONDS);
 
         assertEquals("/user", received.getPath());
         JsonObject body = bodyFromRequest(received);
+        assertEquals(id, body.get("id").getAsLong());
         assertEquals(username, body.get("username").getAsString());
         assertEquals(password, body.get("password").getAsString());
     }
@@ -87,7 +89,7 @@ public class RegistrationControllerTest {
         error.setMessage(errorMessage);
         server.enqueue(new MockResponse().setResponseCode(errorCode).setBody(gson.toJson(error)));
 
-        controller.register("username", "password");
+        controller.register(123123,"username", "password");
 
         verify(mockActivity, timeout(2000).times(1)).showMessage(errorMessage);
     }
