@@ -19,6 +19,7 @@ public class RegistrationController {
 
     /**call api rest and register the user**/
     public void register(final long id, final String username, final String password) {
+        final Store store = new Store();
         EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
         JsonObject parameters = new JsonObject();
         parameters.addProperty("id", id);
@@ -31,7 +32,7 @@ public class RegistrationController {
             public void onResponse(Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        Store.save("token",response.body().getAsJsonObject("token").get("token").getAsString());
+                        store.save("token",response.body().getAsJsonObject("token").get("token").getAsString());
                         activity.showMessage("Registration successful\nWelcome to stories!!");
                         activity.startMainActivity(username);
                     }
