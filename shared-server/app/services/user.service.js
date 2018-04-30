@@ -4,31 +4,79 @@ const StorageServ   = require('./storage.service')
 const bcrypt        = require('bcrypt')
 const config        = require('../../config/default')
 const DaoService    = require('../services/dao.service')
-
+var _               = require("underscore")
 
 class UserService {
     constructor() {
-        this.add = (user, models)=>{
-            return new Promise((resolve, reject)=>{
-                user["token"]  =  { 
-                    token: AuthService.token(user),
-                    expiresAt: 3600
-                };
-                bcrypt.hash(user.password, config.bcrypt.saltRounds, function(err, hash) { 
-                    user.password = hash;
-                    user.role = "app"
-                    DaoService.insert(models.user, user)
-                    .then(newUser =>{
-                        delete newUser.password
-                        resolve(newUser)
-                    })
-                    .catch(e=>{
-                        reject(e)
-                    })
-                })
-            })
-            
+
+        function validateAttrs(attrs) {
+            if (attrs['_rev']){
+                attrs.rev = attrs['_rev'];
+                delete attrs['_rev'];
+            }
+            if (attrs['password']){
+                attrs.rawPassword = attrs['password'];
+                delete attrs['password'];
+            }
+
+            const neededAttrs = [
+                "rev",
+                "rawPassword",
+                "applicationOwner",
+                "username",
+                "role"
+            ];
+
+            var keys = _.keys(attrs);
+            var diff = _.difference(neededAttrs, keys);
+            return new Promise((resolve, reject) => {
+                if (diff.length == 0){
+                    resolve(); 
+                } else {
+                    reject("invalid-attrs");
+                }
+            });
         }
+
+        function getHashedPassword(password) {
+            return new Promise ( (resolve, reject) => {
+                bcrypt.hash(password, config.bcrypt.saltRounds).then(function(hash) {
+                    resolve(hash);
+                })
+                .catch(function(err) {
+                    reject("err-hash");
+                });
+            });
+        }
+
+        function createUser(attrs, models) {
+            return DaoService.insert(models.user, attrs);
+        }
+
+        this.add = (attrs, models) => {
+            
+            return new Promise((resolve, reject) => {
+                validateAttrs(attrs)
+                .then( function() {
+                    return getHashedPassword(attrs.rawPassword);                    
+                })
+                .then(function(password) {
+                    attrs.password = password;
+                    attrs.token = AuthService.token(attrs); // creo que el loguin deberia llamar a login.service
+                    return createUser(attrs, models);
+                })
+                .then(function(user){
+                    var responseData = user.toJSON();
+                    delete responseData.password;
+                    resolve(responseData);
+                })
+                .catch(function(err){
+                    reject(err);
+                })
+            });
+        };
+
+
         this.getById = (id, cb)=>{
             StorageServ.load("user", "id", id, (err, user)=>{
                 if(err){
