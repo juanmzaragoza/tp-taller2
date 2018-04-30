@@ -61,7 +61,7 @@ public class RegistrationControllerTest {
         controller.register(id,username, password);
         RecordedRequest received = server.takeRequest(1, TimeUnit.SECONDS);
 
-        assertEquals("/user", received.getPath());
+        assertEquals("/api/v1/user", received.getPath());
         JsonObject body = bodyFromRequest(received);
         assertEquals(id, body.get("id").getAsLong());
         assertEquals(username, body.get("username").getAsString());

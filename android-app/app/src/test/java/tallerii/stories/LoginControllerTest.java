@@ -20,7 +20,6 @@ import tallerii.stories.network.apimodels.LoginResult;
 import tallerii.stories.network.apimodels.ServerError;
 import tallerii.stories.network.apimodels.Token;
 
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
@@ -51,7 +50,8 @@ public class LoginControllerTest {
         EntityMetadata metadata = new EntityMetadata();
         metadata.setVersion("1");
         Token token = new Token();
-        token.setToken("t0k3n");
+        String tokenString = "t0k3n";
+        token.setToken(tokenString);
         token.setExpiresAt(Instant.now().plusSeconds(10).toEpochMilli());
         LoginResult loginResult = new LoginResult();
         loginResult.setMetadata(metadata);
@@ -61,7 +61,7 @@ public class LoginControllerTest {
 
         controller.login(username, "password");
 
-        verify(mockActivity, timeout(2000).times(1)).startMainActivity(username);
+        verify(mockActivity, timeout(2000).times(1)).startMainActivity(username, tokenString);
     }
 
     @Test
