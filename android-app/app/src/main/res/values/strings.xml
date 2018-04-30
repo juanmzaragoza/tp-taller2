@@ -16,9 +16,14 @@
     <string name="text_home">Home</string>
     <string name="action_account">Account</string>
     <string name="text_add_content">Take it!</string>
+    <string name="profile_banner">Profile banner, changeable picture</string>
+    <string name="profile_picture">Profile picture</string>
 
     <string name="facebook_app_id">2165366473684157</string>
     <string name="fb_login_protocol_scheme">fb2165366473684157</string>
+    <string name="number_of_friends">Number of friends:</string>
+    <string name="choose_picture">Choose Picture</string>
+    <string name="save_changes">Save changes</string>
 
 
 </resources>

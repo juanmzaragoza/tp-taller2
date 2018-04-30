@@ -1,4 +1,4 @@
-package tallerii.stories;
+package tallerii.stories.controller;
 
 import com.google.gson.Gson;
 
@@ -13,6 +13,7 @@ import java.time.Instant;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
+import tallerii.stories.LoginActivity;
 import tallerii.stories.controller.LoginController;
 import tallerii.stories.network.ConstantsApplicationApiRest;
 import tallerii.stories.network.apimodels.EntityMetadata;
