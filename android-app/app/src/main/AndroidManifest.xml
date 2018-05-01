@@ -57,6 +57,7 @@
         </activity>
         <activity android:name=".UserProfileActivity" />
         <activity android:name=".UserProfileUpdateActivity" />
+        <activity android:name=".ChatMessagesActivity" />
         <!-- End Facebook SDK -->
 
     </application>
