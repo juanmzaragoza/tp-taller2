@@ -6,7 +6,7 @@ mongo appserverdb --eval 'db.createUser({user:"app_user", pwd:"app_pass", "roles
 
 mongo appserverdb --eval 'profile = {"_id": ObjectId("5ae66a31d4ef925dac59a94b"), "_rev":"", "last_name" : "Gomez", "name" : "Pepe", "birthday" : "01/01/2000", "gender" : "M", "email" : "pepe@email.com", "fb_account" : "", "gmail_account" : "pepe@gmail.com", "profile_picture": "" };	
 						  profile_id = db.profiles.insert(profile);
-						  user = {"_rev":"", "user": "root", "profile_id": "5ae66a31d4ef925dac59a94b", "created_time": "" , "last_login":""};
+						  user = {"_id": ObjectId("5ae8ffff7cb6e634da74737b"), "_rev":"", "user": "root", "profile_id": "5ae66a31d4ef925dac59a94b", "created_time": "" , "last_login":""};
 						  db.users.insert(user);
 						  storie1= { "_id": ObjectId("5ae66a31d4ef925dac59a95b"), "_rev" : 0, "created_time" : 0, "updated_time" : 0, "title" : "First Storie", "description" : "Hello World! This is my first Storie!", "location" : "", "visibility" : "public", "multimedia" : "", "story_type" : "normal"};
 						  storie1_id=db.stories.insert(storie1);
