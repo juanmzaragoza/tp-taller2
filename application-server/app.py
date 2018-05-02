@@ -31,7 +31,7 @@ with app.app_context():
 
 	# for shared-server endpoints
 	api.add_resource(PingController, '/ping')
-	api.add_resource(ProfileController, '/profile/<int:user_id>')
+	api.add_resource(ProfileController, '/profiles/<string:user_id>')
 
 	if __name__ == "__main__":
     		app.run(host='0.0.0.0', port=5858,debug=True)

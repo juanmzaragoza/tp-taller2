@@ -29,8 +29,8 @@ class TestFlaskApi(unittest.TestCase):
         #assertions
         self.assertEqual(response.status_code,200)
         response_data = self.__get_response_data(response)
-        self.assertIn("status", response_data)
-        self.assertEqual("active",response_data["status"])
+        self.assertIn("status", response_data["server"])
+        self.assertEqual("active",response_data["server"]["status"])
 
 if __name__ == "__main__":
     unittest.main()
