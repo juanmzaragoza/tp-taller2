@@ -11,7 +11,7 @@ class TestFlaskApiUsingRequests(unittest.TestCase):
 		self.app = app.app.test_client()
 
 	def __make_get_request(self):
-		url = "api/v1"
+		url = "api/v1/"
 		headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 		response = self.app.get(url, headers=headers)
 		return response
