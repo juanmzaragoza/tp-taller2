@@ -9,6 +9,7 @@ from controllers.user_detail_controller import UserDetailController
 
 from controllers.ping_controller import PingController
 from controllers.profile_controller import ProfileController
+from controllers.response_builder import ResponseBuilder
 
 app = flask.Flask(__name__)
 
@@ -20,7 +21,8 @@ with app.app_context():
 			db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 			root = db.users.find_one({'user': 'root'})
 			root_user = root.get('user')
-			return {'hello': root_user}
+			response = {'hello': root_user}
+			return ResponseBuilder.build_response(response, 200)
 
 	api.add_resource(HelloWorld, '/')
 
