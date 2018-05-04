@@ -20,6 +20,7 @@ import { HomeComponent } from './components/home/home.component'
 import { UserComponent } from './components/user/user.component'
 import { ServerComponent } from './components/server/server.component'
 import { NavBarComponent } from './components/navbar/navbar.component'
+import { StatusComponent } from './components/status/status.component'
 
 import { EventKeyDirective } from './directives/event.key.directive'
 
@@ -32,6 +33,7 @@ import { EventKeyDirective } from './directives/event.key.directive'
     UserComponent,
     ServerComponent,
     NavBarComponent,
+    StatusComponent,
     EventKeyDirective
   ],
   imports: [
