@@ -24,7 +24,7 @@ class LoginService {
                         return getUserByUsername(username, models)
                         .then( function(user){
                             var result = {
-                                token: AuthService.token(user.username),
+                                token: AuthService.token(user),
                                 expiresAt: 3600
                             };                    
                             resolve(result);
@@ -82,7 +82,7 @@ class LoginService {
                 })
                 .then( function(user){
                     var result = {
-                        token: AuthService.token(user.username),
+                        token: AuthService.token(user),
                         expiresAt: 3600
                     };
                     resolve(result);
