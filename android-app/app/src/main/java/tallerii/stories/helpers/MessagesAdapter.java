@@ -18,7 +18,7 @@ import tallerii.stories.network.apimodels.ChatMessage;
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
     private static final int ITEM_TYPE_SENT = 0;
     private static final int ITEM_TYPE_RECEIVED = 1;
-
+    private final String currentUserId;
     private List<ChatMessage> messagesList;
     private Context mContext;
 
@@ -43,16 +43,15 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         notifyItemRemoved(position);
     }
 
-    public MessagesAdapter(List<ChatMessage> dataset, Context context) {
-        messagesList = dataset;
-        mContext = context;
-
+    public MessagesAdapter(List<ChatMessage> dataset, Context context, String currentUserId) {
+        this.messagesList = dataset;
+        this.mContext = context;
+        this.currentUserId = currentUserId;
     }
 
     @Override
     public int getItemViewType(int position) {
-        //TODO use our user id
-        if (messagesList.get(position).getSenderId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+        if (messagesList.get(position).getSenderId().equals(currentUserId)) {
             return ITEM_TYPE_SENT;
         } else {
             return ITEM_TYPE_RECEIVED;
