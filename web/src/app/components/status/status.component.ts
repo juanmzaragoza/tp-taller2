@@ -1,16 +1,22 @@
-import { Component, OnInit, OnDestroy }    from '@angular/core'
+import { Component, 
+         OnInit, 
+         OnDestroy }        from '@angular/core'
+import { ChartService }     from '../../services/common/chart.service'
+import { StatusService }    from '../../services/status/status.service'
+import { RemoteService }    from '../../services/remote/remote.service'
 
-declare var d3:any;
 
 @Component({
     templateUrl: './status.component.html'
 })
 export class StatusComponent {
     private pid:number;
-    constructor(){}
+    constructor(public ChartServ  :ChartService,
+                public StatusServ :StatusService,
+                public RemoteServ :RemoteService){}
     
     ngOnInit() {
-        console.log(d3)
+        
     }
     ngOnDestroy() {
         var vm :any = this
