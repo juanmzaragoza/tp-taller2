@@ -15,6 +15,7 @@ import { TokenInterceptor } from './services/remote/token.interceptor'
 import { ClipBoardService } from './services/common/clipboard.service'
 import { ChartService } from './services/common/chart.service'
 import { StatusService } from './services/status/status.service'
+import { ServerService } from './services/server/server.service'
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component'
@@ -25,6 +26,7 @@ import { NavBarComponent } from './components/navbar/navbar.component'
 import { StatusComponent } from './components/status/status.component'
 
 import { EventKeyDirective } from './directives/event.key.directive'
+import { FixButtonDirective } from './directives/fix.button.directive'
 
 
 @NgModule({
@@ -36,7 +38,8 @@ import { EventKeyDirective } from './directives/event.key.directive'
     ServerComponent,
     NavBarComponent,
     StatusComponent,
-    EventKeyDirective
+    EventKeyDirective,
+    FixButtonDirective
   ],
   imports: [
     BrowserModule,
@@ -59,7 +62,8 @@ import { EventKeyDirective } from './directives/event.key.directive'
     ClipBoardService,
     DatePipe,
     ChartService,
-    StatusService
+    StatusService,
+    ServerService
   ],
   bootstrap: [AppComponent]
 })

@@ -1,15 +1,24 @@
+
 <div class="row">
-  <div class="col s12 m7">
-    <h2 class="header">Horizontal Card</h2>
-    <div class="card horizontal">
-      <div class="card-image">
-        <img src="https://lorempixel.com/100/190/nature/6">
-      </div>
-      <div class="card-stacked">
-        <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information.</p>
+    <div class="col s12">
+        <h4 class="header indigo-text">Monitoring</h4>
+        <div class="card horizontal">
+        <div class="card-image">
+            <div *ngFor="let server of servers">
+                <a FixButtonDirective (click)="change(server.id)" class="waves-effect waves-light btn-small right indigo" ><i class="material-icons center-align">dns</i>{{server.name}}</a>
+            </div>
         </div>
-      </div>
+        <div class="card-stacked">
+            <div class="card-content">
+            <p>I am a very simple card. I am good at containing small bits of information.</p>
+            </div>
+        </div>
+        </div>
     </div>
-  </div>
-</div>
+    </div>
+
+
+
+<footer style="position:fixed;bottom:1em;left:-1em;width:100%;">
+<div class="left" style="margin-left: 1.8em"><h5 class="indigo-text">{{title}}</h5></div>
+</footer>
