@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent }       from './components/login/login.component'
 import { HomeComponent }       from './components/home/home.component'
 import { ServerComponent }       from './components/server/server.component'
+import { StatusComponent }       from './components/status/status.component'
 
 
 import { HttpClient }           from '@angular/common/http';
@@ -21,6 +22,10 @@ const loginRoutes: Routes = [
     {
         path: 'server',
         component: ServerComponent
+    },
+    {
+        path: 'status',
+        component: StatusComponent
     }
 ];
 
