@@ -26,6 +26,8 @@ import tallerii.stories.network.apimodels.ChatMessage;
 
 public class ChatMessagesActivity extends AppCompatActivity {
 
+    public static final String FRIEND_ID = "friendId";
+    public static final String USER_ID = "userId";
     private RecyclerView mChatsRecyclerView;
     private EditText mMessageEditText;
     private DatabaseReference mMessagesDBRef;
@@ -53,9 +55,13 @@ public class ChatMessagesActivity extends AppCompatActivity {
         //init Firebase
         mMessagesDBRef = FirebaseDatabase.getInstance().getReference().child("Messages");
 
-        //get receiverId from intent
-        receiverId = "2";
-        currentUserId = "1";
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null && bundle.get(USER_ID) != null && bundle.get(FRIEND_ID) != null) {
+            receiverId = bundle.getString(FRIEND_ID);
+            currentUserId = bundle.getString(USER_ID);
+        } else {
+            throw new IllegalArgumentException("Missing profile o friend id");
+        }
     }
 
     public void sendMessage(View v) {
