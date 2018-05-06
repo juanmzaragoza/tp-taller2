@@ -2,22 +2,22 @@
 
 class DaoService {
     constructor(){
-        this.insert = (model, entity) =>{
+        
+        this.insert = (model, attrs) =>{
             return new Promise((resolve, reject) => {
-                delete entity.dataValues.id
-                if(entity.dataValues.token){
-                    var aux = entity.dataValues.token.token
-                    delete entity.dataValues.token.token
-                    entity.dataValues["token"] = aux
-                }
-                model.create(entity.dataValues)
-                .then(resolve)
+                delete attrs.id
+                model.create(attrs)
+                .then(newEntity => {
+                    resolve(newEntity);
+                })
                 .catch(e =>{
                     console.error(e.name)
                     reject(e.name)
                 });
+
             });
         };
+
     }
 
 };
