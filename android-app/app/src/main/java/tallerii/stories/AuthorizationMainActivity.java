@@ -22,6 +22,7 @@ public class AuthorizationMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         Intent activityIntent;
         Store store = new Store();
