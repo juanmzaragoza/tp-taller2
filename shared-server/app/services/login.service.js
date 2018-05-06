@@ -82,7 +82,7 @@ class LoginService {
                 })
                 .then( function(user){
                     var result = {
-                        token: AuthService.token(user.username),
+                        token: AuthService.token(user.username), // REVISAR ESTO, PORQUE AUTHSERVICE ESTA ESPERANDO UN USER
                         expiresAt: 3600
                     };
                     resolve(result);

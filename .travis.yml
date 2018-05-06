@@ -35,10 +35,8 @@ matrix:
         - yes | sdkmanager "platforms;android-27"
       script:
         - cd $TRAVIS_BUILD_DIR/android-app/
-        - ./gradlew build jacocoTestReport assembleAndroidTest
+        - ./gradlew build assembleAndroidTest
         - ./gradlew test
-      after_success:
-        - bash <(curl -s https://codecov.io/bash)
 
     - language: node_js
       node_js:
