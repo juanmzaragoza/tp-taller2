@@ -36,6 +36,7 @@ public class ChatMessagesActivity extends AppCompatActivity {
     private String receiverId;
     private String receiverName;
     private String currentUserId;
+    private MessagesAdapter messagesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,8 +147,8 @@ public class ChatMessagesActivity extends AppCompatActivity {
     }
 
     private void populateMessagesRecyclerView(){
-        MessagesAdapter adapter = new MessagesAdapter(mMessagesList, this);
-        mChatsRecyclerView.setAdapter(adapter);
+        messagesAdapter = new MessagesAdapter(mMessagesList, this, currentUserId);
+        mChatsRecyclerView.setAdapter(messagesAdapter);
     }
 
     private void queryRecipientName(final String receiverId){

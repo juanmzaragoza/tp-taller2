@@ -39,7 +39,6 @@ public class ChatRoomsActivity extends StoriesAppActivity {
 
         friendsRecyclerView = findViewById(R.id.friendsRecyclerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mLayoutManager.setStackFromEnd(true);
         friendsRecyclerView.setLayoutManager(mLayoutManager);
     }
 
