@@ -82,7 +82,7 @@ public class ChatMessagesActivity extends AppCompatActivity {
         /*Query and populate chat messages*/
         queryMessages();
         /*sets title bar with recepient name*/
-        queryRecipientName(receiverId);
+        queryRecipientName(receiverId);//TODO should not be necessary, name is already available from before
     }
 
     @Override

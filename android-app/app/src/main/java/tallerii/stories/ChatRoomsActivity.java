@@ -70,7 +70,7 @@ public class ChatRoomsActivity extends StoriesAppActivity {
         List<Friend> friends = profile.getFriends();
         friendsAdapter = new FriendsAdapter(
                 friends != null && !friends.isEmpty() ? friends : new ArrayList<Friend>(),
-                this,
+                getContext(),
                 profile.getUserId()
         );
         friendsRecyclerView.setAdapter(friendsAdapter);

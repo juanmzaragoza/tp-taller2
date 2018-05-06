@@ -26,8 +26,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     private Context context;
     private String currentUserId;
 
-    public FriendsAdapter(List<Friend> myDataset, Context context, String userId) {
-        this.friendsList = myDataset;
+    public FriendsAdapter(List<Friend> dataSet, Context context, String userId) {
+        this.friendsList = dataSet;
         this.context = context;
         FirebaseStorage storage = FirebaseStorage.getInstance();
         this.storageReference = storage.getReference();
