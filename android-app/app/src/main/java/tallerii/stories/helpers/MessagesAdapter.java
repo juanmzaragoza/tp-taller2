@@ -7,13 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.List;
 
 import tallerii.stories.R;
 import tallerii.stories.network.apimodels.ChatMessage;
-
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
     private static final int ITEM_TYPE_SENT = 0;
@@ -21,27 +18,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     private final String currentUserId;
     private List<ChatMessage> messagesList;
     private Context mContext;
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView messageTextView;
-        public View layout;
-
-        public ViewHolder(View v) {
-            super(v);
-            layout = v;
-            messageTextView = v.findViewById(R.id.chatMsgTextView);
-        }
-    }
-
-    public void add(int position, ChatMessage message) {
-        messagesList.add(position, message);
-        notifyItemInserted(position);
-    }
-
-    public void remove(int position) {
-        messagesList.remove(position);
-        notifyItemRemoved(position);
-    }
 
     public MessagesAdapter(List<ChatMessage> dataset, Context context, String currentUserId) {
         this.messagesList = dataset;
@@ -83,5 +59,16 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     @Override
     public int getItemCount() {
         return messagesList.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView messageTextView;
+        public View layout;
+
+        public ViewHolder(View v) {
+            super(v);
+            layout = v;
+            messageTextView = v.findViewById(R.id.chatMsgTextView);
+        }
     }
 }

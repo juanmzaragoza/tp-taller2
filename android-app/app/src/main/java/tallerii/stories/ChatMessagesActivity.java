@@ -79,7 +79,11 @@ public class ChatMessagesActivity extends AppCompatActivity {
         queryRecipientName(receiverId);
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        queryMessages();
+    }
 
     private void sendMessageToFirebase(String message, String senderId, String receiverId){
         mMessagesList.clear();
@@ -139,7 +143,6 @@ public class ChatMessagesActivity extends AppCompatActivity {
     private void populateMessagesRecyclerView(){
         MessagesAdapter adapter = new MessagesAdapter(mMessagesList, this);
         mChatsRecyclerView.setAdapter(adapter);
-
     }
 
     private void queryRecipientName(final String receiverId){
