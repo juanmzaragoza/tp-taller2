@@ -6,6 +6,7 @@ public final class ConstantsApplicationApiRest {
 
     // TODO: modify with the real API endpoint
     public static final String KEY_GET_USER_BY_ID = "get?username=juanzaragoza@live.com.ar&password=gk3nxmbkif&facebookAuthToken=gaksrgnnbxc";
+    public static final String PROFILE_ENDPOINT = REST_API + "profile/{id}";
     public static final String POST_REGISTRATION = REST_API + "user";
     public static final String POST_LOGIN = REST_API + "token";
 
