@@ -6,10 +6,10 @@ from bson.objectid import ObjectId
 import bson
 import uuid
 
-class ProfileModel():
+class UserDataModel():
 
 	@staticmethod
-	def get_profile_by_user_id(user_id):
+	def get_user_data_by_user_id(user_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 		if (bson.objectid.ObjectId.is_valid(user_id) == False):
 			raise NoDataFoundException
@@ -19,31 +19,24 @@ class ProfileModel():
 		if user == None:
 			raise NoDataFoundException
 
-		profile = db.profiles.find_one({'_id': ObjectId(user.get('profile_id'))})
-		if profile == None:
-			raise NoDataFoundException
-		return profile
+		return user
 
 	@staticmethod
-	def update_profile_by_user_id(user_id, body):
+	def update_user_data_by_user_id(user_id, body):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 		if (bson.objectid.ObjectId.is_valid(user_id) == False):
 			raise NoDataFoundException
-		user = db.users.find_one({'_id': ObjectId(user_id)})
-
+		
+		user = db.users.find_one({"_id": ObjectId(user_id)})
+		
 		if user == None:
 			raise NoDataFoundException
 		
-		profile = db.profiles.find_one({"_id": ObjectId(user.get('profile_id'))})
-		
-		if profile == None:
-			raise NoDataFoundException
-		
-		if (profile['_rev'] != body.get('_rev')):
+		if (user['_rev'] != body.get('_rev')):
 			raise DataVersionException
 		
 		body['_rev'] = uuid.uuid4().hex
-		profile = db.profiles.find_and_modify({"_id": ObjectId(user.get('profile_id'))}, {'$set': body })
-		profile = db.profiles.find_one({"_id": ObjectId(user.get('profile_id'))})
+		user = db.users.find_and_modify({"_id": ObjectId(user_id)}, {'$set': body })
+		user = db.users.find_one({"_id": ObjectId(user_id)})
 
-		return profile
+		return user

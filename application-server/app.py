@@ -18,10 +18,7 @@ with app.app_context():
 
 	class HelloWorld(flask_restful.Resource):
 		def get(self):
-			db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
-			root = db.users.find_one({'user': 'root'})
-			root_user = root.get('user')
-			response = {'hello': root_user}
+			response = {'hello': "appServer"}
 			return ResponseBuilder.build_response(response, 200)
 
 	api.add_resource(HelloWorld, '/')

@@ -22,7 +22,7 @@ class TestFlaskApi(unittest.TestCase):
 		
     def test_successful_profile_data_should_return_status_200(self):
         # execution
-        userId = "5ae8ffff7cb6e634da74737b"
+        userId = "5ae66a31d4ef925dac59a94b"
         response = self.__make_get_request(userId)
         #assertions
         self.assertEqual(response.status_code,200)
@@ -33,7 +33,7 @@ class TestFlaskApi(unittest.TestCase):
         self.assertEqual("Gomez",response_data["profile"]["last_name"])
         self.assertIn("email", response_data["profile"])
         self.assertEqual("pepe@email.com",response_data["profile"]["email"])
-        self.assertIn("profile_picture", response_data["profile"])
+        self.assertIn("picture", response_data["profile"])
         self.assertIn("stories", response_data["profile"])
 
     def test_profile_no_data_found_shouldreturn_status_404(self):
