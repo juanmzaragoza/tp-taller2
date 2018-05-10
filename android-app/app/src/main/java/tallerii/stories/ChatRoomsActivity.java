@@ -17,9 +17,9 @@ import tallerii.stories.helpers.FriendsAdapter;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 import tallerii.stories.network.apimodels.Friend;
 
+public class ChatRoomsActivity extends StoriesLoggedInActivity {
 import static tallerii.stories.ProfileActivity.PROFILE_OBJECT;
 
-public class ChatRoomsActivity extends StoriesAppActivity {
 
     private ApplicationProfile profile;
     private RecyclerView friendsRecyclerView;
@@ -52,18 +52,6 @@ public class ChatRoomsActivity extends StoriesAppActivity {
     protected void onResume() {
         super.onResume();
         populateFriendsRecyclerView();
-    }
-
-    private boolean switchContent(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_home:
-                // change content
-            case R.id.action_account:
-                // change content
-            case R.id.action_new:
-                // change content
-        }
-        return true;
     }
 
     private void populateFriendsRecyclerView(){

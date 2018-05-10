@@ -24,7 +24,7 @@ import java.util.List;
 import tallerii.stories.helpers.MessagesAdapter;
 import tallerii.stories.network.apimodels.ChatMessage;
 
-public class ChatMessagesActivity extends AppCompatActivity {
+public class ChatMessagesActivity extends StoriesLoggedInActivity {
 
     public static final String FRIEND_ID = "friendId";
     public static final String USER_ID = "userId";

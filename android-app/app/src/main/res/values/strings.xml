@@ -25,6 +25,10 @@
     <string name="choose_picture">Choose Picture</string>
     <string name="save_changes">Save changes</string>
     <string name="friend_user_image">Friend\'s user image</string>
+    <string name="title_activity_stories_logged_in">StoriesLoggedInActivity</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="chats">Chats</string>
 
 
 </resources>
