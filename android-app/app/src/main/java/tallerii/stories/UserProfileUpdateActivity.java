@@ -3,13 +3,12 @@ package tallerii.stories;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -17,7 +16,6 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.IOException;
 import java.util.UUID;
 
 import tallerii.stories.controller.ProfileController;
@@ -36,6 +34,7 @@ public class UserProfileUpdateActivity extends ProfileActivity {
         imageView = findViewById(R.id.profile_picture);
         firstName = findViewById(R.id.first_name);
         lastName = findViewById(R.id.last_name);
+        setTitle("Update Profile");
     }
 
     @Override
@@ -46,25 +45,27 @@ public class UserProfileUpdateActivity extends ProfileActivity {
 
 
     public void chooseImage(View view) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(pickPhoto , 1);
+    }
+
+    public void takePhoto(View view) {
+        Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(takePicture, 0);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null ) {
-            filePath = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
-                imageView.setImageBitmap(bitmap);
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        switch(requestCode) {
+            case 0:
+            case 1:
+                if(resultCode == RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    imageView.setImageURI(selectedImage);
+                }
+                break;
         }
     }
 
@@ -73,21 +74,21 @@ public class UserProfileUpdateActivity extends ProfileActivity {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
-
+            Log.i("tag?","uploadaing to firebase");
             StorageReference ref = storageReference.child("images/" + imageName);
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             progressDialog.dismiss();
-                            Toast.makeText(UserProfileUpdateActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                            showMessage("Uploaded");
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(UserProfileUpdateActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            showMessage("Failed "+e.getMessage());
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -112,6 +113,7 @@ public class UserProfileUpdateActivity extends ProfileActivity {
     }
 
     public void upload(View view) {
+        ApplicationProfile applicationProfile = getProfile();
         applicationProfile.setFirstName(getStringFrom(R.id.first_name));
         applicationProfile.setLastName(getStringFrom(R.id.last_name));
         applicationProfile.setProfilePicture(UUID.randomUUID().toString());

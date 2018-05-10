@@ -37,6 +37,14 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:onClick="chooseImage"/>
+
+            <Button
+                android:id="@+id/btnTake"
+                android:text="@string/take_picture"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:onClick="takePhoto"/>
         </LinearLayout>
 
         <LinearLayout
