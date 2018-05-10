@@ -2,12 +2,42 @@ package tallerii.stories;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.gson.Gson;
+
+import tallerii.stories.network.apimodels.ApplicationProfile;
+
+import static tallerii.stories.ProfileActivity.PROFILE_OBJECT;
+
 public abstract class StoriesAppActivity extends AppCompatActivity {
     abstract protected Context getContext();
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkGooglePlayServices();
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        checkGooglePlayServices();
+    }
+
+    private void checkGooglePlayServices() {
+        GoogleApiAvailability googleApi = GoogleApiAvailability.getInstance();
+        int resultStatus = googleApi.isGooglePlayServicesAvailable(getContext());
+        if(resultStatus != ConnectionResult.SUCCESS) {
+            googleApi.getErrorDialog(this, resultStatus, 0).show();
+        }
+    }
 
     protected String getStringFrom(int resourceId) {
         EditText editText = findViewById(resourceId);
@@ -51,7 +81,21 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
 
     public void startProfileUpdateActivity(String profile) {
         Intent intent = new Intent(this, UserProfileUpdateActivity.class);
-        intent.putExtra(ProfileActivity.PROFILE_OBJECT, profile);
+        intent.putExtra(PROFILE_OBJECT, profile);
+        startActivity(intent);
+        finish();
+    }
+
+    public void startProfileActivity(ApplicationProfile profile) {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        intent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
+        startActivity(intent);
+        finish();
+    }
+
+    public void startChatRoomsActivity(ApplicationProfile profile) {
+        Intent intent = new Intent(this, ChatRoomsActivity.class);
+        intent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
         startActivity(intent);
         finish();
     }
