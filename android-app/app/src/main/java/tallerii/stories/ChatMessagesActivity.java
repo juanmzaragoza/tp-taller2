@@ -27,6 +27,7 @@ import tallerii.stories.network.apimodels.ChatMessage;
 public class ChatMessagesActivity extends StoriesLoggedInActivity {
 
     public static final String FRIEND_ID = "friendId";
+    public static final String FRIEND_NAME = "friendName";
     public static final String USER_ID = "userId";
     private RecyclerView mChatsRecyclerView;
     private EditText mMessageEditText;
@@ -34,7 +35,6 @@ public class ChatMessagesActivity extends StoriesLoggedInActivity {
     private List<ChatMessage> mMessagesList = new ArrayList<>();
 
     private String receiverId;
-    private String receiverName;
     private String currentUserId;
     private MessagesAdapter messagesAdapter;
 
@@ -60,6 +60,7 @@ public class ChatMessagesActivity extends StoriesLoggedInActivity {
                 && bundle.get(FRIEND_ID) != null && bundle.get(FRIEND_NAME) != null) {
             receiverId = bundle.getString(FRIEND_ID);
             currentUserId = bundle.getString(USER_ID);
+            setTitle(bundle.getString(FRIEND_NAME));
         } else {
             throw new IllegalArgumentException("Missing profile o friend id");
         }
