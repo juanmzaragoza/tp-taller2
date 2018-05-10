@@ -54,14 +54,15 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToChatMessagesActivity(user.getId());
+                goToChatMessagesActivity(user.getId(), user.getFullName());
             }
         });
     }
 
-    private void goToChatMessagesActivity(String personId) {
+    private void goToChatMessagesActivity(String personId, String friendName) {
         Intent goToUpdate = new Intent(context, ChatMessagesActivity.class);
         goToUpdate.putExtra(ChatMessagesActivity.FRIEND_ID, personId);
+        goToUpdate.putExtra(ChatMessagesActivity.FRIEND_NAME, friendName);
         goToUpdate.putExtra(ChatMessagesActivity.USER_ID, currentUserId);
         context.startActivity(goToUpdate);
     }

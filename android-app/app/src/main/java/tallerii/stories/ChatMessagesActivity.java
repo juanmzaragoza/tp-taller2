@@ -1,8 +1,8 @@
 package tallerii.stories;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -56,17 +56,18 @@ public class ChatMessagesActivity extends StoriesLoggedInActivity {
         mMessagesDBRef = FirebaseDatabase.getInstance().getReference().child("Messages");
 
         Bundle bundle = getIntent().getExtras();
-        if (bundle != null && bundle.get(USER_ID) != null && bundle.get(FRIEND_ID) != null) {
+        if (bundle != null && bundle.get(USER_ID) != null
+                && bundle.get(FRIEND_ID) != null && bundle.get(FRIEND_NAME) != null) {
             receiverId = bundle.getString(FRIEND_ID);
             currentUserId = bundle.getString(USER_ID);
         } else {
             throw new IllegalArgumentException("Missing profile o friend id");
         }
+
     }
 
     public void sendMessage(View v) {
         String message = mMessageEditText.getText().toString();
-        //TODO use our user id
         //Todo disable button if empty
         if(message.isEmpty()){
             Toast.makeText(ChatMessagesActivity.this, "You must enter a message", Toast.LENGTH_SHORT).show();
@@ -81,8 +82,6 @@ public class ChatMessagesActivity extends StoriesLoggedInActivity {
         super.onStart();
         /*Query and populate chat messages*/
         queryMessages();
-        /*sets title bar with recepient name*/
-        queryRecipientName(receiverId);//TODO should not be necessary, name is already available from before
     }
 
     @Override
@@ -151,8 +150,8 @@ public class ChatMessagesActivity extends StoriesLoggedInActivity {
         mChatsRecyclerView.setAdapter(messagesAdapter);
     }
 
-    private void queryRecipientName(final String receiverId){
-        //TODO get and set receiver name
-        receiverName = "Guido puto";
+    @Override
+    protected Context getContext() {
+        return ChatMessagesActivity.this;
     }
 }
