@@ -3,8 +3,8 @@ import unittest.mock as mock
 from models.friend_request import FriendRequestModel
 from controllers.friend_request_controller import FriendRequestController
 from controllers.response_builder import ResponseBuilder
-from unit_tests.mocks.friend_requests_successful_mock import friends_requests_successful_mock, friends_requests_raw_mock
-from unit_tests.mocks.errors_mock import no_data_found_mock, no_db_conn_mock
+from mocks.friend_requests_successful_mock import friends_requests_successful_mock, friends_requests_raw_mock
+from mocks.errors_mock import no_data_found_mock, no_db_conn_mock
 from errors_exceptions.no_data_found_exception import NoDataFoundException
 from api_client.db_connection_error import DBConnectionError
 from controllers.error_handler import ErrorHandler

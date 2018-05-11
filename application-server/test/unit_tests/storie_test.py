@@ -3,8 +3,8 @@ import unittest.mock as mock
 from models.storie import StorieModel
 from controllers.storie_controller import StorieController
 from controllers.response_builder import ResponseBuilder
-from unit_tests.mocks.storie_successful_mock import stories_successful_mock, stories_raw_mock
-from unit_tests.mocks.errors_mock import no_data_found_mock, no_db_conn_mock
+from mocks.storie_successful_mock import stories_successful_mock, stories_raw_mock
+from mocks.errors_mock import no_data_found_mock, no_db_conn_mock
 from errors_exceptions.no_data_found_exception import NoDataFoundException
 from api_client.db_connection_error import DBConnectionError
 from controllers.error_handler import ErrorHandler
