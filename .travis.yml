@@ -17,7 +17,7 @@ matrix:
         - python app.py &
         - cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=integration_tests/
         - codecov
-		- cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=unit_tests/
+        - cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=unit_tests/
         - codecov
     - language: android
       jdk: oraclejdk8
