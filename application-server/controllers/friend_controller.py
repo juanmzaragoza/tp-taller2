@@ -12,19 +12,19 @@ class FriendController(flask_restful.Resource):
 	def get_friends_by_user_id(self, user_id):
 		try:
 			friends = FriendModel.get_friends_by_user_id(user_id)
-			return self.__create_get_friends_response(friends)
+			return self._create_get_friends_response(friends)
 		except NoDataFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 
-	def __create_get_friends_response(self, friends):
+	def _create_get_friends_response(self, friends):
 		response = []
 		for doc in friends:
-			response.append(self.__format_friend(doc))
+			response.append(self._format_friend(doc))
 		return response
 
-	def __format_friend(self, friend):
+	def _format_friend(self, friend):
         	return {
 					'user_id': friend['user_id'],
             		'last_name': friend['last_name'],

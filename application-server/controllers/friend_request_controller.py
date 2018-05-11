@@ -12,7 +12,7 @@ class FriendRequestController(flask_restful.Resource):
 	def get_friends_requests_rcv_by_user_id(self, user_id):
 		try:
 			friends_requests = FriendRequestModel.get_friends_requests_rcv_by_user_id(user_id)
-			return self.__create_get_friends_requests_response(friends_requests)
+			return self._create_get_friends_requests_response(friends_requests)
 		except NoDataFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
@@ -21,19 +21,19 @@ class FriendRequestController(flask_restful.Resource):
 	def get_friends_requests_sent_by_user_id(self, user_id):
 		try:
 			friends_requests = FriendRequestModel.get_friends_requests_sent_by_user_id(user_id)
-			return self.__create_get_friends_requests_response(friends_requests)
+			return self._create_get_friends_requests_response(friends_requests)
 		except NoDataFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 			
-	def __create_get_friends_requests_response(self, friends_requests):
+	def _create_get_friends_requests_response(self, friends_requests):
 		response = []
 		for doc in friends_requests:
-			response.append(self.__format_friend_request(doc))
+			response.append(self._format_friend_request(doc))
 		return response
 
-	def __format_friend_request(self, friend_request):
+	def _format_friend_request(self, friend_request):
         	return {
 					'user_id': friend_request['user_id'],
             		'last_name': friend_request['last_name'],

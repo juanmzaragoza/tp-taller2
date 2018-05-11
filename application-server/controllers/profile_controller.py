@@ -24,7 +24,7 @@ class ProfileController(flask_restful.Resource):
 			friend_request_controller = FriendRequestController()
 			friends_requests_rcv = friend_request_controller.get_friends_requests_rcv_by_user_id(user_id)
 			friends_requests_sent = friend_request_controller.get_friends_requests_sent_by_user_id(user_id)
-			return self.__create_get_response(user_data_response, stories_response, friends_response, friends_requests_rcv, friends_requests_sent)
+			return self._create_get_response(user_data_response, stories_response, friends_response, friends_requests_rcv, friends_requests_sent)
 		except NoDataFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
@@ -42,7 +42,7 @@ class ProfileController(flask_restful.Resource):
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 			
-	def __create_get_response(self, user_data, stories, friends, friends_requests_rcv, friends_requests_sent):
+	def _create_get_response(self, user_data, stories, friends, friends_requests_rcv, friends_requests_sent):
 		profile_json = self.__get_profile_json(user_data)
 		profile_json['stories'] = stories
 		profile_json['friends'] = friends
