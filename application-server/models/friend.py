@@ -2,6 +2,8 @@ from constants import MONGODB_USER, MONGODB_PASSWD
 from controllers.db_controller import MongoController
 from errors_exceptions.no_data_found_exception import NoDataFoundException
 from bson.objectid import ObjectId
+import bson
+import time
 
 class FriendModel():
 
@@ -37,3 +39,13 @@ class FriendModel():
 			data[str(doc["_id"])]["name"] = doc["name"]
 
 		return data.values()
+	
+	@staticmethod
+	def create_friend(friend):
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+		friend['date'] = time.strftime("%d/%m/%Y", time.localtime())
+		friend_id = db.friends.insert(friend)
+		friend = db.friends.find_one({'_id': ObjectId(friend_id)})
+		friend['_id'] = str(friend['_id'])
+		return friend
+	

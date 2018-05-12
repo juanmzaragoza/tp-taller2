@@ -4,7 +4,7 @@ from flask import request, jsonify
 from controllers.response_builder import ResponseBuilder
 from controllers.storie_controller import StorieController
 from controllers.friend_controller import FriendController
-from controllers.friend_request_controller import FriendRequestController
+from controllers.be_friend_detail_controller import BeFriendDetailController
 from controllers.error_handler import ErrorHandler
 from api_client.db_connection_error import DBConnectionError
 from models.user_data import UserDataModel
@@ -21,9 +21,9 @@ class ProfileController(flask_restful.Resource):
 			stories_response = storie_controller.get_stories_by_user_id(user_id)
 			friend_controller = FriendController()
 			friends_response = friend_controller.get_friends_by_user_id(user_id)
-			friend_request_controller = FriendRequestController()
-			friends_requests_rcv = friend_request_controller.get_friends_requests_rcv_by_user_id(user_id)
-			friends_requests_sent = friend_request_controller.get_friends_requests_sent_by_user_id(user_id)
+			be_friend_detail_controller = BeFriendDetailController()
+			friends_requests_rcv = be_friend_detail_controller.get_friends_requests_rcv_by_user_id(user_id)
+			friends_requests_sent = be_friend_detail_controller.get_friends_requests_sent_by_user_id(user_id)
 			return self._create_get_response(user_data_response, stories_response, friends_response, friends_requests_rcv, friends_requests_sent)
 		except NoDataFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)

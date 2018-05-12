@@ -40,3 +40,14 @@ class UserDataModel():
 		user = db.users.find_one({"_id": ObjectId(user_id)})
 
 		return user
+
+	@staticmethod
+	def exist_user(user_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+		if (bson.objectid.ObjectId.is_valid(user_id) == False):
+			raise NoDataFoundException
+
+		user = db.users.find_one({'_id': ObjectId(user_id)})
+
+		if user == None:
+			raise NoDataFoundException

@@ -6,7 +6,7 @@ import unittest.mock as mock
 from models.user_data import UserDataModel
 from controllers.storie_controller import StorieController
 from controllers.friend_controller import FriendController
-from controllers.friend_request_controller import FriendRequestController
+from controllers.be_friend_detail_controller import BeFriendDetailController
 from controllers.profile_controller import ProfileController
 from controllers.response_builder import ResponseBuilder
 from mocks.profile_successful_mock import *
@@ -50,7 +50,7 @@ class TestProfileApi(unittest.TestCase):
         friend = FriendController()
         friend.get_friends_by_user_id = \
             mock.MagicMock(return_value=friends_successful_mock)
-        friend_request = FriendRequestController()
+        friend_request = BeFriendDetailController()
         friend_request.get_friends_requests_rcv_by_user_id = \
             mock.MagicMock(return_value=rcv_requests_successful_mock)
         friend_request.get_friends_requests_sent_by_user_id = \
