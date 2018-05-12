@@ -1,15 +1,21 @@
 package tallerii.stories;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import tallerii.stories.helpers.Store;
+import tallerii.stories.StoriesLoggedInActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends StoriesLoggedInActivity {
     public static final String EXTRA_MESSAGE = "tallerii.stories.loginactivity.MESSAGE";
     public static final String TOKEN = "token";
+
+    @Override
+    protected Context getContext() {
+        return MainActivity.this;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
