@@ -44,9 +44,9 @@ public abstract class ProfileActivity extends StoriesLoggedInActivity {
         setUserName(applicationProfile);
 
         //try to obtain profile pic from Firebase
-        Glide.with(this /* context */)
-                .using(new FirebaseImageLoader())
+        Glide.with(getContext()).using(new FirebaseImageLoader())
                 .load(storageReference.child("images/" + applicationProfile.getProfilePicture()))
+                .placeholder(R.drawable.ic_account_circle_white_24dp).dontAnimate().fitCenter()
                 .into(imageView)
         ;
     }

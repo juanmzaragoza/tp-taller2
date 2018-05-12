@@ -46,9 +46,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Friend user = friendsList.get(position);
         holder.personNameTxtV.setText(user.getFullName());
-        Glide.with(context)
-                .using(new FirebaseImageLoader())
+        Glide.with(holder.personImageImgV.getContext()).using(new FirebaseImageLoader())
                 .load(storageReference.child("images/" + user.getPicture()))
+                .placeholder(R.drawable.ic_account_circle_white_24dp).dontAnimate().fitCenter()
                 .into(holder.personImageImgV)
         ;
         holder.layout.setOnClickListener(new View.OnClickListener() {
