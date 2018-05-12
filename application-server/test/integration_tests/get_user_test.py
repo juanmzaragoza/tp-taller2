@@ -47,7 +47,3 @@ class TestFlaskGetUserApi(unittest.TestCase):
         self.assertEqual(404,response_data["code"])
         self.assertIn("message", response_data)
         self.assertEqual(response_data["message"], "User doesn't exists")
-
-
-if __name__ == "__main__":
-    unittest.main()

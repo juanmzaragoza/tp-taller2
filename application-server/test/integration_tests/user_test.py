@@ -112,7 +112,3 @@ class TestFlaskUserApi(unittest.TestCase):
         self.assertEqual(500,response_data["code"])
         self.assertIn("message", response_data)
         self.assertEqual(response_data["message"], "internal error")
-
-
-if __name__ == "__main__":
-    unittest.main()

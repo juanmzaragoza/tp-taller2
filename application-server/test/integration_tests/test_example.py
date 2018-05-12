@@ -25,6 +25,3 @@ class TestFlaskApiUsingRequests(unittest.TestCase):
 		response_data = self.__get_response_data(response)
 		self.assertIn("hello", response_data)
 		self.assertEqual("appServer",response_data["hello"])
-
-if __name__ == "__main__":
-    unittest.main()
