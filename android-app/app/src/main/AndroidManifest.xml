@@ -9,6 +9,8 @@
     <!-- User permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <!-- End Application -->
     <!-- Application -->
@@ -59,16 +61,6 @@
         <activity android:name=".ChatMessagesActivity" />
         <activity android:name=".ChatRoomsActivity" />
         <!-- End Facebook SDK -->
-
-        <activity
-            android:name=".StoriesLoggedInActivity"
-            android:label="@string/title_activity_stories_logged_in"
-            android:parentActivityName=".StoriesAppActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="tallerii.stories.StoriesAppActivity" />
-        </activity>
     </application>
 
 </manifest>
