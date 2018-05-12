@@ -17,8 +17,6 @@ class BeFriendDetailController(flask_restful.Resource):
 			 self._validate_user_id(user_id)
 			 friends_requests = FriendRequestModel.get_friends_requests_rcv_by_user_id(user_id)
 			 return self._create_get_response(friends_requests)
-		except DataAlreadyExistsException as e:
-			return ErrorHandler.create_error_response(str(e), 400)
 		except NoDataFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
