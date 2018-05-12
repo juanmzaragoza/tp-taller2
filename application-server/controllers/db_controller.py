@@ -1,10 +1,8 @@
-import flask
-import flask_restful
 import pymongo
-from api_client.db_connection_error import DBConnectionError
 import os
+from api_client.db_connection_error import DBConnectionError
 
-class MongoController(flask_restful.Resource):
+class MongoController():
 	@staticmethod
 	def get_mongodb_instance(user, passwd):
 		try:
