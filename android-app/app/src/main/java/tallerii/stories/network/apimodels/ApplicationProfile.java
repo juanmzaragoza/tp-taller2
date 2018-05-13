@@ -10,6 +10,7 @@ public class ApplicationProfile {
 
     @SerializedName("_id")
     private String id;
+    @SerializedName("_rev")
     private String rev;
     @SerializedName("user_id")
     private String userId;
@@ -17,7 +18,7 @@ public class ApplicationProfile {
     private String lastName;
     private String name;
     private String email;
-    @SerializedName("profile_picture")
+    @SerializedName("picture")
     private String profilePicture;
     private List<Story> stories = null;
     private List<Friend> friends = null;
