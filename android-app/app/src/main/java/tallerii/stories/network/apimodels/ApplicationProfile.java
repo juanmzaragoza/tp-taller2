@@ -8,8 +8,10 @@ import java.util.UUID;
 
 public class ApplicationProfile {
 
+    @SerializedName("_id")
     private String id;
     private String rev;
+    @SerializedName("user_id")
     private String userId;
     @SerializedName("last_name")
     private String lastName;
@@ -25,7 +27,7 @@ public class ApplicationProfile {
     }
 
     public String getId() {
-        return id;
+        return id != null ? id : userId;
     }
 
     public String getRev() {
@@ -33,7 +35,7 @@ public class ApplicationProfile {
     }
 
     public String getUserId() {
-        return userId;
+        return userId != null ? userId : id;
     }
 
     public String getLastName() {
