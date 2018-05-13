@@ -24,6 +24,7 @@ import { UserComponent } from './components/user/user.component'
 import { ServerComponent } from './components/server/server.component'
 import { NavBarComponent } from './components/navbar/navbar.component'
 import { StatusComponent } from './components/status/status.component'
+import { ChartComponent } from './components/status/chart/chart.component'
 
 import { EventKeyDirective } from './directives/event.key.directive'
 import { FixButtonDirective } from './directives/fix.button.directive'
@@ -39,7 +40,8 @@ import { FixButtonDirective } from './directives/fix.button.directive'
     NavBarComponent,
     StatusComponent,
     EventKeyDirective,
-    FixButtonDirective
+    FixButtonDirective,
+    ChartComponent
   ],
   imports: [
     BrowserModule,
