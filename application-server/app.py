@@ -8,6 +8,7 @@ from controllers.user_controller import UserController
 from controllers.user_detail_controller import UserDetailController
 
 from controllers.ping_controller import PingController
+from controllers.stats_controller import StatsController
 from controllers.profile_controller import ProfileController
 from controllers.storie_controller import StorieController
 from controllers.friend_controller import FriendController
@@ -36,6 +37,7 @@ with app.app_context():
 
 	# for shared-server endpoints
 	api.add_resource(PingController, '/ping')
+	api.add_resource(StatsController, '/stats')
 	
 	# app endpoints
 	api.add_resource(StorieController, '/stories')
