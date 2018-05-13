@@ -52,12 +52,3 @@ class TestFlaskApi(unittest.TestCase):
                          ]['email'])
         self.assertIn('picture', response_data['profile'])
         self.assertIn('stories', response_data['profile'])
-
-    def _test_profile_no_data_found_shouldreturn_status_404(self):
-        userId = '1'
-        response = self.__make_get_request(userId)
-        self.assertEqual(response.status_code, 404)
-        response_data = self.__get_response_data(response)
-        self.assertIn('code', response_data)
-        self.assertEqual(404, response_data['code'])
-        self.assertIn('message', response_data)
