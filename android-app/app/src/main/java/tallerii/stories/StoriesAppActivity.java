@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -45,14 +46,21 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
     }
 
     public void showMessage(String text) {
+        log(text);
         Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
 
+    private void log(String text) {
+        Log.i("TOAST","Shown text: " + text);
+    }
+
     public void showMessage(int resId) {
+        log("Of resource: " + resId);
         Toast.makeText(getContext(), resId, Toast.LENGTH_SHORT).show();
     }
 
     public void showMessage(String text, int length) {
+        log(text);
         Toast.makeText(getContext(), text, length).show();
     }
 

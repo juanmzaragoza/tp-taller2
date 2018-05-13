@@ -74,7 +74,7 @@ public class UserProfileUpdateActivity extends ProfileActivity {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
-            Log.i("tag?","uploadaing to firebase");
+            Log.i("FIREBASE","Uploading to firebase: " + imageName);
             StorageReference ref = storageReference.child("images/" + imageName);
             ref.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
