@@ -12,7 +12,7 @@ class PingController(flask_restful.Resource):
 			db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 			response = self.__ping_successful_response()
 			code = 200
-			return ResponseBuilder.build_response(response, code)
+			return ResponseBuilder.get_build_response(response, "server", code)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 		
