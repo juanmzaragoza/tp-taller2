@@ -10,6 +10,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import tallerii.stories.controller.ProfileController;
+import tallerii.stories.helpers.ImageHelper;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 
 public abstract class ProfileActivity extends StoriesLoggedInActivity {
@@ -19,14 +20,15 @@ public abstract class ProfileActivity extends StoriesLoggedInActivity {
     protected ImageView imageView;
     protected StorageReference storageReference;
     protected ProfileController controller;
+    private ImageHelper imageHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initWithChildResource();
         controller = getController();
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
+        imageHelper = new ImageHelper(getContext());
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.get(PROFILE_ID) != null) {
             controller.getUser(bundle.getString(PROFILE_ID));
@@ -42,13 +44,7 @@ public abstract class ProfileActivity extends StoriesLoggedInActivity {
         TextView friendsCount = findViewById(R.id.friend_count);
         friendsCount.setText(String.valueOf(applicationProfile.getFriends().size()));
         setUserName(applicationProfile);
-
-        //try to obtain profile pic from Firebase
-        Glide.with(getContext()).using(new FirebaseImageLoader())
-                .load(storageReference.child("images/" + applicationProfile.getProfilePicture()))
-                .placeholder(R.drawable.ic_account_circle_white_24dp).dontAnimate().fitCenter()
-                .into(imageView)
-        ;
+        imageHelper.setFirebaseImage(applicationProfile.getProfilePicture(), imageView);
     }
 
     abstract protected void setUserName(ApplicationProfile applicationProfile);

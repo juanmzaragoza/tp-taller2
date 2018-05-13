@@ -22,6 +22,7 @@ import tallerii.stories.network.apimodels.Friend;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
     private final StorageReference storageReference;
+    private final ImageHelper imageHelper;
     private List<Friend> friendsList;
     private Context context;
     private String currentUserId;
@@ -32,6 +33,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         FirebaseStorage storage = FirebaseStorage.getInstance();
         this.storageReference = storage.getReference();
         this.currentUserId = userId;
+        this.imageHelper = new ImageHelper(context);
     }
 
     @Override
@@ -46,17 +48,14 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final Friend user = friendsList.get(position);
         holder.personNameTxtV.setText(user.getFullName());
-        Glide.with(holder.personImageImgV.getContext()).using(new FirebaseImageLoader())
-                .load(storageReference.child("images/" + user.getPicture()))
-                .placeholder(R.drawable.ic_account_circle_white_24dp).dontAnimate().fitCenter()
-                .into(holder.personImageImgV)
-        ;
+        imageHelper.setFirebaseImage(user.getPicture(), holder.personImageImgV);
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 goToChatMessagesActivity(user.getId(), user.getFullName());
             }
         });
+
     }
 
     private void goToChatMessagesActivity(String personId, String friendName) {
