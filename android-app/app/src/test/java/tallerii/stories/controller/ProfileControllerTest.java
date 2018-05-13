@@ -41,6 +41,11 @@ public class ProfileControllerTest {
             File file = new File(classLoader.getResource("mockResponses").getFile());
             JSONObject apiMockResponses = new JSONObject(new String(Files.readAllBytes(file.toPath())));
             mockProfile = apiMockResponses.getJSONObject("ApplicationProfile").toString();
+            mockProfile = String.format("{" +
+                    "\"metadata\": {\n" +
+                    "    \"version\": \"1.0\"\n" +
+                    "  }, \n" +
+                    "  \"profile\": %s}", mockProfile);
         } catch (JSONException e) {
             e.printStackTrace();
         }
