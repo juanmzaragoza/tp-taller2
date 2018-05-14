@@ -13,6 +13,8 @@ export class ChartComponent {
     @Input() options: any;
     @Input() type: string;
     @Input() data: any;
+    @Input() id: number;
+    @Input() columns: Array<any>;
 
     ngOnInit() {
         var vm:any = this
@@ -24,10 +26,22 @@ export class ChartComponent {
                 data.addColumn('string', 'Topping');
                 data.addColumn('number', 'Slices');
                 data.addRows(vm.data);
-                var options = vm.options;
-                var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-                chart.draw(data, options);
+                var chart = new google.visualization.PieChart(document.getElementById('chart_div_'+ vm.id));
+                chart.draw(data, vm.options);
             });
+            break
+            case 'barstacked':
+                google.charts.load('current', {'packages':['corechart']});
+                google.charts.setOnLoadCallback(()=>{
+                    var data = new google.visualization.DataTable();
+                    vm.columns.forEach((col:any) => {
+                        data.addColumn(col.type, col.name);
+                    });
+                    data.addRows(vm.data);
+                    var chart = new google.visualization.ColumnChart(document.getElementById('chart_div_'+ vm.id));
+                    chart.draw(data, vm.options);
+                })
+            break
         }
     }
 

@@ -38,8 +38,24 @@ export class StatusService {
                 pie.push([key, pieJson[key]])
             });
         }
-
         return pie
+    }
+    getDataBarStacked = () : Array<Array<any>> => {
+        var me:any = this
+        var stacked:Array<Array<any>> = []
+        var keys: Array<any>
+        var st: any
+        if(me.status.length > 0){
+            st = me.dropKeys(_.clone(me.status[0]))
+            keys = Object.keys(st)
+            keys.forEach(key => {
+                stacked.push([key])
+                me.status.forEach((status:any) => {
+                    stacked[stacked.length-1].push(status[key])
+                });
+            });
+        }
+        return stacked
     }
     getStatus = ():Observable<any>=>{
         this.status = [

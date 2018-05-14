@@ -23,11 +23,26 @@ export class StatusComponent {
                     this.titleStacked = "bar stacked"
                     this.chart = {
                         pie:{
+                            id: 1,
                             type: "pie",
+                            columns:[],
                             options: {
                                 'title':'Total',
                                 'width':600,
                                 'height':300
+                            },
+                            data:[]
+                        },
+                        barStacked:{
+                            id:2,
+                            type: "barstacked",
+                            columns:[],
+                            options: {
+                                'title':'Total of each server',
+                                'width':600,
+                                'height':300,
+                                'isStacked': true,
+                                'legend': {position: 'top', maxLines: 3},
                             },
                             data:[]
                         }
@@ -39,36 +54,6 @@ export class StatusComponent {
         var vm: any = this
         this.getServ()
         this.title = "Status"
-        this.chart["pie"]["data"] = vm.StatusServ.getDataPie()
-        /*
-         // Load the Visualization API and the corechart package.
-      google.charts.load('current', {'packages':['corechart']});
-
-      // Set a callback to run when the Google Visualization API is loaded.
-      google.charts.setOnLoadCallback(drawChart);
-        */
-      // Callback that creates and populates a data table,
-      // instantiates the pie chart, passes in the data and
-      // draws it.
-      function drawChart() {
-
-        // Create the data table.
-        var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Topping');
-        data.addColumn('number', 'Slices');
-        data.addRows(vm.StatusServ.getDataPie());
-
-        // Set chart options
-        var options = {'title':'Total',
-                       'width':600,
-                       'height':300};
-
-        // Instantiate and draw our chart, passing in some options.
-        var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
-        
-      }
-
     }
     ngOnDestroy() {
         var vm :any = this
@@ -80,6 +65,12 @@ export class StatusComponent {
         var me = this
         me.ServerServ.get().subscribe((res) => {
           me.servers = res.servers
+          this.chart["pie"]["data"] = me.StatusServ.getDataPie()
+          this.chart["barStacked"]["columns"] = res.servers.map((s:any)=>{return {type: 'number', name: s.name} })
+          this.chart["barStacked"]["columns"].unshift({type: 'string', name: 'Filters'})
+          this.chart["barStacked"]["data"] = me.StatusServ.getDataBarStacked()
+          me.drawPie()
+          me.drawBarStacked()
         },
         error =>{
           console.error(error)
@@ -87,6 +78,32 @@ export class StatusComponent {
     }
     change(id: any){
 
+    }
+
+    drawPie(){
+        var me = this
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(()=>{
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Topping');
+            data.addColumn('number', 'Slices');
+            data.addRows(me.chart.pie.data);
+            var chart = new google.visualization.PieChart(document.getElementById('chart_pie'));
+            chart.draw(data, me.chart.pie.options);
+        });
+    }
+    drawBarStacked(){
+        var me = this
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(()=>{
+            var data = new google.visualization.DataTable();
+            me.chart.barStacked.columns.forEach((col:any) => {
+                data.addColumn(col.type, col.name);
+            });
+            data.addRows(me.chart.barStacked.data);
+            var chart = new google.visualization.ColumnChart(document.getElementById('chart_barStacked'));
+            chart.draw(data, me.chart.barStacked.options);
+        })
     }
 
 }

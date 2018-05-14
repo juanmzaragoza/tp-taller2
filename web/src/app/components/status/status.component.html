@@ -1,4 +1,4 @@
-
+<!--
 <div class="row">
     <div class="col s12">
         <h4 class="header indigo-text">Monitoring</h4>
@@ -16,9 +16,36 @@
         </div>
     </div>
     </div>
-    <!----> 
-    <app-chart [type]="chart.pie.type" [data]="chart.pie.data" [options]="chart.pie.options"></app-chart>
-    <app-chart [title]="titleStacked"></app-chart>
+    --> 
+  <!--  <div class="row hide-on-small-only">
+        <div class="col s6">
+            <app-chart [id]="chart.pie.id" [type]="chart.pie.type" [data]="chart.pie.data" [options]="chart.pie.options" [columns]="chart.pie.columns"></app-chart>
+        </div>
+        <div class="col s6">
+            <app-chart [id]="chart.barStacked.id" [type]="chart.barStacked.type" [data]="chart.barStacked.data" [options]="chart.barStacked.options" [columns]="chart.barStacked.columns"></app-chart>
+        </div>
+    </div>
+
+    <div class="show-for-small-only hide-on-med-only hide-on-large-only">
+        <div class="row">
+            <div class="col s12">
+                <app-chart [id]="chart.pie.id" [type]="chart.pie.type" [data]="chart.pie.data" [options]="chart.pie.options" [columns]="chart.pie.columns"></app-chart>
+            </div>
+            <div class="col s12">
+                <app-chart [id]="chart.barStacked.id" [type]="chart.barStacked.type" [data]="chart.barStacked.data" [options]="chart.barStacked.options" [columns]="chart.barStacked.columns"></app-chart>
+            </div>
+        </div>
+    </div>-->
+
+
+    <div class="row hide-on-small-only">
+        <div class="col s6">
+            <div id="chart_pie"></div>
+        </div>
+        <div class="col s6">
+            <div id="chart_barStacked"></div>
+        </div>
+    </div>
 
 
 <footer style="position:fixed;bottom:1em;left:-1em;width:100%;">
