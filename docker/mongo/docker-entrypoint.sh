@@ -13,19 +13,19 @@ mongo appserverdb --eval 'user2 = {"_id": ObjectId("5ae66a31d4ef925dac59a94f"), 
 mongo appserverdb --eval  'user3 = {"_id": ObjectId("5ae66a31d4ef925dac59a94e"), "_rev":"", "last_name" : "Fernandez", "name" : "Carlos", "birthday" : "01/01/1980", "gender" : "M", "email" : "carlos@email.com", "picture": "" };	
 						  db.users.insert(user3);'
 						  
-mongo appserverdb --eval  'storie1= { "_id": ObjectId("5ae66a31d4ef925dac59a95b"), "_rev" : 0, "created_time" : 0, "updated_time" : 0, "title" : "First Storie", "description" : "Hello World! This is my first Storie!", "location" : "", "visibility" : "public", "multimedia" : "", "story_type" : "normal"};
+mongo appserverdb --eval  'storie1= { "_id": ObjectId("5ae66a31d4ef925dac59a95b"), "_rev" : "", "created_time" : 0, "updated_time" : 0, "title" : "First Storie", "description" : "Hello World! This is my first Storie!", "location" : "", "visibility" : "public", "multimedia" : "", "story_type" : "normal"};
 						  db.stories.insert(storie1);'
 						  
 mongo appserverdb --eval  'user_storie1 = {"user_id": "5ae66a31d4ef925dac59a94b","storie_id":"5ae66a31d4ef925dac59a95b"};
 						  db.users_stories.insert(user_storie1);'
 						  
-mongo appserverdb --eval  'storie2= { "_id": ObjectId("5ae66a31d4ef925dac59a96b"), "_rev" : 0, "created_time" : 0, "updated_time" : 0, "title" : "Second Storie", "description" : "Hello World! This is my second Storie!", "location" : "", "visibility" : "public", "multimedia" : "", "story_type" : "normal" };
+mongo appserverdb --eval  'storie2= { "_id": ObjectId("5ae66a31d4ef925dac59a96b"), "_rev" : "", "created_time" : 0, "updated_time" : 0, "title" : "Second Storie", "description" : "Hello World! This is my second Storie!", "location" : "", "visibility" : "public", "multimedia" : "", "story_type" : "normal" };
 						  db.stories.insert(storie2);'
 						  
 mongo appserverdb --eval  'user_storie2 = {"user_id": "5ae66a31d4ef925dac59a94b","storie_id":"5ae66a31d4ef925dac59a96b"};
 						  db.users_stories.insert(user_storie2);'
 						  
-mongo appserverdb --eval  'storie3= { "_id": ObjectId("5ae66a31d4ef925dac59a97b"), "_rev" : 0, "created_time" : 0, "updated_time" : 0, "title" : "Maria First Storie", "description" : "Hello World! I am Maria, this is my first Storie!", "location" : "", "visibility" : "public", "multimedia" : "", "story_type" : "normal" };
+mongo appserverdb --eval  'storie3= { "_id": ObjectId("5ae66a31d4ef925dac59a97b"), "_rev" : "", "created_time" : 0, "updated_time" : 0, "title" : "Maria First Storie", "description" : "Hello World! I am Maria, this is my first Storie!", "location" : "", "visibility" : "public", "multimedia" : "", "story_type" : "normal" };
 						  db.stories.insert(storie3);'
 						  
 mongo appserverdb --eval  'user_storie3 = {"user_id": "5ae66a31d4ef925dac59a94f","storie_id":"5ae66a31d4ef925dac59a97b"};

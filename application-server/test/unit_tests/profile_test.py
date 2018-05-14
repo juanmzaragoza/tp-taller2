@@ -4,7 +4,7 @@
 import unittest
 import unittest.mock as mock
 from models.user_data import UserDataModel
-from controllers.storie_controller import StorieController
+from controllers.storie_detail_controller import StorieDetailController
 from controllers.friend_controller import FriendController
 from controllers.be_friend_detail_controller import BeFriendDetailController
 from controllers.profile_controller import ProfileController
@@ -44,7 +44,7 @@ class TestProfileApi(unittest.TestCase):
         user_id = '1'
         UserDataModel.get_user_data_by_user_id = \
             mock.MagicMock(return_value=user_data_successful_mock)
-        storie = StorieController()
+        storie = StorieDetailController()
         storie.get_stories_by_user_id = \
             mock.MagicMock(return_value=stories_successful_mock)
         friend = FriendController()

@@ -2,7 +2,7 @@ import flask_restful
 import json
 from flask import request, jsonify
 from controllers.response_builder import ResponseBuilder
-from controllers.storie_controller import StorieController
+from controllers.storie_detail_controller import StorieDetailController
 from controllers.friend_controller import FriendController
 from controllers.be_friend_detail_controller import BeFriendDetailController
 from controllers.error_handler import ErrorHandler
@@ -17,8 +17,8 @@ class ProfileController(flask_restful.Resource):
 	def get(self, user_id):
 		try:
 			user_data_response = UserDataModel.get_user_data_by_user_id(user_id)
-			storie_controller = StorieController()
-			stories_response = storie_controller.get_stories_by_user_id(user_id)
+			storie_detail_controller = StorieDetailController()
+			stories_response = storie_detail_controller.get_stories_by_user_id(user_id)
 			friend_controller = FriendController()
 			friends_response = friend_controller.get_friends_by_user_id(user_id)
 			be_friend_detail_controller = BeFriendDetailController()
