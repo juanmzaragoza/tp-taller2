@@ -55,7 +55,7 @@ class SharedApiClient():
 	def userCreate(self, fbId, username, password):
 		# app.logger.error('url: %s', self.url)
 		try:
-			data = {'id': fbId, 'password': password, 'applicationOwner': APPLICATION_OWNER}
+			data = {'id': fbId, 'username':username, 'password': password, 'applicationOwner': APPLICATION_OWNER}
 			url = self.url + '/user'
 
 			response = requests.post(url, data=json.dumps(data), headers=self.headers)
