@@ -4,11 +4,6 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 import tallerii.stories.controller.ProfileController;
 import tallerii.stories.helpers.ImageHelper;
 import tallerii.stories.network.apimodels.ApplicationProfile;
@@ -18,7 +13,6 @@ public abstract class ProfileActivity extends StoriesLoggedInActivity {
     public static final String PROFILE_ID = "profileId";
 
     protected ImageView imageView;
-    protected StorageReference storageReference;
     protected ProfileController controller;
     private ImageHelper imageHelper;
 
