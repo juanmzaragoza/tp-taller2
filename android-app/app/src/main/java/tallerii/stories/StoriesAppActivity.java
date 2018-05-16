@@ -94,6 +94,13 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
         finish();
     }
 
+    public void startProfileActivity(String profile) {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        intent.putExtra(PROFILE_OBJECT, profile);
+        startActivity(intent);
+        finish();
+    }
+
     public void startProfileActivity(ApplicationProfile profile) {
         Intent intent = new Intent(this, UserProfileActivity.class);
         intent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
