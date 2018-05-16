@@ -30,7 +30,7 @@ public class RegistrationController {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         activity.showMessage("Registration successful\nWelcome to stories!!");
-                        activity.startMainActivity(username, response.body().getAsJsonObject("token").get("token").getAsString());
+                        activity.startMainActivity(username, response.body().getAsJsonObject("user").get("token").getAsString());
                     }
                 } else {
                     manageErrors(response);

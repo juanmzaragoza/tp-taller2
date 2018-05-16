@@ -45,7 +45,7 @@ public class AuthorizationMainActivity extends AppCompatActivity {
                 LoginManager.getInstance().logOut();
             }
             //show login form
-            activityIntent = new Intent(this, UserProfileActivity.class);
+            activityIntent = new Intent(this, LoginActivity.class);
         }
         ApplicationProfile profile = new ApplicationProfile();
         profile.setFirstName("Nico");
