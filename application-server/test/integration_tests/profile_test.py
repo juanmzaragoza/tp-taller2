@@ -5,7 +5,7 @@ import unittest
 import unittest.mock as mock
 from unittest.mock import patch
 from models.user_data import UserDataModel
-from controllers.storie_controller import StorieController
+from controllers.storie_detail_controller import StorieDetailController
 from controllers.friend_controller import FriendController
 from controllers.friend_request_controller import FriendRequestController
 from controllers.profile_controller import ProfileController
@@ -17,7 +17,7 @@ import sys
 import app
 
 
-class TestFlaskApi(unittest.TestCase):
+class TestProfileApi(unittest.TestCase):
 
     def setUp(self):
         self.app = app.app.test_client()

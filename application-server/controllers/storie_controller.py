@@ -9,15 +9,6 @@ from errors_exceptions.no_data_found_exception import NoDataFoundException
 
 class StorieController(flask_restful.Resource):
 	
-	def get(self):
-		try:
-			 stories = StorieModel.get_stories()
-			 return self._create_get_stories_response(stories)
-		except NoDataFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 404)
-		except DBConnectionError as e:
-			return ErrorHandler.create_error_response(str(e), 500)
-	
 	def post(self):
 		try:
 			 storie = self._create_user_storie_request(request)
@@ -36,15 +27,6 @@ class StorieController(flask_restful.Resource):
 		storie = StorieModel.create_user_storie(body)
 		return storie
 		
-	def get_stories_by_user_id(self, user_id):
-		try:
-			stories = StorieModel.get_stories_by_user_id(user_id)
-			return self._create_get_stories_response(stories)
-		except NoDataFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 404)
-		except DBConnectionError as e:
-			return ErrorHandler.create_error_response(str(e), 500)
-
 	def _create_get_stories_response(self, stories):
 		response = []
 		for doc in stories:

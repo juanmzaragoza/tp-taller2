@@ -36,6 +36,7 @@ class UserDataModel():
 			raise DataVersionException
 		
 		body['_rev'] = uuid.uuid4().hex
+		del body['_id']
 		user = db.users.find_and_modify({"_id": ObjectId(user_id)}, {'$set': body })
 		user = db.users.find_one({"_id": ObjectId(user_id)})
 

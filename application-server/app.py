@@ -11,6 +11,7 @@ from controllers.ping_controller import PingController
 from controllers.stats_controller import StatsController
 from controllers.profile_controller import ProfileController
 from controllers.storie_controller import StorieController
+from controllers.storie_detail_controller import StorieDetailController
 from controllers.friend_controller import FriendController
 from controllers.friend_request_controller import FriendRequestController
 from controllers.friend_request_detail_controller import FriendRequestDetailController
@@ -41,6 +42,7 @@ with app.app_context():
 	
 	# app endpoints
 	api.add_resource(StorieController, '/stories')
+	api.add_resource(StorieDetailController, '/stories/<string:id>')
 	api.add_resource(BeFriendController, '/befriend')
 	api.add_resource(BeFriendDetailController, '/befriend/<string:user_id>')
 	api.add_resource(ProfileController, '/profiles/<string:user_id>')
