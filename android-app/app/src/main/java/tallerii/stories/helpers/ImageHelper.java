@@ -1,6 +1,5 @@
 package tallerii.stories.helpers;
 
-import android.app.Activity;
 import android.content.Context;
 import android.widget.ImageView;
 
@@ -23,10 +22,13 @@ public class ImageHelper {
     }
 
     public void setFirebaseImage(String imageId, ImageView imageView) {
-        Glide.with(context).using(new FirebaseImageLoader())
-                .load(storageReference.child("images/" + imageId))
-                .error(R.drawable.ic_account_circle_white_24dp).dontAnimate().fitCenter()
-                .into(imageView)
-        ;
+        if (imageId != null && imageId.length() > 0){
+            Glide.with(context).using(new FirebaseImageLoader())
+                    .load(storageReference.child("images/" + imageId))
+                    .error(R.drawable.ic_account_circle_white_24dp)
+                    .dontAnimate().fitCenter()
+                    .into(imageView)
+            ;
+        }
     }
 }
