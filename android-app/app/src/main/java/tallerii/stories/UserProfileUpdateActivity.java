@@ -118,7 +118,7 @@ public class UserProfileUpdateActivity extends ProfileActivity {
         ApplicationProfile applicationProfile = getProfile();
         applicationProfile.setFirstName(getStringFrom(R.id.first_name));
         applicationProfile.setLastName(getStringFrom(R.id.last_name));
-        applicationProfile.setProfilePicture(UUID.randomUUID().toString());
+        applicationProfile.setProfilePicture(UUID.randomUUID().toString().replace("-", ""));
         if (filePath != null) {
             uploadImage(applicationProfile.getProfilePicture(), filePath);//updates profile only if picture loaded
             filePath = null;
