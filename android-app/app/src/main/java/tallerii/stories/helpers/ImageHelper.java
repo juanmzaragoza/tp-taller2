@@ -18,13 +18,14 @@ public class ImageHelper {
     public ImageHelper(Context context) {
         this.context = context;
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        this.storageReference = storage.getReference();
+        this.storageReference = storage.getReference().child("images");
     }
 
     public void setFirebaseImage(String imageId, ImageView imageView) {
-        if (imageId != null && imageId.length() > 0){
+        if (imageId != null && imageId.length() > 0) {
+            StorageReference imageRef = storageReference.child(imageId);
             Glide.with(context).using(new FirebaseImageLoader())
-                    .load(storageReference.child("images/" + imageId))
+                    .load(imageRef)
                     .error(R.drawable.ic_account_circle_white_24dp)
                     .dontAnimate().fitCenter()
                     .into(imageView)
