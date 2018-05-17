@@ -11,19 +11,22 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface EndpointsApplicationApiRest {
-    @Headers({"Content-Type:application/json"})
+
+     String CONTENT_TYPE_APPLICATION_JSON = "Content-Type:application/json";
+
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
     @POST(ConstantsApplicationApiRest.POST_REGISTRATION)
     Call<JsonObject> postRegistration(@Body JsonObject parameters);
 
-    @Headers({"Content-Type:application/json"})
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
     @POST(ConstantsApplicationApiRest.POST_LOGIN)
     Call<JsonObject> postLogin(@Body JsonObject parameters);
 
-    @Headers({"Content-Type:application/json"})
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
     @GET(ConstantsApplicationApiRest.PROFILE_ENDPOINT)
     Call<JsonObject> getProfileById(@Path("id") String user_id);
 
-    @Headers({"Content-Type:application/json"})
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
     @PUT(ConstantsApplicationApiRest.PROFILE_ENDPOINT)
     Call<JsonObject> putProfileById(@Path("id") String user_id, @Body JsonObject profile);
 }
