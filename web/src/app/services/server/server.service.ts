@@ -6,7 +6,7 @@ import { Observable }       from 'rxjs/Observable';
 @Injectable()
 export class ServerService {
     constructor(public RemoteServ: RemoteService){}
-    get(){
+      get(){
         return this.RemoteServ.get('/servers');
       }
       delete(id:string){
