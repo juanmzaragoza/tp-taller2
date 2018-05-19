@@ -24,11 +24,10 @@ public class ImageHelper {
     public void setFirebaseImage(String imageId, ImageView imageView) {
         if (imageId != null && imageId.length() > 0) {
             StorageReference imageRef = storageReference.child(imageId);
-            Glide.with(context).using(new FirebaseImageLoader())
-                    .load(imageRef)
-                    .error(R.drawable.ic_account_circle_white_24dp)
-                    .dontAnimate().fitCenter()
-                    .into(imageView)
+            Glide
+                .with(context)
+                .load(imageRef)
+                .into(imageView)
             ;
         }
     }
