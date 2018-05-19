@@ -17,7 +17,7 @@ import tallerii.stories.ProfileActivity;
 import tallerii.stories.R;
 import tallerii.stories.controller.StoriesController;
 import tallerii.stories.helpers.StoriesAdapter;
-import tallerii.stories.network.apimodels.Story;
+import tallerii.stories.network.apimodels.Storie;
 
 public class HomeFragment extends Fragment {
 
@@ -40,7 +40,7 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
-    public void populateStories(List<Story> storiesToPopulate) {
+    public void populateStories(List<Storie> storiesToPopulate) {
 
         ListView listView = (ListView) rootView.findViewById(R.id.list);
 

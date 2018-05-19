@@ -10,7 +10,7 @@ import retrofit2.Response;
 import tallerii.stories.fragments.main.HomeFragment;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
-import tallerii.stories.network.apimodels.Story;
+import tallerii.stories.network.apimodels.Storie;
 
 public class StoriesController {
     protected HomeFragment fragment;
@@ -27,19 +27,19 @@ public class StoriesController {
      */
     public void getStories(final String userId) {
         EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
-        Call<List<Story>> responseCall = endpointsApi.getStoriesByUserId(userId);
+        Call<List<Storie>> responseCall = endpointsApi.getStoriesByUserId(userId);
 
-        responseCall.enqueue(new Callback<List<Story>>() {
+        responseCall.enqueue(new Callback<List<Storie>>() {
 
             @Override
-            public void onFailure(Call<List<Story>> call, Throwable t) {
+            public void onFailure(Call<List<Storie>> call, Throwable t) {
                 Log.e("Error", t.toString());
             }
 
             @Override
-            public void onResponse(Call<List<Story>> call, Response<List<Story>> response) {
+            public void onResponse(Call<List<Storie>> call, Response<List<Storie>> response) {
                 if (response.isSuccessful()) {
-                    List<Story> stories = response.body();
+                    List<Storie> stories = response.body();
                     if (stories != null) {
                         fragment.populateStories(stories);
                     }

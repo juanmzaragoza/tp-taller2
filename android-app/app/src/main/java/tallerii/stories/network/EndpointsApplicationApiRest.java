@@ -11,7 +11,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import tallerii.stories.network.apimodels.Story;
+import tallerii.stories.network.apimodels.Storie;
 
 public interface EndpointsApplicationApiRest {
 
@@ -35,5 +35,5 @@ public interface EndpointsApplicationApiRest {
 
     @Headers({"Accept:application/json"})
     @GET(ConstantsApplicationApiRest.GET_STORIES_BY_USER)
-    Call<List<Story>> getStoriesByUserId(@Path("id") String user_id);
+    Call<List<Storie>> getStoriesByUserId(@Path("id") String user_id);
 }

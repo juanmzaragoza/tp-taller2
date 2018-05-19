@@ -5,7 +5,7 @@ import info.androidhive.listviewfeed.R;
 import info.androidhive.listviewfeed.app.AppController;
 import info.androidhive.listviewfeed.data.FeedItem;*/
 import tallerii.stories.R;
-import tallerii.stories.network.apimodels.Story;
+import tallerii.stories.network.apimodels.Storie;
 
 import java.util.List;
 
@@ -29,11 +29,11 @@ import com.google.firebase.storage.StorageReference;
 public class StoriesAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
-    private List<Story> stories;
+    private List<Storie> stories;
     private StorageReference storageReference;
     private final ImageHelper imageHelper;
 
-    public StoriesAdapter(Activity activity, List<Story> stories) {
+    public StoriesAdapter(Activity activity, List<Storie> stories) {
         this.activity = activity;
         this.stories = stories;
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -70,19 +70,19 @@ public class StoriesAdapter extends BaseAdapter {
         TextView statusMsg = (TextView) convertView.findViewById(R.id.txtStatusMsg);
         //TextView url = (TextView) convertView.findViewById(R.id.txtUrl);
         ImageView profilePic = convertView.findViewById(R.id.profilePic);
-        ImageView storieImageView = (ImageView) convertView.findViewById(R.id.storyImage1);
+        ImageView storieImageView = (ImageView) convertView.findViewById(R.id.storieImage1);
 
-        Story story = stories.get(position);
+        Storie storie = stories.get(position);
 
-        name.setText(story.getUserName() +" "+story.getUserLastName());
+        name.setText(storie.getUserName() +" "+storie.getUserLastName());
 
         // Converting timestamp into x ago format
-        //Integer timeAgo = story.getCreatedTime();
+        //Integer timeAgo = storie.getCreatedTime();
         timestamp.setText("22 hours ago");
 
         // Chcek for empty status message
-        if (!TextUtils.isEmpty(story.getDescription())) {
-            statusMsg.setText(story.getDescription());
+        if (!TextUtils.isEmpty(storie.getDescription())) {
+            statusMsg.setText(storie.getDescription());
             statusMsg.setVisibility(View.VISIBLE);
         } else {
             // status is empty, remove from view
@@ -90,9 +90,9 @@ public class StoriesAdapter extends BaseAdapter {
         }
 
         // Checking for null feed url
-        /*if (story.getUrl() != null) {
-            url.setText(Html.fromHtml("<a href=\"" + story.getUrl() + "\">"
-                    + story.getUrl() + "</a> "));
+        /*if (storie.getUrl() != null) {
+            url.setText(Html.fromHtml("<a href=\"" + storie.getUrl() + "\">"
+                    + storie.getUrl() + "</a> "));
 
             // Making url clickable
             url.setMovementMethod(LinkMovementMethod.getInstance());
@@ -103,12 +103,12 @@ public class StoriesAdapter extends BaseAdapter {
         }*/
 
         // user profile pic
-        imageHelper.setFirebaseImage(story.getUserPicture(), profilePic);
+        imageHelper.setFirebaseImage(storie.getUserPicture(), profilePic);
 
-        // story image
-        if (story.getMultimedia() != null && !story.getMultimedia().isEmpty()) {
+        // storie image
+        if (storie.getMultimedia() != null && !storie.getMultimedia().isEmpty()) {
             storieImageView.setVisibility(View.VISIBLE);
-            imageHelper.setFirebaseImage(story.getMultimedia(), storieImageView);
+            imageHelper.setFirebaseImage(storie.getMultimedia(), storieImageView);
         } else {
             storieImageView.setVisibility(View.GONE);
         }
