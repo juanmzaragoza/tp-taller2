@@ -13,10 +13,10 @@ class StorieModel:
 	def create_user_storie(body):
 		db = MongoController.get_mongodb_instance(MONGODB_USER,
                 	MONGODB_PASSWD)
-		storie_date = time.strftime('%d/%m/%Y hh:mm', time.localtime())
+		storie_date = time.strftime('%d/%m/%Y %H:%M:%S', time.localtime())
 		storie = {
 			'created_time': storie_date,
-			'updated_time': 0,
+			'updated_time': "",
 			'_rev': body['_rev'],
 			'title': body['title'],
 			'description': body['description'],
@@ -25,7 +25,7 @@ class StorieModel:
 			'multimedia': body['multimedia'],
 			'story_type': body['storyType']}
 		storie_id = db.stories.insert(storie)
-		db.users_stories.insert({'user_id': body['userId'],'storie_id': storie_id})
+		db.users_stories.insert({'user_id': body['userId'],'storie_id': str(storie_id)})
 		response = db.stories.find_one({'_id': ObjectId(storie_id)})
 		response['_id'] = str(response['_id'])
 		response['user_id'] = body['userId']
@@ -126,9 +126,11 @@ class StorieModel:
 	@staticmethod
 	def delete_storie(storie_id, body):
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+		
+		
 		if bson.objectid.ObjectId.is_valid(storie_id) == False:
 			raise NoDataFoundException
-
+		
 		storie = db.users_stories.find_one({'storie_id': storie_id,'user_id': body['user_id']})
 
 		if storie == None:
