@@ -58,6 +58,12 @@ public class LoginController {
                     manageErrors(response);
                 }
             }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                super.onFailure(call, t);
+                activity.logOutFromFB();
+            }
         });
 
     }

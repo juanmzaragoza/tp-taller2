@@ -1,35 +1,50 @@
 package tallerii.stories;
 
+import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
-import android.widget.TextView;
 
+import tallerii.stories.fragments.main.AnotherFragment;
+import tallerii.stories.fragments.main.HomeFragment;
 import tallerii.stories.helpers.Store;
+import tallerii.stories.StoriesLoggedInActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends StoriesLoggedInActivity {
+
     public static final String EXTRA_MESSAGE = "tallerii.stories.loginactivity.MESSAGE";
     public static final String TOKEN = "token";
+
+    private Fragment fragment;
+    private FragmentManager fragmentManager;
+
+    @Override
+    protected Context getContext() {
+        return MainActivity.this;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fragmentManager = getSupportFragmentManager();
 
-        // Get the Intent that started this activity and extract the string
+        //TODO: why we do this
         Intent intent = getIntent();
-        String message = intent.getStringExtra(EXTRA_MESSAGE);
         if(intent.getStringExtra(TOKEN) != null) {
             final Store store = new Store();
             store.save("token", intent.getStringExtra(TOKEN));
         }
 
-        // Capture the layout's TextView and set the string as its text
-        TextView textView = findViewById(R.id.usernameView);
-        textView.setText(message);
+        // by default show home
+        fragment = new HomeFragment();
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_container, fragment).commit();
 
         // get bottom navigation menu
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -47,14 +62,20 @@ public class MainActivity extends AppCompatActivity {
     private boolean switchContent(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_home:
-                // change content
+                setHomeFragment();
+                break;
             case R.id.action_account:
-                // change content
+                fragment = new AnotherFragment();
             case R.id.action_new:
-                // change content
+                fragment = new AnotherFragment();
         }
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_container, fragment).commit();
         return true;
     }
 
-
+    private void setHomeFragment() {
+        fragment = new HomeFragment();
+        fragment.setArguments(getIntent().getExtras());
+    }
 }

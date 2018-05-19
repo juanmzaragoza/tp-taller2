@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         tools:context="tallerii.stories.MainActivity">
 
-        <TextView
+        <!--TextView
             android:id="@+id/labelView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +35,13 @@
             android:textAppearance="@android:style/TextAppearance.Material.Display3"
             android:textColor="@android:color/holo_red_dark"
             app:layout_constraintBaseline_toBaselineOf="@+id/labelView"
-            app:layout_constraintStart_toEndOf="@+id/labelView" />
+            app:layout_constraintStart_toEndOf="@+id/labelView" /-->
+        <FrameLayout
+            android:id="@+id/main_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true">
+        </FrameLayout>
 
     </android.support.constraint.ConstraintLayout>
 

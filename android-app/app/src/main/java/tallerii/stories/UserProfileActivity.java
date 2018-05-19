@@ -33,6 +33,6 @@ public class UserProfileActivity extends ProfileActivity {
     }
 
     public void editProfile(View dummy) {
-        startProfileUpdateActivity(new Gson().toJson(applicationProfile));
+        startProfileUpdateActivity(new Gson().toJson(getProfile()));
     }
 }
