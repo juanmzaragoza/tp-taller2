@@ -31,7 +31,6 @@ public abstract class ProfileActivity extends StoriesAppActivity {
         controller = getController();
         FirebaseStorage storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
-        //TODO refactor this to parent
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.get(PROFILE_OBJECT) != null) {
             ApplicationProfile profile = new Gson().fromJson(bundle.getString(PROFILE_OBJECT), ApplicationProfile.class);

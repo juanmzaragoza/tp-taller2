@@ -45,6 +45,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:15.0.2'
     implementation 'com.google.firebase:firebase-database:15.0.1'
     testImplementation group: 'org.skyscreamer', name: 'jsonassert', version: '1.2.3'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }
 
 buildscript {

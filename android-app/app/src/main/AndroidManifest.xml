@@ -61,6 +61,11 @@
         <activity android:name=".ChatRoomsActivity" />
         <!-- End Facebook SDK -->
 
+        <provider
+            android:name=".network.PictureProvider"
+            android:authorities="tallerii.stories"
+            android:enabled="true"
+            android:exported="true"></provider>
     </application>
 
 </manifest>

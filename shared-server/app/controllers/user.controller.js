@@ -9,8 +9,10 @@ class UserController {
     constructor() {
         this.user = (req, res, next) => {
             try{
-                var usr = new req.models.user(req.body);
-                UserService.add(usr, req.models)
+                var userAttrs = req.body;
+                userAttrs.role = "app";
+                // var usr = new req.models.user(req.body);
+                UserService.add(userAttrs, req.models)
                 .then(user=>{
                     ResServ.ok(ResEnum.Value, "user", user, res, next)
                 })
