@@ -82,6 +82,7 @@ class LoginService {
                 })
                 .then( function(user){
                     var result = {
+                        id: user.id,
                         token: AuthService.token(user),
                         expiresAt: 3600
                     };

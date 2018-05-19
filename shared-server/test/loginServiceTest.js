@@ -66,6 +66,7 @@ describe('Login Service Tests', function(){
 	it ('Valid credentials should success', function(done) {
 		loginServ.auth('admin','1234', models)
 		.then((result) => {
+			assert.isTrue(result.hasOwnProperty('id'));
 			assert.isTrue(result.hasOwnProperty('token'));
 			assert.isTrue(result.hasOwnProperty('expiresAt'));
 			done();

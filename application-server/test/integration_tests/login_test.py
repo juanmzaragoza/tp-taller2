@@ -57,6 +57,7 @@ class TestFlaskLoginApi(unittest.TestCase):
             },
             "token": {
                 "expiresAt": 3600,
+                "id": 9,
                 "token": "string"
             }
         }
@@ -70,8 +71,10 @@ class TestFlaskLoginApi(unittest.TestCase):
         self.assertEqual(response_data["metadata"]["version"], "v1")
         self.assertIn("token", response_data)
         self.assertIn("expiresAt", response_data["token"])
+        self.assertIn("id", response_data["token"])
         self.assertIn("token", response_data["token"])
         self.assertEqual(response_data["token"]["expiresAt"], 3600)
+        self.assertEqual(response_data["token"]["id"], 9)
 
     @patch('api_client.shared_api_client.requests.post')
     def test_invalid_user_should_status_401(self, mock_post):
