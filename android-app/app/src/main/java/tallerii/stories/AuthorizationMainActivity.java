@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
+import com.google.firebase.database.FirebaseDatabase;
 
 import tallerii.stories.helpers.Store;
 
@@ -22,6 +23,7 @@ public class AuthorizationMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         Intent activityIntent;
         Store store = new Store();

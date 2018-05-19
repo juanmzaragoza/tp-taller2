@@ -2,6 +2,8 @@ package tallerii.stories.network.apimodels;
 
 import com.google.gson.annotations.SerializedName;
 
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -65,6 +67,7 @@ public class ApplicationProfile {
     }
 
     public void setFirstName(String firstName) {
+        this.name = firstName;
         this.firstName = firstName;
     }
 
@@ -74,5 +77,13 @@ public class ApplicationProfile {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+  
+    //TODO verify if this should exist or be managed from app server
+    public void addFriend(Friend friend) {
+        if (friends == null) {
+            friends = new ArrayList<>();
+        }
+        friends.add(friend);
     }
 }
