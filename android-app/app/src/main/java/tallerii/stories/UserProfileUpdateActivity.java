@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -24,7 +25,7 @@ import tallerii.stories.network.apimodels.ApplicationProfile;
 
 public class UserProfileUpdateActivity extends ProfileActivity {
 
-    private Uri filePath;
+    private Uri filePath = null;
     private EditText firstName;
     private EditText lastName;
 
@@ -62,44 +63,45 @@ public class UserProfileUpdateActivity extends ProfileActivity {
             case 0:
             case 1:
                 if(resultCode == RESULT_OK){
-                    Uri selectedImage = imageReturnedIntent.getData();
-                    imageView.setImageURI(selectedImage);
+                    filePath = imageReturnedIntent.getData();
+                    imageView.setImageURI(null);
+                    imageView.setImageURI(filePath);
                 }
                 break;
         }
     }
 
-    private void uploadImage(String imageName) {
-        if(filePath != null) {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
-            Log.i("tag?","uploadaing to firebase");
-            StorageReference ref = storageReference.child("images/" + imageName);
-            ref.putFile(filePath)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            progressDialog.dismiss();
-                            showMessage("Uploaded");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            progressDialog.dismiss();
-                            showMessage("Failed "+e.getMessage());
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                    .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                        }
-                    });
-        }
+    private void uploadImage(String imageName, Uri filePath) {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Uploading...");
+        progressDialog.show();
+        Log.i("FIREBASE","Uploading to firebase: " + imageName);
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference ref = storageReference.child("images/" + imageName);
+        ref.putFile(filePath)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        progressDialog.dismiss();
+                        showMessage("Uploaded");
+                        ((ProfileUpdateController)controller).putApplicationProfile(getProfile());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        showMessage("Failed "+e.getMessage());
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                .getTotalByteCount());
+                        progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                    }
+                });
     }
 
     @Override
@@ -116,10 +118,12 @@ public class UserProfileUpdateActivity extends ProfileActivity {
         ApplicationProfile applicationProfile = getProfile();
         applicationProfile.setFirstName(getStringFrom(R.id.first_name));
         applicationProfile.setLastName(getStringFrom(R.id.last_name));
-        applicationProfile.setProfilePicture(UUID.randomUUID().toString());
-
-        uploadImage(applicationProfile.getProfilePicture());
-
-        ((ProfileUpdateController)controller).putApplicationProfile(applicationProfile);
+        applicationProfile.setProfilePicture(UUID.randomUUID().toString().replace("-", ""));
+        if (filePath != null) {
+            uploadImage(applicationProfile.getProfilePicture(), filePath);//updates profile only if picture loaded
+            filePath = null;
+        } else {
+            ((ProfileUpdateController)controller).putApplicationProfile(getProfile());
+        }
     }
 }

@@ -1,7 +1,5 @@
 package tallerii.stories.controller;
 
-import android.widget.Toast;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -19,8 +17,6 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 import tallerii.stories.RegistrationActivity;
-import tallerii.stories.controller.LoginController;
-import tallerii.stories.controller.RegistrationController;
 import tallerii.stories.network.ConstantsApplicationApiRest;
 import tallerii.stories.network.apimodels.ServerError;
 

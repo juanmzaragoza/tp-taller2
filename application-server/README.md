@@ -8,7 +8,7 @@ Para utilizar una constante del mismo:
 ## MONGODB
 Para establecer la conexion a la base de datos, se debe indicar la URI a traves de una variable de entorno.  
 * HEROKU `export MONGO_URI='mongodb://ds231199.mlab.com:31199'`  
-* LOCAL  `export MONGO_URI='mongodb://localhost:27017'`  
+* LOCAL/TRAVIS  `export MONGO_URI='mongodb://localhost:27017'`  
 * DOCKER `export MONGO_URI='mongodb://mongo:27017'`  
 
 ## Logging
