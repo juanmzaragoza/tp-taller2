@@ -23,7 +23,6 @@ services:
     environment: 
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=0000
-      - PGDATA=/tmp
   web:
     container_name: angular
     build: ./web
