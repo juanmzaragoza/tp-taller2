@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import tallerii.stories.fragments.main.AnotherFragment;
 import tallerii.stories.fragments.main.HomeFragment;
 import tallerii.stories.helpers.Store;
-import tallerii.stories.StoriesLoggedInActivity;
 
 public class MainActivity extends StoriesLoggedInActivity {
 
@@ -34,7 +33,7 @@ public class MainActivity extends StoriesLoggedInActivity {
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
 
-        //TODO: why we do this
+        // this is the first activity that show, so we get the token from login activity
         Intent intent = getIntent();
         if(intent.getStringExtra(TOKEN) != null) {
             final Store store = new Store();
@@ -42,9 +41,8 @@ public class MainActivity extends StoriesLoggedInActivity {
         }
 
         // by default show home
-        fragment = new HomeFragment();
-        final FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_container, fragment).commit();
+        setHomeFragment();
+        commitFragment(fragment);
 
         // get bottom navigation menu
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -69,13 +67,22 @@ public class MainActivity extends StoriesLoggedInActivity {
             case R.id.action_new:
                 fragment = new AnotherFragment();
         }
-        final FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_container, fragment).commit();
+        commitFragment(fragment);
         return true;
     }
 
     private void setHomeFragment() {
+        // get profile id and pass it to fragment
+        Bundle bundleHomeFragment = getIntent().getExtras();
+        bundleHomeFragment.putString(ProfileActivity.PROFILE_ID,getProfile().getUserId());
+
+        fragment = null;
         fragment = new HomeFragment();
-        fragment.setArguments(getIntent().getExtras());
+        fragment.setArguments(bundleHomeFragment);
+    }
+
+    private void commitFragment(Fragment fragment){
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_container, fragment).commit();
     }
 }
