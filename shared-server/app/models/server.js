@@ -9,8 +9,9 @@ class Server{
         this.lastConnection = data.lastConnection;
         this.host = data.host;
         this.port = data.port;
-        this.pingUrl = data.pingUrl;
-        this.token
+        this.ping = data.ping;
+        this.token;
+        this.stats = data.stats
     }
 }
 
