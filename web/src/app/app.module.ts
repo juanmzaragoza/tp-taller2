@@ -13,6 +13,9 @@ import { RemoteService } from './services/remote/remote.service'
 import { CookieService } from 'ngx-cookie-service';
 import { TokenInterceptor } from './services/remote/token.interceptor'
 import { ClipBoardService } from './services/common/clipboard.service'
+import { ChartService } from './services/common/chart.service'
+import { StatusService } from './services/status/status.service'
+import { ServerService } from './services/server/server.service'
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component'
@@ -20,8 +23,10 @@ import { HomeComponent } from './components/home/home.component'
 import { UserComponent } from './components/user/user.component'
 import { ServerComponent } from './components/server/server.component'
 import { NavBarComponent } from './components/navbar/navbar.component'
+import { StatusComponent } from './components/status/status.component'
 
 import { EventKeyDirective } from './directives/event.key.directive'
+import { FixButtonDirective } from './directives/fix.button.directive'
 
 
 @NgModule({
@@ -32,7 +37,9 @@ import { EventKeyDirective } from './directives/event.key.directive'
     UserComponent,
     ServerComponent,
     NavBarComponent,
-    EventKeyDirective
+    StatusComponent,
+    EventKeyDirective,
+    FixButtonDirective
   ],
   imports: [
     BrowserModule,
@@ -53,7 +60,10 @@ import { EventKeyDirective } from './directives/event.key.directive'
     },
     JsonService,
     ClipBoardService,
-    DatePipe
+    DatePipe,
+    ChartService,
+    StatusService,
+    ServerService
   ],
   bootstrap: [AppComponent]
 })
