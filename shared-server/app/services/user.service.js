@@ -29,7 +29,6 @@ class UserService {
 
             var keys = _.keys(attrs);
             var diff = _.difference(neededAttrs, keys);
-            console.log(diff,keys)
             return new Promise((resolve, reject) => {
                 if (diff.length == 0){
                     resolve(); 
