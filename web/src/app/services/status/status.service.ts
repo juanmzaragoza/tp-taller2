@@ -1,23 +1,24 @@
 import { Injectable }   from '@angular/core';
 import { Observable }   from 'rxjs/Observable';
+import { ServerService }    from '../server/server.service'
+import { Status } from '../../models/status'
+import { Server } from '../../models/server'
+import { Stats } from '../../models/stats'
 import * as _ from 'underscore';
+import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/map';
+import { Subscription } from 'rxjs/Subscription';
+import {Observer} from 'rxjs/Observer';
 
 @Injectable()
 export class StatusService {
-    public status: Array<any>;
-    constructor(){
+    private serversStatus: Array<Status>
+    constructor(public ServerServ :ServerService){
         var me:any = this
-        me.getStatus().subscribe(
-            (res:any) =>{
-                me.status = res.status
-            },
-            (error:any) =>{
-              console.error(error)
-            })
+        me.serversStatus = []
     }
     getDataPie = () : Array<Array<any>> => {
         var me:any = this
@@ -25,13 +26,14 @@ export class StatusService {
         var pieJson :any = {}
         var keys: Array<any>
         var st: any
-        if(me.status.length > 0){
-            st = me.dropKeys(_.clone(me.status[0]))
+        var status = _.clone(me.serversStatus.map((ss:Status)=>{ return ss.stats}))
+        if(status.length > 0){
+            st = me.dropKeys(_.clone(status[0]))
             keys = Object.keys(st)
             keys.forEach(key => { pieJson[key] = 0; });
-            me.status.forEach((s:any) => {
+            status.forEach((s:Stats) => {
                 keys.forEach(key => {
-                    pieJson[key] =+ s[key]
+                    pieJson[key] = Number(pieJson[key]) + Number(s[key])
                 });
             });
             keys.forEach(key => { 
@@ -42,55 +44,71 @@ export class StatusService {
     }
     getDataBarStacked = () : Array<Array<any>> => {
         var me:any = this
-        var stacked:Array<Array<any>> = []
+        var stacked:any = {}
         var keys: Array<any>
         var st: any
-        if(me.status.length > 0){
-            st = me.dropKeys(_.clone(me.status[0]))
+        var status = _.clone(me.serversStatus.map((ss:Status)=>{ return ss.stats}))
+        stacked["data"] = []
+        stacked["columns"] = _.clone(me.serversStatus.map((ss:Status)=>{ return {type: "number", name:ss.name} }))
+        if(status.length > 0){
+            st = me.dropKeys(_.clone(status[0]))
             keys = Object.keys(st)
             keys.forEach(key => {
-                stacked.push([key])
-                me.status.forEach((status:any) => {
-                    stacked[stacked.length-1].push(status[key])
+                stacked.data.push([key])
+                status.forEach((status:any) => {
+                    stacked.data[stacked.data.length-1].push(Number(status[key]))
                 });
             });
         }
         return stacked
     }
-    getStatus = ():Observable<any>=>{
-        this.status = [
-            {
-                "id": "1",
-                "_rev": "string",
-                "createdBy": "string",
-                "createdTime": 0,
-                "numUsers": 10,
-                "numUsersActiveToday": 4,
-                "numStoriesToday": 60,
-                "numFastStoriesToday": 40,
-                "numStories": 100,
-                "numUsersMessages": 3060,
-                "numUsersMessagesToday": 1000,
-                "numAcceptedContactsToday": 3
-            },
-            {
-                "id": "2",
-                "_rev": "string",
-                "createdBy": "string",
-                "createdTime": 0,
-                "numUsers": 60,
-                "numUsersActiveToday": 40,
-                "numStoriesToday": 260,
-                "numFastStoriesToday": 70,
-                "numStories": 180,
-                "numUsersMessages": 9070,
-                "numUsersMessagesToday": 1900,
-                "numAcceptedContactsToday": 29
-            }
-        ]
-        return Observable.of({status: this.status});
+    ini = ():Observable<any>=>{
+        var me:any = this
+        me.serversStatus = []
+        return Observable.create((observer: Observer<any>) => {
+            me.ServerServ.getActive().subscribe(
+                (servers:Array<Server>) =>{
+                    me.getStats(servers).subscribe(
+                        (serversStats:Array<Stats>)=>{
+                            for(var i=0; i <servers.length;i++){
+                                me.serversStatus[i].stats = serversStats[i]
+                            }
+                            observer.next({ok: true});
+                        },
+                        (error:any) =>{
+                            observer.next({ok: false});
+                        }
+                    )
+                },
+                (error:any) =>{
+                    observer.next({ok: false});
+                }
+            )
+        }
+        )
+    }
+    public get = ()=>{
+        return this.serversStatus
+    }
+    private getStats = (servers:Array<Server>) =>{
+        var me:any = this
+        let vec: Array<Observable<any>> = []
+        /*eliminar este servidor dumy */
+        let servDumy = new Server()
+        servDumy = _.clone(servers[0])
+        servDumy.name = "dummy"
+        servers.push(servDumy)
+        /*eliminar este servidor dumy */
+        servers.forEach((server:Server) => {
+            let status = new Status(server.id, server.name)
+            me.serversStatus.push(status)
+            vec.push(me.ServerServ.stats(server.id)
+            )
+        });
+        return Observable.forkJoin(vec)
     }
     private dropKeys(status:any):any{
+        delete status._id
         delete status.id
         delete status._rev
         delete status.createdBy
