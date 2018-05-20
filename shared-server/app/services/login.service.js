@@ -1,7 +1,6 @@
 "use strict";
 const AuthService       = require('./auth.service')
 const StorageServ       = require('./storage.service')
-const LocalStorageServ  = require('./local.storage.service')
 const bcrypt            = require('bcrypt');
 const DaoService    = require('../services/dao.service')
 
@@ -66,19 +65,6 @@ class LoginService {
                 })
             })
         };
-        function getAdminUser(username){
-            return new Promise((resolve, reject)=>{
-                //users of the shared-server
-                LocalStorageServ.load(username, (usrAdmin) =>{
-                    if(usrAdmin){
-                        resolve(usrAdmin);
-                    }
-                    else{
-                        reject(USER_NOT_FOUND);
-                    }
-                })
-            })
-        };
 
         function authByApp(username, password, models){
             return new Promise((resolve, reject) => {
@@ -108,15 +94,10 @@ class LoginService {
                 models.user.findOne(
                     { where: {username: username} }
                 ).then(function(user){
-
-                    if (user === null) {
-                        getAdminUser(username).then(userAdmin=>{
-                            resolve(userAdmin)
-                        }).catch(err =>{
-                            reject(err)
-                        })
-                    } else{
-                        resolve(user);  
+                    if (user === null){
+                        reject(USER_NOT_FOUND);
+                    } else {
+                        resolve(user);      
                     }
                 }).catch(err =>{
                     reject(err)
