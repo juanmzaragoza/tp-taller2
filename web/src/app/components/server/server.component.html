@@ -12,8 +12,9 @@
     <th class="indigo-text"> Token </th>
     <th class="indigo-text"> R. Token </th>
     <th class="indigo-text"> Drop </th>
+    <th class="indigo-text"> active </th>
   </tr>
-  <tr class="pointer" *ngFor="let server of servers">
+  <tr [ngClass]="{'#c8e6c9 green lighten-4':server.active === 'active'}"  class="pointer" *ngFor="let server of servers">
     <td (click)="edit(server)"> {{server.name}} </td>
     <td (click)="edit(server)"> {{server.createdBy}} </td>
     <td (click)="edit(server)"> {{server.createdTime | date: 'dd/MM/yyyy'}} </td>
@@ -24,6 +25,7 @@
     <td (click)="copyToken(server.token)"><a><i class="material-icons">content_copy</i></a></td>
     <td (click)="refreshToken(server.id)"><a><i class="material-icons">update</i></a></td>
     <td (click)="delete(server.id)"><a><i class="material-icons">delete</i></a></td>
+    <td (click)="edit(server)"> {{server.active}}</td>
   </tr>
 </table>
 

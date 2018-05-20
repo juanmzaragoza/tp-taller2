@@ -64,13 +64,21 @@ export class StatusComponent {
     getServ(){
         var me = this
         me.ServerServ.get().subscribe((res) => {
-          me.servers = res.servers
-          this.chart["pie"]["data"] = me.StatusServ.getDataPie()
-          this.chart["barStacked"]["columns"] = res.servers.map((s:any)=>{return {type: 'number', name: s.name} })
+        me.servers = res.servers
+        var ids = me.servers.map(s =>{s.id});
+        me.StatusServ.init(ids).subscribe((res) => {
+        
+        },
+        error =>{
+        console.log(error)
+        });
+        //this.chart["pie"]["data"] = me.StatusServ.getDataPie()
+          /*this.chart["barStacked"]["columns"] = res.servers.map((s:any)=>{return {type: 'number', name: s.name} })
           this.chart["barStacked"]["columns"].unshift({type: 'string', name: 'Filters'})
           this.chart["barStacked"]["data"] = me.StatusServ.getDataBarStacked()
+          
           me.drawPie()
-          me.drawBarStacked()
+          me.drawBarStacked()*/
         },
         error =>{
           console.error(error)

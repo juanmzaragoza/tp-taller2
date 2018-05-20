@@ -1,6 +1,7 @@
 import { Component, 
          OnInit, 
-         EventEmitter }       from '@angular/core'
+         EventEmitter,
+        OnDestroy }       from '@angular/core'
 import { MaterializeDirective,
          MaterializeAction,
          toast}               from "angular2-materialize";
@@ -22,6 +23,7 @@ declare var M_Modal : any;
 export class ServerComponent {
   title: string;
   servers: Array<any>;
+  pid: any;
   public server:Server = new Server();
   constructor(public UserServ: UserService,
               public ServerServ: ServerService,
@@ -32,9 +34,30 @@ export class ServerComponent {
   }
   
   ngOnInit() {
-    this.get()
+    var vm = this
+    vm.get()
+    vm.pid = setInterval(() => {
+      vm.ping(); 
+    }, 10000);
   }
-
+  ngOnDestroy() {
+    if (this.pid) {
+      clearInterval(this.pid);
+    }
+  }
+  ping(){
+    var vm = this
+    if(vm.servers.length>0){
+      vm.servers.forEach(s => {
+        vm.ServerServ.ping(s.id).subscribe((res) => {
+          s["active"] = res.ping.status
+        },
+        error =>{
+          s["active"] = "none"
+        });
+      });
+    }
+  }
   open(){
     this.openModal();
     $('.modal').modal();
@@ -112,6 +135,7 @@ export class ServerComponent {
     serv.lastConnection = 0
     serv.createdBy = me.UserServ.getUser().username
     me.ServerServ.create(serv).subscribe((res) => {
+      res.server["active"] = "none"
       me.servers.push(res.server)
       me.server = new Server()
       toast("the server was created",4000)

@@ -11,13 +11,13 @@ export class StatusService {
     public status: Array<any>;
     constructor(){
         var me:any = this
-        me.getStatus().subscribe(
+        /*me.getStatus().subscribe(
             (res:any) =>{
                 me.status = res.status
             },
             (error:any) =>{
               console.error(error)
-            })
+            })*/
     }
     getDataPie = () : Array<Array<any>> => {
         var me:any = this
@@ -57,7 +57,7 @@ export class StatusService {
         }
         return stacked
     }
-    getStatus = ():Observable<any>=>{
+    init = (ids: Array<any>):Observable<any>=>{
         this.status = [
             {
                 "id": "1",
