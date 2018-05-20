@@ -67,9 +67,9 @@ export class ServerComponent {
   }
   get(){
     var me = this
-    me.ServerServ.get().subscribe((res) => {
-      console.log(res.servers)
-      me.servers = res.servers
+    me.ServerServ.get().subscribe((servers) => {
+      console.log(servers)
+      me.servers = servers
     },
     error =>{
       console.log(error)

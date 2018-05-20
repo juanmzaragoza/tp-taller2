@@ -7,7 +7,11 @@ import { Observable }       from 'rxjs/Observable';
 export class ServerService {
     constructor(public RemoteServ: RemoteService){}
     get(){
-      return this.RemoteServ.get('/servers');
+       return this.RemoteServ.get('/servers')
+       .map( res=> res.servers)
+    }
+    getActive(){
+      return this.get()
     }
     delete(id:string){
       return this.RemoteServ.delete('/servers/'+id);
@@ -23,5 +27,8 @@ export class ServerService {
     }
     ping(id: string){
       return this.RemoteServ.get('/ping/'+ id);
+    }
+    stats(id: string){
+      return this.RemoteServ.get('/stats/'+ id).map(res => res.stats);
     }
 } 
