@@ -17,7 +17,6 @@ export class StatusComponent {
     public titleStacked: string
     public servers: Array<Server>
     public chart: any
-    private created: boolean = false
     constructor(public ChartServ  :ChartService,
                 public StatusServ :StatusService,
                 public ServerServ :ServerService){
@@ -48,35 +47,12 @@ export class StatusComponent {
                             data:[]
                         }
                     }
-                    var vm :any = this
-                    $( "#chart_pie" ).empty();
-                    $( "#chart_barStacked" ).empty();
-                    this.StatusServ.ini().subscribe(
-                        (ok=>{
-                            console.info("paso 8, tengo todo cargado", ok, vm.StatusServ.get())
-                            console.info("paso 9, obtengo los datos pie", vm.StatusServ.getDataPie())
-                            this.chart["pie"]["data"] = vm.StatusServ.getDataPie()
-                            vm.drawPie()
-                            var stacked = vm.StatusServ.getDataBarStacked()
-                            console.info(vm.StatusServ.getDataBarStacked())
-                            this.chart["barStacked"]["columns"] = stacked.columns
-                            this.chart["barStacked"]["columns"].unshift({type: 'string', name: 'Filters'})
-                            this.chart["barStacked"]["data"] = stacked.data
-                            vm.drawBarStacked()
-                            vm.created = true
-                        }),
-                        (err=>{
-                            console.info("paso 8 biss, error", err)
-                        })
-                        
-                    )
-                    
                 }
     
     ngOnInit() {
         var vm: any = this
-        this.getServ()
         this.title = "Status"
+        this.draw()
     }
     ngOnDestroy() {
         var vm :any = this
@@ -84,31 +60,25 @@ export class StatusComponent {
             clearInterval(vm.pid)
         }
     }
-    getServ(){
-        var me = this
-        me.ServerServ.get().subscribe((servers) => {
-        me.servers = servers
-        var ids = me.servers.map(s =>{s.id});
-        /*me.StatusServ.init(ids).subscribe((res) => {
-        
-        },
-        error =>{
-        console.log(error)
-        });*/
-        //this.chart["pie"]["data"] = me.StatusServ.getDataPie()
-          /*this.chart["barStacked"]["columns"] = res.servers.map((s:any)=>{return {type: 'number', name: s.name} })
-          this.chart["barStacked"]["columns"].unshift({type: 'string', name: 'Filters'})
-          this.chart["barStacked"]["data"] = me.StatusServ.getDataBarStacked()
-          
-          me.drawPie()
-          me.drawBarStacked()*/
-        },
-        error =>{
-          console.error(error)
-        });
-    }
     change(id: any){
 
+    }
+    draw(){
+        var vm :any = this
+        $( "#chart_pie" ).empty();
+        $( "#chart_barStacked" ).empty();
+        this.StatusServ.ini().subscribe(
+            (ok=>{
+                this.chart["pie"]["data"] = vm.StatusServ.getDataPie()
+                vm.drawPie()
+                var stacked = vm.StatusServ.getDataBarStacked()
+                this.chart["barStacked"]["columns"] = stacked.columns
+                this.chart["barStacked"]["columns"].unshift({type: 'string', name: 'Filters'})
+                this.chart["barStacked"]["data"] = stacked.data
+                vm.drawBarStacked()
+            }),
+            (console.info)
+        )
     }
 
     drawPie(){
