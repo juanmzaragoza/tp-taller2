@@ -3,6 +3,7 @@ const AuthService       = require('./auth.service')
 const StorageServ       = require('./storage.service')
 const LocalStorageServ  = require('./local.storage.service')
 const bcrypt            = require('bcrypt');
+const DaoService    = require('../services/dao.service')
 
 var request             = require('request');
 var config              = require('../../config/default')
@@ -11,6 +12,7 @@ var config              = require('../../config/default')
 const USER_NOT_FOUND    = "not-found";
 const INVALID_PASSWORD  = "invalid-password";
 const INVALID_ACCESS_TOKEN  = "invalid-access-token";
+const ERROR_SAVING      = "error-saving";
 
 
 class LoginService {
@@ -23,8 +25,12 @@ class LoginService {
                     if(valid){
                         return getUserByUsername(username, models)
                         .then( function(user){
+                            return generateAndSaveToken(user);
+                        })
+                        .then( function(user){
                             var result = {
-                                token: AuthService.token(user),
+                                id: user.id,
+                                token: user.token,
                                 expiresAt: 3600
                             };                    
                             resolve(result);
@@ -55,7 +61,6 @@ class LoginService {
                     }
                     else{
                         var res = JSON.parse(body);
-                        //console.log(res.data.is_valid)
                         resolve(res.data.is_valid);
                     }
                 })
@@ -74,6 +79,7 @@ class LoginService {
                 })
             })
         };
+
         function authByApp(username, password, models){
             return new Promise((resolve, reject) => {
                 getUserByUsername(username, models)
@@ -81,9 +87,12 @@ class LoginService {
                     return checkValidPassword(password, user)
                 })
                 .then( function(user){
+                    return generateAndSaveToken(user);
+                })
+                .then( function(user){
                     var result = {
                         id: user.id,
-                        token: AuthService.token(user),
+                        token: user.token,
                         expiresAt: 3600
                     };
                     resolve(result);
@@ -100,7 +109,6 @@ class LoginService {
                     { where: {username: username} }
                 ).then(function(user){
 
-            //console.log("hola",username, )
                     if (user === null) {
                         getAdminUser(username).then(userAdmin=>{
                             resolve(userAdmin)
@@ -108,7 +116,6 @@ class LoginService {
                             reject(err)
                         })
                     } else{
-                        // console.log("user:",user.toJSON());    
                         resolve(user);  
                     }
                 }).catch(err =>{
@@ -127,6 +134,21 @@ class LoginService {
                 });
             });
         };
+
+        function generateAndSaveToken(user) {
+            return new Promise((resolve, reject) => {
+                var token = AuthService.token(user);
+                user.token = token;
+                DaoService.update(user)
+                .then(savedUser => {
+                    resolve(user);
+                })
+                .catch(e => {
+                    reject(ERROR_SAVING);
+                })
+            });
+        };
+
         function isUserFB(password){
             var fb = password.split(" ")[0]
             return (fb == "fb")

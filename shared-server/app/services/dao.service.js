@@ -18,6 +18,18 @@ class DaoService {
             });
         };
 
+        this.update = (entity) => {
+            return new Promise((resolve, reject) => {
+                entity.save().then(entity => {
+                    resolve(entity);
+                })
+                .catch(e => {
+                    console.error(e.name)
+                    reject(e.name) 
+                });
+            });
+        }
+
     }
 
 };
