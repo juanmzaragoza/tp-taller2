@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import tallerii.stories.fragments.main.AnotherFragment;
 import tallerii.stories.fragments.main.HomeFragment;
+import tallerii.stories.fragments.main.PostStorieFragment;
 import tallerii.stories.helpers.Store;
 
 public class MainActivity extends StoriesLoggedInActivity {
@@ -64,8 +65,10 @@ public class MainActivity extends StoriesLoggedInActivity {
                 break;
             case R.id.action_account:
                 fragment = new AnotherFragment();
+                break;
             case R.id.action_new:
-                fragment = new AnotherFragment();
+                setPostStorieFragment();
+                break;
         }
         commitFragment(fragment);
         return true;
@@ -79,6 +82,11 @@ public class MainActivity extends StoriesLoggedInActivity {
         fragment = null;
         fragment = new HomeFragment();
         fragment.setArguments(bundleHomeFragment);
+    }
+
+    private void setPostStorieFragment() {
+        fragment = null;
+        fragment = new PostStorieFragment();
     }
 
     private void commitFragment(Fragment fragment){
