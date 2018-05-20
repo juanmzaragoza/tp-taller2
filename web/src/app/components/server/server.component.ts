@@ -49,8 +49,8 @@ export class ServerComponent {
     var vm = this
     if(vm.servers.length>0){
       vm.servers.forEach(s => {
-        vm.ServerServ.ping(s.id).subscribe((res) => {
-          s["active"] = res.ping.status
+        vm.ServerServ.ping(s.id).subscribe((ping) => {
+          s["active"] = ping.status
         },
         error =>{
           s["active"] = "none"

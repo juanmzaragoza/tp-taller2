@@ -53,6 +53,14 @@ export class StatusComponent {
         var vm: any = this
         this.title = "Status"
         this.draw()
+        /*vm.ServerServ.getActive().subscribe(
+            ((r:any)=>{
+                console.info(r)
+            }),
+            ((e:any)=>{
+                console.info(e)
+            })
+        )*/
     }
     ngOnDestroy() {
         var vm :any = this
