@@ -12,6 +12,7 @@ matrix:
       script:
         - cd $TRAVIS_BUILD_DIR/application-server/
         - export MONGO_URI=mongodb://localhost:27017/appserverdb
+        - export SHARED_URI=http://172.17.0.1:8081/api
         - cd $TRAVIS_BUILD_DIR/docker/mongo/
         - ./docker-entrypoint.sh
         - python app.py &
