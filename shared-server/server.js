@@ -44,15 +44,6 @@ app.get('/', (req, res) => {
   res.send('Hello world\n');
 });
 
-// app.get('/users', (req, res) => {
-// 	req.models.user.findAll().then(users => {
-// 		console.log("encontre usuarios");
-// 		console.log(users);
-// 		res.send(users);
-// 	})
-// });
-
-
 
 //start
 var server = app.listen(PORT, HOST);

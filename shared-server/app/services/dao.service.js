@@ -30,6 +30,18 @@ class DaoService {
             });
         }
 
+        this.findAll = (entity) => {
+            return new Promise((resolve, reject) => {
+                entity.findAll().then(models => {
+                    resolve(models);
+                })
+                .catch(e => {
+                    console.error(e.name)
+                    reject(e.name) 
+                });
+            });
+        }
+
     }
 
 };
