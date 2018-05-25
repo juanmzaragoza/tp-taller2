@@ -103,15 +103,20 @@ class ServerService {
                 })
             })
         }
-        this.delete = (id, cb)=>{
-            StorageServ.delete("server", id, (err, id)=>{
-                if(err){
-                    console.log(err)
-                    cb(err);
-                }else{
-                    cb(undefined, "Baja correcta");
-                }
-            })
+
+        this.delete = (id, models)=>{
+            return new Promise((resolve, reject) => {
+                DaoService.findById(id, models.app_server)
+                .then( function(appServer) {
+                    return DaoService.delete(appServer);
+                })
+                .then( function() {
+                    resolve();
+                })
+                .catch(function(err){
+                    reject(err);
+                })
+            });
         }
 
         function getServerReturnData(appServer){

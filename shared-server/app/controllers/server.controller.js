@@ -75,17 +75,20 @@ class ServerController {
                 }
             })
         };
+        
         this.delete = (req, res, next) => {
             var id = req.params.id;
-            ServerService.delete(id, (err, message)=>{
-                console.info(err)
-                if(err){
-                    ResServ.error(res, messages.NotFound);
-                }
-                else{
-                    ResServ.ok(ResEnum.OnlyValue, undefined, message, res, next);
-                }
+            ServerService.delete(id, req.models)
+            .then(() => {
+                ResServ.deleteSuccessfull(res, next);
             })
+            .catch(e => {
+                if (e == 'not-found'){
+                    ResServ.errorNotFound(res);
+                } else {
+                    ResServ.error(res, e);    
+                }
+            });
         };
     }
 }

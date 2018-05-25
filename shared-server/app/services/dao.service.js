@@ -30,10 +30,11 @@ class DaoService {
             });
         }
 
-        this.findAll = (entity) => {
+        this.delete = (entity) => {
             return new Promise((resolve, reject) => {
-                entity.findAll().then(models => {
-                    resolve(models);
+                entity.destroy()
+                .then(() => {
+                    resolve();
                 })
                 .catch(e => {
                     console.error(e.name)
@@ -42,10 +43,26 @@ class DaoService {
             });
         }
 
-        this.findById = (id, entity) => {
+        this.findAll = (model) => {
             return new Promise((resolve, reject) => {
-                entity.findById(id).then(model => {
-                    resolve(model);
+                model.findAll().then(entities => {
+                    resolve(entities);
+                })
+                .catch(e => {
+                    console.error(e.name)
+                    reject(e.name) 
+                });
+            });
+        }
+
+        this.findById = (id, model) => {
+            return new Promise((resolve, reject) => {
+                model.findById(id).then(entity => {
+                    if (entity){
+                        resolve(entity);    
+                    } else {
+                        reject("not-found");
+                    }
                 })
                 .catch(e => {
                     console.error(e.name)

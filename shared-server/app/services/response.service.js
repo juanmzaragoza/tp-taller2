@@ -3,6 +3,7 @@ var _ = require("underscore")
 var ResEnum = require('../common/response.enum')
 var config = require('../../config/default')
 var createError = require('http-errors')
+const messages      = require('../../config/messages')
 
 class ResponseService {
     constructor() {
@@ -27,7 +28,18 @@ class ResponseService {
             var body = _.clone(err.body)
             if(msg) body.message = msg
             res.status(err.codeHttp).send(body);
-        }
+        };
+
+        this.deleteSuccessfull = (res, next) => {
+            res.status(204).send();
+        };
+
+        this.errorNotFound = (res) => {
+            const err = messages.NotFound;
+            res.status(err.codeHttp);
+            var body = _.clone(err.body);
+            res.status(err.codeHttp).send(body);
+        };
     }
 }
 module.exports = new ResponseService();
