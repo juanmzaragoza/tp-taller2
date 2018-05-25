@@ -31,16 +31,16 @@ class ServerController {
             }
         };
 
-        this.getById = (req, res, next)=>{
-            ServerService.getById(req.params.id, (err, server)=>{
-                if(err){
-                    ResServ.error(res, messages.NotFound);
-                }
-                else{
-                    ResServ.ok(ResEnum.Values, "server", server, res, next);
-                }
+        this.getById = (req, res, next) => {
+            ServerService.getById(req.params.id, req.models)
+            .then(appServer => {
+                ResServ.ok(ResEnum.Values, "server", appServer, res, next);
             })
-        }
+            .catch( e => {
+                console.log(e);
+                ResServ.error(res, messages.NotFound);
+            });
+        };
 
         this.get = (req, res, next) => {
             ServerService.get(req.models)

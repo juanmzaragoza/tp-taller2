@@ -113,32 +113,19 @@ class ServerService {
                 }
             })
         }
-        // this.getById = (id, cb)=>{
-        //     StorageServ.load("server", "id", id, (err, server)=>{
-        //         if(err){
-        //             console.log(err)
-        //             cb(err);
-        //         }else{
-        //             cb(undefined, server);
-        //         }
-        //     })
-        // }
 
         function getServerReturnData(appServer){
             var data = appServer.toJSON();
             data['_rev'] = data.rev;
-
             return _.pick(data, ['id','_rev','createdBy','createdTime','name','lastConnection']) ;
         }
 
         this.getById = (id, models) => {
             return new Promise((resolve, reject) => {
-                DaoService.findAll(models.app_server)
-                .then( function(appServers) {
-                    var serversJson = appServers.map(function(appServer) {
-                        return getServerReturnData(appServer);
-                    });
-                    resolve(serversJson);
+                DaoService.findById(id, models.app_server)
+                .then( function(appServer) {
+                    var serverJson = getServerReturnData(appServer);
+                    resolve(serverJson);
                 })
                 .catch(function(err){
                     reject(err);

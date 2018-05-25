@@ -42,6 +42,18 @@ class DaoService {
             });
         }
 
+        this.findById = (id, entity) => {
+            return new Promise((resolve, reject) => {
+                entity.findById(id).then(model => {
+                    resolve(model);
+                })
+                .catch(e => {
+                    console.error(e.name)
+                    reject(e.name) 
+                });
+            });
+        }
+
     }
 
 };
