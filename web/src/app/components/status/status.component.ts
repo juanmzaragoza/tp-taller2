@@ -17,14 +17,27 @@ export class StatusComponent {
     public titleStacked: string
     public servers: Array<Server>
     public chart: any
+
+    private graph: any = {}
     constructor(public ChartServ  :ChartService,
                 public StatusServ :StatusService,
                 public ServerServ :ServerService){
+                    this.graph.area = {}
+                    this.graph.pie = {}
+                    this.graph.bar = {}
+                    this.graph.area.options = {
+                        'title':'Total of each server',
+                        'width':600,
+                        'height':300,
+                        'isStacked': true,
+                        'legend': {position: 'top', maxLines: 3}
+                    }
+
+
+
                     this.titleStacked = "bar stacked"
                     this.chart = {
                         pie:{
-                            id: 1,
-                            type: "pie",
                             columns:[],
                             options: {
                                 'title':'Total',
@@ -34,8 +47,6 @@ export class StatusComponent {
                             data:[]
                         },
                         barStacked:{
-                            id:2,
-                            type: "barstacked",
                             columns:[],
                             options: {
                                 'title':'Total of each server',
@@ -45,6 +56,18 @@ export class StatusComponent {
                                 'legend': {position: 'top', maxLines: 3},
                             },
                             data:[]
+                        },
+                        areaStacked:{
+                            columns:[],
+                            options: {
+                                'title':'Total of each server',
+                                'width':600,
+                                'height':300,
+                                'isStacked': true,
+                                'legend': {position: 'top', maxLines: 3},
+                                'vAxis': {minValue: 0}
+                            },
+                            data:[]
                         }
                     }
                 }
@@ -52,15 +75,8 @@ export class StatusComponent {
     ngOnInit() {
         var vm: any = this
         this.title = "Status"
+        google.charts.load('current', {'packages':['corechart']});
         this.draw()
-        /*vm.ServerServ.getActive().subscribe(
-            ((r:any)=>{
-                console.info(r)
-            }),
-            ((e:any)=>{
-                console.info(e)
-            })
-        )*/
     }
     ngOnDestroy() {
         var vm :any = this
@@ -69,21 +85,23 @@ export class StatusComponent {
         }
     }
     change(id: any){
-
+        var vm :any = this
+        vm.graph.area.data.removeRow(0);
+        vm.graph.area.data.insertRows(vm.graph.area.count - 1, [['2017', 2030, 1040]]);
+        vm.graph.area.chart.draw(vm.graph.area.data)
     }
     draw(){
         var vm :any = this
-        $( "#chart_pie" ).empty();
-        $( "#chart_barStacked" ).empty();
+        vm.drawAreaStacked()
         this.StatusServ.ini().subscribe(
             (ok=>{
-                this.chart["pie"]["data"] = vm.StatusServ.getDataPie()
+                /*this.chart["pie"]["data"] = vm.StatusServ.getDataPie()
                 vm.drawPie()
                 var stacked = vm.StatusServ.getDataBarStacked()
                 this.chart["barStacked"]["columns"] = stacked.columns
                 this.chart["barStacked"]["columns"].unshift({type: 'string', name: 'Filters'})
                 this.chart["barStacked"]["data"] = stacked.data
-                vm.drawBarStacked()
+                vm.drawBarStacked()*/
             }),
             (console.info)
         )
@@ -112,6 +130,21 @@ export class StatusComponent {
             data.addRows(me.chart.barStacked.data);
             var chart = new google.visualization.ColumnChart(document.getElementById('chart_barStacked'));
             chart.draw(data, me.chart.barStacked.options);
+        })
+    }
+    drawAreaStacked(){
+        var vm = this
+        google.charts.setOnLoadCallback(()=>{
+            vm.graph.area.data = google.visualization.arrayToDataTable([
+                ['Year', 'Sales', 'Expenses'],
+                ['2013',  1000,      400],
+                ['2014',  1170,      460],
+                ['2015',  660,       1120],
+                ['2016',  1030,      540]
+              ]);
+              vm.graph.area.count = 4
+            vm.graph.area.chart = new google.visualization.AreaChart(document.getElementById('area'));
+            vm.graph.area.chart.draw(vm.graph.area.data, vm.graph.area.options);
         })
     }
 
