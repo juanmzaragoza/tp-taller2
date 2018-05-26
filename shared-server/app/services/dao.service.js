@@ -65,6 +65,7 @@ class DaoService {
                     }
                 })
                 .catch(e => {
+                    console.log("e:");
                     console.error(e.name)
                     reject(e.name) 
                 });
