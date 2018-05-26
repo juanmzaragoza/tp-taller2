@@ -8,7 +8,7 @@ var models;
 
 describe('Server Service Tests', function(){
 
-	before(function() {
+	beforeEach(function() {
 		var dbMock = new SequelizeMock();
 		var ServerMock = dbMock.define('App_server', {
 		}, {
@@ -124,11 +124,10 @@ describe('Server Service Tests', function(){
 		});
 	});
 
-	it ('Update inexisten server should throw not-found', function(done) {
+	it ('Update inexistent server should throw not-found', function(done) {
 		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
 		    if (query === 'findById') {
 		    	if (queryOptions[0] === 14) {
-		            // Result found, return it
 		            return null
 		        }
 		    }
@@ -149,41 +148,21 @@ describe('Server Service Tests', function(){
 		});
 	});
 
-	it ('Update inexistenT server should throw not-found', function(done) {
-		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
-		    if (query === 'findById') {
-		    	if (queryOptions[0] === 14) {
-		            return null
-		        }
-		    }
-		});
-		var attrs = {
-			'rev': '123123123',
-			'name': 'lalal'
-		};
-		serverService.update(14, attrs, models)
-		.then((result) => {
-			assert(false);
-			done();
-		})
-		.catch((reason) => {
-			assert.equal(reason, 'not-found');
-			done();
-		});
-	});
 
 	it ('Update server with invalid rev should throw conflict', function(done) {
 		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
 		    if (query === 'findById') {
 		    	if (queryOptions[0] === 12) {
-		            return models.app_server.build({ 
+		    		return models.app_server.build({ 
 		            	"id": 12,
-		            	"_rev": "456",
+		            	"rev": "456",
 						"createdBy": 5,
 						"createdTime": "2018-05-26T17:19:51.342Z",
 						"name": "dummy",
 						"lastConnection": null
 				    });
+		        } else {
+		        	return null;
 		        }
 		    }
 		});
@@ -202,6 +181,82 @@ describe('Server Service Tests', function(){
 		});
 	});
 
-	
+	it ('Update server should success', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findById') {
+		    	if (queryOptions[0] == 5) {
+		            return models.app_server.build({ 
+		            	"id": 5,
+		            	"rev": "456",
+						"createdBy": 2,
+						"createdTime": "2018-05-26T17:19:51.342Z",
+						"name": "dummy",
+						"lastConnection": null
+				    });
+		        } else {
+		        	return null;
+		        }
+		    }
+		});
+		var attrs = {
+			name: "new name",
+			rev: "456"
+		};
+		serverService.update(5, attrs, models)
+		.then((response) => {
+			assert.isNotNull(response, 'response should not be null');
+			assert.notEqual(response,null);
+			assert.notEqual(response.createdTime,null);
+			assert.equal(response.id,5);
+			assert.equal(response.name,'new name');
+			assert.equal(response.createdBy,2);
+			assert.notEqual(response._rev,"456");
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "Update failed: "+reason);
+			done();
+		});
+	});
+
+	it ('Update server should success 2', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findById') {
+		    	if (queryOptions[0] == 8) {
+		            return models.app_server.build({ 
+		            	"id": 8,
+		            	"rev": "123",
+						"createdBy": 4,
+						"createdTime": "2018-05-26T17:19:51.342Z",
+						"name": "dummy",
+						"lastConnection": null
+				    });
+		        } else {
+		        	return null;
+		        }
+		    }
+		});
+		var attrs = {
+			name: "new name 2",
+			rev: "123"
+		};
+		serverService.update(8, attrs, models)
+		.then((response) => {
+			assert.isNotNull(response, 'response should not be null');
+			assert.notEqual(response,null);
+			assert.equal(response.createdTime,"2018-05-26T17:19:51.342Z");
+			assert.equal(response.id,8);
+			assert.equal(response.name,'new name 2');
+			assert.equal(response.createdBy,4);
+			assert.notEqual(response._rev,"123");
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "Update failed: "+reason);
+			done();
+		});
+	});
+
+
 
 });
