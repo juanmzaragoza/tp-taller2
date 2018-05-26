@@ -410,4 +410,51 @@ describe('Server Service Tests', function(){
 		});
 	});
 
+	it ('delete inexistent server should throw not-found', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+		    if (query === 'findById') {
+		    	if (queryOptions[0] === 14) {
+		            return null
+		        }
+		    }
+		});
+		serverService.delete(14, models)
+		.then((result) => {
+			assert(false);
+			done();
+		})
+		.catch((reason) => {
+			assert.equal(reason, 'not-found');
+			done();
+		});
+	});
+
+	it ('delete server should success', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findById') {
+		    	if (queryOptions[0] == 8) {
+		            return models.app_server.build({ 
+		            	"id": 8,
+		            	"rev": "123",
+						"createdBy": 4,
+						"createdTime": "2018-05-26T17:19:51.342Z",
+						"name": "dummy",
+						"lastConnection": null
+				    });
+		        } else {
+		        	return null;
+		        }
+		    }
+		});
+		serverService.delete(8, models)
+		.then((response) => {
+			assert(true);
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "getById failed: "+reason);
+			done();
+		});
+	});
+
 });
