@@ -5,6 +5,7 @@ const Server        = require('../models/server')
 const ResServ       = require('../services/response.service')
 const ResEnum       = require('../common/response.enum')
 const ServerService = require('../services/server.service')
+const UserService   = require('../services/user.service')
 
 class ServerController {
     constructor() {
@@ -42,26 +43,34 @@ class ServerController {
             })
         }
 
+        function getCurrentUser(req) {
+            return new Promise((resolve, reject) => {
+                var token = AuthServ.getTokenFromRequest(req);
+                UserService.getUserForToken(token, req.models)
+                .then(user => {
+                    resolve(user);
+                })
+                .catch(e => {
+                    console.log(e);
+                    reject('internal');
+                });
+            });
+        }
+
         this.post = (req, res, next) => {
-            try{
+            getCurrentUser(req)
+            .then(user => {
                 var serverAttrs = req.body;
-                
-                //TODO: que agarre el user id posta
-                serverAttrs.createdBy = 3; 
-                
-                ServerService.add(serverAttrs, req.models)
-                .then(appServer=>{
-                    ResServ.ok(ResEnum.Value, "server", appServer, res, next)
-                })
-                .catch(e =>{
-                    console.log("e:" + e);
-                    ResServ.error(res, messages.BadRequest)
-                })
-            }
-            catch(e){
-                console.log(e)
-                ResServ.error(res, messages.InternalServerError);
-            }
+                serverAttrs.createdBy = user.id;                     
+                return ServerService.add(serverAttrs, req.models);
+            })
+            .then(appServer=>{
+                ResServ.ok(ResEnum.Value, "server", appServer, res, next)
+            })
+            .catch(e =>{
+                console.log("e:" + e);
+                handleError(e, res);
+            })
         };
 
         this.put = (req, res, next) => {

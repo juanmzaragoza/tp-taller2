@@ -71,6 +71,21 @@ class DaoService {
             });
         }
 
+        this.findOne = (filter, model) => {
+            return new Promise((resolve, reject) => {
+                model.findOne({ where: filter }).then(entity => {
+                    if (entity){
+                        resolve(entity);    
+                    } else {
+                        reject("not-found");
+                    }
+                })
+                .catch(e => {
+                    console.error(e.name)
+                    reject(e.name) 
+                });
+            });
+        }
     }
 
 };

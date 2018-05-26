@@ -7,21 +7,7 @@ var _               = require("underscore")
 
 class ServerService {
     constructor() {
-        // this.add = (server, cb)=>{
-        //     server["token"]  =  { 
-        //         token: AuthService.token(server.name),
-        //         expiresAt: 3600
-        //     };
-        //     StorageServ.save("server", server, (err, id)=>{
-        //         if(err){
-        //             console.log(err)
-        //             cb(err);
-        //         }else{
-        //             cb(undefined, server);
-        //         }
-        //     })
-        // }
-
+        
         function validateAttrs(attrs, neededAttrs) {
             if (attrs['_rev']){
                 attrs.rev = attrs['_rev'];
@@ -51,6 +37,7 @@ class ServerService {
 
         function createServer(attrs, models) {
             attrs.createdTime = Date.now();
+            attrs.rev = new Date().getTime();
             return DaoService.insert(models.app_server, attrs);
         }
 
@@ -61,7 +48,14 @@ class ServerService {
                     return createServer(attrs, models);
                 })
                 .then(function(appServer){
-                    var responseData = appServer.toJSON();
+                    var serverJson = getServerReturnData(appServer);
+                    var responseData = {
+                        server: serverJson,
+                        token: {
+                            token: AuthService.token(serverJson.name),
+                            expiresAt: 3600
+                        }
+                    };
                     resolve(responseData);
                 })
                 .catch(function(err){
@@ -71,9 +65,6 @@ class ServerService {
         };
 
         function validateOptimisticLock(appServer, attrs){
-            if (!appServer.rev){
-                return;
-            }
             if (appServer.rev != attrs.rev){
                 throw "conflict";
             }
@@ -135,21 +126,6 @@ class ServerService {
             })
         }
         
-        // this.update = (server, cb)=>{
-        //     var me = this
-        //     me.getById(server.id, (err, serverOld)=>{
-        //         server.token = serverOld.token
-        //         StorageServ.update("server", server, (err, server)=>{
-        //             if(err){
-        //                 console.log(err)
-        //                 cb(err);
-        //             }else{
-        //                 cb(undefined, server);
-        //             }
-        //         })
-        //     })
-        // }
-
         this.delete = (id, models)=>{
             return new Promise((resolve, reject) => {
                 DaoService.findById(id, models.app_server)
