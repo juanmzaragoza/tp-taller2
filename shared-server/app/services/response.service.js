@@ -36,10 +36,23 @@ class ResponseService {
 
         this.errorNotFound = (res) => {
             const err = messages.NotFound;
-            res.status(err.codeHttp);
-            var body = _.clone(err.body);
-            res.status(err.codeHttp).send(body);
+            this.error(res, err);
         };
+
+        this.errorBadRequest = (res) => {
+            const err = messages.BadRequest;
+            this.error(res, err);
+        };
+
+        this.errorConflict = (res) => {
+            const err = messages.Conflict;
+            this.error(res, err);
+        }
+
+        this.errorInternal = (res) => {
+            const err = messages.InternalServerError;
+            this.error(res, err);   
+        }
     }
 }
 module.exports = new ResponseService();

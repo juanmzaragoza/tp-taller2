@@ -9,28 +9,6 @@ const ServerService = require('../services/server.service')
 class ServerController {
     constructor() {
        
-        this.post = (req, res, next) => {
-            try{
-                var serverAttrs = req.body;
-                
-                //TODO: que agarre el user id posta
-                serverAttrs.createdBy = 3; 
-                
-                ServerService.add(serverAttrs, req.models)
-                .then(appServer=>{
-                    ResServ.ok(ResEnum.Value, "server", appServer, res, next)
-                })
-                .catch(e =>{
-                    console.log("e:" + e);
-                    ResServ.error(res, messages.BadRequest)
-                })
-            }
-            catch(e){
-                console.log(e)
-                ResServ.error(res, messages.InternalServerError);
-            }
-        };
-
         this.getById = (req, res, next) => {
             ServerService.getById(req.params.id, req.models)
             .then(appServer => {
@@ -63,18 +41,52 @@ class ServerController {
                 }
             })
         }
-        this.put = (req, res, next) => {
-            var srv = new Server(req.body);
-            srv.id = req.params.id;
-            ServerService.update(srv, (err, server)=>{
-                if(err){
-                    ResServ.error(res, messages.NotFound);
-                }
-                else{
-                    ResServ.ok(ResEnum.Value, "server", server, res, next);
-                }
-            })
+
+        this.post = (req, res, next) => {
+            try{
+                var serverAttrs = req.body;
+                
+                //TODO: que agarre el user id posta
+                serverAttrs.createdBy = 3; 
+                
+                ServerService.add(serverAttrs, req.models)
+                .then(appServer=>{
+                    ResServ.ok(ResEnum.Value, "server", appServer, res, next)
+                })
+                .catch(e =>{
+                    console.log("e:" + e);
+                    ResServ.error(res, messages.BadRequest)
+                })
+            }
+            catch(e){
+                console.log(e)
+                ResServ.error(res, messages.InternalServerError);
+            }
         };
+
+        this.put = (req, res, next) => {
+            var id = req.params.id;
+            var attrs = req.body;
+            ServerService.update(id, attrs, req.models)
+            .then( appServer => {
+                ResServ.ok(ResEnum.Value, "server", appServer, res, next);
+            })
+            .catch(e => {
+                handleError(e, res);
+            });
+        };
+
+        function handleError(e, res){
+            if (e == 'not-found'){
+                ResServ.errorNotFound(res);
+            } else if (e == 'invalid-attrs') {
+                ResServ.errorBadRequest(res);
+            } else if (e == 'conflict'){
+                ResServ.errorConflict(res);
+            } else {
+                ResServ.errorInternal(res);    
+            }
+        }
         
         this.delete = (req, res, next) => {
             var id = req.params.id;

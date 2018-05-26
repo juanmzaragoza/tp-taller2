@@ -22,17 +22,12 @@ class ServerService {
         //     })
         // }
 
-        function validateAttrs(attrs) {
+        function validateAttrs(attrs, neededAttrs) {
             if (attrs['_rev']){
                 attrs.rev = attrs['_rev'];
                 delete attrs['_rev'];
             }
             
-            const neededAttrs = [
-                "name",
-                "createdBy"
-            ];
-
             var keys = _.keys(attrs);
             var diff = _.difference(neededAttrs, keys);
             return new Promise((resolve, reject) => {
@@ -44,15 +39,24 @@ class ServerService {
             });
         }
 
+        function validateCreationAttrs(attrs){
+            const neededAttrs = ["name","createdBy"];
+            return validateAttrs(attrs, neededAttrs);
+        }
+
+        function validateUpdateAttrs(attrs){
+            const neededAttrs = ["name","rev"];
+            return validateAttrs(attrs, neededAttrs);
+        }
+
         function createServer(attrs, models) {
             attrs.createdTime = Date.now();
             return DaoService.insert(models.app_server, attrs);
         }
 
         this.add = (attrs, models) => {
-            
             return new Promise((resolve, reject) => {
-                validateAttrs(attrs)
+                validateCreationAttrs(attrs)
                 .then(function(attrs) {
                     return createServer(attrs, models);
                 })
@@ -65,6 +69,47 @@ class ServerService {
                 })
             });
         };
+
+        function validateOptimisticLock(appServer, attrs){
+            if (!appServer.rev){
+                return;
+            }
+            if (appServer.rev != attrs.rev){
+                throw "conflict";
+            }
+        }
+
+        function updateAttrsForServer(appServer, attrs) {
+            var attrsToUpdate = _.pick(attrs, ['name']) ;
+            for (var key in attrsToUpdate){
+                appServer[key] = attrsToUpdate[key];
+            }
+            appServer.rev = new Date().getTime();
+            return appServer;
+        }
+
+        this.update = (id, receivedAttrs, models)=>{
+            return new Promise((resolve, reject) => {
+
+                validateUpdateAttrs(receivedAttrs)
+                .then(function(attrs) {
+                    var findServer = DaoService.findById(id, models.app_server);
+                    return Promise.all([findServer, attrs]);
+                })
+                .then( function([appServer, attrs]) {
+                    validateOptimisticLock(appServer, attrs);
+                    appServer = updateAttrsForServer(appServer, attrs);
+                    return DaoService.update(appServer);
+                })
+                .then( function(appServer) {
+                    var serverJson = getServerReturnData(appServer);
+                    resolve(serverJson);
+                })
+                .catch(function(err){
+                    reject(err);
+                })
+            });            
+        }
 
 
         this.refreshToken = (id, cb)=>{
@@ -89,20 +134,21 @@ class ServerService {
                 }
             })
         }
-        this.update = (server, cb)=>{
-            var me = this
-            me.getById(server.id, (err, serverOld)=>{
-                server.token = serverOld.token
-                StorageServ.update("server", server, (err, server)=>{
-                    if(err){
-                        console.log(err)
-                        cb(err);
-                    }else{
-                        cb(undefined, server);
-                    }
-                })
-            })
-        }
+        
+        // this.update = (server, cb)=>{
+        //     var me = this
+        //     me.getById(server.id, (err, serverOld)=>{
+        //         server.token = serverOld.token
+        //         StorageServ.update("server", server, (err, server)=>{
+        //             if(err){
+        //                 console.log(err)
+        //                 cb(err);
+        //             }else{
+        //                 cb(undefined, server);
+        //             }
+        //         })
+        //     })
+        // }
 
         this.delete = (id, models)=>{
             return new Promise((resolve, reject) => {
