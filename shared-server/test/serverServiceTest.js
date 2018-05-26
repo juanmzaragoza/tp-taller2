@@ -132,7 +132,6 @@ describe('Server Service Tests', function(){
 		        }
 		    }
 		});
-
 		var attrs = {
 			'rev': '123123123',
 			'name': 'lalal'
@@ -257,6 +256,158 @@ describe('Server Service Tests', function(){
 		});
 	});
 
+	it ('getById inexistent server should throw not-found', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+		    if (query === 'findById') {
+		    	if (queryOptions[0] === 14) {
+		            return null
+		        }
+		    }
+		});
+		serverService.getById(14, models)
+		.then((result) => {
+			assert(false);
+			done();
+		})
+		.catch((reason) => {
+			assert.equal(reason, 'not-found');
+			done();
+		});
+	});
 
+	it ('getById server should success', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findById') {
+		    	if (queryOptions[0] == 8) {
+		            return models.app_server.build({ 
+		            	"id": 8,
+		            	"rev": "123",
+						"createdBy": 4,
+						"createdTime": "2018-05-26T17:19:51.342Z",
+						"name": "dummy",
+						"lastConnection": null
+				    });
+		        } else {
+		        	return null;
+		        }
+		    }
+		});
+		serverService.getById(8, models)
+		.then((response) => {
+			assert.isNotNull(response, 'response should not be null');
+			assert.notEqual(response,null);
+			assert.equal(response.createdTime,"2018-05-26T17:19:51.342Z");
+			assert.equal(response.id,8);
+			assert.equal(response.name,'dummy');
+			assert.equal(response.createdBy,4);
+			assert.equal(response._rev,"123");
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "getById failed: "+reason);
+			done();
+		});
+	});
+
+	it ('getById server should success 2', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findById') {
+		    	if (queryOptions[0] == 87) {
+		            return models.app_server.build({ 
+		            	"id": 87,
+		            	"rev": "123",
+						"createdBy": 42,
+						"createdTime": "2018-05-26T17:19:51.342Z",
+						"name": "otro dummy",
+						"lastConnection": null
+				    });
+		        } else {
+		        	return null;
+		        }
+		    }
+		});
+		serverService.getById(87, models)
+		.then((response) => {
+			assert.isNotNull(response, 'response should not be null');
+			assert.notEqual(response,null);
+			assert.equal(response.createdTime,"2018-05-26T17:19:51.342Z");
+			assert.equal(response.id,87);
+			assert.equal(response.name,'otro dummy');
+			assert.equal(response.createdBy,42);
+			assert.equal(response._rev,"123");
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "getById failed: "+reason);
+			done();
+		});
+	});
+
+	it ('get server should return empty list', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findAll') {
+		    	return [];
+		    }
+		});
+		serverService.get(models)
+		.then((response) => {
+			assert.deepEqual(response,[]);
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "get failed: "+reason);
+			done();
+		});
+	});
+
+	it ('get server should return list', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findAll') {
+				var server1 = models.app_server.build({ 
+	            	"id": 87,
+	            	"rev": "123",
+					"createdBy": 42,
+					"createdTime": "2018-05-26T17:19:51.342Z",
+					"name": "otro dummy",
+					"lastConnection": null
+			    });
+			    var server2 = models.app_server.build({ 
+	            	"id": 8,
+	            	"rev": "123",
+					"createdBy": 4,
+					"createdTime": "2018-05-26T17:19:51.342Z",
+					"name": "dummy",
+					"lastConnection": null
+			    });
+		    	return [server1, server2];
+		    }
+		});
+		serverService.get(models)
+		.then((response) => {
+			assert.deepEqual(response,[
+				{
+					"id": 87,
+	            	"_rev": "123",
+					"createdBy": 42,
+					"createdTime": "2018-05-26T17:19:51.342Z",
+					"name": "otro dummy",
+					"lastConnection": null
+				},
+				{ 
+	            	"id": 8,
+	            	"_rev": "123",
+					"createdBy": 4,
+					"createdTime": "2018-05-26T17:19:51.342Z",
+					"name": "dummy",
+					"lastConnection": null
+			    }
+			]);
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "get failed: "+reason);
+			done();
+		});
+	});
 
 });
