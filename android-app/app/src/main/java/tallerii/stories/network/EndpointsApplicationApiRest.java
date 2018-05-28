@@ -33,6 +33,10 @@ public interface EndpointsApplicationApiRest {
     @PUT(ConstantsApplicationApiRest.PROFILE_ENDPOINT)
     Call<JsonObject> putProfileById(@Path("id") String user_id, @Body JsonObject profile);
 
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
+    @POST(ConstantsApplicationApiRest.FCM_SEND)
+    Call<JsonObject> sendFCMNotification(@Body JsonObject notification);
+
     @Headers({"Accept:application/json"})
     @GET(ConstantsApplicationApiRest.GET_STORIES_BY_USER)
     Call<List<Story>> getStoriesByUserId(@Path("id") String user_id);
