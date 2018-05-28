@@ -10,8 +10,6 @@ import java.util.List;
 
 import tallerii.stories.controller.FriendRequestController;
 import tallerii.stories.helpers.FriendRequestAdapter;
-import tallerii.stories.helpers.FriendsAdapter;
-import tallerii.stories.network.apimodels.Friend;
 import tallerii.stories.network.apimodels.FriendRequest;
 
 public class FriendRequestActivity extends StoriesLoggedInActivity {
@@ -27,6 +25,7 @@ public class FriendRequestActivity extends StoriesLoggedInActivity {
         friendsRecyclerView = findViewById(R.id.friendsRecyclerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         friendsRecyclerView.setLayoutManager(mLayoutManager);
+        controller = new FriendRequestController(this);
     }
 
     @Override
