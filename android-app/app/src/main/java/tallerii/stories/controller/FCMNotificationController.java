@@ -1,4 +1,4 @@
-package tallerii.stories.helpers;
+package tallerii.stories.controller;
 
 import com.google.gson.JsonObject;
 
@@ -9,7 +9,7 @@ import tallerii.stories.controller.DefaultCallback;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
 
-public class FCMNotification {
+public class FCMNotificationController {
     //TODO make controller
     //Sends to partner, so that server can send to fcm. This is as stipulated in documentation for FCM
     public static void sendNotification(final StoriesAppActivity context, String topic, String title) {
