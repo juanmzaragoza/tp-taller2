@@ -12,17 +12,23 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
+import tallerii.stories.helpers.Store;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 
 import static tallerii.stories.ProfileActivity.PROFILE_OBJECT;
 
 public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
+    public static final String TOKEN = "token";
     private static ApplicationProfile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
+        if(bundle != null && bundle.getString(TOKEN) != null) {
+            final Store store = new Store();
+            store.save("token", bundle.getString(TOKEN));
+        }
         if (bundle != null && bundle.get(PROFILE_OBJECT) != null) {
             setProfile(new Gson().fromJson(bundle.getString(PROFILE_OBJECT), ApplicationProfile.class));
         }
@@ -55,6 +61,9 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
                 return true;
             case R.id.action_chat:
                 startChatRoomsActivity(profile);
+                return true;
+            case R.id.friend_requests:
+                startFriendRequestsActivity(profile);
                 return true;
             case R.id.action_profile:
                 //startProfileActivity(profile.getId());
