@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 
 import tallerii.stories.network.apimodels.ApplicationProfile;
 
+import static tallerii.stories.ProfileActivity.PROFILE_ID;
 import static tallerii.stories.ProfileActivity.PROFILE_OBJECT;
 
 public abstract class StoriesAppActivity extends AppCompatActivity {
@@ -74,7 +75,7 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
     public void startMainActivity(String username, String token) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_MESSAGE, username);
-        intent.putExtra(MainActivity.TOKEN, token);
+        intent.putExtra(StoriesLoggedInActivity.TOKEN, token);
         startActivity(intent);
         finish();
     }
@@ -94,24 +95,37 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
         finish();
     }
 
-    public void startProfileActivity(String profile) {
+    public void startProfileUpdateActivity(String profileId, String token) {
+        Intent intent = new Intent(this, UserProfileUpdateActivity.class);
+        intent.putExtra(ProfileActivity.PROFILE_ID, profileId);
+        intent.putExtra(StoriesLoggedInActivity.TOKEN, token);
+        startActivity(intent);
+        finish();
+    }
+
+    public void startProfileActivity(String profileId) {
         Intent intent = new Intent(this, UserProfileActivity.class);
-        intent.putExtra(PROFILE_OBJECT, profile);
+        intent.putExtra(PROFILE_ID, profileId);
+        startActivity(intent);
+        finish();
+    }
+
+    public void startFriendRequestsActivity(ApplicationProfile profile) {
+        startLoggedInActivity(profile, FriendRequestActivity.class);
+    }
+
+    private void startLoggedInActivity(ApplicationProfile profile, Class<?> activityClass) {
+        Intent intent = new Intent(this, activityClass);
+        intent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
         startActivity(intent);
         finish();
     }
 
     public void startProfileActivity(ApplicationProfile profile) {
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        intent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
-        startActivity(intent);
-        finish();
+        startLoggedInActivity(profile, UserProfileActivity.class);
     }
 
     public void startChatRoomsActivity(ApplicationProfile profile) {
-        Intent intent = new Intent(this, ChatRoomsActivity.class);
-        intent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
-        startActivity(intent);
-        finish();
+        startLoggedInActivity(profile, ChatRoomsActivity.class);
     }
 }
