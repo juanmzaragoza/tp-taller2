@@ -1,4 +1,5 @@
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 
 import { LoginService } from './login.service'
@@ -31,7 +32,7 @@ describe('LoginService', ()=>{
         httpMock = TestBed.get(HttpTestingController);
     });
 
-    it('should login the data successful', () => {
+    it('Should login correctly', () => {
         // test goes here
         service.token(new User("erikschmoll", "root")).subscribe((data: any) => {
             expect(data).toBe(true);
@@ -53,7 +54,29 @@ describe('LoginService', ()=>{
         );
     
         httpMock.verify();
-     });
+    });
 
+    it('should fail when login',()=>{
+      service.token(new User("erikschmoll", "none")).subscribe(
+        (data: any) => {
+          expect(data).toBe(undefined);  
+        },
+        (error:any)=>{
+          expect(error.error.code).toBe(51)
+          expect(error.status).toBe(401)
+          expect(error.error.message).toBe("wrong user or password")
+          expect(error.statusText).toBe("Unauthorized")
+        }
+      );
+      const req = httpMock.expectOne(`http://127.0.0.1:8081/api/token`, 'call to api');
+      expect(req.request.method).toBe('POST');
+      
+      const errorResponse = new HttpErrorResponse({
+        status: 401, statusText: 'Unauthorized'
+      });
+
+      req.flush({"code":51,"message":"wrong user or password"},errorResponse)
+
+    })
 })
 
