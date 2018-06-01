@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,27 +26,40 @@ import java.io.IOException;
 
 import tallerii.stories.MainActivity;
 import tallerii.stories.R;
+import tallerii.stories.StoriesAppActivity;
+import tallerii.stories.controller.StoriesController;
 import tallerii.stories.helpers.LocationHelper;
 
 import static android.app.Activity.RESULT_OK;
 
 public class PostStorieFragment extends Fragment {
 
+    private StoriesController controller;
+
     private View rootView;
     private ImageView imageView;
-    private TextView locationText;
+
     private View choosePictureButton;
     private View publishButton;
-
     private Bitmap pictureBitmap;
+
+    private TextView locationText;
+    private CheckBox visibilityCheckBox;
+    private EditText titleText;
+    private EditText descriptionText;
+
 
     // Referer to https://github.com/ravi8x/AndroidPhotoFilters
     static {
         System.loadLibrary("NativeImageProcessor");
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        controller = new StoriesController(this);
 
         // get root view and then access to objects like R.id.usernameView
         rootView = inflater.inflate(R.layout.fragment_post_storie, container, false);
@@ -134,19 +148,24 @@ public class PostStorieFragment extends Fragment {
     /** Called when the user taps the Submit button **/
     public void publish(View view) {
 
-        EditText titleText = (EditText) rootView.findViewById(R.id.titleText);
+        titleText = (EditText) rootView.findViewById(R.id.titleText);
         String title = titleText.getText().toString();
 
-        EditText descriptionText = (EditText) rootView.findViewById(R.id.descriptionText);
+        descriptionText = (EditText) rootView.findViewById(R.id.descriptionText);
         String description = descriptionText.getText().toString();
 
-        CheckBox visibilityCheckBox = (CheckBox) rootView.findViewById(R.id.visibilityCheckBox);
+        visibilityCheckBox = (CheckBox) rootView.findViewById(R.id.visibilityCheckBox);
         boolean isPublic = visibilityCheckBox.isChecked();
 
-        EditText locationText = (EditText) rootView.findViewById(R.id.locationText);
+        locationText = rootView.findViewById(R.id.locationText);
         String location = locationText.getText().toString();
 
-        //controller.postStorie(pictureBitmap, title, description, isPublic, location);
+        if(pictureBitmap != null){
+            controller.publishStorie(pictureBitmap, title, description, isPublic, location, "normal");
+        } else{
+            StoriesAppActivity activity = (StoriesAppActivity) getActivity();
+            activity.showMessage("Please, choose a image to post!", Toast.LENGTH_SHORT);
+        }
     }
 }
 
