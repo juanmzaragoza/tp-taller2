@@ -1,6 +1,7 @@
 package tallerii.stories.fragments.main;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -14,23 +15,34 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
 
-import tallerii.stories.LoginActivity;
 import tallerii.stories.MainActivity;
 import tallerii.stories.R;
+import tallerii.stories.helpers.LocationHelper;
 
 import static android.app.Activity.RESULT_OK;
 
 public class PostStorieFragment extends Fragment {
 
     private View rootView;
-    private Bitmap pictureBitmap;
     private ImageView imageView;
+    private TextView locationText;
     private View choosePictureButton;
+    private View publishButton;
+
+    private Bitmap pictureBitmap;
+
+    // Referer to https://github.com/ravi8x/AndroidPhotoFilters
+    static {
+        System.loadLibrary("NativeImageProcessor");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,9 +56,9 @@ public class PostStorieFragment extends Fragment {
     // from camera
     public void takePhoto() {
         // check for permissions
-        if ( Build.VERSION.SDK_INT >= 23 &&
-                ContextCompat.checkSelfPermission( PostStorieFragment.this.getContext(), android.Manifest.permission.CAMERA ) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions( getActivity(), new String[] {  Manifest.permission.CAMERA  }, 0 );
+        if (Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission(PostStorieFragment.this.getContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 0);
         }
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(takePictureIntent, 0);
@@ -55,13 +67,13 @@ public class PostStorieFragment extends Fragment {
     // from gallery
     public void chooseImage() {
         Intent pickPhotoIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(pickPhotoIntent , 1);
+        startActivityForResult(pickPhotoIntent, 1);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-        if(resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 0:
                     pictureBitmap = (Bitmap) imageReturnedIntent.getExtras().get("data");
@@ -102,6 +114,39 @@ public class PostStorieFragment extends Fragment {
                 chooseImage();
             }
         });
+
+        // get location from network
+        LocationHelper locationHelper = new LocationHelper(getActivity(), PostStorieFragment.this.getContext());
+        locationHelper.getLocation();
+        locationText = rootView.findViewById(R.id.locationText);
+        locationText.setText("("+locationHelper.getLatitude()+","+locationHelper.getLongitude()+")");
+
+        // publish button
+        publishButton = rootView.findViewById(R.id.publishButton);
+        publishButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                publish(v);
+            }
+        });
+
+    }
+
+    /** Called when the user taps the Submit button **/
+    public void publish(View view) {
+
+        EditText titleText = (EditText) rootView.findViewById(R.id.titleText);
+        String title = titleText.getText().toString();
+
+        EditText descriptionText = (EditText) rootView.findViewById(R.id.descriptionText);
+        String description = descriptionText.getText().toString();
+
+        CheckBox visibilityCheckBox = (CheckBox) rootView.findViewById(R.id.visibilityCheckBox);
+        boolean isPublic = visibilityCheckBox.isChecked();
+
+        EditText locationText = (EditText) rootView.findViewById(R.id.locationText);
+        String location = locationText.getText().toString();
+
+        //controller.postStorie(pictureBitmap, title, description, isPublic, location);
     }
 }
 
