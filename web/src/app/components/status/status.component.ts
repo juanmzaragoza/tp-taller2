@@ -32,20 +32,23 @@ export class StatusComponent {
                         'isStacked': true,
                         'legend': {position: 'top', maxLines: 3}
                     }
-
+                    this.graph.pie.options = {
+                        'title':'Total',
+                        'width':600,
+                        'height':300
+                    }
+                    this.graph.bar.options = {
+                        'title':'Total of each server',
+                        'width':600,
+                        'height':300,
+                        'isStacked': true,
+                        'legend': {position: 'top', maxLines: 3},
+                        'vAxis': {minValue: 0}
+                    }
 
 
                     this.titleStacked = "bar stacked"
                     this.chart = {
-                        pie:{
-                            columns:[],
-                            options: {
-                                'title':'Total',
-                                'width':600,
-                                'height':300
-                            },
-                            data:[]
-                        },
                         barStacked:{
                             columns:[],
                             options: {
@@ -95,8 +98,8 @@ export class StatusComponent {
         vm.drawAreaStacked()
         this.StatusServ.ini().subscribe(
             (ok=>{
-                /*this.chart["pie"]["data"] = vm.StatusServ.getDataPie()
                 vm.drawPie()
+                /*this.chart["pie"]["data"] = vm.StatusServ.getDataPie()
                 var stacked = vm.StatusServ.getDataBarStacked()
                 this.chart["barStacked"]["columns"] = stacked.columns
                 this.chart["barStacked"]["columns"].unshift({type: 'string', name: 'Filters'})
@@ -108,15 +111,14 @@ export class StatusComponent {
     }
 
     drawPie(){
-        var me = this
-        google.charts.load('current', {'packages':['corechart']});
+        var vm = this
         google.charts.setOnLoadCallback(()=>{
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Topping');
-            data.addColumn('number', 'Slices');
-            data.addRows(me.chart.pie.data);
-            var chart = new google.visualization.PieChart(document.getElementById('chart_pie'));
-            chart.draw(data, me.chart.pie.options);
+            var data = vm.StatusServ.getDataPie()
+            vm.graph.pie.count = data.length
+            console.info(data)
+            vm.graph.pie.data = google.visualization.arrayToDataTable(data);
+            vm.graph.pie.chart = new google.visualization.PieChart(document.getElementById('chart_pie'));
+            vm.graph.pie.chart.draw(vm.graph.pie.data, vm.graph.pie.options);
         });
     }
     drawBarStacked(){

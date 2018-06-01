@@ -28,6 +28,7 @@ export class StatusService {
         var st: any
         var status = _.clone(me.serversStatus.map((ss:Status)=>{ return ss.stats}))
         if(status.length > 0){
+            pie.push(["string", "number"])
             st = me.dropKeys(_.clone(status[0]))
             keys = Object.keys(st)
             keys.forEach(key => { pieJson[key] = 0; });
@@ -50,6 +51,7 @@ export class StatusService {
         var status = _.clone(me.serversStatus.map((ss:Status)=>{ return ss.stats}))
         stacked["data"] = []
         stacked["columns"] = _.clone(me.serversStatus.map((ss:Status)=>{ return {type: "number", name:ss.name} }))
+        stacked["columns"].unshift({type: 'string', name: 'Filters'})
         if(status.length > 0){
             st = me.dropKeys(_.clone(status[0]))
             keys = Object.keys(st)
