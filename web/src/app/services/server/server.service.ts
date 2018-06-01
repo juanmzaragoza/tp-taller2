@@ -14,7 +14,6 @@ import {Observer} from 'rxjs/Observer';
 export class ServerService {
     constructor(public RemoteServ: RemoteService){}
     get(){
-      console.info("get")
        return this.RemoteServ.get('/servers')
        .map( res=> res.servers)
     }
@@ -22,8 +21,6 @@ export class ServerService {
       var me:any = this
       var serv :Array<Server>= []
       return Observable.create((observer: Observer<any>) => {
-        console.info("pase")
-        
         me.get().subscribe(
           (servers: Array<Server>) =>{
             console.info("servers", servers)
