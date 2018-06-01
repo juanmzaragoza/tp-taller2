@@ -24,3 +24,11 @@
     of the button to still show through. */
      background-color: rgba(121, 85, 72, 0.65);
    }
+
+.chart {
+    width: 100%; 
+    min-height: 450px;
+}
+.row {
+    margin:0 !important;
+}

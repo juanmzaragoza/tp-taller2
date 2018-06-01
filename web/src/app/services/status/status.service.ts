@@ -45,20 +45,19 @@ export class StatusService {
     }
     getDataBarStacked = () : Array<Array<any>> => {
         var me:any = this
-        var stacked:any = {}
+        var stacked:any = []
         var keys: Array<any>
         var st: any
         var status = _.clone(me.serversStatus.map((ss:Status)=>{ return ss.stats}))
-        stacked["data"] = []
-        stacked["columns"] = _.clone(me.serversStatus.map((ss:Status)=>{ return {type: "number", name:ss.name} }))
-        stacked["columns"].unshift({type: 'string', name: 'Filters'})
+        stacked.push(_.clone(me.serversStatus.map((ss:Status)=>{ return {type: "number", label:ss.name} })))
+        stacked[0].unshift({type: 'string', label: 'Filters'})
         if(status.length > 0){
             st = me.dropKeys(_.clone(status[0]))
             keys = Object.keys(st)
             keys.forEach(key => {
-                stacked.data.push([key])
+                stacked.push([key])
                 status.forEach((status:any) => {
-                    stacked.data[stacked.data.length-1].push(Number(status[key]))
+                    stacked[stacked.length-1].push(Number(status[key]))
                 });
             });
         }
