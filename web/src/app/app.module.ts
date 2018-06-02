@@ -13,7 +13,6 @@ import { RemoteService } from './services/remote/remote.service'
 import { CookieService } from 'ngx-cookie-service';
 import { TokenInterceptor } from './services/remote/token.interceptor'
 import { ClipBoardService } from './services/common/clipboard.service'
-import { ChartService } from './services/common/chart.service'
 import { StatusService } from './services/status/status.service'
 import { ServerService } from './services/server/server.service'
 
@@ -61,7 +60,6 @@ import { FixButtonDirective } from './directives/fix.button.directive'
     JsonService,
     ClipBoardService,
     DatePipe,
-    ChartService,
     StatusService,
     ServerService
   ],
