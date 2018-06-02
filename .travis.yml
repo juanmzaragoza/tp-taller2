@@ -66,6 +66,7 @@ matrix:
       - sudo dpkg -i google-chrome*.deb
 
       script: 
+        - cd $TRAVIS_BUILD_DIR/web/
         - ng test --watch false -cc
         - npm run e2e
         - ng build -bh "https://ahsanayaz.github.io/ng-traffic-ci/"
