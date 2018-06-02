@@ -2,16 +2,18 @@ import sys
 import flask
 import requests
 import json
+import os
+
 from .request_exception import RequestException
 from api_client.user_not_exists_exception import UserNotExistsException
-from constants import SHARED_SERVER_URL, APPLICATION_OWNER
+from constants import APPLICATION_OWNER
 
 app = flask.Flask(__name__)
 
 class SharedApiClient():
 
 	def __init__(self):
-		self.url = SHARED_SERVER_URL
+		self.url = os.environ['SHARED_URI']
 		self.headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
 
 	def login(self, username, password):

@@ -9,7 +9,14 @@ class RemoteService {
                 request.get({ url: url }, 
                 (err, httpResponse, body) => {
                     if(err){ reject(err); }
-                    else{ resolve(JSON.parse(body)); }
+                    else{ 
+                        try{
+                            resolve(JSON.parse(body)); 
+                        }
+                        catch(e){
+                            reject(err);
+                        }
+                    }
                 })
             })
         }

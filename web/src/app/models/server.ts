@@ -4,7 +4,8 @@ export class Server{
     name: string
     host: string
     port: string
-    pingUrl: string
+    ping: string
+    stats: string
     createdTime: number
     createdBy: string
     lastConnection: number
@@ -15,7 +16,8 @@ export class Server{
         this.host = ''
         this.port = ''
         this.name = ''
-        this.pingUrl = ''
+        this.ping = ''
+        this.stats = ''
         this.createdTime = 0
         this.createdBy = ''
         this.lastConnection = 0

@@ -1,18 +1,21 @@
 import { Component, 
          OnInit, 
-         EventEmitter }       from '@angular/core'
+         EventEmitter,
+        OnDestroy }       from '@angular/core'
 import { MaterializeDirective,
          MaterializeAction,
          toast}               from "angular2-materialize";
+
 import { Server }             from '../../models/server'
 import { UserService }        from '../../services/user/user.service'
-import { RemoteService }      from '../../services/remote/remote.service'
+import { ServerService }      from '../../services/server/server.service'
 import { JsonService }        from '../../services/common/json.service'
 import { ClipBoardService }   from '../../services/common/clipboard.service'
 
 
 
 declare var $ :any;
+declare var M_Modal : any;
 
 @Component({
     templateUrl: './server.component.html'
@@ -20,31 +23,53 @@ declare var $ :any;
 export class ServerComponent {
   title: string;
   servers: Array<any>;
+  pid: any;
   public server:Server = new Server();
   constructor(public UserServ: UserService,
-              public RemoteServ: RemoteService,
+              public ServerServ: ServerService,
               public JsonServ: JsonService,
               public ClipBoardServ: ClipBoardService){
-      $('.modal').modal();
       this.servers = []
       this.title = 'Servers'
   }
   
   ngOnInit() {
-    this.get()
+    var vm = this
+    vm.get()
+    vm.pid = setInterval(() => {
+      vm.ping(); 
+    }, 10000);
   }
-
+  ngOnDestroy() {
+    if (this.pid) {
+      clearInterval(this.pid);
+    }
+  }
+  ping(){
+    var vm = this
+    if(vm.servers.length>0){
+      vm.servers.forEach(s => {
+        vm.ServerServ.ping(s.id).subscribe((ping) => {
+          s["active"] = ping.status
+        },
+        error =>{
+          s["active"] = "none"
+        });
+      });
+    }
+  }
   open(){
     this.openModal();
+    $('.modal').modal();
       setTimeout(()=>{
-          $('.btn-floating div').remove();
-      }, 500);
+        $('input[name=name]').focus()
+      }, 1000);
   }
   get(){
     var me = this
-    me.RemoteServ.get('/servers').subscribe((res) => {
-      console.log(res.servers)
-      me.servers = res.servers
+    me.ServerServ.get().subscribe((servers) => {
+      console.log(servers)
+      me.servers = servers
     },
     error =>{
       console.log(error)
@@ -58,7 +83,7 @@ export class ServerComponent {
   }
   delete(id:string){
     var me = this
-    me.RemoteServ.delete('/servers/'+id).subscribe((res) => {
+    me.ServerServ.delete(id).subscribe((res) => {
       me.servers = me.JsonServ.removeItem(me.servers, {id:id})
       toast("the server was deleted",4000)
     },
@@ -72,7 +97,7 @@ export class ServerComponent {
   }
   refreshToken(id:string){
     var me = this
-    me.RemoteServ.post('/servers/'+id,{id:id}).subscribe((res) => {
+    me.ServerServ.refreshToken(id).subscribe((res) => {
       me.servers = me.JsonServ.removeItem(me.servers, {id:id})
       me.servers.push(res.server)
       toast("the token was updated",4000)
@@ -94,7 +119,7 @@ export class ServerComponent {
   }
   update(serv: Server){
     var me = this
-    me.RemoteServ.put('/servers/'+serv.id, serv).subscribe((res) => {
+    me.ServerServ.update(serv).subscribe((res) => {
       me.servers = me.JsonServ.removeItem(me.servers, {id:serv.id})
       me.servers.push(res.server)
       me.server = new Server()
@@ -109,7 +134,8 @@ export class ServerComponent {
     serv.createdTime = Date.now()
     serv.lastConnection = 0
     serv.createdBy = me.UserServ.getUser().username
-    me.RemoteServ.post('/servers', serv).subscribe((res) => {
+    me.ServerServ.create(serv).subscribe((res) => {
+      res.server["active"] = "none"
       me.servers.push(res.server)
       me.server = new Server()
       toast("the server was created",4000)

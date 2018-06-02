@@ -7,7 +7,7 @@ import { ServerService }    from '../../services/server/server.service'
 import { Server }           from '../../models/server'
 
 declare var google:any
-
+declare var $:any
 @Component({
     templateUrl: './status.component.html'
 })
@@ -47,13 +47,20 @@ export class StatusComponent {
                             data:[]
                         }
                     }
-                    
                 }
     
     ngOnInit() {
         var vm: any = this
-        this.getServ()
         this.title = "Status"
+        this.draw()
+        /*vm.ServerServ.getActive().subscribe(
+            ((r:any)=>{
+                console.info(r)
+            }),
+            ((e:any)=>{
+                console.info(e)
+            })
+        )*/
     }
     ngOnDestroy() {
         var vm :any = this
@@ -61,23 +68,25 @@ export class StatusComponent {
             clearInterval(vm.pid)
         }
     }
-    getServ(){
-        var me = this
-        me.ServerServ.get().subscribe((res) => {
-          me.servers = res.servers
-          this.chart["pie"]["data"] = me.StatusServ.getDataPie()
-          this.chart["barStacked"]["columns"] = res.servers.map((s:any)=>{return {type: 'number', name: s.name} })
-          this.chart["barStacked"]["columns"].unshift({type: 'string', name: 'Filters'})
-          this.chart["barStacked"]["data"] = me.StatusServ.getDataBarStacked()
-          me.drawPie()
-          me.drawBarStacked()
-        },
-        error =>{
-          console.error(error)
-        });
-    }
     change(id: any){
 
+    }
+    draw(){
+        var vm :any = this
+        $( "#chart_pie" ).empty();
+        $( "#chart_barStacked" ).empty();
+        this.StatusServ.ini().subscribe(
+            (ok=>{
+                this.chart["pie"]["data"] = vm.StatusServ.getDataPie()
+                vm.drawPie()
+                var stacked = vm.StatusServ.getDataBarStacked()
+                this.chart["barStacked"]["columns"] = stacked.columns
+                this.chart["barStacked"]["columns"].unshift({type: 'string', name: 'Filters'})
+                this.chart["barStacked"]["data"] = stacked.data
+                vm.drawBarStacked()
+            }),
+            (console.info)
+        )
     }
 
     drawPie(){
