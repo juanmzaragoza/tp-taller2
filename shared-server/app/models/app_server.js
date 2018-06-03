@@ -30,19 +30,7 @@ module.exports = (Sequelize, sequelize, models) => {
             type: Sequelize.STRING,
             allowNull: true
         },
-        port: {
-            type: Sequelize.INTEGER,
-            allowNull: true
-        },
-        ping: {
-            type: Sequelize.STRING,
-            allowNull: true
-        },
         token: {
-            type: Sequelize.STRING,
-            allowNull: true
-        },
-        stats: {
             type: Sequelize.STRING,
             allowNull: true
         }
