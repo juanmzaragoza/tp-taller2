@@ -71,7 +71,7 @@ class ServerService {
         }
 
         function updateAttrsForServer(appServer, attrs) {
-            var attrsToUpdate = _.pick(attrs, ['name']) ;
+            var attrsToUpdate = _.pick(attrs, ['name','host']) ;
             for (var key in attrsToUpdate){
                 appServer[key] = attrsToUpdate[key];
             }
