@@ -14,7 +14,7 @@ module.exports = (Sequelize, sequelize, models) => {
             type: Sequelize.STRING,
             allowNull: true
         },
-        createdBy: {
+        userId: {
             type: Sequelize.INTEGER,
             allowNull: false
         },
@@ -36,9 +36,13 @@ module.exports = (Sequelize, sequelize, models) => {
         }
 	}, {});
 	
-	App_server.associate = function(models) {
-	// associations can be defined here
-	};
+	// App_server.associate = function(models) {
+	// 	App_server.belongsTo(models.user, {foreignKey: 'userId', targetKey: 'id'});
+	// 	models.user.hasMany(App_server, {foreignKey: 'userId', sourceKey: 'id'});
+	// };
+
+	App_server.belongsTo(models.user, {foreignKey: 'userId', targetKey: 'id'});
+	models.user.hasMany(App_server, {foreignKey: 'userId', sourceKey: 'id'});
 
 	models.app_server = App_server;
 };

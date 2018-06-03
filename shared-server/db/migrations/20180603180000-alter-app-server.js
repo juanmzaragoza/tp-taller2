@@ -5,11 +5,14 @@ module.exports = {
         .then(function () {
             return queryInterface.removeColumn('App_servers', 'ping');
         })
-        then(function(){
+        .then(function(){
             return queryInterface.removeColumn('App_servers', 'stats');
+        })
+        .then(function() {
+            return queryInterface.renameColumn('App_servers', 'createdBy', 'userId');
         });
     },
-    
+
     down: (queryInterface, Sequelize) => {
         return queryInterface.addColumn('App_servers', 'port', {
             type: Sequelize.INTEGER,
@@ -26,6 +29,9 @@ module.exports = {
                 type: Sequelize.STRING,
                 allowNull: true
             });
-        });
+        })
+        .then(function() {
+            return queryInterface.renameColumn('App_servers', 'userId', 'createdBy');
+        });;
     }
 };

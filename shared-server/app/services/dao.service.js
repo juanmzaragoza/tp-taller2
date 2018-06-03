@@ -43,21 +43,30 @@ class DaoService {
             });
         }
 
-        this.findAll = (model) => {
+        this.findAll = (model, include) => {
             return new Promise((resolve, reject) => {
-                model.findAll().then(entities => {
+                var params = {};
+                if (include){
+                    params.include = include;
+                }
+                model.findAll(params).then(entities => {
                     resolve(entities);
                 })
                 .catch(e => {
-                    console.error(e.name)
+                    console.error(e.name);
+                    console.log(e);
                     reject(e.name) 
                 });
             });
         }
 
-        this.findById = (id, model) => {
+        this.findById = (id, model, include) => {
             return new Promise((resolve, reject) => {
-                model.findById(id).then(entity => {
+                var params = {};
+                if (include){
+                    params.include = include;
+                }
+                model.findById(id, params).then(entity => {
                     if (entity){
                         resolve(entity);    
                     } else {

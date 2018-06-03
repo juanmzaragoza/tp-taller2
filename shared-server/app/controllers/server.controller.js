@@ -61,8 +61,7 @@ class ServerController {
             getCurrentUser(req)
             .then(user => {
                 var serverAttrs = req.body;
-                serverAttrs.createdBy = user.id;                     
-                return ServerService.add(serverAttrs, req.models);
+                return ServerService.add(serverAttrs, req.models, user);
             })
             .then(appServer=>{
                 ResServ.ok(ResEnum.Value, "server", appServer, res, next)

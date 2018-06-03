@@ -26,7 +26,7 @@ class ServerService {
         }
 
         function validateCreationAttrs(attrs){
-            const neededAttrs = ["name","createdBy"];
+            const neededAttrs = ["name","userId"];
             return validateAttrs(attrs, neededAttrs);
         }
 
@@ -41,13 +41,15 @@ class ServerService {
             return DaoService.insert(models.app_server, attrs);
         }
 
-        this.add = (attrs, models) => {
+        this.add = (attrs, models, user) => {
             return new Promise((resolve, reject) => {
+                attrs.userId = user.id;
                 validateCreationAttrs(attrs)
                 .then(function(attrs) {
                     return createServer(attrs, models);
                 })
                 .then(function(appServer){
+                    appServer.User = user;
                     var serverJson = getServerReturnData(appServer);
                     var responseData = {
                         server: serverJson,
@@ -84,7 +86,8 @@ class ServerService {
 
                 validateUpdateAttrs(receivedAttrs)
                 .then(function(attrs) {
-                    var findServer = DaoService.findById(id, models.app_server);
+                    var include = getInclude(models);
+                    var findServer = DaoService.findById(id, models.app_server, include);
                     return Promise.all([findServer, attrs]);
                 })
                 .then( function([appServer, attrs]) {
@@ -144,12 +147,17 @@ class ServerService {
         function getServerReturnData(appServer){
             var data = appServer.toJSON();
             data['_rev'] = data.rev;
+            var user = appServer.User;
+            if (user){
+                data.createdBy = user.username;
+            }
             return _.pick(data, ['id','_rev','createdBy','createdTime','name','lastConnection']) ;
         }
 
         this.getById = (id, models) => {
             return new Promise((resolve, reject) => {
-                DaoService.findById(id, models.app_server)
+                var include = getInclude(models);
+                DaoService.findById(id, models.app_server, include)
                 .then( function(appServer) {
                     var serverJson = getServerReturnData(appServer);
                     resolve(serverJson);
@@ -162,7 +170,8 @@ class ServerService {
 
         this.get = (models) => {
             return new Promise((resolve, reject) => {
-                DaoService.findAll(models.app_server)
+                var include = getInclude(models);
+                DaoService.findAll(models.app_server, include)
                 .then( function(appServers) {
                     var serversJson = appServers.map(function(appServer) {
                         return getServerReturnData(appServer);
@@ -173,6 +182,12 @@ class ServerService {
                     reject(err);
                 })
             });
+        }
+
+        function getInclude(models){
+            return [{
+                model: models.user
+            }];
         }
     }
 }
