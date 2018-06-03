@@ -46,6 +46,7 @@ class ServerService {
                 attrs.userId = user.id;
                 validateCreationAttrs(attrs)
                 .then(function(attrs) {
+                    attrs.token = AuthService.token(attrs.name);
                     return createServer(attrs, models);
                 })
                 .then(function(appServer){
@@ -53,10 +54,7 @@ class ServerService {
                     var serverJson = getServerReturnData(appServer);
                     var responseData = {
                         server: serverJson,
-                        token: {
-                            token: AuthService.token(serverJson.name),
-                            expiresAt: 3600
-                        }
+                        token: getTokenData(appServer)
                     };
                     resolve(responseData);
                 })
@@ -97,7 +95,12 @@ class ServerService {
                 })
                 .then( function(appServer) {
                     var serverJson = getServerReturnData(appServer);
-                    resolve(serverJson);
+                    var serverJson = getServerReturnData(appServer);
+                    var responseData = {
+                        server: serverJson,
+                        token: getTokenData(appServer)
+                    };
+                    resolve(responseData);
                 })
                 .catch(function(err){
                     reject(err);
@@ -151,7 +154,14 @@ class ServerService {
             if (user){
                 data.createdBy = user.username;
             }
-            return _.pick(data, ['id','_rev','createdBy','createdTime','name','lastConnection']) ;
+            return _.pick(data, ['id','_rev','createdBy','createdTime','name','lastConnection','host']) ;
+        }
+
+        function getTokenData(appServer){
+            return {
+                token: appServer.token,
+                expiresAt: 3600
+            };
         }
 
         this.getById = (id, models) => {
@@ -160,7 +170,11 @@ class ServerService {
                 DaoService.findById(id, models.app_server, include)
                 .then( function(appServer) {
                     var serverJson = getServerReturnData(appServer);
-                    resolve(serverJson);
+                    var responseData = {
+                        server: serverJson,
+                        token: getTokenData(appServer)
+                    };
+                    resolve(responseData);
                 })
                 .catch(function(err){
                     reject(err);
@@ -174,7 +188,11 @@ class ServerService {
                 DaoService.findAll(models.app_server, include)
                 .then( function(appServers) {
                     var serversJson = appServers.map(function(appServer) {
-                        return getServerReturnData(appServer);
+                        //return getServerReturnData(appServer);
+                        return {
+                            server: getServerReturnData(appServer),
+                            token: getTokenData(appServer)
+                        };
                     });
                     resolve(serversJson);
                 })
