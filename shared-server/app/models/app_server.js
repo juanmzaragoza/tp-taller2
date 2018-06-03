@@ -36,11 +36,6 @@ module.exports = (Sequelize, sequelize, models) => {
         }
 	}, {});
 	
-	// App_server.associate = function(models) {
-	// 	App_server.belongsTo(models.user, {foreignKey: 'userId', targetKey: 'id'});
-	// 	models.user.hasMany(App_server, {foreignKey: 'userId', sourceKey: 'id'});
-	// };
-
 	App_server.belongsTo(models.user, {foreignKey: 'userId', targetKey: 'id'});
 	models.user.hasMany(App_server, {foreignKey: 'userId', sourceKey: 'id'});
 
