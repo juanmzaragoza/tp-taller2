@@ -86,6 +86,19 @@ class UserService {
                 }
             })
         }
+
+        this.getUserForToken = (token, models) => {
+            return new Promise((resolve, reject) => {
+                var filter = {"token": token};
+                DaoService.findOne(filter, models.user)
+                .then( function(user) {
+                    resolve(user);
+                })
+                .catch(function(err){
+                    reject(err);
+                })
+            });
+        }
     }
 }
 module.exports = new UserService();
