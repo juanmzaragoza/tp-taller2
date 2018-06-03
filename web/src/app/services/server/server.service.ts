@@ -21,12 +21,10 @@ export class ServerService {
       var me:any = this
       var serv :Array<Server>= []
       return Observable.create((observer: Observer<any>) => {
-        me.get().subscribe(
-          (servers: Array<Server>) =>{
-            console.info("servers", servers)
+        me.get().subscribe((servers: Array<Server>) =>{
+          if(servers.length >0){
             me.getPingAll(servers).subscribe(
               (pings:Array<any>)=>{
-                console.info("pings",pings)
                   for(var i=0; i <pings.length;i++){
                       if(pings[i].ok){
                         serv.push(servers.filter(s =>{return (s.id == pings[i].id)})[0])
@@ -34,16 +32,13 @@ export class ServerService {
                   }
                   observer.next(serv);
               },
-              (error:any) =>{
-                console.info("s")
-                observer.next({ok: false});
-              }
+              (console.error)
             )
+          }
+          else{ return observer.next([]); }
           },
-          (error:any) =>{
-            console.info("s", error)
-              observer.next({ok: false});
-          })
+          (console.error)
+        )
       })
     }
     getPingAll=(servers: Array<Server>)=>{

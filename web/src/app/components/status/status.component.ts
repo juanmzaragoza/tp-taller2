@@ -11,8 +11,8 @@ declare var $:any
 })
 export class StatusComponent {
     private pid:number
-    public title:string
-    public titleStacked: string
+    public title: string
+    public isServers:boolean
 
     private graph: any = {}
     constructor(public StatusServ :StatusService){
@@ -42,9 +42,9 @@ export class StatusComponent {
     }
     ngOnInit() {
         var vm: any = this
-        this.title = "Status"
+        vm.title = "Status"
         google.charts.load('current', {'packages':['corechart']});
-        this.draw()
+        vm.draw()
     }
     ngOnDestroy() {
         var vm :any = this
@@ -61,12 +61,15 @@ export class StatusComponent {
     draw(){
         var vm :any = this
         this.StatusServ.ini().subscribe(
-            (ok=>{
-                google.charts.setOnLoadCallback(vm.drawAreaStacked());
-                google.charts.setOnLoadCallback(vm.drawPie());
-                google.charts.setOnLoadCallback(vm.drawBarStacked());
+            (res=>{
+                vm.isServers = res.ok
+                if(vm.isServers){
+                    vm.drawAreaStacked();
+                    vm.drawPie();
+                    vm.drawBarStacked();
+                }
             }),
-            (console.info)
+            (console.error)
         )
     }
 

@@ -14,7 +14,7 @@
     <th class="indigo-text"> Drop </th>
     <th class="indigo-text"> active </th>
   </tr>
-  <tr [ngClass]="{'#c8e6c9 green lighten-4':server.active === 'active'}"  class="pointer" *ngFor="let server of servers">
+  <tr [ngClass]="{'#c8e6c9 lighten-4':true,'green':server.active === 'active', 'red':server.active === 'none'}"  class="pointer" *ngFor="let server of servers">
     <td (click)="edit(server)"> {{server.name}} </td>
     <td (click)="edit(server)"> {{server.createdBy}} </td>
     <td (click)="edit(server)"> {{server.createdTime | date: 'dd/MM/yyyy'}} </td>

@@ -69,21 +69,22 @@ export class StatusService {
         return Observable.create((observer: Observer<any>) => {
             me.ServerServ.getActive().subscribe(
                 (servers:Array<Server>) =>{
-                    me.getStats(servers).subscribe(
-                        (serversStats:Array<Stats>)=>{
-                            for(var i=0; i <servers.length;i++){
-                                me.serversStatus[i].stats = serversStats[i]
-                            }
-                            observer.next({ok: true});
-                        },
-                        (error:any) =>{
-                            observer.next({ok: false});
-                        }
-                    )
+                    if(servers.length >0){
+                        me.getStats(servers).subscribe(
+                            (serversStats:Array<Stats>)=>{
+                                for(var i=0; i <servers.length;i++){
+                                    me.serversStatus[i].stats = serversStats[i]
+                                }
+                                observer.next({ok: true});
+                            },
+                            (console.error)
+                        )
+                    }
+                    else{
+                        return observer.next({ok: false});
+                    }
                 },
-                (error:any) =>{
-                    observer.next({ok: false});
-                }
+                (console.error)
             )
         }
         )

@@ -135,7 +135,6 @@ export class ServerComponent {
     serv.lastConnection = 0
     serv.createdBy = me.UserServ.getUser().username
     me.ServerServ.create(serv).subscribe((res) => {
-      res.server["active"] = "none"
       me.servers.push(res.server)
       me.server = new Server()
       toast("the server was created",4000)
