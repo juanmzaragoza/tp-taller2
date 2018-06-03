@@ -54,7 +54,6 @@ class DaoService {
                 })
                 .catch(e => {
                     console.error(e.name);
-                    console.log(e);
                     reject(e.name) 
                 });
             });
@@ -74,7 +73,6 @@ class DaoService {
                     }
                 })
                 .catch(e => {
-                    console.log("e:");
                     console.error(e.name)
                     reject(e.name) 
                 });

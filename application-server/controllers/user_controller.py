@@ -5,6 +5,7 @@ from werkzeug.exceptions import BadRequest
 from api_client.shared_api_client import SharedApiClient
 from api_client.request_exception import RequestException
 
+from models.user_data import UserDataModel
 
 from controllers.response_builder import ResponseBuilder
 from controllers.error_handler import ErrorHandler
@@ -39,6 +40,9 @@ class UserController(flask_restful.Resource):
 			if not response:
 				return ErrorHandler.create_error_response("You haven't authorization", 401)
 			
+			user_id = response["user"]["id"]
+			username = response["user"]["username"]
+			UserDataModel.insert_user(user_id, username)
 			return ResponseBuilder.build_response(response, 200)
 
 		except RequestException as e:

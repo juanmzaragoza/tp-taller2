@@ -19,3 +19,4 @@ Ver [DEPLOY.md](DEPLOY.md)
 * `/docker` - contiene los archivos que crean los contenedores necesarios para levantar el proyecto
 * `/aplication-server` - contiene los archivos que implementan el Application Server
 * `/shared-server` - contiene los archivos que implementan el Shared Server
+* `/web` - contiene los archivos que implementan el sitio Web
