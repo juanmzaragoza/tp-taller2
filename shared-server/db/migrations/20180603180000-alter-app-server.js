@@ -10,6 +10,21 @@ module.exports = {
         })
         .then(function() {
             return queryInterface.renameColumn('App_servers', 'createdBy', 'userId');
+        })
+        .then(function(){
+            queryInterface.addConstraint('App_servers', ['userId'], {
+                type: 'foreign key',
+                name: 'app_server_user_fkey',
+                references: { //Required field
+                    table: 'Users',
+                    field: 'id'
+                },
+                onDelete: 'cascade',
+                onUpdate: 'cascade'
+            });
+        })
+        .then(function() {
+            return queryInterface.removeConstraint('App_servers','App_servers_createdBy_fkey');
         });
     },
 
@@ -32,6 +47,22 @@ module.exports = {
         })
         .then(function() {
             return queryInterface.renameColumn('App_servers', 'userId', 'createdBy');
-        });;
+        })
+        .then(function() {
+            return queryInterface.removeConstraint('App_servers','app_server_user_fkey');
+        })
+        .then(function(){
+            queryInterface.addConstraint('App_servers', ['createdBy'], {
+                type: 'foreign key',
+                name: 'App_servers_createdBy_fkey',
+                references: { //Required field
+                    table: 'Users',
+                    field: 'id'
+                },
+                onDelete: 'cascade',
+                onUpdate: 'cascade'
+            });
+        })
+        ;
     }
 };
