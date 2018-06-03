@@ -95,7 +95,6 @@ class ServerService {
                 })
                 .then( function(appServer) {
                     var serverJson = getServerReturnData(appServer);
-                    var serverJson = getServerReturnData(appServer);
                     var responseData = {
                         server: serverJson,
                         token: getTokenData(appServer)

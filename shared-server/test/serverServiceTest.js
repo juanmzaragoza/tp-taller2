@@ -17,14 +17,23 @@ describe('Server Service Tests', function(){
 		    },
 		});	
 
+		var UserMock = dbMock.define('User', {
+			id: 5,
+			username: 'admin'
+		}, {
+			timestamps: false
+		});
+
 		models = {
-			app_server: ServerMock
+			app_server: ServerMock,
+			user: UserMock
 		};
 	});
 
 	it ('Add server with missing attrs should throw invalid-attrs', function(done) {
+		var user = models.user.build();
 		var attrs = {};
-		serverService.add(attrs, models)
+		serverService.add(attrs, models, user)
 		.then((result) => {
 			assert(false);
 			done();
@@ -36,10 +45,11 @@ describe('Server Service Tests', function(){
 	});
 
 	it ('Add server with missing attrs should throw invalid-attrs 2', function(done) {
+		var user = models.user.build();
 		var attrs = {
 			'_rev': '123123123'
 		};
-		serverService.add(attrs, models)
+		serverService.add(attrs, models, user)
 		.then((result) => {
 			assert(false);
 			done();
@@ -52,11 +62,11 @@ describe('Server Service Tests', function(){
 
 	
 	it ('Add server should success', function(done) {
+		var user = models.user.build();
 		var attrs = {
-			name: "dummy",
-			createdBy: 4
+			name: "dummy"
 		};
-		serverService.add(attrs, models)
+		serverService.add(attrs, models, user)
 		.then((response) => {
 			assert.isNotNull(response, 'response should not be null');
 			assert.notEqual(response,null);
@@ -66,7 +76,7 @@ describe('Server Service Tests', function(){
 			assert.notEqual(response.server.createdTime,null);
 			assert.notEqual(response.server.name);
 			assert.equal(response.server.name,'dummy');
-			assert.equal(response.server.createdBy,4);
+			assert.equal(response.server.createdBy,'admin');
 			assert.notEqual(response.token,null);
 			assert.notEqual(response.token,null);
 			assert.notEqual(response.token.token,null);
@@ -80,23 +90,21 @@ describe('Server Service Tests', function(){
 		});
 	});
 
-	it ('Add server should success', function(done) {
+	it ('Add server should success 2', function(done) {
+		var user = models.user.build();
 		var attrs = {
 			name: "dummy 2",
 			createdBy: 7
 		};
-		serverService.add(attrs, models)
+		serverService.add(attrs, models, user)
 		.then((response) => {
 			assert.isNotNull(response, 'response should not be null');
 			assert.notEqual(response,null);
 			assert.notEqual(response.server,null);
 			assert.notEqual(response.server._rev,null);
-			assert.notEqual(response.server.createdBy,null);
 			assert.notEqual(response.server.createdTime,null);
-			assert.notEqual(response.server.name);
 			assert.equal(response.server.name,'dummy 2');
-			assert.equal(response.server.createdBy,7);
-			assert.notEqual(response.token,null);
+			assert.equal(response.server.createdBy,'admin');
 			assert.notEqual(response.token,null);
 			assert.notEqual(response.token.token,null);
 			assert.notEqual(response.token.expiresAt,null);
@@ -184,14 +192,17 @@ describe('Server Service Tests', function(){
 		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
 			if (query === 'findById') {
 		    	if (queryOptions[0] == 5) {
-		            return models.app_server.build({ 
+		    		var appServer = models.app_server.build({ 
 		            	"id": 5,
 		            	"rev": "456",
-						"createdBy": 2,
 						"createdTime": "2018-05-26T17:19:51.342Z",
 						"name": "dummy",
-						"lastConnection": null
+						"lastConnection": null,
+						"userId": 5,
+						"token": "es un token"
 				    });
+				    appServer.User = models.user.build();
+				    return appServer;
 		        } else {
 		        	return null;
 		        }
@@ -203,13 +214,15 @@ describe('Server Service Tests', function(){
 		};
 		serverService.update(5, attrs, models)
 		.then((response) => {
-			assert.isNotNull(response, 'response should not be null');
 			assert.notEqual(response,null);
-			assert.notEqual(response.createdTime,null);
-			assert.equal(response.id,5);
-			assert.equal(response.name,'new name');
-			assert.equal(response.createdBy,2);
-			assert.notEqual(response._rev,"456");
+			assert.notEqual(response.server.createdTime,null);
+			assert.equal(response.server.id,5);
+			assert.equal(response.server.name,'new name');
+			assert.equal(response.server.createdBy,"admin");
+			assert.notEqual(response.server._rev,"456");
+			assert.notEqual(response.token,null);
+			assert.equal(response.token.token,"es un token");
+			assert.notEqual(response.token.expiresAt,null);
 			done();
 		})
 		.catch((reason) => {
@@ -222,14 +235,16 @@ describe('Server Service Tests', function(){
 		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
 			if (query === 'findById') {
 		    	if (queryOptions[0] == 8) {
-		            return models.app_server.build({ 
+		            var appServer = models.app_server.build({ 
 		            	"id": 8,
 		            	"rev": "123",
-						"createdBy": 4,
 						"createdTime": "2018-05-26T17:19:51.342Z",
 						"name": "dummy",
-						"lastConnection": null
+						"lastConnection": null,
+						"token": "es un token"
 				    });
+				    appServer.User = models.user.build();
+				    return appServer;
 		        } else {
 		        	return null;
 		        }
@@ -241,13 +256,15 @@ describe('Server Service Tests', function(){
 		};
 		serverService.update(8, attrs, models)
 		.then((response) => {
-			assert.isNotNull(response, 'response should not be null');
 			assert.notEqual(response,null);
-			assert.equal(response.createdTime,"2018-05-26T17:19:51.342Z");
-			assert.equal(response.id,8);
-			assert.equal(response.name,'new name 2');
-			assert.equal(response.createdBy,4);
+			assert.equal(response.server.createdTime,"2018-05-26T17:19:51.342Z");
+			assert.equal(response.server.id,8);
+			assert.equal(response.server.name,'new name 2');
+			assert.equal(response.server.createdBy,"admin");
 			assert.notEqual(response._rev,"123");
+			assert.notEqual(response.token,null);
+			assert.equal(response.token.token,"es un token");
+			assert.notEqual(response.token.expiresAt,null);
 			done();
 		})
 		.catch((reason) => {
@@ -279,14 +296,16 @@ describe('Server Service Tests', function(){
 		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
 			if (query === 'findById') {
 		    	if (queryOptions[0] == 8) {
-		            return models.app_server.build({ 
+		            var appServer = models.app_server.build({ 
 		            	"id": 8,
 		            	"rev": "123",
-						"createdBy": 4,
 						"createdTime": "2018-05-26T17:19:51.342Z",
 						"name": "dummy",
-						"lastConnection": null
+						"lastConnection": null,
+						"token": "es un token"
 				    });
+				    appServer.User = models.user.build();
+				    return appServer;
 		        } else {
 		        	return null;
 		        }
@@ -294,13 +313,15 @@ describe('Server Service Tests', function(){
 		});
 		serverService.getById(8, models)
 		.then((response) => {
-			assert.isNotNull(response, 'response should not be null');
 			assert.notEqual(response,null);
-			assert.equal(response.createdTime,"2018-05-26T17:19:51.342Z");
-			assert.equal(response.id,8);
-			assert.equal(response.name,'dummy');
-			assert.equal(response.createdBy,4);
-			assert.equal(response._rev,"123");
+			assert.equal(response.server.createdTime,"2018-05-26T17:19:51.342Z");
+			assert.equal(response.server.id,8);
+			assert.equal(response.server.name,'dummy');
+			assert.equal(response.server.createdBy,"admin");
+			assert.equal(response.server._rev,"123");
+			assert.notEqual(response.token,null);
+			assert.equal(response.token.token,"es un token");
+			assert.notEqual(response.token.expiresAt,null);
 			done();
 		})
 		.catch((reason) => {
@@ -313,14 +334,16 @@ describe('Server Service Tests', function(){
 		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
 			if (query === 'findById') {
 		    	if (queryOptions[0] == 87) {
-		            return models.app_server.build({ 
+		            var appServer = models.app_server.build({ 
 		            	"id": 87,
 		            	"rev": "123",
-						"createdBy": 42,
 						"createdTime": "2018-05-26T17:19:51.342Z",
 						"name": "otro dummy",
-						"lastConnection": null
+						"lastConnection": null,
+						"token": "es un token"
 				    });
+				    appServer.User = models.user.build();
+				    return appServer;
 		        } else {
 		        	return null;
 		        }
@@ -328,13 +351,15 @@ describe('Server Service Tests', function(){
 		});
 		serverService.getById(87, models)
 		.then((response) => {
-			assert.isNotNull(response, 'response should not be null');
 			assert.notEqual(response,null);
-			assert.equal(response.createdTime,"2018-05-26T17:19:51.342Z");
-			assert.equal(response.id,87);
-			assert.equal(response.name,'otro dummy');
-			assert.equal(response.createdBy,42);
-			assert.equal(response._rev,"123");
+			assert.equal(response.server.createdTime,"2018-05-26T17:19:51.342Z");
+			assert.equal(response.server.id,87);
+			assert.equal(response.server.name,'otro dummy');
+			assert.equal(response.server.createdBy,"admin");
+			assert.equal(response.server._rev,"123");
+			assert.notEqual(response.token,null);
+			assert.equal(response.token.token,"es un token");
+			assert.notEqual(response.token.expiresAt,null);
 			done();
 		})
 		.catch((reason) => {
@@ -366,19 +391,21 @@ describe('Server Service Tests', function(){
 				var server1 = models.app_server.build({ 
 	            	"id": 87,
 	            	"rev": "123",
-					"createdBy": 42,
 					"createdTime": "2018-05-26T17:19:51.342Z",
 					"name": "otro dummy",
-					"lastConnection": null
+					"lastConnection": null,
+					"token": "token 1"
 			    });
+			    server1.User = models.user.build();
 			    var server2 = models.app_server.build({ 
 	            	"id": 8,
 	            	"rev": "123",
-					"createdBy": 4,
 					"createdTime": "2018-05-26T17:19:51.342Z",
 					"name": "dummy",
-					"lastConnection": null
+					"lastConnection": null,
+					"token": "token 2"
 			    });
+			    server2.User = models.user.build();
 		    	return [server1, server2];
 		    }
 		});
@@ -386,20 +413,32 @@ describe('Server Service Tests', function(){
 		.then((response) => {
 			assert.deepEqual(response,[
 				{
-					"id": 87,
-	            	"_rev": "123",
-					"createdBy": 42,
-					"createdTime": "2018-05-26T17:19:51.342Z",
-					"name": "otro dummy",
-					"lastConnection": null
+					server:	{
+						"id": 87,
+		            	"_rev": "123",
+						"createdBy": "admin",
+						"createdTime": "2018-05-26T17:19:51.342Z",
+						"name": "otro dummy",
+						"lastConnection": null
+					},
+					token: {
+						token: "token 1",
+						expiresAt: 3600
+					}
 				},
-				{ 
-	            	"id": 8,
-	            	"_rev": "123",
-					"createdBy": 4,
-					"createdTime": "2018-05-26T17:19:51.342Z",
-					"name": "dummy",
-					"lastConnection": null
+				{
+					server: {			
+		            	"id": 8,
+		            	"_rev": "123",
+						"createdBy": "admin",
+						"createdTime": "2018-05-26T17:19:51.342Z",
+						"name": "dummy",
+						"lastConnection": null,
+					},
+					token: {
+						token: "token 2",
+						expiresAt: 3600
+					}
 			    }
 			]);
 			done();
