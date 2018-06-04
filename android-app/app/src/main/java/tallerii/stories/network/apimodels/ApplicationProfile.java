@@ -22,6 +22,7 @@ public class ApplicationProfile {
     private String profilePicture;
     private List<Story> stories = null;
     private List<Friend> friends = null;
+    private String type;
 
     public List<Friend> getFriends() {
         return friends;
@@ -85,5 +86,9 @@ public class ApplicationProfile {
             friends = new ArrayList<>();
         }
         friends.add(friend);
+    }
+
+    public String getType() {
+        return type;
     }
 }

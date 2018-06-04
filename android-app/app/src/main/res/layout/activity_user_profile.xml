@@ -32,11 +32,10 @@
             android:text="User name" />
 
         <Button
-            android:id="@+id/edit_button"
+            android:id="@+id/profile_action_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="editProfile"
-            android:text="Edit" />
+            android:text="Action" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

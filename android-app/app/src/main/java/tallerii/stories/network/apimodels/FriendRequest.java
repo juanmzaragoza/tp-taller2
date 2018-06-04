@@ -8,6 +8,27 @@ public class FriendRequest {
     private String rev;
     private String createdTime;
     private String senderUserId;
+
+    public void setSenderUserId(String senderUserId) {
+        this.senderUserId = senderUserId;
+    }
+
+    public void setRcvUserId(String rcvUserId) {
+        this.rcvUserId = rcvUserId;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     private String rcvUserId;
     private String message;
     //TODO check serialization after changes made on server

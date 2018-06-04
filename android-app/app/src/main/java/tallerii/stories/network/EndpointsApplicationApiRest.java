@@ -53,4 +53,8 @@ public interface EndpointsApplicationApiRest {
 
     @DELETE(ConstantsApplicationApiRest.FRIEND_REQUEST_ENDPOINT)
     Call<JsonObject> declineFriendRequest(@Path("id") String requestId);
+
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
+    @POST(ConstantsApplicationApiRest.BEFRIEND)
+    Call<JsonObject> postFriendRequest(FriendRequest request);
 }
