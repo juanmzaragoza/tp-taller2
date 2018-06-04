@@ -34,6 +34,7 @@
     <string name="accept">Accept</string>
     <string name="decline">Decline</string>
     <string name="friend_requests">Friend Requests</string>
+    <string name="logout">Logout</string>
 
 
 </resources>

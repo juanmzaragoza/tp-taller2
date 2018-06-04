@@ -72,9 +72,10 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
         finish();
     }
 
-    public void startMainActivity(String username, String token) {
+    public void startMainActivity(String username, String token, String profileId) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_MESSAGE, username);
+        intent.putExtra(ProfileActivity.PROFILE_ID, profileId);
         intent.putExtra(StoriesLoggedInActivity.TOKEN, token);
         startActivity(intent);
         finish();
@@ -127,5 +128,11 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
 
     public void startChatRoomsActivity(ApplicationProfile profile) {
         startLoggedInActivity(profile, ChatRoomsActivity.class);
+    }
+
+    public void startLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

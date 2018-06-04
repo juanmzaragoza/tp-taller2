@@ -12,7 +12,7 @@ import tallerii.stories.network.apimodels.ServerError;
 
 public abstract class DefaultCallback<T> implements Callback<T> {
     private StoriesAppActivity activity;
-    private Gson gson = new Gson();
+    protected Gson gson = new Gson();
 
     public DefaultCallback(StoriesAppActivity activity) {
         this.activity = activity;
