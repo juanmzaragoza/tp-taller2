@@ -26,6 +26,11 @@ class AuthService {
                 
             }
         }
+
+        this.getTokenFromRequest = (req) => {
+            var token = req.headers.authorization.split(" ");
+            return token[token.length - 1];
+        }
     }
 }
 
