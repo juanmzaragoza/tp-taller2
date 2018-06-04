@@ -1,14 +1,14 @@
 swagger: '2.0'
-info: 
+info:
   description: API para el application server de Stories
   title: Stories - Application Server API
   version: 1.0.0
-schemes: 
+schemes:
   - http
 basePath: /api
-consumes: 
+consumes:
   - application/json
-produces: 
+produces:
   - application/json
 securityDefinitions:
   BusinessToken:
@@ -43,145 +43,150 @@ paths:
     post:
       tags:
         - user
-      description: "Endpoint para generar un token para utilizar en los servicios del sistema (login)"
-      parameters: 
-        - description: "Datos para generar token"
+      description: >-
+        Endpoint para generar un token para utilizar en los servicios del
+        sistema (login)
+      parameters:
+        - description: Datos para generar token
           in: body
           name: body
           required: true
-          schema: 
+          schema:
             $ref: '#/definitions/BusinessUserCredentials'
-      responses: 
-        201: 
-          description: "Token generado correctamente"
+      responses:
+        '201':
+          description: Token generado correctamente
           schema:
             properties:
               metadata:
                 $ref: '#/definitions/EntityMetadata'
               token:
-                $ref: "#/definitions/Token"
-        400: 
-          description: "Incumplimiento de precondiciones (parámetros faltantes)"
-          schema: 
-            $ref: "#/definitions/Error"
-        401:
+                $ref: '#/definitions/Token'
+              userId:
+                type: string
+        '400':
+          description: Incumplimiento de precondiciones (parámetros faltantes)
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
           description: Unauthorized
           schema:
-              $ref: '#/definitions/Error'
-        409:
+            $ref: '#/definitions/Error'
+        '409':
           description: Conflict
           schema:
-              $ref: '#/definitions/Error'
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Generar token de usuario de negocio"      
-            
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Generar token de usuario de negocio
   /user:
-       post:
-        tags:
-          - user
-        description: "Registra creenciales de un usuario de aplicación"
-        parameters:
-          - description: "informacion del usuario"
-            in: body
-            name: body
-            required: true
-            schema:
-              $ref: '#/definitions/ApplicationUserWithPassword'
-        responses:
-          200:
-            description: "Validación correcta"
-            schema:
-              properties:
-                metadata:
-                  $ref: '#/definitions/EntityMetadata'
-                user:
-                  $ref: '#/definitions/ApplicationUser'
-          400:
-            description: "Incumplimiento de precondiciones (parámetros faltantes) o validación fallida"
-            schema:
-              $ref: "#/definitions/Error"
-          401:
-            description: Unauthorized
-            schema:
-                $ref: '#/definitions/Error'
-          500:
-            description: "Unexpected error"
-            schema:
-              $ref: "#/definitions/Error"
-        summary: "Registra usuario de aplicación"
-
+    post:
+      tags:
+        - user
+      description: Registra creenciales de un usuario de aplicación
+      parameters:
+        - description: informacion del usuario
+          in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ApplicationUserWithPassword'
+      responses:
+        '200':
+          description: Validación correcta
+          schema:
+            properties:
+              metadata:
+                $ref: '#/definitions/EntityMetadata'
+              user:
+                $ref: '#/definitions/ApplicationUser'
+        '400':
+          description: >-
+            Incumplimiento de precondiciones (parámetros faltantes) o validación
+            fallida
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Registra usuario de aplicación
   /befriend:
     post:
       tags:
         - user contacts
       security:
         - BusinessToken: []
-      description: |
-        Endpoint para dar de alta una solicitud de contacto. Se ignorarán los campos de id, _rev
-      parameters: 
-        - description: "Datos para dar de alta una solicitud de contacto"
+      description: >
+        Endpoint para dar de alta una solicitud de contacto. Se ignorarán los
+        campos de id, _rev
+      parameters:
+        - description: Datos para dar de alta una solicitud de contacto
           in: body
           name: body
           required: true
-          schema: 
-            $ref: "#/definitions/FriendRequest"
-      responses: 
-        201: 
-          description: "Alta correcta"
+          schema:
+            $ref: '#/definitions/FriendRequest'
+      responses:
+        '201':
+          description: Alta correcta
           schema:
             properties:
               metadata:
                 $ref: '#/definitions/EntityMetadata'
               request:
                 $ref: '#/definitions/FriendRequest'
-        400: 
-          description: "Incumplimiento de precondiciones (parámetros faltantes)"
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Servicio de alta de solicitud de contacto de usuario"
-  /befriend/{userId}:
+        '400':
+          description: Incumplimiento de precondiciones (parámetros faltantes)
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Servicio de alta de solicitud de contacto de usuario
+  '/befriend/{userId}':
     get:
       parameters:
-      - description: "Identificador del usuario"
-        in: path
-        name: userId
-        required: true
-        type: string
+        - description: Identificador del usuario
+          in: path
+          name: userId
+          required: true
+          type: string
       tags:
         - user contacts
       security:
         - BusinessToken: []
       description: |
         Endpoint para obtener solicitudes de contacto recibidas de un usuario
-      responses: 
-        200: 
-          description: "Todas las solicitudes de contacto recibidas"
-          schema: 
-            properties: 
-              metadata: 
-                $ref: "#/definitions/CollectionMetadata"
-              requests: 
-                items: 
+      responses:
+        '200':
+          description: Todas las solicitudes de contacto recibidas
+          schema:
+            properties:
+              metadata:
+                $ref: '#/definitions/CollectionMetadata'
+              requests:
+                items:
                   $ref: '#/definitions/FriendRequest'
-        401:
+        '401':
           description: Unauthorized
           schema:
-              $ref: '#/definitions/Error'
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Listado de solicitudes de contacto recibidas"
-  /befriend/requests/{requestId}:
-    parameters: 
-      - description: "Identificador de la solicitud"
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Listado de solicitudes de contacto recibidas
+  '/befriend/requests/{requestId}':
+    parameters:
+      - description: Identificador de la solicitud
         in: path
         name: requestId
         required: true
@@ -191,51 +196,52 @@ paths:
         - user contacts
       security:
         - BusinessToken: []
-      description: |
-        Endpoint para aceptar una solicitud de contacto. Se ignorarán el campo _rev
-      responses: 
-        201: 
-          description: "Alta correcta"
+      description: >
+        Endpoint para aceptar una solicitud de contacto. Se ignorarán el campo
+        _rev
+      responses:
+        '201':
+          description: Alta correcta
           schema:
             properties:
               metadata:
                 $ref: '#/definitions/EntityMetadata'
               requests:
                 $ref: '#/definitions/FriendRequest'
-        400: 
-          description: "Incumplimiento de precondiciones (parámetros faltantes)"
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Servicio de aceptación de solicitud de contacto"
+        '400':
+          description: Incumplimiento de precondiciones (parámetros faltantes)
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Servicio de aceptación de solicitud de contacto
     delete:
       tags:
         - user contacts
       security:
         - BusinessToken: []
-      description: "Endpoint para dar de baja una solicitud de contacto"
-      responses: 
-        204: 
-          description: "Baja correcta"
-        401:
+      description: Endpoint para dar de baja una solicitud de contacto
+      responses:
+        '204':
+          description: Baja correcta
+        '401':
           description: Unauthorized
           schema:
-              $ref: '#/definitions/Error'
-        404: 
-          description: "No existe el recurso solicitado"
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Eliminar una solicitud de contacto "
-  /profiles/{userId}:
+            $ref: '#/definitions/Error'
+        '404':
+          description: No existe el recurso solicitado
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: 'Eliminar una solicitud de contacto '
+  '/profiles/{userId}':
     parameters:
-      - description: "Identificador del usuario"
+      - description: Identificador del usuario
         in: path
         name: userId
         required: true
@@ -245,25 +251,25 @@ paths:
         - user profiles
       security:
         - BusinessToken: []
-      description: "Endpoint para obtener los datos de perfil de un determinado usuario"
-      responses: 
-        200: 
-          description: "Se obtienen los datos correctamente"
+      description: Endpoint para obtener los datos de perfil de un determinado usuario
+      responses:
+        '200':
+          description: Se obtienen los datos correctamente
           schema:
             properties:
               metadata:
                 $ref: '#/definitions/EntityMetadata'
               profile:
-                $ref: "#/definitions/ApplicationProfile"
-        404:
-          description: "Data Not Found"
+                $ref: '#/definitions/ApplicationProfile'
+        '404':
+          description: Data Not Found
           schema:
-              $ref: '#/definitions/Error'
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Servicio de consulta de perfil"      
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Servicio de consulta de perfil
     put:
       tags:
         - user profiles
@@ -271,39 +277,39 @@ paths:
         - BusinessToken: []
       description: |
         Endpoint para modificar datos del perfil
-      parameters: 
+      parameters:
         - description: Datos para modificar un perfil
           in: body
           name: body
           required: true
-          schema: 
-            $ref: "#/definitions/ApplicationProfileUpdate"
-      responses: 
-        200: 
-          description: "Modificación correcta"
+          schema:
+            $ref: '#/definitions/ApplicationProfileUpdate'
+      responses:
+        '200':
+          description: Modificación correcta
           schema:
             properties:
               metadata:
                 $ref: '#/definitions/EntityMetadata'
               profile:
-                $ref: "#/definitions/ApplicationProfileUpdate"
-        400: 
-          description: "Incumplimiento de precondiciones (parámetros faltantes)"
-          schema: 
-            $ref: "#/definitions/Error"
-        404: 
-          description: "No existe el recurso solicitado"
-          schema: 
-            $ref: "#/definitions/Error"
-        409:
+                $ref: '#/definitions/ApplicationProfileUpdate'
+        '400':
+          description: Incumplimiento de precondiciones (parámetros faltantes)
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: No existe el recurso solicitado
+          schema:
+            $ref: '#/definitions/Error'
+        '409':
           description: Conflicto en el update (esta mal el valor de `_rev`)
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Servicio de modificación de perfil"
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Servicio de modificación de perfil
   /stories:
     get:
       tags:
@@ -311,33 +317,33 @@ paths:
       security:
         - BusinessToken: []
       description: |
-          Endpoint para obtener historias
-      responses: 
-        200: 
-          description: "Historias ordenadas segun prioridad"
-          schema: 
-            properties: 
-              metadata: 
-                $ref: "#/definitions/CollectionMetadata"
-              stories: 
-                items: 
+        Endpoint para obtener historias
+      responses:
+        '200':
+          description: Historias ordenadas segun prioridad
+          schema:
+            properties:
+              metadata:
+                $ref: '#/definitions/CollectionMetadata'
+              stories:
+                items:
                   $ref: '#/definitions/Story'
-        401:
+        '401':
           description: Unauthorized
           schema:
-              $ref: '#/definitions/Error'
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Servicio de listado de historias"
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Servicio de listado de historias
     post:
-      parameters: 
-        - description: "Datos para subir una historia de un usuario."
+      parameters:
+        - description: Datos para subir una historia de un usuario.
           in: body
           name: body
           required: true
-          schema: 
+          schema:
             $ref: '#/definitions/Story'
       tags:
         - user stories
@@ -345,27 +351,27 @@ paths:
         - BusinessToken: []
       description: |
         Endpoint para subir una historia. Se ignorarán los campos de id, _rev
-      responses: 
-        201: 
-          description: "Alta correcta"
+      responses:
+        '201':
+          description: Alta correcta
           schema:
             properties:
               metadata:
                 $ref: '#/definitions/EntityMetadata'
               story:
                 $ref: '#/definitions/Story'
-        400: 
-          description: "Incumplimiento de precondiciones (parámetros faltantes)"
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Servicio de alta de historia"
-  /stories/{storyId}:
-    parameters: 
-      - description: "Datos para dar de baja una historia de un usuario."
+        '400':
+          description: Incumplimiento de precondiciones (parámetros faltantes)
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Servicio de alta de historia
+  '/stories/{storyId}':
+    parameters:
+      - description: Datos para dar de baja una historia de un usuario.
         in: path
         name: storyId
         required: true
@@ -377,123 +383,124 @@ paths:
         - BusinessToken: []
       description: |
         Endpoint para modificar una historia
-      parameters: 
+      parameters:
         - description: Datos para modificar una historia
           in: body
           name: body
           required: true
-          schema: 
-            $ref: "#/definitions/Story"
-      responses: 
-        200: 
-          description: "Modificación correcta"
+          schema:
+            $ref: '#/definitions/Story'
+      responses:
+        '200':
+          description: Modificación correcta
           schema:
             properties:
               metadata:
                 $ref: '#/definitions/EntityMetadata'
               story:
-                $ref: "#/definitions/Story"
-        400: 
-          description: "Incumplimiento de precondiciones (parámetros faltantes)"
-          schema: 
-            $ref: "#/definitions/Error"
-        404: 
-          description: "No existe el recurso solicitado"
-          schema: 
-            $ref: "#/definitions/Error"
-        409:
+                $ref: '#/definitions/Story'
+        '400':
+          description: Incumplimiento de precondiciones (parámetros faltantes)
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: No existe el recurso solicitado
+          schema:
+            $ref: '#/definitions/Error'
+        '409':
           description: Conflicto en el update (esta mal el valor de `_rev`)
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Servicio de modificación de historia"
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Servicio de modificación de historia
     delete:
       tags:
         - user stories
       security:
         - BusinessToken: []
-      description: "Endpoint para dar de baja una historia de contacto"
-      responses: 
-        204: 
-          description: "Baja correcta"
-        401:
+      description: Endpoint para dar de baja una historia de contacto
+      responses:
+        '204':
+          description: Baja correcta
+        '401':
           description: Unauthorized
           schema:
-              $ref: '#/definitions/Error'
-        404: 
-          description: "No existe el recurso solicitado"
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Eliminar una historia de contacto"
+            $ref: '#/definitions/Error'
+        '404':
+          description: No existe el recurso solicitado
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Eliminar una historia de contacto
   /stories/reaction:
     post:
       tags:
         - user stories
       security:
         - BusinessToken: []
-      description: |
-        Endpoint para registrar la reacción a una historia. Se ignorarán los campos id y _rev
-      parameters: 
-        - description: "Datos para reaccionar a una historia de un usuario."
+      description: >
+        Endpoint para registrar la reacción a una historia. Se ignorarán los
+        campos id y _rev
+      parameters:
+        - description: Datos para reaccionar a una historia de un usuario.
           in: body
           name: body
           required: true
-          schema: 
-            $ref: "#/definitions/StoryReaction"
-      responses: 
-        201: 
-          description: "Alta correcta"
+          schema:
+            $ref: '#/definitions/StoryReaction'
+      responses:
+        '201':
+          description: Alta correcta
           schema:
             properties:
               metadata:
                 $ref: '#/definitions/EntityMetadata'
               reaction:
                 $ref: '#/definitions/StoryReaction'
-        400: 
-          description: "Incumplimiento de precondiciones (parámetros faltantes)"
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Servicio de aceptación de solicitud de contacto"
-  /stories/reaction/{reactionId}:
-    parameters: 
-        - description: "Datos para dar de baja una reacción a una historia."
-          in: path
-          name: reactionId
-          required: true
-          type: string
+        '400':
+          description: Incumplimiento de precondiciones (parámetros faltantes)
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Servicio de aceptación de solicitud de contacto
+  '/stories/reaction/{reactionId}':
+    parameters:
+      - description: Datos para dar de baja una reacción a una historia.
+        in: path
+        name: reactionId
+        required: true
+        type: string
     delete:
       tags:
         - user stories
       security:
         - BusinessToken: []
-      description: "Endpoint para dar de baja una reaccion a una historia de contacto"
-      responses: 
-        204: 
-          description: "Baja correcta"
-        401:
+      description: Endpoint para dar de baja una reaccion a una historia de contacto
+      responses:
+        '204':
+          description: Baja correcta
+        '401':
           description: Unauthorized
           schema:
-              $ref: '#/definitions/Error'
-        404: 
-          description: "No existe el recurso solicitado"
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Eliminar una reaccion a una historia de contacto "
+            $ref: '#/definitions/Error'
+        '404':
+          description: No existe el recurso solicitado
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: 'Eliminar una reaccion a una historia de contacto '
   /stories/comment:
     post:
       tags:
@@ -502,34 +509,34 @@ paths:
         - BusinessToken: []
       description: |
         Endpoint para comentar una historia. Se ignorarán los campos de id, _rev
-      parameters: 
-        - description: "Datos necesarios para comentar una historia."
+      parameters:
+        - description: Datos necesarios para comentar una historia.
           in: body
           name: body
           required: true
-          schema: 
-            $ref: "#/definitions/StoryComment"
-      responses: 
-        201: 
-          description: "Alta correcta"
+          schema:
+            $ref: '#/definitions/StoryComment'
+      responses:
+        '201':
+          description: Alta correcta
           schema:
             properties:
               metadata:
                 $ref: '#/definitions/EntityMetadata'
               comment:
                 $ref: '#/definitions/StoryComment'
-        400: 
-          description: "Incumplimiento de precondiciones (parámetros faltantes)"
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Servicio de aceptación de alta de comentario de historia"
-  /stories/comment/{commentId}:
-    parameters: 
-      - description: "Datos para dar de baja un comentario de una historia."
+        '400':
+          description: Incumplimiento de precondiciones (parámetros faltantes)
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Servicio de aceptación de alta de comentario de historia
+  '/stories/comment/{commentId}':
+    parameters:
+      - description: Datos para dar de baja un comentario de una historia.
         in: path
         name: commentId
         required: true
@@ -541,97 +548,98 @@ paths:
         - BusinessToken: []
       description: |
         Endpoint para modificar comentario en historias
-      parameters: 
+      parameters:
         - description: Datos para modificar un comentario
           in: body
           name: body
           required: true
-          schema: 
-            $ref: "#/definitions/StoryComment"
-      responses: 
-        200: 
-          description: "Modificación correcta"
+          schema:
+            $ref: '#/definitions/StoryComment'
+      responses:
+        '200':
+          description: Modificación correcta
           schema:
             properties:
               metadata:
                 $ref: '#/definitions/EntityMetadata'
               comment:
-                $ref: "#/definitions/StoryComment"
-        400: 
-          description: "Incumplimiento de precondiciones (parámetros faltantes)"
-          schema: 
-            $ref: "#/definitions/Error"
-        404: 
-          description: "No existe el recurso solicitado"
-          schema: 
-            $ref: "#/definitions/Error"
-        409:
+                $ref: '#/definitions/StoryComment'
+        '400':
+          description: Incumplimiento de precondiciones (parámetros faltantes)
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: No existe el recurso solicitado
+          schema:
+            $ref: '#/definitions/Error'
+        '409':
           description: Conflicto en el update (esta mal el valor de `_rev`)
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Servicio de modificación de comentario"
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Servicio de modificación de comentario
     delete:
       tags:
         - user stories
       security:
         - BusinessToken: []
-      description: "Endpoint para dar de baja un comentario a una historia de contacto"
-      responses: 
-        204: 
-          description: "Baja correcta"
-        401:
+      description: Endpoint para dar de baja un comentario a una historia de contacto
+      responses:
+        '204':
+          description: Baja correcta
+        '401':
           description: Unauthorized
           schema:
-              $ref: '#/definitions/Error'
-        404: 
-          description: "No existe el recurso solicitado"
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Eliminar un comentario a una historia de contacto "
+            $ref: '#/definitions/Error'
+        '404':
+          description: No existe el recurso solicitado
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: 'Eliminar un comentario a una historia de contacto '
   /chats/conversation:
     post:
       tags:
         - user chats
       security:
         - BusinessToken: []
-      description: |
-        Endpoint para iniciar una conversación. Se ignorarán los campos de id, _rev
-      parameters: 
-        - description: "Datos necesarios para iniciar una conversación."
+      description: >
+        Endpoint para iniciar una conversación. Se ignorarán los campos de id,
+        _rev
+      parameters:
+        - description: Datos necesarios para iniciar una conversación.
           in: body
           name: body
           required: true
-          schema: 
-            $ref: "#/definitions/Conversation"
-      responses: 
-        201: 
-          description: "Alta correcta"
+          schema:
+            $ref: '#/definitions/Conversation'
+      responses:
+        '201':
+          description: Alta correcta
           schema:
             properties:
               metadata:
                 $ref: '#/definitions/EntityMetadata'
               server:
                 $ref: '#/definitions/Conversation'
-        400: 
-          description: "Incumplimiento de precondiciones (parámetros faltantes)"
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Servicio de creación de una conversación."
-  /chats/conversation/{convId}:
+        '400':
+          description: Incumplimiento de precondiciones (parámetros faltantes)
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Servicio de creación de una conversación.
+  '/chats/conversation/{convId}':
     parameters:
-      - description: "Identificador de la conversación"
+      - description: Identificador de la conversación
         in: path
         name: convId
         required: true
@@ -641,51 +649,51 @@ paths:
         - user chats
       security:
         - BusinessToken: []
-      description: "Endpoint para obtener datos de una conversación"
-      responses: 
-        200: 
-          description: "datos de la conversación"
-          schema: 
-            properties: 
-              metadata: 
-                $ref: "#/definitions/EntityMetadata"
-              server: 
-                $ref: "#/definitions/Conversation"
-        401:
+      description: Endpoint para obtener datos de una conversación
+      responses:
+        '200':
+          description: datos de la conversación
+          schema:
+            properties:
+              metadata:
+                $ref: '#/definitions/EntityMetadata'
+              server:
+                $ref: '#/definitions/Conversation'
+        '401':
           description: Unauthorized
           schema:
-              $ref: '#/definitions/Error'
-        404: 
-          description: "Conversación inexistente"
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Obtener información de una conversación"
+            $ref: '#/definitions/Error'
+        '404':
+          description: Conversación inexistente
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Obtener información de una conversación
     delete:
       tags:
         - user chats
       security:
         - BusinessToken: []
-      description: "Endpoint para dar de baja una conversación"
-      responses: 
-        204: 
-          description: "Baja correcta"
-        401:
+      description: Endpoint para dar de baja una conversación
+      responses:
+        '204':
+          description: Baja correcta
+        '401':
           description: Unauthorized
           schema:
-              $ref: '#/definitions/Error'
-        404: 
-          description: "No existe el recurso solicitado"
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Eliminar una conversación "
+            $ref: '#/definitions/Error'
+        '404':
+          description: No existe el recurso solicitado
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: 'Eliminar una conversación '
   /chats/conversation/message:
     post:
       tags:
@@ -694,38 +702,38 @@ paths:
         - BusinessToken: []
       description: |
         Endpoint para agregar mensaje. Se ignorarán los campos de id, _rev
-      parameters: 
-        - description: "Datos necesarios para agregar un mensaje."
+      parameters:
+        - description: Datos necesarios para agregar un mensaje.
           in: body
           name: body
           required: true
-          schema: 
-            $ref: "#/definitions/Message"
-      responses: 
-        201: 
-          description: "Alta correcta"
+          schema:
+            $ref: '#/definitions/Message'
+      responses:
+        '201':
+          description: Alta correcta
           schema:
             properties:
               metadata:
                 $ref: '#/definitions/EntityMetadata'
               message:
                 $ref: '#/definitions/Message'
-        400: 
-          description: "Incumplimiento de precondiciones (parámetros faltantes)"
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Servicio de mensaje directo a usuario."
-  /chats/conversation/message/{messageId}:
+        '400':
+          description: Incumplimiento de precondiciones (parámetros faltantes)
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Servicio de mensaje directo a usuario.
+  '/chats/conversation/message/{messageId}':
     parameters:
-        - description: "Identificador del mensaje"
-          in: path
-          name: messageId
-          required: true
-          type: string
+      - description: Identificador del mensaje
+        in: path
+        name: messageId
+        required: true
+        type: string
     put:
       tags:
         - user chats
@@ -733,98 +741,116 @@ paths:
         - BusinessToken: []
       description: |
         Endpoint para modificar un mensaje en una conversación
-      parameters: 
+      parameters:
         - description: Datos para modificar un mensaje
           in: body
           name: body
           required: true
-          schema: 
-            $ref: "#/definitions/Message"
-      responses: 
-        200: 
-          description: "Modificación correcta"
+          schema:
+            $ref: '#/definitions/Message'
+      responses:
+        '200':
+          description: Modificación correcta
           schema:
             properties:
               metadata:
                 $ref: '#/definitions/EntityMetadata'
               message:
-                $ref: "#/definitions/Message"
-        400: 
-          description: "Incumplimiento de precondiciones (parámetros faltantes)"
-          schema: 
-            $ref: "#/definitions/Error"
-        404: 
-          description: "No existe el recurso solicitado"
-          schema: 
-            $ref: "#/definitions/Error"
-        409:
+                $ref: '#/definitions/Message'
+        '400':
+          description: Incumplimiento de precondiciones (parámetros faltantes)
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: No existe el recurso solicitado
+          schema:
+            $ref: '#/definitions/Error'
+        '409':
           description: Conflicto en el update (esta mal el valor de `_rev`)
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Servicio de modificación de mensaje"
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Servicio de modificación de mensaje
     delete:
       tags:
         - user chats
       security:
         - BusinessToken: []
-      description: "Endpoint para dar de baja un mensaje en la conversación"
-      responses: 
-        204: 
-          description: "Baja correcta"
-        401:
+      description: Endpoint para dar de baja un mensaje en la conversación
+      responses:
+        '204':
+          description: Baja correcta
+        '401':
           description: Unauthorized
           schema:
-              $ref: '#/definitions/Error'
-        404: 
-          description: "No existe el recurso solicitado"
-          schema: 
-            $ref: "#/definitions/Error"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Eliminar una solicitud de contacto "
-
+            $ref: '#/definitions/Error'
+        '404':
+          description: No existe el recurso solicitado
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: 'Eliminar una solicitud de contacto '
   /ping:
     get:
       tags:
         - server activity
-      description: "Endpoint para conocer si el servidor esta activo"
-      responses: 
-        200: 
-          description: "Servidor Activo"
-          schema: 
+      description: Endpoint para conocer si el servidor esta activo
+      responses:
+        '200':
+          description: Servidor Activo
+          schema:
             $ref: '#/definitions/ApplicationState'
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Permite saber si el servidor esta activo"
-
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Permite saber si el servidor esta activo
   /stats:
     get:
       tags:
         - server activity
-      description: "Endpoint para obtener datos del uso del application server"
-      responses: 
-        200: 
-          description: "datos del estado del appServer"
-          schema: 
-            properties: 
-              metadata: 
-                $ref: "#/definitions/EntityMetadata"
-              stats: 
-                $ref: "#/definitions/Stats"
-        500: 
-          description: "Unexpected error"
-          schema: 
-            $ref: "#/definitions/Error"
-      summary: "Obtener información del appServer"     
-
+      description: Endpoint para obtener datos del uso del application server
+      responses:
+        '200':
+          description: datos del estado del appServer
+          schema:
+            properties:
+              metadata:
+                $ref: '#/definitions/EntityMetadata'
+              stats:
+                $ref: '#/definitions/Stats'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Obtener información del appServer
+  /notification:
+    post:
+      tags:
+        - user
+      security:
+        - BusinessToken: []
+      description: Endpoint para generar una notificacion.
+      parameters:
+        - description: Datos necesarios para iniciar una notificacion.
+          in: body
+          name: body
+          required: true
+          schema:
+            properties:
+              userFCMToken:
+                type: string
+              message:
+                type: string
+      responses:
+        '200':
+          description: OK
 definitions:
   Version:
     type: string
@@ -837,38 +863,44 @@ definitions:
   Timestamp:
     type: number
     description: |
-      Tiempo en epoch      
+      Tiempo en epoch
   Ref:
     type: string
-    description: |
+    description: >
       Hash que es utilizado para prevenir colosiones.
-      Cuando se crea un elemento, se debe pasar un valor de undefined (o no debe estar).
-      Al actualizar, el servidor chequeará que este valor sea igual al guardado, de no coincidir,
-      significa que otro actualizó el recurso, por ende, la actualización debe fallar.
-  Error: 
-    properties: 
-      code: 
+
+      Cuando se crea un elemento, se debe pasar un valor de undefined (o no debe
+      estar).
+
+      Al actualizar, el servidor chequeará que este valor sea igual al guardado,
+      de no coincidir,
+
+      significa que otro actualizó el recurso, por ende, la actualización debe
+      fallar.
+  Error:
+    properties:
+      code:
         format: int32
         type: integer
-      message: 
+      message:
         type: string
     type: object
   EntityMetadata:
     properties:
       version:
         $ref: '#/definitions/Version'
-  CollectionMetadata: 
-    properties: 
+  CollectionMetadata:
+    properties:
       total:
         description: Cantidad de elementos existentes
         type: integer
-      version: 
+      version:
         $ref: '#/definitions/Version'
     type: object
   ApplicationUserCredentials:
     type: object
-    properties: 
-      username: 
+    properties:
+      username:
         type: string
       password:
         description: Debe estar presente la contraseña o el token de fb.
@@ -876,7 +908,9 @@ definitions:
         format: password
       facebookAuthToken:
         type: string
-        description: Token de autenticación de facebook. Debe estar presente la contraseña o el token de fb.
+        description: >-
+          Token de autenticación de facebook. Debe estar presente la contraseña
+          o el token de fb.
   CreateServerResponse:
     properties:
       server:
@@ -909,10 +943,10 @@ definitions:
     properties:
       expiresAt:
         $ref: '#/definitions/Timestamp'
-      token:  
+      token:
         type: string
         description: Token de autenticación
-  ApplicationUser: 
+  ApplicationUser:
     properties:
       id:
         $ref: '#/definitions/Id'
@@ -920,10 +954,9 @@ definitions:
         $ref: '#/definitions/Ref'
       applicationOwner:
         $ref: '#/definitions/Id'
-      username: 
+      username:
         description: Nombre del usuario en la aplicación
         type: string
-
   ApplicationUserWithPassword:
     properties:
       id:
@@ -937,12 +970,10 @@ definitions:
       username:
         description: Nombre del usuario en la aplicación
         type: string
-
   ApplicationState:
     properties:
       state:
         type: string
-
   ApplicationProfile:
     properties:
       id:
@@ -960,7 +991,7 @@ definitions:
       profile_picture:
         type: string
       stories:
-        items: 
+        items:
           $ref: '#/definitions/Story'
   ApplicationProfileUpdate:
     properties:
@@ -983,7 +1014,7 @@ definitions:
       id:
         $ref: '#/definitions/Id'
       _rev:
-        $ref: '#/definitions/Ref'        
+        $ref: '#/definitions/Ref'
       createdTime:
         $ref: '#/definitions/Timestamp'
         description: fecha y hora de creación
@@ -1001,7 +1032,7 @@ definitions:
       id:
         $ref: '#/definitions/Id'
       _rev:
-        $ref: '#/definitions/Ref'        
+        $ref: '#/definitions/Ref'
       createdTime:
         $ref: '#/definitions/Timestamp'
       storyId:
@@ -1018,7 +1049,7 @@ definitions:
       id:
         $ref: '#/definitions/Id'
       _rev:
-        $ref: '#/definitions/Ref'        
+        $ref: '#/definitions/Ref'
       createdTime:
         $ref: '#/definitions/Timestamp'
       storyId:
@@ -1035,7 +1066,7 @@ definitions:
       id:
         $ref: '#/definitions/Id'
       _rev:
-        $ref: '#/definitions/Ref'        
+        $ref: '#/definitions/Ref'
       createdTime:
         $ref: '#/definitions/Timestamp'
       convId:
@@ -1052,7 +1083,7 @@ definitions:
       id:
         $ref: '#/definitions/Id'
       _rev:
-        $ref: '#/definitions/Ref'        
+        $ref: '#/definitions/Ref'
       createdTime:
         $ref: '#/definitions/Timestamp'
       senderUserId:
