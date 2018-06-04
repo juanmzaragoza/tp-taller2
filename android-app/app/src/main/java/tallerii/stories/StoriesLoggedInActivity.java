@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -99,6 +100,7 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
     private void logout() {
         profile = null;
         new Store().remove(TOKEN_STORE);
+        LoginManager.getInstance().logOut();
         startLoginActivity();
     }
 
