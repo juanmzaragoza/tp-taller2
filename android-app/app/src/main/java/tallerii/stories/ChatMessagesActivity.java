@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import tallerii.stories.controller.FCMNotificationController;
 import tallerii.stories.helpers.MessagesAdapter;
 import tallerii.stories.network.apimodels.ChatMessage;
 
@@ -64,7 +65,6 @@ public class ChatMessagesActivity extends StoriesLoggedInActivity {
         } else {
             throw new IllegalArgumentException("Missing profile o friend id");
         }
-
     }
 
     public void sendMessage(View v) {
@@ -93,23 +93,24 @@ public class ChatMessagesActivity extends StoriesLoggedInActivity {
 
     private void sendMessageToFirebase(String message, String senderId, String receiverId){
         mMessagesList.clear();
-
-        ChatMessage newMsg = new ChatMessage(message, senderId, receiverId);
+        final ChatMessage newMsg = new ChatMessage(message, senderId, receiverId);
+        final String topic = receiverId;
+        hideSoftKeyboard();
         mMessagesDBRef.push().setValue(newMsg).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(!task.isSuccessful()){
+                if (!task.isSuccessful()) {
                     //error
-                    Toast.makeText(ChatMessagesActivity.this, "Error " + task.getException().getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(ChatMessagesActivity.this, "Message sent successfully!", Toast.LENGTH_SHORT).show();
+                    showMessage("Error " + task.getException().getLocalizedMessage());
+                } else {
+                    showMessage("Message sent successfully!");
                     mMessageEditText.setText(null);
-                    hideSoftKeyboard();
+
+                    FCMNotificationController.sendNotification(ChatMessagesActivity.this, topic,
+                            "New message from " + getProfile().getFullName());
                 }
             }
         });
-
-
     }
 
     public void hideSoftKeyboard() {
