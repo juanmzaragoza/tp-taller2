@@ -6,6 +6,9 @@ import { Server }           from '../../models/server'
 
 declare var google:any
 declare var $:any
+declare var moment: any
+declare var _:any
+
 @Component({
     templateUrl: './status.component.html'
 })
@@ -55,10 +58,34 @@ export class StatusComponent {
         }
     }
     update(){
-        var vm :any = this
-        var newHour:any = {}
+        var vm :any = this,
+        newHour:any = {},
+        from = moment().format("HH"),
+        to = from
+        vm.StatusServ.update(from, to).subscribe(
+            ((res:any)=>{
+                if(res.ok){
+                    var data = vm.StatusServ.getDataAreaStacked();
+                    var index = vm.graph.area.data.getNumberOfRows()-1
+                    var lastHour = vm.graph.area.data.getValue(index,0)
+                    if(data[1][0] == lastHour){
+                        vm.graph.area.dataArea.splice(vm.graph.area.dataArea.length -1, 1);
+                        vm.graph.area.dataArea.push(data[1])
+                        vm.graph.area.data.removeRow(index);
+                        vm.graph.area.data.insertRows(index, [data[1]]);
+                    }
+                    else{
+                        vm.graph.area.dataArea.push(data[1])
+                        vm.graph.area.data.insertRows(index, [data[1]]);
+                    }
+                    vm.graph.area.chart.draw(vm.graph.area.data, vm.graph.area.options);
+                    
+                }
+            }),
+            (console.error)
+        )
         /*
-        var lastHour = vm.graph.area.data.getValue(vm.graph.area.data.getNumberOfRows()-1,0)
+        
        
         if(newHour[0] == lastHour){
             vm.graph.area.data.removeRow(vm.graph.area.data.getNumberOfRows()-1);
@@ -75,6 +102,7 @@ export class StatusComponent {
             (res=>{
                 vm.isServers = res.ok
                 if(vm.isServers){
+                    vm.graph.area.dataArea = _.clone(vm.StatusServ.getDataAreaStacked());
                     vm.drawAreaStacked();
                     vm.drawPie();
                     vm.drawBarStacked();
@@ -91,7 +119,6 @@ export class StatusComponent {
         var vm = this
         google.charts.setOnLoadCallback(()=>{
             var data = vm.StatusServ.getDataPie()
-            vm.graph.pie.count = data.length
             vm.graph.pie.data = google.visualization.arrayToDataTable(data);
             vm.graph.pie.chart = new google.visualization.PieChart(document.getElementById('chart_pie'));
             vm.graph.pie.chart.draw(vm.graph.pie.data, vm.graph.pie.options);
@@ -101,19 +128,15 @@ export class StatusComponent {
         var vm = this
         google.charts.setOnLoadCallback(()=>{
             var data = vm.StatusServ.getDataBarStacked()
-            vm.graph.bar.count = data.length
             vm.graph.bar.data = google.visualization.arrayToDataTable(data);
             vm.graph.bar.chart = new google.visualization.ColumnChart(document.getElementById('chart_barStacked'));
             vm.graph.bar.chart.draw(vm.graph.bar.data, vm.graph.bar.options);
         })
     }
-    d: Array<any>
     drawAreaStacked(){
         var vm = this
         google.charts.setOnLoadCallback(()=>{
-            vm.d = vm.StatusServ.getDataAreaStacked();
-            vm.graph.area.count = vm.d.length
-            vm.graph.area.data = google.visualization.arrayToDataTable(vm.d);
+            vm.graph.area.data = google.visualization.arrayToDataTable(vm.graph.area.dataArea);
             vm.graph.area.chart = new google.visualization.AreaChart(document.getElementById('area'));
             vm.graph.area.chart.draw(vm.graph.area.data, vm.graph.area.options);
         })

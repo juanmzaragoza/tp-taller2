@@ -19,6 +19,7 @@ declare var moment: any
 @Injectable()
 export class StatusService {
     private serversStatus: Array<Status>
+    private serversActives: Array<Server>
     constructor(public ServerServ :ServerService){
         var me:any = this
         me.serversStatus = []
@@ -100,8 +101,11 @@ export class StatusService {
                         servDumy.name = "dummy"
                         servers.push(servDumy)
                         /*eliminar este servidor dumy */
+                        me.serversActives = _.clone(servers)
+                        var from = "00",
+                        to = moment().format("HH")
                         vec.push(me.loadStats(servers))
-                        vec.push(me.loadRequest(servers))
+                        vec.push(me.loadRequest(from, to, servers))
                         return Observable.forkJoin(vec).subscribe(
                             (res:Array<any>)=>{
                                 for(var i=0; i <servers.length;i++){
@@ -122,6 +126,20 @@ export class StatusService {
         }
         )
     }
+    update = (from:string, to:string):Observable<any>=>{
+        var me:any = this
+        return Observable.create((observer: Observer<any>) => {
+            return me.loadRequest(from, to, me.serversActives).subscribe(
+                (res:Array<any>)=>{
+                    for(var i=0; i <me.serversStatus.length;i++){
+                        me.serversStatus[i].request = res[i]
+                    }
+                    observer.next({ok: true});
+                },
+                (console.error)
+            )
+        })
+    }
     public get = ()=>{
         return this.serversStatus
     }
@@ -135,10 +153,8 @@ export class StatusService {
         });
         return Observable.forkJoin(vec)
     }
-    private loadRequest = (servers:Array<Server>) =>{
-        var me:any = this,
-        from = "00",
-        to = moment().format("HH")
+    private loadRequest = (from:string, to:string, servers:Array<Server>) =>{
+        var me:any = this
         let vec: Array<Observable<any>> = []
         servers.forEach((server:Server) => {
             vec.push(me.ServerServ.request(server.id, from, to))
