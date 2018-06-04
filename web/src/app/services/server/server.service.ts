@@ -1,6 +1,7 @@
 import { Injectable }       from '@angular/core';
 import { RemoteService }    from '../../services/remote/remote.service'
 import { Server }           from '../../models/server'
+import { Request }           from '../../models/request'
 import { Observable }       from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/of';
@@ -9,6 +10,8 @@ import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/map';
 import { Subscription } from 'rxjs/Subscription';
 import {Observer} from 'rxjs/Observer';
+
+declare var _:any
 
 @Injectable()
 export class ServerService {
@@ -82,5 +85,28 @@ export class ServerService {
     }
     stats(id: string){
       return this.RemoteServ.get('/stats/'+ id).map(res => res.stats);
+    }
+    request(id:string , from:string, to:string){
+      var req:Array<Request> = []
+      var hours:Array<String> = [
+        '00','01','02','03','04','05',
+        '06','07','08','09','10','11',
+        '12','13','14','15','16','17',
+        '18','19','20','21','22','23']
+      var max = 23, min = 0
+      var res:Array<Request> = []
+      hours.forEach((hour:string) => {
+          var count = Math.floor(Math.random() * (max - min + 1)) + min
+          req.push(new Request(hour, count))
+      });
+      var nfrom:number = Number(from)
+      var nto:number = Number(to)
+      req.forEach(r => {
+        var nhour:number = Number(r.hour)
+        if(nhour>=nfrom && nhour<=nto){
+          res.push(_.clone(r))
+        }
+      });
+      return Observable.of(res)
     }
 } 

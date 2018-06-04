@@ -35,9 +35,11 @@ export class StatusComponent {
             vAxis: {minValue: 0}
         }
         $(window).resize(function(){
-            vm.drawAreaStacked();
-            vm.drawPie();
-            vm.drawBarStacked();
+            if(vm.isServers){
+                vm.drawAreaStacked();
+                vm.drawPie();
+                vm.drawBarStacked();
+            }
         });
     }
     ngOnInit() {
@@ -52,11 +54,20 @@ export class StatusComponent {
             clearInterval(vm.pid)
         }
     }
-    change(id: any){
+    update(){
         var vm :any = this
-        vm.graph.area.data.removeRow(0);
-        vm.graph.area.data.insertRows(vm.graph.area.count - 1, [['2017', 2030, 1040]]);
-        vm.graph.area.chart.draw(vm.graph.area.data)
+        var newHour:any = {}
+        /*
+        var lastHour = vm.graph.area.data.getValue(vm.graph.area.data.getNumberOfRows()-1,0)
+       
+        if(newHour[0] == lastHour){
+            vm.graph.area.data.removeRow(vm.graph.area.data.getNumberOfRows()-1);
+        }
+        vm.graph.area.data.insertRows(vm.graph.area.data.getNumberOfRows()-1, [newHour]);
+        vm.graph.area.chart.draw(vm.graph.area.data, vm.graph.area.options);*/
+        /*console.info(vm.graph.area.data.getValue(vm.graph.area.data.getNumberOfRows()-1,0))
+        console.info(vm.graph.area.data.getValue(vm.graph.area.data.getNumberOfRows()-1,1))
+        console.info(vm.graph.area.data.getValue(vm.graph.area.data.getNumberOfRows()-1,2))*/
     }
     draw(){
         var vm :any = this
@@ -67,6 +78,9 @@ export class StatusComponent {
                     vm.drawAreaStacked();
                     vm.drawPie();
                     vm.drawBarStacked();
+                    vm.pid = setInterval(() => {
+                        vm.update(); 
+                    }, 10000);
                 }
             }),
             (console.error)
@@ -93,17 +107,13 @@ export class StatusComponent {
             vm.graph.bar.chart.draw(vm.graph.bar.data, vm.graph.bar.options);
         })
     }
+    d: Array<any>
     drawAreaStacked(){
         var vm = this
         google.charts.setOnLoadCallback(()=>{
-            vm.graph.area.data = google.visualization.arrayToDataTable([
-                ['Year', 'Sales', 'Expenses'],
-                ['2013',  1000,      400],
-                ['2014',  1170,      460],
-                ['2015',  660,       1120],
-                ['2016',  1030,      540]
-              ]);
-              vm.graph.area.count = 4
+            vm.d = vm.StatusServ.getDataAreaStacked();
+            vm.graph.area.count = vm.d.length
+            vm.graph.area.data = google.visualization.arrayToDataTable(vm.d);
             vm.graph.area.chart = new google.visualization.AreaChart(document.getElementById('area'));
             vm.graph.area.chart.draw(vm.graph.area.data, vm.graph.area.options);
         })

@@ -4,6 +4,7 @@ import { ServerService }    from '../server/server.service'
 import { Status } from '../../models/status'
 import { Server } from '../../models/server'
 import { Stats } from '../../models/stats'
+import { Request } from '../../models/request'
 import * as _ from 'underscore';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/observable/of';
@@ -12,6 +13,8 @@ import 'rxjs/add/operator/delay';
 import 'rxjs/add/operator/map';
 import { Subscription } from 'rxjs/Subscription';
 import {Observer} from 'rxjs/Observer';
+
+declare var moment: any
 
 @Injectable()
 export class StatusService {
@@ -63,17 +66,47 @@ export class StatusService {
         }
         return stacked
     }
+    getDataAreaStacked = () : Array<Array<any>> => {
+        var me:any = this
+        var area:Array<Array<any>> = []
+        var keys: Array<any>
+        var st: any
+        var request = _.clone(me.serversStatus.map((ss:Status)=>{ return ss.request}))
+        area.push(_.clone(me.serversStatus.map((ss:Status)=>{ return ss.name } )))
+        area[0].unshift('Hour')
+        if(request.length>0){
+            for(var i=0; i<request[0].length; i++){
+                area.push([request[0][i].hour])
+            }
+            request.forEach((r: Array<Request>) => {
+                for(var i=0; i<r.length; i++){
+                    area[i+1].push(r[i].count)
+                }
+            });
+        }
+        return area
+    }
     ini = ():Observable<any>=>{
         var me:any = this
         me.serversStatus = []
         return Observable.create((observer: Observer<any>) => {
             me.ServerServ.getActive().subscribe(
                 (servers:Array<Server>) =>{
+                    var vec:Array<any> = []
                     if(servers.length >0){
-                        me.getStats(servers).subscribe(
-                            (serversStats:Array<Stats>)=>{
+                        /*eliminar este servidor dumy */
+                        let servDumy = new Server()
+                        servDumy = _.clone(servers[0])
+                        servDumy.name = "dummy"
+                        servers.push(servDumy)
+                        /*eliminar este servidor dumy */
+                        vec.push(me.loadStats(servers))
+                        vec.push(me.loadRequest(servers))
+                        return Observable.forkJoin(vec).subscribe(
+                            (res:Array<any>)=>{
                                 for(var i=0; i <servers.length;i++){
-                                    me.serversStatus[i].stats = serversStats[i]
+                                    me.serversStatus[i].stats = res[0][i]
+                                    me.serversStatus[i].request = res[1][i]
                                 }
                                 observer.next({ok: true});
                             },
@@ -92,20 +125,23 @@ export class StatusService {
     public get = ()=>{
         return this.serversStatus
     }
-    private getStats = (servers:Array<Server>) =>{
+    private loadStats = (servers:Array<Server>) =>{
         var me:any = this
         let vec: Array<Observable<any>> = []
-        /*eliminar este servidor dumy */
-        let servDumy = new Server()
-        servDumy = _.clone(servers[0])
-        servDumy.name = "dummy"
-        servers.push(servDumy)
-        /*eliminar este servidor dumy */
         servers.forEach((server:Server) => {
             let status = new Status(server.id, server.name)
             me.serversStatus.push(status)
-            vec.push(me.ServerServ.stats(server.id)
-            )
+            vec.push(me.ServerServ.stats(server.id))
+        });
+        return Observable.forkJoin(vec)
+    }
+    private loadRequest = (servers:Array<Server>) =>{
+        var me:any = this,
+        from = "00",
+        to = moment().format("HH")
+        let vec: Array<Observable<any>> = []
+        servers.forEach((server:Server) => {
+            vec.push(me.ServerServ.request(server.id, from, to))
         });
         return Observable.forkJoin(vec)
     }

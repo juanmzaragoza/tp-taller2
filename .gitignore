@@ -22,6 +22,7 @@ routes/.hidden
 /web/src/main.js
 /web/src/main.js.map
 /web/src/dist/
+!/web/src/app/libs/**/*.js
 
 # dependencies
 /web/node_modules
