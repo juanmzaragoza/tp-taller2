@@ -50,8 +50,9 @@ public class LoginController {
                      *      }
                      *  }
                      */
-                    String token = response.body().getAsJsonObject("token").get("token").getAsString();
-                    JsonElement userId = response.body().get("userId");
+                    JsonObject tokenObject = response.body().getAsJsonObject("token");
+                    String token = tokenObject.get("token").getAsString();
+                    JsonElement userId = tokenObject.get("id");
                     activity.startMainActivity(username, token, userId != null ? userId.getAsString() : "Error");
                     // if fb token is ok but user doesnt exists
                 } else if(response.code() == 409){
