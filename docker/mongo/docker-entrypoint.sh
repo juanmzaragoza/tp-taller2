@@ -4,13 +4,13 @@ mongo appserverdb --eval 'db.dropDatabase();'
 mongo appserverdb --eval 'db.dropUser("app_user");'
 mongo appserverdb --eval 'db.createUser({user:"app_user", pwd:"app_pass", "roles":["dbOwner"]});'
 
-mongo appserverdb --eval 'user1 = {"_id": ObjectId("5ae66a31d4ef925dac59a94b"), "_rev":"", "last_name" : "Gomez", "name" : "Pepe", "birthday" : "01/01/2000", "gender" : "M", "email" : "pepe@email.com", "picture": "" };	
+mongo appserverdb --eval 'user1 = {"_id": "5ae66a31d4ef925dac59a94b", "_rev":"", "user_name": "userName1", "last_name" : "Gomez", "name" : "Pepe", "birthday" : "01/01/2000", "gender" : "M", "email" : "pepe@email.com", "picture": "" };	
 						  db.users.insert(user1);'
 
-mongo appserverdb --eval 'user2 = {"_id": ObjectId("5ae66a31d4ef925dac59a94f"), "_rev":"", "last_name" : "Fernandez", "name" : "Maria", "birthday" : "01/01/1980", "gender" : "F", "email" : "maria@email.com", "picture": "" };	
+mongo appserverdb --eval 'user2 = {"_id": "5ae66a31d4ef925dac59a94f", "_rev":"", "user_name": "userName2", "last_name" : "Fernandez", "name" : "Maria", "birthday" : "01/01/1980", "gender" : "F", "email" : "maria@email.com", "picture": "" };	
 						  db.users.insert(user2);'
 						  
-mongo appserverdb --eval  'user3 = {"_id": ObjectId("5ae66a31d4ef925dac59a94e"), "_rev":"", "last_name" : "Fernandez", "name" : "Carlos", "birthday" : "01/01/1980", "gender" : "M", "email" : "carlos@email.com", "picture": "" };	
+mongo appserverdb --eval  'user3 = {"_id": "5ae66a31d4ef925dac59a94e", "_rev":"", "user_name": "userName3","last_name" : "Fernandez", "name" : "Carlos", "birthday" : "01/01/1980", "gender" : "M", "email" : "carlos@email.com", "picture": "" };	
 						  db.users.insert(user3);'
 						  
 mongo appserverdb --eval  'storie1= { "_id": ObjectId("5ae66a31d4ef925dac59a95b"), "_rev" : "", "created_time" : 0, "updated_time" : 0, "title" : "First Storie", "description" : "Hello World! This is my first Storie!", "location" : "", "visibility" : "public", "multimedia" : "", "story_type" : "normal"};
