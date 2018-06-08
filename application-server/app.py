@@ -6,7 +6,7 @@ from controllers.db_controller import MongoController
 from controllers.login_controller import LoginController
 from controllers.user_controller import UserController
 from controllers.user_detail_controller import UserDetailController
-
+from controllers.userapp_controller import UserAppController
 from controllers.ping_controller import PingController
 from controllers.stats_controller import StatsController
 from controllers.profile_controller import ProfileController
@@ -41,6 +41,7 @@ with app.app_context():
 	api.add_resource(StatsController, '/stats')
 	
 	# app endpoints
+	api.add_resource(UserAppController, '/users/<string:user_id>')
 	api.add_resource(StorieController, '/stories')
 	api.add_resource(StorieDetailController, '/stories/<string:id>')
 	api.add_resource(BeFriendController, '/befriend')
