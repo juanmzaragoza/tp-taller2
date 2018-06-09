@@ -32,4 +32,9 @@ public class ProfileUserController extends ProfileController{
             }
         });
     }
+
+    public void unfriend(final String friendshipId) {
+        EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
+        Call<JsonObject> responseCall = endpointsApi.unfriend(friendshipId);
+    }
 }

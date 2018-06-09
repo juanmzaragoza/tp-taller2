@@ -1,6 +1,7 @@
 package tallerii.stories;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import com.google.gson.Gson;
 import tallerii.stories.controller.ProfileController;
 import tallerii.stories.controller.ProfileUserController;
 import tallerii.stories.network.apimodels.ApplicationProfile;
+import tallerii.stories.network.apimodels.Friend;
 import tallerii.stories.network.apimodels.FriendRequest;
 
 public class UserProfileActivity extends ProfileActivity {
@@ -35,7 +37,7 @@ public class UserProfileActivity extends ProfileActivity {
                 initAsUser(applicationProfile);
                 break;
             case FRIEND:
-                initAsFriend();
+                initAsFriend(applicationProfile);
                 break;
             case STRANGER:
                 initAsStranger(applicationProfile);
@@ -54,6 +56,27 @@ public class UserProfileActivity extends ProfileActivity {
                 startProfileUpdateActivity(new Gson().toJson(getProfile()));
             }
         });
+    }
+
+    private void initAsFriend(ApplicationProfile applicationProfile) {
+        String friendshipId = "";
+        for (Friend friends: getProfile().getFriends()) {
+            if (friends.getUserId().equals(applicationProfile.getUserId())) {
+                friendshipId = friends.getId();
+            }
+        }
+        actionButton.setText("Unfriend");
+        actionButton.setOnClickListener(createOnClickListener(friendshipId));
+    }
+
+    @NonNull//had to in order to declare final
+    private View.OnClickListener createOnClickListener(final String friendshipId) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unfriend(friendshipId);
+            }
+        };
     }
 
     private void initAsStrangerPendingRequest() {
@@ -85,7 +108,8 @@ public class UserProfileActivity extends ProfileActivity {
         profileUserController.requestFriendship(friendRequest);
     }
 
-    private void initAsFriend() {
+    private void unfriend(String friendshipId) {
+        profileUserController.unfriend(friendshipId);
     }
 
     @Override

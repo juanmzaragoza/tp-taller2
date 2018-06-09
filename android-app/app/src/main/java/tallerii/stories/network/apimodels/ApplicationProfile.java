@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import tallerii.stories.StoriesLoggedInActivity;
 
@@ -101,7 +100,7 @@ public class ApplicationProfile {
 
     private boolean isFriend(String profileId) {
         for (Friend friend: friends) {
-            if (friend.getId().equals(profileId)){
+            if (friend.getUserId().equals(profileId)){
                 return true;
             }
         }

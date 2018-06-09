@@ -57,6 +57,10 @@ public interface EndpointsApplicationApiRest {
     @Headers({CONTENT_TYPE_APPLICATION_JSON})
     @POST(ConstantsApplicationApiRest.BEFRIEND)
     Call<JsonObject> postFriendRequest(FriendRequest request);
+
+    @DELETE(ConstantsApplicationApiRest.UNFRIEND)
+    Call<JsonObject> unfriend(@Path("id")String friendshipId);
+
     @Headers({ACCEPT_APPLICATION_JSON})
     @GET(ConstantsApplicationApiRest.USERS)
     Call<JsonObject> getUsers(@Path("id")String userId);
