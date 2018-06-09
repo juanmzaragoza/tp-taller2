@@ -21,9 +21,8 @@ public class ApplicationProfile {
     private String email;
     @SerializedName("picture")
     private String profilePicture;
-    private List<Story> stories = new ArrayList<>();
+    private List<Storie> stories = new ArrayList<>();
     private List<Friend> friends = new ArrayList<>();
-    private String type;
 
     public List<Friend> getFriends() {
         return friends;
@@ -57,7 +56,7 @@ public class ApplicationProfile {
         return profilePicture;
     }
 
-    public List<Story> getStories() {
+    public List<Storie> getStories() {
         return stories;
     }
 

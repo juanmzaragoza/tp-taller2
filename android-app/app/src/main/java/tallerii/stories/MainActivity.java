@@ -1,6 +1,7 @@
 package tallerii.stories;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,6 +12,8 @@ import android.view.MenuItem;
 
 import tallerii.stories.fragments.main.AnotherFragment;
 import tallerii.stories.fragments.main.HomeFragment;
+import tallerii.stories.fragments.main.PostStorieFragment;
+import tallerii.stories.helpers.Store;
 
 public class MainActivity extends StoriesLoggedInActivity {
 
@@ -30,6 +33,16 @@ public class MainActivity extends StoriesLoggedInActivity {
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
 
+        // this is the first activity that show, so we get the token from login activity
+        Intent intent = getIntent();
+        if(intent.getStringExtra(TOKEN) != null) {
+            final Store store = new Store();
+            store.save("token", intent.getStringExtra(TOKEN));
+        }
+        if(intent.getStringExtra(EXTRA_MESSAGE) != null) {
+            final Store store = new Store();
+            showMessage(intent.getStringExtra(EXTRA_MESSAGE), 10);
+        }
         // by default show home
         fragment = new HomeFragment();
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -55,8 +68,10 @@ public class MainActivity extends StoriesLoggedInActivity {
                 break;
             case R.id.action_account:
                 fragment = new AnotherFragment();
+                break;
             case R.id.action_new:
-                fragment = new AnotherFragment();
+                setPostStorieFragment();
+                break;
         }
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_container, fragment).commit();
@@ -65,6 +80,19 @@ public class MainActivity extends StoriesLoggedInActivity {
 
     private void setHomeFragment() {
         fragment = new HomeFragment();
-        fragment.setArguments(getIntent().getExtras());
+        // get profile id and pass it to fragment
+        Bundle bundleHomeFragment = getIntent().getExtras();
+        bundleHomeFragment.putString(ProfileActivity.PROFILE_ID,getProfile().getUserId());
+        fragment.setArguments(bundleHomeFragment);
+    }
+
+    private void setPostStorieFragment() {
+        fragment = null;
+        fragment = new PostStorieFragment();
+    }
+
+    private void commitFragment(Fragment fragment){
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_container, fragment).commit();
     }
 }

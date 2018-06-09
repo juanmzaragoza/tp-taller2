@@ -1,0 +1,96 @@
+package tallerii.stories.helpers;
+
+import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+
+import static android.content.Context.LOCATION_SERVICE;
+
+public class LocationHelper {
+
+    public static final Integer LOCATION_REFRESH_TIME = 0;
+    public static final Integer LOCATION_REFRESH_DISTANCE = 0;
+
+    private LocationManager locationManger;
+    private LocationListener locationListener;
+    private Context context;
+    private Activity activity;
+
+    private static Location location;
+    private double longitude;
+    private double latitude;
+
+    public LocationHelper(Activity activity, Context context){
+        this.activity = activity;
+        this.context = context;
+        locationListener = getLocationListener();
+    }
+
+    // location listener for get location
+    private LocationListener getLocationListener() {
+        return new LocationListener() {
+
+            @Override
+            public void onLocationChanged(final Location location) {
+                LocationHelper.location = location;
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+    }
+
+    public Location getLocation(){
+        locationManger = (LocationManager) context.getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+        }
+        locationManger.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, locationListener);
+        return this.location;
+    }
+
+    /**
+     * Function to get latitude
+     * */
+    public double getLatitude() {
+        if (location != null) {
+            latitude = location.getLatitude();
+        }
+
+        // return latitude
+        return latitude;
+    }
+
+    /**
+     * Function to get longitude
+     * */
+    public double getLongitude() {
+        if (location != null) {
+            longitude = location.getLongitude();
+        }
+
+        // return longitude
+        return longitude;
+    }
+
+}

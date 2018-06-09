@@ -72,7 +72,7 @@
             android:textColorLink="@color/link" />
 
         <ImageView
-            android:id="@+id/storyImage1"
+            android:id="@+id/storieImage1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"

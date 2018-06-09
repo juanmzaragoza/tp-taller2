@@ -2,6 +2,7 @@ package tallerii.stories;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -31,6 +32,7 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         checkGooglePlayServices();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     private void checkGooglePlayServices() {
@@ -63,6 +65,12 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
     public void showMessage(String text, int length) {
         log(text);
         Toast.makeText(getContext(), text, length).show();
+    }
+
+    public void startMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void startMainActivity(String username) {

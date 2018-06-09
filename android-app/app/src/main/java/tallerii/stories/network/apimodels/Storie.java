@@ -4,7 +4,7 @@ package tallerii.stories.network.apimodels;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Story {
+public class Storie {
 
     @SerializedName("_id")
     public String id;
@@ -36,8 +36,8 @@ public class Story {
     @SerializedName("multimedia")
     public String multimedia;
 
-    @SerializedName("story_type")
-    public String storyType;
+    @SerializedName("storie_type")
+    public String storieType;
 
     @SerializedName("user_name")
     public String userName;
@@ -131,12 +131,12 @@ public class Story {
         this.multimedia = multimedia;
     }
 
-    public String getStoryType() {
-        return storyType;
+    public String getStorieType() {
+        return storieType;
     }
 
-    public void setStoryType(String storyType) {
-        this.storyType = storyType;
+    public void setStorieType(String storieType) {
+        this.storieType = storieType;
     }
 
     public String getUserName() {

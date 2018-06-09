@@ -49,15 +49,15 @@ public class AuthorizationMainActivity extends AppCompatActivity {
             activityIntent = new Intent(this, UserProfileActivity.class);
         }
         /*START TESTING SETTINGS*/
-//        ApplicationProfile profile = new ApplicationProfile();
-//        profile.setFirstName("Nico");
-//        profile.setLastName("Dom");
-//        profile.setUserId("1");
-//        profile.setProfilePicture("profile");
-//        profile.addFriend(new Gson().fromJson("{\"picture\":\"profile\",\"last_name\":\"Fernandez\",\"name\":\"Mario\",\"user_id\":\"4\"}", Friend.class));
-//        profile.addFriend(new Gson().fromJson("{\"picture\":\"profile\",\"last_name\":\"Fernandez\",\"name\":\"Maria\",\"user_id\":\"2\"}", Friend.class));
-//        profile.addFriend(new Gson().fromJson("{\"picture\":\"profile\",\"last_name\":\"Fernandez\",\"name\":\"Mariano\",\"user_id\":\"3\"}", Friend.class));
-//        activityIntent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
+        ApplicationProfile profile = new ApplicationProfile();
+        profile.setFirstName("Nico");
+        profile.setLastName("Dom");
+        profile.setUserId("1");
+        profile.setProfilePicture("profile");
+        profile.addFriend(new Gson().fromJson("{\"picture\":\"profile\",\"last_name\":\"Fernandez\",\"name\":\"Mario\",\"user_id\":\"4\"}", Friend.class));
+        profile.addFriend(new Gson().fromJson("{\"picture\":\"profile\",\"last_name\":\"Fernandez\",\"name\":\"Maria\",\"user_id\":\"2\"}", Friend.class));
+        profile.addFriend(new Gson().fromJson("{\"picture\":\"profile\",\"last_name\":\"Fernandez\",\"name\":\"Mariano\",\"user_id\":\"3\"}", Friend.class));
+        activityIntent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
         activityIntent.putExtra(PROFILE_ID, "5ae66a31d4ef925dac59a94f");
         /*END TESTING SETTINGS*/
         startActivity(activityIntent);
