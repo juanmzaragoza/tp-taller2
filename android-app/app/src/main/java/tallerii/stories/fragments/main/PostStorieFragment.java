@@ -78,17 +78,20 @@ public class PostStorieFragment extends Fragment {
                 requestCode = REQUEST_CODE_TAKE_VIDEO;
 
                 // create a file to save the image
-                fileUri = mediaFile.getOutputMediaFileUri(MediaFile.MEDIA_TYPE_VIDEO);
+                // TODO: commented because doesn't work
+                //fileUri = mediaFile.getOutputMediaFileUri(MediaFile.MEDIA_TYPE_VIDEO);
 
             } else{ // take photo
                 takeMediaIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 requestCode = REQUEST_CODE_TAKE_IMAGE;
 
                 // create a file to save the image
-                fileUri = mediaFile.getOutputMediaFileUri(MediaFile.MEDIA_TYPE_IMAGE);
+                // TODO: commented because doesn't work
+                //fileUri = mediaFile.getOutputMediaFileUri(MediaFile.MEDIA_TYPE_IMAGE);
             }
 
-            takeMediaIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the media file name
+            // TODO: commented because doesn't work
+            //takeMediaIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the media file name
             startActivityForResult(takeMediaIntent, requestCode);
         }
     };
