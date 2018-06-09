@@ -26,14 +26,16 @@ public abstract class ProfileActivity extends StoriesLoggedInActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.get(PROFILE_ID) != null) {
             controller.getUser(bundle.getString(PROFILE_ID));
+        } else {
+            initializeProfile(getProfile());
         }
     }
 
     protected abstract void initWithChildResource();
 
     public void initializeProfile(ApplicationProfile applicationProfile) {
-        String type = applicationProfile.getType();
-        if(type == null || type.equals("User")){
+        ApplicationProfile.ProfileType type = applicationProfile.getType();
+        if(type == null || type.equals(ApplicationProfile.ProfileType.USER)){
             super.initializeProfile(applicationProfile);
         }
         TextView friendsCount = findViewById(R.id.friend_count);

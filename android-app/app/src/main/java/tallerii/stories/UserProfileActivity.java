@@ -28,19 +28,19 @@ public class UserProfileActivity extends ProfileActivity {
     @Override
     public void initializeProfile(ApplicationProfile applicationProfile) {
         super.initializeProfile(applicationProfile);
-        String type = applicationProfile.getType();
+        ApplicationProfile.ProfileType type = applicationProfile.getType();
         if (type == null) return;
         switch (type) {
-            case "User":
+            case USER:
                 initAsUser(applicationProfile);
                 break;
-            case "Friend":
+            case FRIEND:
                 initAsFriend();
                 break;
-            case "Stranger":
+            case STRANGER:
                 initAsStranger(applicationProfile);
                 break;
-            case "StrangerPendingRequest":
+            case STRANGER_PENDING_REQUEST:
                 initAsStrangerPendingRequest();
                 break;
         }
@@ -80,8 +80,8 @@ public class UserProfileActivity extends ProfileActivity {
         ApplicationProfile currentUser = getProfile();
         friendRequest.setFullName(currentUser.getFullName());
         friendRequest.setPicture(currentUser.getProfilePicture());
-        friendRequest.setSenderUserId(currentUser.getId());
-        friendRequest.setRcvUserId(applicationProfile.getId());
+        friendRequest.setSenderUserId(currentUser.getUserId());
+        friendRequest.setRcvUserId(applicationProfile.getUserId());
         profileUserController.requestFriendship(friendRequest);
     }
 

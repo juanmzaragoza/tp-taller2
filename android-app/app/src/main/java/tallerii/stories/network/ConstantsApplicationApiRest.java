@@ -1,7 +1,7 @@
 package tallerii.stories.network;
 
 public final class ConstantsApplicationApiRest {
-    public static String ROOT_URL = "http://192.168.0.13:5858/";
+    public static String ROOT_URL = "http://heroku-applicationserver.herokuapp.com/";
     public static final String REST_API = "api/v1/";
 
     public static final String PROFILE_ENDPOINT = REST_API + "profiles/{id}";

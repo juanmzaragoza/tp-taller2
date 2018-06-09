@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import tallerii.stories.StoriesLoggedInActivity;
+
 public class ApplicationProfile {
 
     @SerializedName("_id")
@@ -20,8 +22,8 @@ public class ApplicationProfile {
     private String email;
     @SerializedName("picture")
     private String profilePicture;
-    private List<Story> stories = null;
-    private List<Friend> friends = null;
+    private List<Story> stories = new ArrayList<>();
+    private List<Friend> friends = new ArrayList<>();
     private String type;
 
     public List<Friend> getFriends() {
@@ -82,13 +84,34 @@ public class ApplicationProfile {
 
     //TODO verify if this should exist or be managed from app server
     public void addFriend(Friend friend) {
-        if (friends == null) {
-            friends = new ArrayList<>();
-        }
         friends.add(friend);
     }
 
-    public String getType() {
-        return type;
+    public ProfileType getType() {
+        ApplicationProfile profile = StoriesLoggedInActivity.getProfile();
+        if(profile == null) return ProfileType.USER;
+        String profileId = profile.getUserId();
+        if (profileId.equals(this.getUserId())){
+            return ProfileType.USER;
+        } else if (isFriend(profileId)) {
+            return ProfileType.FRIEND;
+        }
+        return ProfileType.STRANGER;
+    }
+
+    private boolean isFriend(String profileId) {
+        for (Friend friend: friends) {
+            if (friend.getId().equals(profileId)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public enum ProfileType {
+        USER,
+        FRIEND,
+        STRANGER,
+        STRANGER_PENDING_REQUEST
     }
 }
