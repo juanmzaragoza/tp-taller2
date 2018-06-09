@@ -53,7 +53,7 @@ with app.app_context():
 	api.add_resource(FriendRequestController, '/befriend/requests')
 	api.add_resource(FriendRequestDetailController, '/befriend/requests/<string:request_id>')
 	api.add_resource(FriendController, '/friends/<string:user_id>')
-	api.add_resource(FriendDetailController, '/friends/remove/<string:friend_id>')
+	api.add_resource(FriendDetailController, '/friends/<string:friend_id>')
 	
 	if __name__ == "__main__":
     		app.run(host='0.0.0.0', port=5858,debug=True)
