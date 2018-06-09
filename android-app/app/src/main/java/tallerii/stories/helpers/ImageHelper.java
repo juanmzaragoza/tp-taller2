@@ -1,14 +1,25 @@
 package tallerii.stories.helpers;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import tallerii.stories.R;
+import tallerii.stories.StoriesAppActivity;
+import tallerii.stories.controller.ProfileUpdateController;
 
 public class ImageHelper {
 
@@ -18,17 +29,56 @@ public class ImageHelper {
     public ImageHelper(Context context) {
         this.context = context;
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        this.storageReference = storage.getReference().child("images");
+        this.storageReference = storage.getReference();
     }
 
     public void setFirebaseImage(String imageId, ImageView imageView) {
         if (imageId != null && imageId.length() > 0) {
-            StorageReference imageRef = storageReference.child(imageId);
+            StorageReference imageRef = storageReference.child("images").child(imageId);
             Glide
                 .with(context)
                 .load(imageRef)
                 .into(imageView)
             ;
         }
+    }
+
+    public void uploadMedia(String mediaName, Uri filePath, final Runnable onSuccessFunction, final Runnable onErrorFunction) {
+
+        final StoriesAppActivity activity = (StoriesAppActivity) context;
+        final ProgressDialog progressDialog = new ProgressDialog(context);
+
+        progressDialog.setTitle("Uploading...");
+        progressDialog.show();
+
+        Log.i("FIREBASE","Uploading to firebase: " + mediaName);
+
+        StorageReference ref = storageReference.child("media").child(mediaName);
+
+        ref.putFile(filePath)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        progressDialog.dismiss();
+                        activity.showMessage("Uploaded",5);
+                        onSuccessFunction.run();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        progressDialog.dismiss();
+                        activity.showMessage("Failed "+e.getMessage());
+                        onErrorFunction.run();
+                    }
+                })
+                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                        double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                                .getTotalByteCount());
+                        progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                    }
+                });
     }
 }

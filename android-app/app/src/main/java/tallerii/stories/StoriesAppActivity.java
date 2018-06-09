@@ -64,6 +64,12 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
         Toast.makeText(getContext(), text, length).show();
     }
 
+    public void startMainActivity() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     public void startMainActivity(String username) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_MESSAGE, username);

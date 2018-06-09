@@ -51,7 +51,7 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_home:
-                startMainActivity(profile.getFullName());
+                startMainActivity();
                 return true;
             case R.id.action_chat:
                 startChatRoomsActivity(profile);

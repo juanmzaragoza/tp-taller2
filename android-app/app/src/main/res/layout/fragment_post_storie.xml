@@ -12,8 +12,8 @@
         android:focusable="true"
         android:focusableInTouchMode="true">
 
-        <ImageView
-            android:id="@+id/storieImageView"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/containerMedia"
             android:layout_width="match_parent"
             android:layout_height="217dp"
             android:layout_alignParentTop="true"
@@ -22,10 +22,24 @@
             android:layout_marginStart="64dp"
             android:layout_marginTop="32dp"
             android:background="?attr/colorButtonNormal"
-            android:src="@android:drawable/ic_menu_camera"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/storieImageView"
+                android:layout_width="match_parent"
+                android:layout_height="217dp"
+                android:src="@android:drawable/ic_menu_camera" />
+
+            <VideoView
+                android:id="@+id/storieVideoView"
+                android:layout_width="match_parent"
+                android:layout_height="217dp"
+                android:src="@android:drawable/ic_menu_camera"
+                android:visibility="gone" />
+
+        </android.support.constraint.ConstraintLayout>
 
         <Button
             android:id="@+id/choosePictureButton"
@@ -36,25 +50,25 @@
             android:layout_marginEnd="64dp"
             android:layout_marginStart="64dp"
             android:layout_marginTop="16dp"
-            android:text="CHOOSE PICTURE"
+            android:text="CHOOSE MEDIA"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/storieImageView" />
+            app:layout_constraintTop_toBottomOf="@+id/containerMedia" />
 
         <EditText
             android:id="@+id/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/storieImageView"
+            android:layout_alignStart="@+id/containerMedia"
             android:layout_marginStart="24dp"
             android:layout_marginTop="12dp"
             android:ems="10"
             android:hint="Title"
             android:inputType="textPersonName"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/choosePictureButton" />
+            app:layout_constraintTop_toBottomOf="@+id/toogleTakeMedia" />
 
         <EditText
             android:id="@+id/descriptionText"
@@ -88,7 +102,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/storieImageView"
+            android:layout_alignStart="@+id/containerMedia"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             android:text="Your Location"
@@ -118,6 +132,18 @@
             android:text="This is yout location"
             app:layout_constraintStart_toEndOf="@+id/locationLabel"
             app:layout_constraintTop_toBottomOf="@+id/visibilityCheckBox" />
+
+        <Switch
+            android:id="@+id/toogleTakeMedia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Photo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/choosePictureButton" />
 
     </android.support.constraint.ConstraintLayout>
 

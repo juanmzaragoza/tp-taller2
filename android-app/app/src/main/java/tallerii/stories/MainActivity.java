@@ -40,6 +40,10 @@ public class MainActivity extends StoriesLoggedInActivity {
             final Store store = new Store();
             store.save("token", intent.getStringExtra(TOKEN));
         }
+        if(intent.getStringExtra(EXTRA_MESSAGE) != null) {
+            final Store store = new Store();
+            showMessage(intent.getStringExtra(EXTRA_MESSAGE), 10);
+        }
 
         // by default show home
         setHomeFragment();
