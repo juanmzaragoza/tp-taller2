@@ -20,10 +20,12 @@ stories_successful_mock = [{
 }]
 
 friends_successful_mock = [{
+	"_id": "5b1af06549628695914f8222", 
 	"date": "01/05/2018", 
 	"last_name": "Fernandez", 
 	"name": "Carlos", 
-	"user_id": "5ae66a31d4ef925dac59a94e"
+	"user_id": "5ae66a31d4ef925dac59a94e",
+	"picture": ""
 }]
 
 rcv_requests_successful_mock = [{
