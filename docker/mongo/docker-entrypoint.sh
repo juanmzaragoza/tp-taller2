@@ -39,4 +39,8 @@ mongo appserverdb --eval  'user_friend2 = {"user_id_sender": "5ae66a31d4ef925dac
 						  
 mongo appserverdb --eval  'user_friend_request1 = {"user_id_sender": "5ae66a31d4ef925dac59a94f","user_id_rcv":"5ae66a31d4ef925dac59a94e", "date": "02/05/2018"};
 						  db.friends_request.insert(user_friend_request1);'
+
+mongo appserverdb --eval  'user_comment1 = {"user_id": "5ae66a31d4ef925dac59a94b","storie_id":"5ae66a31d4ef925dac59a97b", "message": "Comment 1", "date": "02/05/2018"};
+						  db.storie_comments.insert(user_comment1);'
+
 exec "$@";
