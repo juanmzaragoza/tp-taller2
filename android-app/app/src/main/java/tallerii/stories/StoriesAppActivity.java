@@ -126,6 +126,10 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
         startLoggedInActivity(profile, UserProfileActivity.class);
     }
 
+    public void startSearchUsersActivity(ApplicationProfile profile) {
+        startLoggedInActivity(profile, SearchUsersActivity.class);
+    }
+
     public void startChatRoomsActivity(ApplicationProfile profile) {
         startLoggedInActivity(profile, ChatRoomsActivity.class);
     }

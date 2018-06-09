@@ -34,8 +34,7 @@ public class FriendRequestController {
                 @Override
                 public void onResponse(Response<JsonObject> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        Type listType = new TypeToken<ArrayList<FriendRequest>>() {
-                        }.getType();
+                        Type listType = new TypeToken<ArrayList<FriendRequest>>() {}.getType();
                         JsonArray jsonRequests = response.body().getAsJsonArray("requests");
                         assert (jsonRequests != null);
                         List<FriendRequest> friendRequests = gson.fromJson(jsonRequests, listType);

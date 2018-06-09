@@ -48,11 +48,10 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
             mAuth.signInAnonymously().addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        // Sign in success
-                    } else {
+                    if (!task.isSuccessful()) {
                         showMessage("Firebase anon auth failed.");
                     }
+                    // Sign in success
                 }
             });
             if (bundle.getString(PROFILE_ID) != null) {
@@ -86,8 +85,11 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
                 startFriendRequestsActivity(profile);
                 return true;
             case R.id.action_profile:
-                //startProfileActivity(profile.getId());
+                //startProfileActivity(profile.getUserId());
                 startProfileActivity(profile);
+                return true;
+            case R.id.action_search:
+                startSearchUsersActivity(profile);
                 return true;
             case R.id.action_logout:
                 logout();

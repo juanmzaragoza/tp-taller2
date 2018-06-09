@@ -11,6 +11,7 @@ public final class ConstantsApplicationApiRest {
     public static final String BEFRIEND = REST_API + "befriend";
     public static final String GET_FRIEND_REQUESTS = BEFRIEND + "/{id}";
     public static final String FRIEND_REQUEST_ENDPOINT = BEFRIEND + "/requests/{id}";
+    public static final String USERS = "/users/{id}";
     // TODO: only for test
     public static final String GET_STORIES_BY_USER = "stories/{id}";
 

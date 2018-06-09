@@ -35,6 +35,7 @@
     <string name="decline">Decline</string>
     <string name="friend_requests">Friend Requests</string>
     <string name="logout">Logout</string>
+    <string name="discover_users">Discover Users</string>
 
 
 </resources>

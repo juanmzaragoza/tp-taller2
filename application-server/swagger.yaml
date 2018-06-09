@@ -851,6 +851,17 @@ paths:
       responses:
         '200':
           description: OK
+  /users:
+    get:
+      tags:
+        - user
+      description: Endpoint para conocer usuarios
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/Users'
+          description: Usuarios
+      summary: Permite listar los usuarios
 definitions:
   Version:
     type: string
@@ -990,9 +1001,26 @@ definitions:
         type: string
       profile_picture:
         type: string
+      friends:
+        items:
+          $ref: '#/definitions/Friends'
       stories:
         items:
           $ref: '#/definitions/Story'
+  Friends:
+    properties:
+      id:
+        $ref: '#/definitions/Id'
+      last_name:
+        type: string
+      name:
+        type: string
+      date:
+        type: string
+      user_id:
+        type: string
+      picture:
+        type: string
   ApplicationProfileUpdate:
     properties:
       id:
@@ -1157,3 +1185,13 @@ definitions:
       numAcceptedContactsToday:
         type: string
         description: cantidad de solicitudes de contacto aceptadas hoy
+  Users:
+    properties:
+      id:
+        $ref: '#/definitions/Id'
+      last_name:
+        type: string
+      name:
+        type: string
+      picture:
+        type: string

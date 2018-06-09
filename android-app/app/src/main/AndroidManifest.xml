@@ -61,6 +61,7 @@
         <activity android:name=".ChatMessagesActivity" />
         <activity android:name=".ChatRoomsActivity" />
         <activity android:name=".FriendRequestActivity" />
+        <activity android:name=".SearchUsersActivity" />
         <!-- End Facebook SDK -->
         <service android:name=".helpers.MyFirebaseMessagingService">
             <intent-filter>
