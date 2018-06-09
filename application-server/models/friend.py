@@ -16,27 +16,33 @@ class FriendModel():
 
 		friends = db.friends.find({'user_id_sender': user_id})
 		for doc in friends:
-			friends_user_id.append(ObjectId(doc["user_id_rcv"]))
+			friends_user_id.append(doc["user_id_rcv"])
 			data[doc["user_id_rcv"]] = {
+												"_id": str(doc["_id"]),
 												"user_id": doc["user_id_rcv"],
 												"last_name": "",
 												"name": "",
+												"picture": "",
 												"date": doc["date"]
 											}
 		
 		friends = db.friends.find({'user_id_rcv': user_id})
 		for doc in friends:
-			friends_user_id.append(ObjectId(doc["user_id_sender"]))
+			friends_user_id.append(doc["user_id_sender"])
 			data[doc["user_id_sender"]] = {
+													"_id": str(doc["_id"]),
 													"user_id": doc["user_id_sender"],
 													"last_name": "",
 													"name": "",
+													"picture": "",
 													"date": doc["date"]
 												}
 		friends_data = db.users.find({'_id':{"$in":friends_user_id}});
+		print (friends_user_id)
 		for doc in friends_data:
 			data[str(doc["_id"])]["last_name"] = doc["last_name"]
 			data[str(doc["_id"])]["name"] = doc["name"]
+			data[str(doc["_id"])]["picture"] = doc["picture"]
 
 		return data.values()
 	
@@ -49,3 +55,19 @@ class FriendModel():
 		friend['_id'] = str(friend['_id'])
 		return friend
 	
+	@staticmethod
+	def delete_friend(friend_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+				
+		if bson.objectid.ObjectId.is_valid(friend_id) == False:
+			raise NoDataFoundException
+		
+		response = db.friends.find_one({'_id': ObjectId(friend_id)})
+
+		if response == None:
+			raise NoDataFoundException
+
+		db.friends.remove({'_id': ObjectId(friend_id)})
+
+		response['_id'] = str(response['_id'])
+		return response

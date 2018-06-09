@@ -33,8 +33,10 @@ class FriendController(flask_restful.Resource):
 
 	def _format_friend(self, friend):
         	return {
+					'_id': friend['_id'],
 					'user_id': friend['user_id'],
             		'last_name': friend['last_name'],
             		'name': friend['name'],
-            		'date': friend['date']
+            		'date': friend['date'],
+            		'picture': friend['picture']
         	}

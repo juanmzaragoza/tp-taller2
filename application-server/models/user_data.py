@@ -61,3 +61,21 @@ class UserDataModel():
 			'email': username+'@email.com',
 			'picture': ''}
 		db.users.insert(user)
+	
+	@staticmethod
+	def get_all_users_except(user_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+		users = db.users.find({ '_id': { '$ne': user_id } });
+		response = {}
+		c = 0
+		for user in users:
+			user_id = str(user['_id'])
+			response[c] = {
+							'_id': user_id,
+							'last_name': user['last_name'],
+							'name': user['name'],
+							'picture': user['picture']
+						}
+			c += 1	
+		
+		return response
