@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import tallerii.stories.controller.ProfileController;
 import tallerii.stories.controller.ProfileUpdateController;
+import tallerii.stories.helpers.ImageHelper;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 
 public class UserProfileUpdateActivity extends ProfileActivity {
@@ -28,6 +29,20 @@ public class UserProfileUpdateActivity extends ProfileActivity {
     private Uri filePath = null;
     private EditText firstName;
     private EditText lastName;
+
+    private Runnable onSuccess = new Runnable() {
+        @Override
+        public void run() {
+            ((ProfileUpdateController)controller).putApplicationProfile(getProfile());
+        }
+    };
+
+    private Runnable onError = new Runnable() {
+        @Override
+        public void run() {
+
+        }
+    };
 
     @Override
     protected void initWithChildResource() {
@@ -71,39 +86,6 @@ public class UserProfileUpdateActivity extends ProfileActivity {
         }
     }
 
-    private void uploadImage(String imageName, Uri filePath) {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Uploading...");
-        progressDialog.show();
-        Log.i("FIREBASE","Uploading to firebase: " + imageName);
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference ref = storageReference.child("images/" + imageName);
-        ref.putFile(filePath)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        progressDialog.dismiss();
-                        showMessage("Uploaded");
-                        ((ProfileUpdateController)controller).putApplicationProfile(getProfile());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        progressDialog.dismiss();
-                        showMessage("Failed "+e.getMessage());
-                    }
-                })
-                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
-                                .getTotalByteCount());
-                        progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                    }
-                });
-    }
-
     @Override
     protected Context getContext() {
         return UserProfileUpdateActivity.this;
@@ -115,12 +97,15 @@ public class UserProfileUpdateActivity extends ProfileActivity {
     }
 
     public void upload(View view) {
+
+        ImageHelper imageHelper = new ImageHelper(getContext());
+
         ApplicationProfile applicationProfile = getProfile();
         applicationProfile.setFirstName(getStringFrom(R.id.first_name));
         applicationProfile.setLastName(getStringFrom(R.id.last_name));
         applicationProfile.setProfilePicture(UUID.randomUUID().toString().replace("-", ""));
         if (filePath != null) {
-            uploadImage(applicationProfile.getProfilePicture(), filePath);//updates profile only if picture loaded
+            imageHelper.uploadMedia(applicationProfile.getProfilePicture(), filePath, onSuccess, onError);//updates profile only if picture loaded
             filePath = null;
         } else {
             ((ProfileUpdateController)controller).putApplicationProfile(getProfile());

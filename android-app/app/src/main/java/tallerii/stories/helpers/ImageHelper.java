@@ -34,7 +34,7 @@ public class ImageHelper {
 
     public void setFirebaseImage(String imageId, ImageView imageView) {
         if (imageId != null && imageId.length() > 0) {
-            StorageReference imageRef = storageReference.child("images").child(imageId);
+            StorageReference imageRef = storageReference.child("media").child(imageId);
             Glide
                 .with(context)
                 .load(imageRef)
