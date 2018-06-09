@@ -3,6 +3,7 @@ package tallerii.stories.fragments.main;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -160,6 +161,12 @@ public class PostStorieFragment extends Fragment {
                 case REQUEST_CODE_TAKE_VIDEO:
                 case REQUEST_CODE_CHOOSE_VIDEO:
                     videoView.setVideoURI(fileUri);
+                    videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            mp.setLooping(true);
+                        }
+                    });
                     videoView.start();
                     break;
             }
@@ -215,17 +222,6 @@ public class PostStorieFragment extends Fragment {
             togleTakeMedia.setText("Photo");
         }
 
-        // update events
-        bindAction();
-    }
-
-    private void bindAction(){
-        if(takeVideo){
-            bindVideoViewAction();
-        } else{
-            // take picture from camera
-            bindImageViewAction();
-        }
     }
 
     private void bindVideoViewAction(){
@@ -240,11 +236,13 @@ public class PostStorieFragment extends Fragment {
 
     public View executeActionOnClickBy(int id, final Runnable func){
         View view = rootView.findViewById(id);
-        view.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                func.run();
-            }
-        });
+        if(!view.hasOnClickListeners()){
+            view.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    func.run();
+                }
+            });
+        }
         return view;
     }
 
@@ -254,7 +252,7 @@ public class PostStorieFragment extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 func.run();
-                return true;
+                return false;
             }
 
         });

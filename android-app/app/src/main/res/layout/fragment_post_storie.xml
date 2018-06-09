@@ -8,9 +8,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:layout_height="match_parent" >
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/containerMedia"
@@ -30,14 +28,15 @@
                 android:id="@+id/storieImageView"
                 android:layout_width="match_parent"
                 android:layout_height="217dp"
-                android:src="@android:drawable/ic_menu_camera" />
+                android:src="@android:drawable/ic_menu_camera"
+                android:focusable="false" android:clickable="true"/>
 
             <VideoView
                 android:id="@+id/storieVideoView"
                 android:layout_width="match_parent"
                 android:layout_height="217dp"
                 android:src="@android:drawable/ic_menu_camera"
-                android:visibility="gone" />
+                android:visibility="gone" android:focusable="false" android:clickable="true" />
 
         </android.support.constraint.ConstraintLayout>
 
