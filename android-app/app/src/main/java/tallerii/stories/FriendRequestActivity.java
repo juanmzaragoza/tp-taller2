@@ -22,6 +22,7 @@ public class FriendRequestActivity extends StoriesLoggedInActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        setTitle("Friend requests");
         friendsRecyclerView = findViewById(R.id.friendsRecyclerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         friendsRecyclerView.setLayoutManager(mLayoutManager);

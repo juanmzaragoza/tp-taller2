@@ -22,6 +22,7 @@ public class UserProfileActivity extends ProfileActivity {
         setContentView(R.layout.activity_user_profile);
         imageView = findViewById(R.id.profile_picture);
         actionButton = findViewById(R.id.profile_action_button);
+        setTitle("Profile");
     }
 
     @Override

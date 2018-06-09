@@ -31,6 +31,7 @@ public class RegistrationActivity extends StoriesAppActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         Bundle bundle = getIntent().getExtras();
+        setTitle("Register");
         if (bundle != null && bundle.getString(USERNAME) != null) {
             TextView t = findViewById(R.id.usernameText);
             t.setText(bundle.getString(USERNAME));
