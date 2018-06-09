@@ -3,6 +3,7 @@ package tallerii.stories.fragments.main;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -134,7 +135,7 @@ public class PostStorieFragment extends Fragment {
                 controller.publishStorie(fileUri, title, description, isPublic, location, "normal");
             } else{
                 StoriesAppActivity activity = (StoriesAppActivity) getActivity();
-                activity.showMessage("Please, choose a image to post!", Toast.LENGTH_SHORT);
+                activity.showMessage("Please, select a  content media to post!", Toast.LENGTH_SHORT);
             }
         }
     };
@@ -163,19 +164,42 @@ public class PostStorieFragment extends Fragment {
                     break;
                 case REQUEST_CODE_TAKE_VIDEO:
                 case REQUEST_CODE_CHOOSE_VIDEO:
-                    videoView.setVideoURI(fileUri);
-                    videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mp) {
-                            mp.setLooping(true);
-                        }
-                    });
-                    videoView.start();
-                    break;
+                    if(!isVideoTimeDurationCorrect(fileUri)){
+
+                        StoriesAppActivity activity = (StoriesAppActivity) getActivity();
+                        activity.showMessage("Sorry, the video time duration must be lower than 60 seconds.", Toast.LENGTH_SHORT);
+                        fileUri = null;
+
+                    } else {
+
+                        videoView.setVideoURI(fileUri);
+                        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                            @Override
+                            public void onPrepared(MediaPlayer mp) {
+                                mp.setLooping(true);
+                            }
+                        });
+                        videoView.start();
+                        break;
+
+                    }
             }
 
         }
     }
+
+    private boolean isVideoTimeDurationCorrect(Uri fileUri){
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        //use one of overloaded setDataSource() functions to set your data source
+        retriever.setDataSource(getContext(), fileUri);
+        String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        long timeInMillisec = Long.parseLong(time );
+
+        retriever.release();
+
+        return (timeInMillisec/1000) <= 60;
+    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
