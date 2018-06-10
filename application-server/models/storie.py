@@ -13,7 +13,9 @@ class StorieModel:
 		db = MongoController.get_mongodb_instance(MONGODB_USER,
                 	MONGODB_PASSWD)
 		storie_date = time.strftime('%d/%m/%Y %H:%M:%S', time.localtime())
+		storie_id = str(uuid.uuid4().hex)
 		storie = {
+			'_id': storie_id,
 			'created_time': storie_date,
 			'updated_time': "",
 			'_rev': body['_rev'],
@@ -23,8 +25,9 @@ class StorieModel:
 			'visibility': body['visibility'],
 			'multimedia': body['multimedia'],
 			'story_type': body['storyType']}
-		storie_id = db.stories.insert(storie)
-		db.users_stories.insert({'user_id': body['userId'],'storie_id': str(storie_id)})
+		#storie_id = db.stories.insert(storie)
+		db.stories.insert(storie)
+		db.users_stories.insert({'user_id': body['userId'],'storie_id': storie_id})
 		response = db.stories.find_one({'_id': storie_id})
 
 		response['user_id'] = body['userId']

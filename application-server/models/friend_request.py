@@ -4,6 +4,8 @@ from errors_exceptions.no_data_found_exception import NoDataFoundException
 from errors_exceptions.data_already_exists_exception import DataAlreadyExistsException
 import bson
 import time
+import uuid
+
 
 class FriendRequestModel():
 
@@ -92,9 +94,11 @@ class FriendRequestModel():
 			raise DataAlreadyExistsException
 		
 		date = time.strftime("%d/%m/%Y", time.localtime())
-		friend_req_id = db.friends_request.insert({'user_id_sender': user_id_sender,
-												'user_id_rcv': user_id_rcv,
-												'date': date})
+		friend_req_id = str(uuid.uuid4().hex)
+		db.friends_request.insert({	'_id': friend_req_id,
+									'user_id_sender': user_id_sender,
+									'user_id_rcv': user_id_rcv,
+									'date': date})
 		
 		friend_req = db.friends_request.find_one({'_id': friend_req_id})
 		friend_req['_id'] = str(friend_req['_id'])
