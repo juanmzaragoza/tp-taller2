@@ -54,6 +54,21 @@ class FileService {
                 })
             });
         };
+
+        this.get = (models) => {
+            return new Promise((resolve, reject) => {
+                DaoService.findAll(models.file)
+                .then( function(files) {
+                    var listJson = files.map(function(file) {
+                        return getFileReturnData(file);
+                    });
+                    resolve(listJson);
+                })
+                .catch(function(err){
+                    reject(err);
+                })
+            });
+        }
     }
 }
 

@@ -9,18 +9,14 @@ const FileService       = require('../services/file.service')
 class FileController{
     constructor(){
         this.get = (req, res, next)=>{
-            var servers = [
-                {
-                    id: '1',
-                    _rev: 'rev',
-                    createdTime: 0,
-                    updatedTime: 0,
-                    size: 60,
-                    filename: "file.jpg",
-                    resource: "data"
-                }
-            ]
-            ResServ.ok(ResEnum.Values, "servers", servers, res, next);
+            FileService.get(req.models)
+            .then(files => {
+                ResServ.ok(ResEnum.Values, "files", files, res, next);
+            })
+            .catch( e => {
+                console.log(e);
+                ResServ.error(res, messages.NotFound);
+            });
         }
         this.postUpload = (req, res, next)=>{
             FireBaseService.upload(req.body, (err, url) =>{
