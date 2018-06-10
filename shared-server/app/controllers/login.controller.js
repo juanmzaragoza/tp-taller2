@@ -5,12 +5,17 @@ var config      = require('../../config/default')
 var messages    = require('../../config/messages')
 var ResServ     = require('../services/response.service')
 var ResEnum     = require('../common/response.enum')
+var ServerService = require('../services/server.service')
  
 class LoginController {
     constructor() {
         this.token = (req, res, next) => {
             if(req.body.username && req.body.password){ 
-                loginServ.auth(req.body.username,req.body.password, req.models)
+
+                ServerService.updateLastConnection(req.get('api-key'), req.models)
+                .then(() => {
+                    return loginServ.auth(req.body.username,req.body.password, req.models);    
+                })
                 .then((ticket) => {
                     console.log(ticket)
                     ResServ.ok(ResEnum.Value, "token", ticket, res, next);

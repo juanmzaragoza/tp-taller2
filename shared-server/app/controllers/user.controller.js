@@ -4,14 +4,18 @@ const AuthServ    = require('../services/auth.service')
 const ResServ     = require('../services/response.service')
 const ResEnum     = require('../common/response.enum')
 const UserService = require('../services/user.service')
+const ServerService = require('../services/server.service')
 
 class UserController {
     constructor() {
         this.user = (req, res, next) => {
             try{
-                var userAttrs = req.body;
-                userAttrs.role = "app";
-                UserService.add(userAttrs, req.models)
+                ServerService.updateLastConnection(req.get('api-key'), req.models)
+                .then(() => {
+                    var userAttrs = req.body;
+                    userAttrs.role = "app";
+                    return UserService.add(userAttrs, req.models);
+                })
                 .then(user=>{
                     ResServ.ok(ResEnum.Value, "user", user, res, next)
                 })

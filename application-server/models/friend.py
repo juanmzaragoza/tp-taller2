@@ -1,8 +1,8 @@
 from constants import MONGODB_USER, MONGODB_PASSWD
 from controllers.db_controller import MongoController
 from errors_exceptions.no_data_found_exception import NoDataFoundException
-from bson.objectid import ObjectId
 import bson
+import uuid
 import time
 
 class FriendModel():
@@ -38,7 +38,6 @@ class FriendModel():
 													"date": doc["date"]
 												}
 		friends_data = db.users.find({'_id':{"$in":friends_user_id}});
-		print (friends_user_id)
 		for doc in friends_data:
 			data[str(doc["_id"])]["last_name"] = doc["last_name"]
 			data[str(doc["_id"])]["name"] = doc["name"]
@@ -50,24 +49,22 @@ class FriendModel():
 	def create_friend(friend):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 		friend['date'] = time.strftime("%d/%m/%Y", time.localtime())
-		friend_id = db.friends.insert(friend)
-		friend = db.friends.find_one({'_id': ObjectId(friend_id)})
-		friend['_id'] = str(friend['_id'])
+		friend['_id'] = str(uuid.uuid4().hex)
+		db.friends.insert(friend)
+		friend = db.friends.find_one({'_id': friend['_id']})
+		#friend['_id'] = str(friend['_id'])
 		return friend
 	
 	@staticmethod
 	def delete_friend(friend_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
-				
-		if bson.objectid.ObjectId.is_valid(friend_id) == False:
-			raise NoDataFoundException
 		
-		response = db.friends.find_one({'_id': ObjectId(friend_id)})
+		response = db.friends.find_one({'_id': friend_id})
 
 		if response == None:
 			raise NoDataFoundException
 
-		db.friends.remove({'_id': ObjectId(friend_id)})
+		db.friends.remove({'_id': friend_id})
 
 		response['_id'] = str(response['_id'])
 		return response
