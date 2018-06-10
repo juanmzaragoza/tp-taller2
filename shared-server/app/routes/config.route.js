@@ -60,6 +60,11 @@ RouterHandler.addEndpointWithAuth({
     handler: FileCtrl.create
 });
 RouterHandler.addEndpointWithAuth({
+    verb: 'put',
+    path: '/files/:id',
+    handler: FileCtrl.update
+});
+RouterHandler.addEndpointWithAuth({
     verb: 'delete',
     path: '/files/:id',
     handler: FileCtrl.delete

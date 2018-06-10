@@ -27,10 +27,30 @@ class FileService {
             return validateAttrs(attrs, neededAttrs);
         }
 
+        function validateUpdateAttrs(attrs){
+            const neededAttrs = ["filename","rev"];
+            return validateAttrs(attrs, neededAttrs);
+        }
+
+        function validateOptimisticLock(file, attrs){
+            if (file.rev != attrs.rev){
+                throw "conflict";
+            }
+        }
+
         function createFile(attrs, models) {
             attrs.createdTime = Date.now();
             attrs.rev = new Date().getTime();
             return DaoService.insert(models.file, attrs);
+        }
+
+        function updateAttrsForFile(file, attrs) {
+            var attrsToUpdate = _.pick(attrs, ['filename','size']) ;
+            for (var key in attrsToUpdate){
+                file[key] = attrsToUpdate[key];
+            }
+            file.rev = new Date().getTime();
+            return file;
         }
 
         function getFileReturnData(file){
@@ -54,6 +74,29 @@ class FileService {
                 })
             });
         };
+
+        this.update = (id, receivedAttrs, models)=>{
+            return new Promise((resolve, reject) => {
+
+                validateUpdateAttrs(receivedAttrs)
+                .then(function(attrs) {
+                    var file = DaoService.findById(id, models.file);
+                    return Promise.all([file, attrs]);
+                })
+                .then( function([file, attrs]) {
+                    validateOptimisticLock(file, attrs);
+                    file = updateAttrsForFile(file, attrs);
+                    return DaoService.update(file);
+                })
+                .then( function(file) {
+                    var fileJson = getFileReturnData(file);
+                    resolve(fileJson);
+                })
+                .catch(function(err){
+                    reject(err);
+                })
+            });            
+        }
 
         this.get = (models) => {
             return new Promise((resolve, reject) => {

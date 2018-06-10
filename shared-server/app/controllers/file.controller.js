@@ -59,6 +59,18 @@ class FileController{
             });
         }
 
+        this.update = (req, res, next) => {
+            var id = req.params.id;
+            var attrs = req.body;
+            FileService.update(id, attrs, req.models)
+            .then(file => {
+                ResServ.ok(ResEnum.Value, "file", file, res, next);
+            })
+            .catch(e => {
+                handleError(e, res);
+            });
+        };
+
         this.delete = (req, res, next) => {
             var id = req.params.id;
             FileService.delete(id, req.models)
