@@ -69,6 +69,19 @@ class FileService {
                 })
             });
         }
+
+        this.getById = (id, models) => {
+            return new Promise((resolve, reject) => {
+                DaoService.findById(id, models.file)
+                .then( function(file) {
+                    var responseData = getFileReturnData(file);
+                    resolve(responseData);
+                })
+                .catch(function(err){
+                    reject(err);
+                })
+            });
+        }
     }
 }
 

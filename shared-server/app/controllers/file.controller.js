@@ -13,11 +13,21 @@ class FileController{
             .then(files => {
                 ResServ.ok(ResEnum.Values, "files", files, res, next);
             })
-            .catch( e => {
-                console.log(e);
-                ResServ.error(res, messages.NotFound);
+            .catch(e => {
+                handleError(e, res);
             });
         }
+
+        this.getById = (req, res, next) => {
+            FileService.getById(req.params.id, req.models)
+            .then(file => {
+                ResServ.ok(ResEnum.Values, "server", file, res, next);
+            })
+            .catch(e => {
+                handleError(e, res);
+            });
+        };
+
         this.postUpload = (req, res, next)=>{
             FireBaseService.upload(req.body, (err, url) =>{
                 if(err == undefined && url){

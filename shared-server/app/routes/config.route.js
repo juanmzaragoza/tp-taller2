@@ -41,6 +41,11 @@ RouterHandler.addEndpointWithAuth({
 // Files
 RouterHandler.addEndpointWithAuth({
     verb: 'get',
+    path: '/files/:id',
+    handler: FileCtrl.getById
+});
+RouterHandler.addEndpointWithAuth({
+    verb: 'get',
     path: '/files',
     handler: FileCtrl.get
 });
