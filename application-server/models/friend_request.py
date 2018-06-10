@@ -2,7 +2,6 @@ from constants import MONGODB_USER, MONGODB_PASSWD
 from controllers.db_controller import MongoController
 from errors_exceptions.no_data_found_exception import NoDataFoundException
 from errors_exceptions.data_already_exists_exception import DataAlreadyExistsException
-from bson.objectid import ObjectId
 import bson
 import time
 
@@ -17,7 +16,7 @@ class FriendRequestModel():
 
 		friends_requests_rcv = db.friends_request.find({'user_id_rcv': user_id})
 		for doc in friends_requests_rcv:
-			friends_requests_user_id.append(ObjectId(doc["user_id_sender"]))
+			friends_requests_user_id.append(doc["user_id_sender"])
 			data[doc["user_id_sender"]] = {
 												"_id": str(doc["_id"]),
 												"user_id": doc["user_id_sender"],
@@ -30,9 +29,9 @@ class FriendRequestModel():
 		for doc in friends_requests_data:
 			data[str(doc["_id"])]["last_name"] = doc["last_name"]
 			data[str(doc["_id"])]["name"] = doc["name"]
-
-		return data.values()
-
+		
+		return list(data.values())
+		
 	@staticmethod
 	def get_friends_requests_sent_by_user_id(user_id):
 		friends_requests_user_id = []
@@ -42,7 +41,7 @@ class FriendRequestModel():
 
 		friends_requests_rcv = db.friends_request.find({'user_id_sender': user_id})
 		for doc in friends_requests_rcv:
-			friends_requests_user_id.append(ObjectId(doc["user_id_rcv"]))
+			friends_requests_user_id.append(doc["user_id_rcv"])
 			data[doc["user_id_rcv"]] = {
 												"_id": str(doc["_id"]),
 												"user_id": doc["user_id_rcv"],
@@ -56,31 +55,31 @@ class FriendRequestModel():
 			data[str(doc["_id"])]["last_name"] = doc["last_name"]
 			data[str(doc["_id"])]["name"] = doc["name"]
 
-		return data.values()
+		return list(data.values())
 	
 	@staticmethod
 	def exists_request(request_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
-		if (bson.objectid.ObjectId.is_valid(request_id) == False):
-			raise NoDataFoundException
 
-		request = db.friends_request.find_one({'_id': ObjectId(request_id)})
+		request = db.friends_request.find_one({'_id': request_id})
 
 		if request == None:
 			raise NoDataFoundException
+
+		return request_id
 	
 	@staticmethod
 	def get_friend_request(request_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
-		friend_req = db.friends_request.find_one({'_id': ObjectId(request_id)})
+		friend_req = db.friends_request.find_one({'_id': request_id})
 		friend_req['_id'] = str(friend_req['_id'])
 		return friend_req
 
 	@staticmethod
 	def remove_friend_request(request_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
-		friend_req = db.friends_request.find_one({'_id': ObjectId(request_id)})
-		db.friends_request.remove({'_id': ObjectId(request_id)})
+		friend_req = db.friends_request.find_one({'_id': request_id})
+		db.friends_request.remove({'_id': request_id})
 		friend_req['_id'] = str(friend_req['_id'])
 		return friend_req
 	
@@ -97,6 +96,6 @@ class FriendRequestModel():
 												'user_id_rcv': user_id_rcv,
 												'date': date})
 		
-		friend_req = db.friends_request.find_one({'_id': ObjectId(friend_req_id)})
+		friend_req = db.friends_request.find_one({'_id': friend_req_id})
 		friend_req['_id'] = str(friend_req['_id'])
 		return friend_req

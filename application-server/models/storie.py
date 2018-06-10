@@ -3,7 +3,6 @@ from controllers.db_controller import MongoController
 from errors_exceptions.no_data_found_exception import NoDataFoundException
 from models.user_data import UserDataModel
 from errors_exceptions.data_version_exception import DataVersionException
-from bson.objectid import ObjectId
 import bson
 import uuid
 import time
@@ -26,18 +25,16 @@ class StorieModel:
 			'story_type': body['storyType']}
 		storie_id = db.stories.insert(storie)
 		db.users_stories.insert({'user_id': body['userId'],'storie_id': str(storie_id)})
-		response = db.stories.find_one({'_id': ObjectId(storie_id)})
-		response['_id'] = str(response['_id'])
+		response = db.stories.find_one({'_id': storie_id})
+
 		response['user_id'] = body['userId']
 		return response
 
 	@staticmethod
 	def update_storie(storie_id, body):
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
-		if bson.objectid.ObjectId.is_valid(storie_id) == False:
-			raise NoDataFoundException
 
-		storie = db.stories.find_one({'_id': ObjectId(storie_id)})
+		storie = db.stories.find_one({'_id':  storie_id})
 
 		if storie == None:
 			raise NoDataFoundException
@@ -52,8 +49,8 @@ class StorieModel:
 
 		body['_rev'] = uuid.uuid4().hex
 		del body['_id']
-		storie = db.stories.find_and_modify({'_id': ObjectId(storie_id)},{'$set': body})
-		storie = db.stories.find_one({'_id': ObjectId(storie_id)})
+		storie = db.stories.find_and_modify({'_id': storie_id},{'$set': body})
+		storie = db.stories.find_one({'_id': storie_id})
 		storie['_id'] = str(storie['_id'])
 		return storie
 
@@ -73,7 +70,7 @@ class StorieModel:
 						'user_email': user_data_response['email'],
 						'user_picture': user_data_response['picture']
 						}
-			stories_id.append(ObjectId(storie_id))
+			stories_id.append(storie_id)
 
 		stories = db.stories.find({'_id': {'$in': stories_id}})
 		for doc in stories:
@@ -89,7 +86,7 @@ class StorieModel:
 			response[storie_id].update({'multimedia': doc['multimedia']})
 			response[storie_id].update({'story_type': doc['story_type']})
 
-		return response.values()
+		return list(response.values())
 
 	@staticmethod
 	def get_stories_by_user_id(user_id):
@@ -106,7 +103,7 @@ class StorieModel:
 						'user_name': user_data_response['name'],
 						'user_email': user_data_response['email'],
 						'user_picture': user_data_response['picture']}
-			stories_id.append(ObjectId(doc['storie_id']))
+			stories_id.append(doc['storie_id'])
 
 		stories = db.stories.find({'_id': {'$in': stories_id}})
 		for doc in stories:
@@ -121,23 +118,19 @@ class StorieModel:
 			response[storie_id].update({'visibility': doc['visibility']})
 			response[storie_id].update({'multimedia': doc['multimedia']})
 			response[storie_id].update({'story_type': doc['story_type']})
-		return response.values()
+		return list(response.values())
 
 	@staticmethod
 	def delete_storie(storie_id, body):
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
-		
-		
-		if bson.objectid.ObjectId.is_valid(storie_id) == False:
-			raise NoDataFoundException
 		
 		storie = db.users_stories.find_one({'storie_id': storie_id,'user_id': body['user_id']})
 
 		if storie == None:
 			raise NoDataFoundException
 
-		response = db.stories.find_one({'_id': ObjectId(storie_id)})
-		db.stories.remove({'_id': ObjectId(storie_id)})
+		response = db.stories.find_one({'_id': storie_id})
+		db.stories.remove({'_id': storie_id})
 		db.users_stories.remove({'storie_id': storie_id,'user_id': body['user_id']})
 
 		response['_id'] = str(response['_id'])

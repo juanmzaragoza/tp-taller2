@@ -36,7 +36,7 @@ class TestProfileApi(unittest.TestCase):
 
         # execution
 
-        userId = '5ae66a31d4ef925dac59a94b'
+        userId = '1'
         response = self.__make_get_request(userId)
 
         # assertions

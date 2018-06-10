@@ -2,7 +2,6 @@ from constants import MONGODB_USER, MONGODB_PASSWD
 from controllers.db_controller import MongoController
 from errors_exceptions.no_data_found_exception import NoDataFoundException
 from errors_exceptions.data_version_exception import DataVersionException
-from bson.objectid import ObjectId
 import bson
 import uuid
 
