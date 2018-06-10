@@ -71,7 +71,7 @@ class ServerService {
         }
 
         function updateAttrsForServer(appServer, attrs) {
-            var attrsToUpdate = _.pick(attrs, ['name']) ;
+            var attrsToUpdate = _.pick(attrs, ['name','host']) ;
             for (var key in attrsToUpdate){
                 appServer[key] = attrsToUpdate[key];
             }
@@ -205,6 +205,31 @@ class ServerService {
             return [{
                 model: models.user
             }];
+        }
+
+        function updateLastConnection(appServer) {
+            appServer.lastConnection = Date.now();
+            return DaoService.update(appServer);
+        }
+
+        this.updateLastConnection = function(apiKey, models){
+            return new Promise((resolve, reject) => {
+                if (apiKey){
+                    var filter = {"token": apiKey};
+                    DaoService.findOne(filter, models.app_server)
+                    .then( function(appServer) {
+                        return updateLastConnection(appServer);
+                    })
+                    .then(function(){
+                        resolve();
+                    })
+                    .catch(function(err){
+                        resolve();
+                    })
+                } else {
+                    resolve();
+                }
+            });
         }
     }
 }
