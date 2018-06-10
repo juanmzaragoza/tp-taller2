@@ -128,8 +128,9 @@ class FileService {
                     var fileUploadUrl = FireBaseService.upload(fileData)
                 	return Promise.all([file, attrs, fileUploadUrl]);
                 }).
-                then( function([file, attrs, fileUploadUrl]){
-                	attrs.resource = fileUploadUrl;
+                then( function([file, attrs, uploadData]){
+                	attrs.resource = uploadData.url;
+                	attrs.size = uploadData.size;
                     file = updateAttrsForFile(file, attrs);
                     return DaoService.update(file);
                 })
