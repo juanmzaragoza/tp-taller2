@@ -22,7 +22,7 @@ public class SearchUsersActivity extends StoriesLoggedInActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        setTitle("Friend requests");
+        setTitle("Discover Users");
         usersRecyclerView = findViewById(R.id.friendsRecyclerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         usersRecyclerView.setLayoutManager(mLayoutManager);

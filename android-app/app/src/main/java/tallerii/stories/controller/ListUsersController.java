@@ -32,7 +32,7 @@ public class ListUsersController {
                 public void onResponse(Response<JsonObject> response) {
                     if (response.isSuccessful() && response.body() != null) {
                         Type listType = new TypeToken<ArrayList<Users>>() {}.getType();
-                        JsonArray jsonRequests = response.body().getAsJsonArray("requests");
+                        JsonArray jsonRequests = response.body().getAsJsonArray("users");
                         assert (jsonRequests != null);
                         List<Users> friendRequests = gson.fromJson(jsonRequests, listType);
                         if (friendRequests != null) {

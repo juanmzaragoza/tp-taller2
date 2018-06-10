@@ -9,13 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 import java.util.List;
 
 import tallerii.stories.ProfileActivity;
 import tallerii.stories.R;
+import tallerii.stories.UserProfileActivity;
 import tallerii.stories.network.apimodels.Users;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
@@ -52,7 +50,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     }
 
     private void goToProfile(String personId) {
-        Intent goToUpdate = new Intent(context, ProfileActivity.class);
+        Intent goToUpdate = new Intent(context, UserProfileActivity.class);
         goToUpdate.putExtra(ProfileActivity.PROFILE_ID, personId);
         context.startActivity(goToUpdate);
     }
