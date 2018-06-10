@@ -59,6 +59,11 @@ RouterHandler.addEndpointWithAuth({
     path: '/files',
     handler: FileCtrl.create
 });
+RouterHandler.addEndpointWithAuth({
+    verb: 'delete',
+    path: '/files/:id',
+    handler: FileCtrl.delete
+});
 
 // Servers
 RouterHandler.addEndpointWithAuth({

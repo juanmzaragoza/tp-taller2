@@ -82,6 +82,21 @@ class FileService {
                 })
             });
         }
+
+        this.delete = (id, models)=>{
+            return new Promise((resolve, reject) => {
+                DaoService.findById(id, models.file)
+                .then( function(file) {
+                    return DaoService.delete(file);
+                })
+                .then( function() {
+                    resolve();
+                })
+                .catch(function(err){
+                    reject(err);
+                })
+            });
+        }
     }
 }
 

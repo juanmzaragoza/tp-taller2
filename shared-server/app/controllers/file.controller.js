@@ -59,6 +59,17 @@ class FileController{
             });
         }
 
+        this.delete = (req, res, next) => {
+            var id = req.params.id;
+            FileService.delete(id, req.models)
+            .then(() => {
+                ResServ.deleteSuccessfull(res, next);
+            })
+            .catch(e => {
+                handleError(e, res);
+            });
+        };
+
         function handleError(e, res){
             if (e == 'not-found'){
                 ResServ.errorNotFound(res);
