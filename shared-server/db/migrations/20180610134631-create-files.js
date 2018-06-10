@@ -24,7 +24,7 @@ module.exports = {
         defaultValue: 0,
         allowNull: false
       },
-      fileName: {
+      filename: {
         type: Sequelize.STRING
       },
       resource: {

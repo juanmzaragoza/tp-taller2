@@ -23,7 +23,7 @@ class FileService {
         }
 
         function validateCreationAttrs(attrs){
-            const neededAttrs = ["fileName"];
+            const neededAttrs = ["filename"];
             return validateAttrs(attrs, neededAttrs);
         }
 
@@ -36,7 +36,7 @@ class FileService {
         function getFileReturnData(file){
             var data = file.toJSON();
             data['_rev'] = data.rev;
-            return _.pick(data, ['id','_rev','createdTime','updatedTime','size','fileName','resource']);
+            return _.pick(data, ['id','_rev','createdTime','updatedTime','size','filename','resource']);
         }
 
     	this.add = (attrs, models) => {

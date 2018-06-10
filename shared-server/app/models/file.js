@@ -16,7 +16,7 @@ module.exports = (Sequelize, sequelize, models) => {
 	        defaultValue: 0,
 	        allowNull: false
 	    },
-		fileName: {
+		filename: {
 			type: Sequelize.STRING,
 			allowNull: true
 		},
