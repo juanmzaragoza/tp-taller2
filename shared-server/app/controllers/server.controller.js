@@ -1,7 +1,6 @@
 const config        = require('../../config/default')
 const messages      = require('../../config/messages')
 const AuthServ      = require('../services/auth.service')
-// const Server        = require('../models/server')
 const ResServ       = require('../services/response.service')
 const ResEnum       = require('../common/response.enum')
 const ServerService = require('../services/server.service')
