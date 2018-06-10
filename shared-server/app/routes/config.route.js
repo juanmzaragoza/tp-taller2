@@ -52,7 +52,7 @@ RouterHandler.addEndpointWithAuth({
 RouterHandler.addEndpointWithAuth({
     verb: 'post',
     path: '/files/upload',
-    handler: FileCtrl.postUpload
+    handler: FileCtrl.uploadFile
 });
 RouterHandler.addEndpointWithAuth({
     verb: 'post',

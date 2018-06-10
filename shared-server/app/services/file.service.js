@@ -1,6 +1,7 @@
 "use strict";
 const DaoService    = require('../services/dao.service')
 var _               = require("underscore")
+const FireBaseService   = require("../services/fire.base.service")
 
 class FileService {
     constructor() {
@@ -32,6 +33,21 @@ class FileService {
             return validateAttrs(attrs, neededAttrs);
         }
 
+        function validateUploadAttrs(attrs){
+        	const neededAttrs = ["id","rev"];
+            return validateAttrs(attrs, neededAttrs);	
+        }
+
+        function validateFileData(fileData){
+        	return new Promise((resolve, reject) => {
+                if (!fileData){
+                	reject("invalid-attrs");
+                } else {
+                    resolve(); 
+                }
+            }); 
+        }
+
         function validateOptimisticLock(file, attrs){
             if (file.rev != attrs.rev){
                 throw "conflict";
@@ -45,7 +61,7 @@ class FileService {
         }
 
         function updateAttrsForFile(file, attrs) {
-            var attrsToUpdate = _.pick(attrs, ['filename','size']) ;
+            var attrsToUpdate = _.pick(attrs, ['filename','size','resource']) ;
             for (var key in attrsToUpdate){
                 file[key] = attrsToUpdate[key];
             }
@@ -77,7 +93,6 @@ class FileService {
 
         this.update = (id, receivedAttrs, models)=>{
             return new Promise((resolve, reject) => {
-
                 validateUpdateAttrs(receivedAttrs)
                 .then(function(attrs) {
                     var file = DaoService.findById(id, models.file);
@@ -96,6 +111,36 @@ class FileService {
                     reject(err);
                 })
             });            
+        }
+
+        this.uploadFile = (fileData, receivedAttrs, models) => {
+        	return new Promise((resolve, reject) => {
+        		validateFileData(fileData)
+        		.then(function() {
+        			return validateUploadAttrs(receivedAttrs);
+        		})
+        		.then(function(attrs){
+        			var file = DaoService.findById(attrs.id, models.file);
+                    return Promise.all([file, attrs]);
+        		})
+        		.then( function([file, attrs]) {
+                    validateOptimisticLock(file, attrs);
+                    var fileUploadUrl = FireBaseService.upload(fileData)
+                	return Promise.all([file, attrs, fileUploadUrl]);
+                }).
+                then( function([file, attrs, fileUploadUrl]){
+                	attrs.resource = fileUploadUrl;
+                    file = updateAttrsForFile(file, attrs);
+                    return DaoService.update(file);
+                })
+                .then( function(file) {
+                    var fileJson = getFileReturnData(file);
+                    resolve(fileJson);
+                })
+                .catch(function(err){
+                	reject(err);
+                })
+        	});
         }
 
         this.get = (models) => {

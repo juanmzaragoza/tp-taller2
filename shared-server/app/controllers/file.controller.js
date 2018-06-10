@@ -1,6 +1,6 @@
 'use strict'
 
-const FireBaseService   = require("../services/fire.base.service")
+// const FireBaseService   = require("../services/fire.base.service")
 const ResServ           = require('../services/response.service')
 const ResEnum           = require('../common/response.enum')
 const messages          = require('../../config/messages')
@@ -27,26 +27,6 @@ class FileController{
                 handleError(e, res);
             });
         };
-
-        this.postUpload = (req, res, next)=>{
-            FireBaseService.upload(req.body, (err, url) =>{
-                if(err == undefined && url){
-                    var server = {
-                                id: '1',
-                                _rev: 'rev',
-                                createdTime: 0,
-                                updatedTime: 0,
-                                size: 60,
-                                filename: "file.jpg",
-                                resource: url
-                            }
-                    ResServ.ok(ResEnum.Value, "server", server, res, next);
-                }
-                else{
-                    ResServ.error(res, messages.NotFound);
-                }
-            });
-        }
 
         this.create = (req, res, next)=>{
             var attrs = req.body;
@@ -81,6 +61,41 @@ class FileController{
                 handleError(e, res);
             });
         };
+
+        this.uploadFile = (req, res, next)=>{
+            var fileData = req.body.file;
+            var attrs = req.body.metadata;
+            if (!fileData || !attrs){
+                handleError('invalid-attrs', res);
+                return;
+            }
+            FileService.uploadFile(fileData, attrs, req.models)
+            .then(file => {
+                ResServ.ok(ResEnum.Value, "file", file, res, next);
+            })
+            .catch(e => {
+                handleError(e, res);
+            });
+
+
+            // FireBaseService.upload(req.body.file, (err, url) =>{
+            //     if(err == undefined && url){
+            //         var server = {
+            //                     id: '1',
+            //                     _rev: 'rev',
+            //                     createdTime: 0,
+            //                     updatedTime: 0,
+            //                     size: 60,
+            //                     filename: "file.jpg",
+            //                     resource: url
+            //                 }
+            //         ResServ.ok(ResEnum.Value, "server", server, res, next);
+            //     }
+            //     else{
+            //         ResServ.error(res, messages.NotFound);
+            //     }
+            // });
+        }
 
         function handleError(e, res){
             if (e == 'not-found'){
