@@ -37,6 +37,7 @@ function loadDatabase() {
 
     require('./user')(Sequelize, sequelize, models);
     require('./app_server')(Sequelize, sequelize, models);
+    require('./file')(Sequelize, sequelize, models);
     
     return {
         db: sequelize,

@@ -4,6 +4,7 @@ const FireBaseService   = require("../services/fire.base.service")
 const ResServ           = require('../services/response.service')
 const ResEnum           = require('../common/response.enum')
 const messages          = require('../../config/messages')
+const FileService       = require('../services/file.service')
 
 class FileController{
     constructor(){
@@ -39,6 +40,29 @@ class FileController{
                     ResServ.error(res, messages.NotFound);
                 }
             });
+        }
+
+        this.create = (req, res, next)=>{
+            var attrs = req.body;
+            FileService.add(attrs, req.models)
+            .then(file => {
+                ResServ.ok(ResEnum.Value, "file", file, res, next)
+            })
+            .catch(e => {
+                handleError(e, res);
+            });
+        }
+
+        function handleError(e, res){
+            if (e == 'not-found'){
+                ResServ.errorNotFound(res);
+            } else if (e == 'invalid-attrs') {
+                ResServ.errorBadRequest(res);
+            } else if (e == 'conflict'){
+                ResServ.errorConflict(res);
+            } else {
+                ResServ.errorInternal(res);    
+            }
         }
     }
 }
