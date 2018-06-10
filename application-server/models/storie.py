@@ -88,7 +88,11 @@ class StorieModel:
 			response[storie_id].update({'visibility': doc['visibility']})
 			response[storie_id].update({'multimedia': doc['multimedia']})
 			response[storie_id].update({'story_type': doc['story_type']})
-
+			response[storie_id].update({'comments': []})
+			comments = db.storie_comments.find({'storie_id': storie_id})
+			for com in comments:
+				response[storie_id]["comments"].append(com)
+				
 		return list(response.values())
 
 	@staticmethod
@@ -121,6 +125,11 @@ class StorieModel:
 			response[storie_id].update({'visibility': doc['visibility']})
 			response[storie_id].update({'multimedia': doc['multimedia']})
 			response[storie_id].update({'story_type': doc['story_type']})
+			response[storie_id].update({'comments': []})
+			comments = db.storie_comments.find({'storie_id': storie_id})
+			for com in comments:
+				response[storie_id]["comments"].append(com)
+				
 		return list(response.values())
 
 	@staticmethod

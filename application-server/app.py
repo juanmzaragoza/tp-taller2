@@ -8,7 +8,8 @@ from controllers.user_controller import UserController
 from controllers.user_detail_controller import UserDetailController
 from controllers.userapp_controller import UserAppController
 from controllers.ping_controller import PingController
-#from controllers.comment_controller import CommentController
+from controllers.comment_controller import CommentController
+from controllers.comment_detail_controller import CommentDetailController
 from controllers.stats_controller import StatsController
 from controllers.profile_controller import ProfileController
 from controllers.storie_controller import StorieController
@@ -45,7 +46,8 @@ with app.app_context():
 	# app endpoints
 	api.add_resource(UserAppController, '/users/<string:user_id>')
 	api.add_resource(StorieController, '/stories')
-	#api.add_resource(CommentController, '/stories/comments')
+	api.add_resource(CommentController, '/comments')
+	api.add_resource(CommentDetailController, '/comments/<string:comment_id>')
 	api.add_resource(StorieDetailController, '/stories/<string:id>')
 	api.add_resource(BeFriendController, '/befriend')
 	api.add_resource(BeFriendDetailController, '/befriend/<string:user_id>')
