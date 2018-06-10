@@ -174,5 +174,179 @@ describe('File Service Tests', function(){
 		});
 	});
 
+	it ('getById inexistent file should throw not-found', function(done) {
+		models.file.$queryInterface.$useHandler(function(query, queryOptions, done) {
+		    if (query === 'findById') {
+		    	if (queryOptions[0] === 14) {
+		            return null
+		        }
+		    }
+		});
+		fileService.getById(14, models)
+		.then((result) => {
+			assert(false);
+			done();
+		})
+		.catch((reason) => {
+			assert.equal(reason, 'not-found');
+			done();
+		});
+	});
+
+	it ('getById file should success', function(done) {
+		models.file.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findById') {
+		    	if (queryOptions[0] == 8) {
+		            return models.file.build({ 
+		            	"id": 8,
+		            	"rev": "456",
+						"createdTime": "2018-05-26T17:19:51.342Z",
+						"updatedTime": "2018-05-26T17:19:51.342Z",
+						"filename": "dummy",
+						"size": 12345,
+						"resource": "http://imagen.com"
+				    });
+		        } else {
+		        	return null;
+		        }
+		    }
+		});
+		fileService.getById(8, models)
+		.then((response) => {
+			assert.notEqual(response,null);
+			assert.equal(response.createdTime,"2018-05-26T17:19:51.342Z");
+			assert.equal(response.updatedTime,"2018-05-26T17:19:51.342Z");
+			assert.equal(response.id,8);
+			assert.equal(response.filename,'dummy');
+			assert.equal(response.size,12345);
+			assert.equal(response._rev,"456");
+			assert.equal(response.resource,"http://imagen.com");
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "getById failed: "+reason);
+			done();
+		});
+	});
+
+	it ('get file should return empty list', function(done) {
+		models.file.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findAll') {
+		    	return [];
+		    }
+		});
+		fileService.get(models)
+		.then((response) => {
+			assert.deepEqual(response,[]);
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "get failed: "+reason);
+			done();
+		});
+	});
+
+	it ('get file should return list', function(done) {
+		models.file.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findAll') {
+				var file1 = models.file.build({ 
+	            	"id": 8,
+	            	"rev": "456",
+					"createdTime": "2018-05-26T17:19:51.342Z",
+					"updatedTime": "2018-05-26T17:19:51.342Z",
+					"filename": "dummy",
+					"size": 12345,
+					"resource": "http://imagen.com"
+			    });
+			    var file2 = models.file.build({ 
+	            	"id": 17,
+	            	"rev": "555",
+					"createdTime": "2018-05-26T17:19:51.342Z",
+					"updatedTime": "2018-05-26T17:19:51.342Z",
+					"filename": "otro dummy",
+					"size": 213,
+					"resource": "http://imagen2.com"
+			    });
+			    return [file1, file2];
+		    }
+		});
+		fileService.get(models)
+		.then((response) => {
+			assert.deepEqual(response,[
+				{
+					"id": 8,
+	            	"_rev": "456",
+					"createdTime": "2018-05-26T17:19:51.342Z",
+					"updatedTime": "2018-05-26T17:19:51.342Z",
+					"filename": "dummy",
+					"size": 12345,
+					"resource": "http://imagen.com"
+				},
+				{
+					"id": 17,
+	            	"_rev": "555",
+					"createdTime": "2018-05-26T17:19:51.342Z",
+					"updatedTime": "2018-05-26T17:19:51.342Z",
+					"filename": "otro dummy",
+					"size": 213,
+					"resource": "http://imagen2.com"
+			    }
+			]);
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "get failed: "+reason);
+			done();
+		});
+	});
+
+	it ('delete inexistent file should throw not-found', function(done) {
+		models.file.$queryInterface.$useHandler(function(query, queryOptions, done) {
+		    if (query === 'findById') {
+		    	if (queryOptions[0] === 14) {
+		            return null
+		        }
+		    }
+		});
+		fileService.delete(14, models)
+		.then((result) => {
+			assert(false);
+			done();
+		})
+		.catch((reason) => {
+			assert.equal(reason, 'not-found');
+			done();
+		});
+	});
+
+	it ('delete file should success', function(done) {
+		models.file.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findById') {
+		    	if (queryOptions[0] == 8) {
+		            return models.file.build({ 
+		            	"id": 8,
+		            	"rev": "555",
+						"createdTime": "2018-05-26T17:19:51.342Z",
+						"updatedTime": "2018-05-26T17:19:51.342Z",
+						"filename": "otro dummy",
+						"size": 213,
+						"resource": "http://imagen2.com"
+				    });
+		        } else {
+		        	return null;
+		        }
+		    }
+		});
+		fileService.delete(8, models)
+		.then((response) => {
+			assert(true);
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "getById failed: "+reason);
+			done();
+		});
+	});
+
 
 });
