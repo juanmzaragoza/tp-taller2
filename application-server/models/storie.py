@@ -89,9 +89,13 @@ class StorieModel:
 			response[storie_id].update({'multimedia': doc['multimedia']})
 			response[storie_id].update({'story_type': doc['story_type']})
 			response[storie_id].update({'comments': []})
+			response[storie_id].update({'reactions': []})
 			comments = db.storie_comments.find({'storie_id': storie_id})
 			for com in comments:
 				response[storie_id]["comments"].append(com)
+			reactions = db.storie_reactions.find({'storie_id': storie_id})
+			for react in reactions:
+				response[storie_id]["reactions"].append(react)
 				
 		return list(response.values())
 
@@ -126,10 +130,14 @@ class StorieModel:
 			response[storie_id].update({'multimedia': doc['multimedia']})
 			response[storie_id].update({'story_type': doc['story_type']})
 			response[storie_id].update({'comments': []})
+			response[storie_id].update({'reactions': []})
 			comments = db.storie_comments.find({'storie_id': storie_id})
 			for com in comments:
 				response[storie_id]["comments"].append(com)
-				
+			reactions = db.storie_reactions.find({'storie_id': storie_id})
+			for react in reactions:
+				response[storie_id]["reactions"].append(react)
+					
 		return list(response.values())
 
 	@staticmethod
