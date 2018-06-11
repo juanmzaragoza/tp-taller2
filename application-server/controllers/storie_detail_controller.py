@@ -72,5 +72,7 @@ class StorieDetailController(flask_restful.Resource):
             		'user_name': storie['user_name'],
             		'user_last_name': storie['user_last_name'],
             		'user_email': storie['user_email'],
-            		'user_picture': storie['user_picture']
+            		'user_picture': storie['user_picture'],
+            		'comments': storie['comments'],
+            		'reactions': storie['reactions']
         	}
