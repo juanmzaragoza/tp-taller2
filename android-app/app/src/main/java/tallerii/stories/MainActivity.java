@@ -82,7 +82,7 @@ public class MainActivity extends StoriesLoggedInActivity {
         fragment = new HomeFragment();
         // get profile id and pass it to fragment
         Bundle bundleHomeFragment = getIntent().getExtras();
-        bundleHomeFragment.putString(ProfileActivity.PROFILE_ID,getProfile().getUserId());
+        bundleHomeFragment.putString(ProfileActivity.PROFILE_ID, getProfile().getUserId());
         fragment.setArguments(bundleHomeFragment);
     }
 
