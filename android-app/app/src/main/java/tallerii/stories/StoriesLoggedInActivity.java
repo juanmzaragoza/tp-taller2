@@ -55,13 +55,17 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
                 }
             });
             if (bundle.getString(PROFILE_ID) != null) {
-                ProfileController profileController = new ProfileController(StoriesLoggedInActivity.this);
-                profileController.getUser(bundle.getString(PROFILE_ID));
+                updateProfile(bundle.getString(PROFILE_ID));
             }
         }
         if (bundle != null && bundle.get(PROFILE_OBJECT) != null) {
             setProfile(new Gson().fromJson(bundle.getString(PROFILE_OBJECT), ApplicationProfile.class));
         }
+    }
+
+    private void updateProfile(String profileId) {
+        ProfileController profileController = new ProfileController(StoriesLoggedInActivity.this);
+        profileController.getUser(profileId);
     }
 
     @Override
@@ -116,5 +120,9 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
 
     public static ApplicationProfile getProfile() {
         return profile;
+    }
+
+    public void updateProfile() {
+        updateProfile(getProfile().getUserId());
     }
 }

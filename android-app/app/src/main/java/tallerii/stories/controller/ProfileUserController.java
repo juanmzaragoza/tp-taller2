@@ -56,6 +56,7 @@ public class ProfileUserController extends ProfileController{
                 if (response.isSuccessful()) {
                     userProfileActivity.showMessage("Unfriended", 10);
                     userProfileActivity.startProfileActivity(friendUserId);
+                    userProfileActivity.updateProfile();
                 } else {
                     manageErrors(response);
                 }

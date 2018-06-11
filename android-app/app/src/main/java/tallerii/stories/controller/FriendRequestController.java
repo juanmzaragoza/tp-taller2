@@ -63,6 +63,7 @@ public class FriendRequestController {
                 if (response.isSuccessful() && response.body() != null) {
                     adapter.removeRequest(requestId);
                     activity.showMessage(onSuccessMessage);
+                    activity.updateProfile();
                 } else {
                     manageErrors(response);
                 }
