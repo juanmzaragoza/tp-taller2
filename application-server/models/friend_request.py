@@ -31,6 +31,7 @@ class FriendRequestModel():
 		for doc in friends_requests_data:
 			data[str(doc["_id"])]["last_name"] = doc["last_name"]
 			data[str(doc["_id"])]["name"] = doc["name"]
+			data[str(doc["_id"])]["picture"] = doc["picture"]
 
 		return list(data.values())
 

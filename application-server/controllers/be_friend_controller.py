@@ -30,8 +30,8 @@ class BeFriendController(flask_restful.Resource):
 		body = request.get_json()
 		return body['user_id'], body['rcvUserId'], body['message'], body['picture']
 
-	def _create_be_friend_request(self, user_sender_id, user_rcv_id, msg):
-		friend_request = FriendRequestModel.create_friend_request(user_sender_id, user_rcv_id, msg)
+	def _create_be_friend_request(self, user_sender_id, user_rcv_id, msg, picture):
+		friend_request = FriendRequestModel.create_friend_request(user_sender_id, user_rcv_id, msg, picture)
 		return friend_request
 
 	def _validate_user_id(self, user_id):
