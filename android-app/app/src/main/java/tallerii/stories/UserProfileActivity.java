@@ -8,6 +8,10 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import tallerii.stories.controller.ProfileController;
 import tallerii.stories.controller.ProfileUserController;
 import tallerii.stories.network.apimodels.ApplicationProfile;
@@ -18,6 +22,7 @@ public class UserProfileActivity extends ProfileActivity {
 
     private ProfileUserController profileUserController;
     private Button actionButton;
+    public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 
     @Override
     protected void initWithChildResource() {
@@ -66,15 +71,15 @@ public class UserProfileActivity extends ProfileActivity {
             }
         }
         actionButton.setText("Unfriend");
-        actionButton.setOnClickListener(createOnClickListener(friendshipId));
+        actionButton.setOnClickListener(createOnClickListener(friendshipId, applicationProfile.getUserId()));
     }
 
     @NonNull//had to in order to declare final
-    private View.OnClickListener createOnClickListener(final String friendshipId) {
+    private View.OnClickListener createOnClickListener(final String friendshipId, final String friendUserId) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                unfriend(friendshipId);
+                unfriend(friendshipId, friendUserId);
             }
         };
     }
@@ -101,15 +106,17 @@ public class UserProfileActivity extends ProfileActivity {
         FriendRequest friendRequest = new FriendRequest();
         friendRequest.setMessage("Placeholder message");
         ApplicationProfile currentUser = getProfile();
-        friendRequest.setFullName(currentUser.getFullName());
+        friendRequest.setFirstName(currentUser.getName());
+        friendRequest.setLastName(currentUser.getLastName());
         friendRequest.setPicture(currentUser.getProfilePicture());
         friendRequest.setSenderUserId(currentUser.getUserId());
         friendRequest.setRcvUserId(applicationProfile.getUserId());
+        friendRequest.setCreatedTime(SIMPLE_DATE_FORMAT.format(Calendar.getInstance().getTime()));
         profileUserController.requestFriendship(friendRequest);
     }
 
-    private void unfriend(String friendshipId) {
-        profileUserController.unfriend(friendshipId);
+    private void unfriend(String friendshipId, String friendUserId) {
+        profileUserController.unfriend(friendshipId, friendUserId);
     }
 
     @Override

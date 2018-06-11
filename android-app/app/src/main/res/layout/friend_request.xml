@@ -20,7 +20,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight=".70"
+            android:layout_weight=".60"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
@@ -44,15 +44,9 @@
         </LinearLayout>
         <LinearLayout
         android:layout_width="0dp"
-        android:layout_weight=".30"
+        android:layout_weight=".40"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-            <Button
-                android:id="@+id/goToProfileBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:text="@string/go_to_profile" />
-
             <Button
                 android:id="@+id/accept"
                 android:layout_width="wrap_content"

@@ -50,29 +50,46 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        final FriendRequest friend = friendsList.get(position);
+        final FriendRequest friend = friendsList.get(holder.getAdapterPosition());
         holder.personNameTxtV.setText(friend.getFullName());
         imageHelper.setFirebaseImage(friend.getPicture(), holder.personImageImgV);
         holder.dateTxtV.setText(friend.getCreatedTime());
         holder.messageTxtV.setText(friend.getMessage());
-        holder.goToProfileBtn.setOnClickListener(new View.OnClickListener() {
+        holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 appActivity.startProfileActivity(friend.getSenderUserId());
             }
         });
+        setAcceptListener(holder, friend);
+        setDeclineListener(holder, friend);
+    }
+
+    private void setAcceptListener(@NonNull final ViewHolder holder, final FriendRequest friend) {
         holder.acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 controller.acceptFriendRequest(friend.getId(), FriendRequestAdapter.this);
+                removeRequest(holder);
             }
         });
+    }
+
+    private void setDeclineListener(@NonNull final ViewHolder holder, final FriendRequest friend) {
         holder.declineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 controller.declineFriendRequest(friend.getId(), FriendRequestAdapter.this);
+                removeRequest(holder);
             }
         });
+    }
+
+    private void removeRequest(@NonNull ViewHolder holder) {
+        int position = holder.getAdapterPosition();
+        friendsList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, friendsList.size());
     }
 
     @Override
@@ -85,7 +102,6 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
         public TextView messageTxtV;
         public TextView dateTxtV;
         public ImageView personImageImgV;
-        public Button goToProfileBtn;
         public Button acceptBtn;
         public Button declineBtn;
         public View layout;
@@ -97,9 +113,8 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
             messageTxtV = v.findViewById(R.id.message);
             dateTxtV = v.findViewById(R.id.date);
             personImageImgV = v.findViewById(R.id.userImage);
-            personImageImgV = v.findViewById(R.id.accept);
-            personImageImgV = v.findViewById(R.id.decline);
-            personImageImgV = v.findViewById(R.id.goToProfileBtn);
+            acceptBtn = v.findViewById(R.id.accept);
+            declineBtn = v.findViewById(R.id.decline);
         }
     }
 }

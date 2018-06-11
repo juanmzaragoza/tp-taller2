@@ -50,16 +50,19 @@ public class FriendRequestController {
 
     public void acceptFriendRequest(final String requestId, final FriendRequestAdapter adapter) {
         EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
-        Call<JsonObject> responseCall = endpointsApi.acceptFriendRequest(requestId);
-        setOnSuccessRemove(responseCall, adapter, requestId);
+        JsonObject request = new JsonObject();
+        request.addProperty("requestId", requestId);
+        Call<JsonObject> responseCall = endpointsApi.acceptFriendRequest(request);
+        setOnSuccessRemove(responseCall, adapter, requestId, "Request Accepted");
     }
 
-    private void setOnSuccessRemove(Call<JsonObject> responseCall, final FriendRequestAdapter adapter, final String requestId) {
+    private void setOnSuccessRemove(Call<JsonObject> responseCall, final FriendRequestAdapter adapter, final String requestId, final String onSuccessMessage) {
         responseCall.enqueue(new DefaultCallback<JsonObject>(activity) {
             @Override
             public void onResponse(Response<JsonObject> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     adapter.removeRequest(requestId);
+                    activity.showMessage(onSuccessMessage);
                 } else {
                     manageErrors(response);
                 }
@@ -70,6 +73,6 @@ public class FriendRequestController {
     public void declineFriendRequest(final String requestId, final FriendRequestAdapter adapter) {
         EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
         Call<JsonObject> responseCall = endpointsApi.declineFriendRequest(requestId);
-        setOnSuccessRemove(responseCall, adapter, requestId);
+        setOnSuccessRemove(responseCall, adapter, requestId, "Request Declined");
     }
 }

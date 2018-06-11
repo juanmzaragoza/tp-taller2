@@ -52,15 +52,16 @@ public interface EndpointsApplicationApiRest {
     @GET(ConstantsApplicationApiRest.GET_FRIEND_REQUESTS)
     Call<JsonObject> getFriendRequestsByUserId(@Path("id") String user_id);
 
-    @POST(ConstantsApplicationApiRest.FRIEND_REQUEST_ENDPOINT)
-    Call<JsonObject> acceptFriendRequest(@Path("id") String requestId);
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
+    @POST(ConstantsApplicationApiRest.FRIEND_ACCEPT_ENDPOINT)
+    Call<JsonObject> acceptFriendRequest(@Body JsonObject requestId);
 
     @DELETE(ConstantsApplicationApiRest.FRIEND_REQUEST_ENDPOINT)
     Call<JsonObject> declineFriendRequest(@Path("id") String requestId);
 
     @Headers({CONTENT_TYPE_APPLICATION_JSON})
     @POST(ConstantsApplicationApiRest.BEFRIEND)
-    Call<JsonObject> postFriendRequest(FriendRequest request);
+    Call<JsonObject> postFriendRequest(@Body FriendRequest request);
 
     @DELETE(ConstantsApplicationApiRest.UNFRIEND)
     Call<JsonObject> unfriend(@Path("id")String friendshipId);
