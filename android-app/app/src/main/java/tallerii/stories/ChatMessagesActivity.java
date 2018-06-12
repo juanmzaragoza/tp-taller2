@@ -91,23 +91,22 @@ public class ChatMessagesActivity extends StoriesLoggedInActivity {
         queryMessages();
     }
 
-    private void sendMessageToFirebase(String message, String senderId, String receiverId){
+    private void sendMessageToFirebase(final String message, String senderId, String receiverId){
         mMessagesList.clear();
         final ChatMessage newMsg = new ChatMessage(message, senderId, receiverId);
-        final String topic = receiverId;
+        final String receiverUserId = receiverId;
         hideSoftKeyboard();
         mMessagesDBRef.push().setValue(newMsg).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (!task.isSuccessful()) {
-                    //error
                     showMessage("Error " + task.getException().getLocalizedMessage());
                 } else {
                     showMessage("Message sent successfully!");
                     mMessageEditText.setText(null);
 
-                    FCMNotificationController.sendNotification(ChatMessagesActivity.this, topic,
-                            "New message from " + getProfile().getFullName());
+                    FCMNotificationController.sendNotification(ChatMessagesActivity.this, receiverUserId,
+                            String.format("%s: %s",getProfile().getFullName(), abbreviate(message, 20)));
                 }
             }
         });

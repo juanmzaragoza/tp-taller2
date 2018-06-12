@@ -1,12 +1,16 @@
 package tallerii.stories.controller;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.JsonObject;
+
+import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -24,9 +28,14 @@ public class FCMNotificationController {
         tokensRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String token = dataSnapshot.getValue(String.class);
+                if (token == null || token.equals("")) {
+                    context.showMessage("Your friend needs to reinstall the app to get notifications", 15);
+                    return;
+                }
                 EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
                 JsonObject parameters = new JsonObject();
-                parameters.addProperty("userFCMToken", dataSnapshot.getValue(String.class));
+                parameters.addProperty("userFCMToken", token);
                 parameters.addProperty("message", message);
                 Call<JsonObject> responseCall = endpointsApi.sendFCMNotification(parameters);
                 responseCall.enqueue(new DefaultCallback<JsonObject>(context) {
@@ -44,5 +53,19 @@ public class FCMNotificationController {
                 //TODO consider this case
             }
         });
+    }
+
+    private static void renewToken() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    FirebaseInstanceId.getInstance().deleteInstanceId();
+                    FirebaseInstanceId.getInstance().getToken();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 }

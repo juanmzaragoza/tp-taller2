@@ -1,6 +1,8 @@
 package tallerii.stories;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,10 +13,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
 import tallerii.stories.controller.ProfileController;
+import tallerii.stories.helpers.MyFirebaseInstanceIdService;
 import tallerii.stories.helpers.Store;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 
@@ -54,13 +58,26 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
                     // Sign in success
                 }
             });
-            if (bundle.getString(PROFILE_ID) != null) {
-                updateProfile(bundle.getString(PROFILE_ID));
+            String profileId = bundle.getString(PROFILE_ID);
+            if (profileId != null) {
+                updateProfile(profileId);
+                sendTokenToServer(profileId);
             }
         }
         if (bundle != null && bundle.get(PROFILE_OBJECT) != null) {
             setProfile(new Gson().fromJson(bundle.getString(PROFILE_OBJECT), ApplicationProfile.class));
         }
+    }
+
+
+    private void sendTokenToServer(String currentUserId) {
+        final DatabaseReference usersRef = MyFirebaseInstanceIdService.getTokensRef();
+        usersRef.child(currentUserId).setValue(getTokenFromPrefs());
+    }
+
+    private String getTokenFromPrefs() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        return preferences.getString("registration_id", null);
     }
 
     private void updateProfile(String profileId) {

@@ -1,5 +1,7 @@
 package tallerii.stories.helpers;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.firebase.database.DatabaseReference;
@@ -19,17 +21,21 @@ public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
         String refreshedToken = FirebaseInstanceId.getInstance().getToken();
         if (refreshedToken != null) {
             Log.d(TAG, "Refreshed token: " + refreshedToken);
-            sendTokenToServer(refreshedToken);
+            saveTokenToPrefs(refreshedToken);
         }
-    }
-
-    public void sendTokenToServer(final String token) {
-        final DatabaseReference usersRef = getTokensRef();
-        String currentUserId = StoriesLoggedInActivity.getProfile().getUserId();
-        usersRef.child(currentUserId).setValue(token);
     }
 
     public static DatabaseReference getTokensRef() {
         return FirebaseDatabase.getInstance().getReference("firebaseTokens");
+    }
+
+    public void saveTokenToPrefs(String _token) {
+        // Access Shared Preferences
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        // Save to SharedPreferences
+        editor.putString("registration_id", _token);
+        editor.apply();
     }
 }
