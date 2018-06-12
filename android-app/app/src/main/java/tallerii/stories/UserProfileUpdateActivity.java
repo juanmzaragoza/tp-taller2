@@ -92,7 +92,7 @@ public class UserProfileUpdateActivity extends ProfileActivity {
     }
 
     @Override
-    protected ProfileController getController() {
+    protected ProfileController getNewController() {
         return new ProfileUpdateController(this);
     }
 

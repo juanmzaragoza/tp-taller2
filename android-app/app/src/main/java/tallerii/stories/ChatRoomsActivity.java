@@ -20,6 +20,7 @@ public class ChatRoomsActivity extends StoriesLoggedInActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        setTitle("Conversations");
         friendsRecyclerView = findViewById(R.id.friendsRecyclerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         friendsRecyclerView.setLayoutManager(mLayoutManager);

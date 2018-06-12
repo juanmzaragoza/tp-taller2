@@ -8,7 +8,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:background="@drawable/in_message_bg"
         android:orientation="vertical"
         android:paddingBottom="10dp">
 
@@ -16,6 +15,17 @@
             android:id="@+id/chatMsgTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:maxWidth="200dp"
+            android:padding="10dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+        <TextView
+            android:id="@+id/chatMsgDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="8sp"
             android:maxWidth="200dp"
             android:padding="10dp" />
 

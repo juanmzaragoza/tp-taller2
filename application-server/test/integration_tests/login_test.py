@@ -45,7 +45,7 @@ class TestFlaskLoginApi(unittest.TestCase):
         self.assertIn("code", response_data)
         self.assertEqual(400,response_data["code"])
         self.assertIn("message", response_data)
-        
+
     @patch('api_client.shared_api_client.requests.post')
     def test_token(self, mock_post):
         # set up
@@ -89,7 +89,7 @@ class TestFlaskLoginApi(unittest.TestCase):
         self.assertIn("code", response_data)
         self.assertEqual(401,response_data["code"])
         self.assertIn("message", response_data)
-        self.assertEqual(response_data["message"], "You haven't authorization")
+        self.assertEqual(response_data["message"], "You don't have authorization")
 
     @patch('api_client.shared_api_client.requests.post')
     def test_invalid_password_should_status_401(self, mock_post):
@@ -104,7 +104,7 @@ class TestFlaskLoginApi(unittest.TestCase):
         self.assertIn("code", response_data)
         self.assertEqual(401,response_data["code"])
         self.assertIn("message", response_data)
-        self.assertEqual(response_data["message"], "You haven't authorization")
+        self.assertEqual(response_data["message"], "You don't have authorization")
 
     @patch('api_client.shared_api_client.requests.post')
     def test_remote_server_down_should_status_500(self, mock_post):

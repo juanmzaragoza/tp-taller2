@@ -39,15 +39,12 @@ public class StoriesAdapter extends BaseAdapter {
     private Activity activity;
     private LayoutInflater inflater;
     private List<Storie> stories;
-    private StorageReference storageReference;
     private final ImageHelper imageHelper;
     HashMap<View, HashMap<ImageButton, Integer>> reactionButtons;
 
     public StoriesAdapter(Activity activity, List<Storie> stories) {
         this.activity = activity;
         this.stories = stories;
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
         imageHelper = new ImageHelper(activity);
         reactionButtons = new HashMap();
     }
