@@ -1,7 +1,5 @@
 package tallerii.stories.network;
 
-import android.graphics.Bitmap;
-
 import com.google.gson.JsonObject;
 
 import java.util.List;
@@ -35,11 +33,19 @@ public interface EndpointsApplicationApiRest {
     @PUT(ConstantsApplicationApiRest.PROFILE_ENDPOINT)
     Call<JsonObject> putProfileById(@Path("id") String user_id, @Body JsonObject profile);
 
-    @Headers({"Accept:application/json"})
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
     @GET(ConstantsApplicationApiRest.GET_STORIES_BY_USER)
     Call<List<Storie>> getStoriesByUserId(@Path("id") String user_id);
 
-    @Headers({"Accept:application/json"})
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
     @POST(ConstantsApplicationApiRest.POST_STORIE)
     Call<Storie> postStorie(@Body JsonObject parameters);
+
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
+    @POST(ConstantsApplicationApiRest.POST_STORIE_COMMENT)
+    Call<Storie> postStorieComment(@Body JsonObject parameters);
+
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
+    @POST(ConstantsApplicationApiRest.POST_STORIE_REACTION)
+    Call<Storie> postStorieReaction(@Body JsonObject parameters);
 }

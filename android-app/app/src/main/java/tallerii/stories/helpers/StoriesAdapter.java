@@ -5,6 +5,8 @@ import info.androidhive.listviewfeed.R;
 import info.androidhive.listviewfeed.app.AppController;
 import info.androidhive.listviewfeed.data.FeedItem;*/
 import tallerii.stories.R;
+import tallerii.stories.controller.StoriesController;
+import tallerii.stories.network.apimodels.Reaction;
 import tallerii.stories.network.apimodels.Storie;
 
 import java.util.HashMap;
@@ -29,25 +31,29 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 public class StoriesAdapter extends BaseAdapter {
 
     private static final int REACTION_BUTTON_NOT_PRESSED = 0;
     private static final int REACTION_BUTTON_PRESSED = 1;
 
+    private static final String I_LIKE_REACTION = "LIKE";
+    private static final String I_NOTLIKE_REACTION = "NOTLIKE";
+    private static final String I_ENJOY_REACTION = "ENJOY";
+    private static final String I_GETBORED_REACTION = "GETBORED";
+
     private Activity activity;
+    private final StoriesController controller;
     private LayoutInflater inflater;
     private List<Storie> stories;
-    private StorageReference storageReference;
     private final ImageHelper imageHelper;
     HashMap<View, HashMap<ImageButton, Integer>> reactionButtons;
 
-    public StoriesAdapter(Activity activity, List<Storie> stories) {
+    public StoriesAdapter(Activity activity, StoriesController controller, List<Storie> stories) {
         this.activity = activity;
+        this.controller = controller;
         this.stories = stories;
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
         imageHelper = new ImageHelper(activity);
         reactionButtons = new HashMap();
     }
@@ -124,38 +130,38 @@ public class StoriesAdapter extends BaseAdapter {
             storieImageView.setVisibility(View.GONE);
         }
 
-        // prepare reaction buttons
+        // prepare reaction buttons -> add each button to a reaction not pressed
         HashMap<ImageButton, Integer> buttons = new HashMap<>();
-        buttons.put(changeStatusOnClickBy(convertView,R.id.likeButton),REACTION_BUTTON_NOT_PRESSED);
-        buttons.put(changeStatusOnClickBy(convertView,R.id.dontLikeButton),REACTION_BUTTON_NOT_PRESSED);
-        buttons.put(changeStatusOnClickBy(convertView,R.id.enjoyButton),REACTION_BUTTON_NOT_PRESSED);
-        buttons.put(changeStatusOnClickBy(convertView,R.id.getBoredButton),REACTION_BUTTON_NOT_PRESSED);
-
+        buttons.put(changeStatusOnClickBy(convertView,R.id.likeButton, I_LIKE_REACTION),REACTION_BUTTON_NOT_PRESSED);
+        buttons.put(changeStatusOnClickBy(convertView,R.id.dontLikeButton, I_NOTLIKE_REACTION),REACTION_BUTTON_NOT_PRESSED);
+        buttons.put(changeStatusOnClickBy(convertView,R.id.enjoyButton, I_ENJOY_REACTION),REACTION_BUTTON_NOT_PRESSED);
+        buttons.put(changeStatusOnClickBy(convertView,R.id.getBoredButton, I_GETBORED_REACTION),REACTION_BUTTON_NOT_PRESSED);
+        // save it
         reactionButtons.put(convertView,buttons);
 
         return convertView;
     }
 
-    public ImageButton changeStatusOnClickBy(final View convertView, int id){
+    public ImageButton changeStatusOnClickBy(final View convertView, int id, final String reactionName){
         ImageButton view = (ImageButton) convertView.findViewById(id);
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                changeStatus(convertView,(ImageButton)v);
+                changeStatus(convertView,(ImageButton)v, reactionName);
             }
         });
         return view;
     }
 
-    private void changeStatus(final View convertView, ImageButton v) {
+    private void changeStatus(final View convertView, ImageButton v, String reactionName) {
         // For vector drawable
         // https://stackoverflow.com/questions/20121938/how-to-set-tint-for-an-image-view-programmatically-in-android
         if(reactionButtons.get(convertView).get(v).equals(REACTION_BUTTON_PRESSED)){
             changeToUnpressed(convertView,v);
         } else{
             changeToPressed(convertView,v);
-            for (Map.Entry<ImageButton, Integer> pair: reactionButtons.get(convertView).entrySet()) {
-                if(!pair.getKey().equals(v)){
-                    changeToUnpressed(convertView, pair.getKey());
+            for (Map.Entry<ImageButton, Integer> reactionButton: reactionButtons.get(convertView).entrySet()) {
+                if(!reactionButton.getKey().equals(v)){
+                    changeToUnpressed(convertView, reactionButton.getKey());
                 }
             }
         }
@@ -170,6 +176,11 @@ public class StoriesAdapter extends BaseAdapter {
     private void changeToUnpressed(final View convertView, ImageButton v){
         v.setColorFilter(ContextCompat.getColor(activity, R.color.reaction_button_not_pressed), android.graphics.PorterDuff.Mode.SRC_IN);
         reactionButtons.get(convertView).put(v,REACTION_BUTTON_NOT_PRESSED);
+    }
+
+    private void updateResource(){
+        // update reaction storie -> get user from MainActivity
+        //controller.changeReaction(storieId,reactionName);
     }
 
 

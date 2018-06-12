@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
 
         ListView listView = (ListView) rootView.findViewById(R.id.list);
 
-        StoriesAdapter listAdapter = new StoriesAdapter(getActivity(), storiesToPopulate);
+        StoriesAdapter listAdapter = new StoriesAdapter(getActivity(), controller, storiesToPopulate);
         listView.setAdapter(listAdapter);
 
         // notify data changes to list adapater
