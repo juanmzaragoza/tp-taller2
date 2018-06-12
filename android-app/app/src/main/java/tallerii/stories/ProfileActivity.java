@@ -14,7 +14,7 @@ public abstract class ProfileActivity extends StoriesLoggedInActivity {
 
     protected ImageView imageView;
     protected ProfileController controller;
-    private ImageHelper imageHelper;
+    protected ImageHelper imageHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

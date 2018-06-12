@@ -1,16 +1,18 @@
 package tallerii.stories;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 import tallerii.stories.controller.ProfileController;
 import tallerii.stories.controller.ProfileUserController;
@@ -51,6 +53,40 @@ public class UserProfileActivity extends ProfileActivity {
                 initAsStrangerPendingRequest();
                 break;
         }
+        fillFriends(applicationProfile);
+    }
+
+    private void fillFriends(ApplicationProfile applicationProfile) {
+        LinearLayout friendsLayout = findViewById(R.id.friends_holder);
+        for (Friend friend :applicationProfile.getFriends()) {
+            addFriend(friendsLayout, friend);
+        }
+    }
+
+    private void addFriend(LinearLayout friendsLayout, final Friend friend) {
+        LinearLayout friendLayout = new LinearLayout(this);
+        friendLayout.setLayoutParams(new LinearLayout.LayoutParams(85, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        ImageView pictureView = new ImageView((this));
+        pictureView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,85));
+        imageHelper.setFirebaseImage(friend.getPicture(), pictureView);
+        pictureView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent goToUpdate = new Intent(getContext(), UserProfileActivity.class);
+                goToUpdate.putExtra(ProfileActivity.PROFILE_ID, friend.getUserId());
+                getContext().startActivity(goToUpdate);
+                finish();
+            }
+        });
+        friendLayout.addView(pictureView);
+
+        TextView nameView = new TextView(this);
+        nameView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 15));
+        nameView.setText(friend.getFullName());
+        friendLayout.addView(nameView);
+
+        friendsLayout.addView(friendLayout);
     }
 
     protected void initAsUser(ApplicationProfile applicationProfile) {
