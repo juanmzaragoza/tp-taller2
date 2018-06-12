@@ -30,6 +30,8 @@ public class ProfileUserController extends ProfileController{
                 if (response.isSuccessful()) {
                     userProfileActivity.deactivateFriendButton();
                     userProfileActivity.showMessage("Request sent!");
+                    FCMNotificationController.sendNotification(userProfileActivity, request.getRcvUserId(),
+                            String.format("%s has sent a friend request!", request.getFullName()));
                 } else {
                     try {
                         ServerError error = gson.fromJson(response.errorBody().string(), ServerError.class);
