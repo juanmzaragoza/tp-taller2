@@ -133,6 +133,53 @@
 
         </LinearLayout>
 
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="?android:attr/listDivider"
+            android:paddingBottom="5dp"/>
+
+        <LinearLayout
+            android:id="@+id/lastCommentView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingLeft="@dimen/stories_item_padding_left_right"
+            android:paddingRight="@dimen/stories_item_padding_left_right" >
+
+            <ImageView
+                android:id="@+id/userCommentPic"
+                android:layout_width="@dimen/stories_item_profile_pic"
+                android:layout_height="@dimen/stories_item_profile_pic"
+                android:scaleType="fitCenter" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/stories_item_profile_info_padd"
+                android:paddingRight="@dimen/stories_item_padding_left_right"
+                android:background="@drawable/commentroundcorner">
+
+                <TextView
+                    android:id="@+id/usernameLastComment"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/stories_item_profile_name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lastComment"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

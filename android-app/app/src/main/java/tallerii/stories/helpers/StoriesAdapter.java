@@ -6,6 +6,7 @@ import info.androidhive.listviewfeed.app.AppController;
 import info.androidhive.listviewfeed.data.FeedItem;*/
 import tallerii.stories.R;
 import tallerii.stories.controller.StoriesController;
+import tallerii.stories.network.apimodels.Comment;
 import tallerii.stories.network.apimodels.Reaction;
 import tallerii.stories.network.apimodels.Storie;
 
@@ -89,6 +90,11 @@ public class StoriesAdapter extends BaseAdapter {
         ImageView profilePic = convertView.findViewById(R.id.profilePic);
         ImageView storieImageView = (ImageView) convertView.findViewById(R.id.storieImage1);
 
+        View lastCommentView = convertView.findViewById(R.id.lastCommentView);
+        ImageView userCommentPic = (ImageView) convertView.findViewById(R.id.userCommentPic);
+        TextView lastComment = (TextView) convertView.findViewById(R.id.lastComment);
+        TextView usernameLastComment = (TextView) convertView.findViewById(R.id.usernameLastComment);
+
         Storie storie = stories.get(position);
 
         name.setText(storie.getUserName() +" "+storie.getUserLastName());
@@ -138,6 +144,20 @@ public class StoriesAdapter extends BaseAdapter {
         buttons.put(changeStatusOnClickBy(convertView,R.id.getBoredButton, I_GETBORED_REACTION),REACTION_BUTTON_NOT_PRESSED);
         // save it
         reactionButtons.put(convertView,buttons);
+
+        // get last comment
+        if (!storie.getComments().isEmpty()) {
+            Comment comment = storie.getComments().get(0);
+            //TODO: change by user profile pic
+            imageHelper.setFirebaseImage(storie.getUserPicture(), userCommentPic);
+            //TODO: change by username
+            usernameLastComment.setText("Username To Modify");
+            lastComment.setText(comment.getMessage());
+            lastCommentView.setVisibility(View.VISIBLE);
+        } else{
+            lastCommentView.setVisibility(View.GONE);
+        }
+
 
         return convertView;
     }
