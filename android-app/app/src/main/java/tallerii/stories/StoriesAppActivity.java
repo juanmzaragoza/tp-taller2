@@ -147,4 +147,14 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
+    public static String abbreviate(final String text, int length) {
+        // Obtained from https://stackoverflow.com/questions/3597550/ideal-method-to-truncate-a-string-with-ellipsis
+        // The letters [iIl1] are slim enough to only count as half a character.
+        length += Math.ceil(text.replaceAll("[^iIl]", "").length() / 2.0d);
+        if (text.length() > length) {
+            return text.substring(0, length - 3) + "...";
+        }
+        return text;
+    }
 }

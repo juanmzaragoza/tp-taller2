@@ -53,6 +53,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         // - replace the contents of the view with that element
         ChatMessage msg = messagesList.get(position);
         holder.messageTextView.setText(msg.getMessage());
+//        holder.dateTextView.setText(msg.getDate());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -63,12 +64,14 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView messageTextView;
+        public TextView dateTextView;
         public View layout;
 
         public ViewHolder(View v) {
             super(v);
             layout = v;
             messageTextView = v.findViewById(R.id.chatMsgTextView);
+            dateTextView = v.findViewById(R.id.chatMsgDateTextView);
         }
     }
 }
