@@ -8,7 +8,6 @@ from api_client.user_not_exists_exception import UserNotExistsException
 
 from controllers.response_builder import ResponseBuilder
 from controllers.error_handler import ErrorHandler
-
 import json
 
 class LoginController(flask_restful.Resource):
@@ -23,8 +22,7 @@ class LoginController(flask_restful.Resource):
 			args = self.parser.parse_args()
 			response = self.shared_api_client.login(args["username"],args["password"])
 			if not response:
-				return ErrorHandler.create_error_response("You haven't authorization", 401)
-
+				return ErrorHandler.create_error_response("You don't have authorization", 401)
 			return ResponseBuilder.build_response(response, 201)
 
 		except RequestException as e:

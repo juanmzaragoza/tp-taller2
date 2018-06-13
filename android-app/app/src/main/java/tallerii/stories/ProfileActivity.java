@@ -14,19 +14,19 @@ public abstract class ProfileActivity extends StoriesLoggedInActivity {
 
     protected ImageView imageView;
     protected ProfileController controller;
-    private ImageHelper imageHelper;
+    protected ImageHelper imageHelper;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initWithChildResource();
-        controller = getController();
+        controller = getNewController();
         imageHelper = new ImageHelper(getContext());
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null && bundle.get(PROFILE_ID) != null) {
             controller.getUser(bundle.getString(PROFILE_ID));
-        } else if (getProfile() != null) {
+        } else {
             initializeProfile(getProfile());
         }
     }
@@ -34,7 +34,10 @@ public abstract class ProfileActivity extends StoriesLoggedInActivity {
     protected abstract void initWithChildResource();
 
     public void initializeProfile(ApplicationProfile applicationProfile) {
-        setProfile(applicationProfile);
+        ApplicationProfile.ProfileType type = applicationProfile.getType();
+        if(type == null || type.equals(ApplicationProfile.ProfileType.USER)){
+            super.initializeProfile(applicationProfile);
+        }
         TextView friendsCount = findViewById(R.id.friend_count);
         friendsCount.setText(String.valueOf(applicationProfile.getFriends().size()));
         setUserName(applicationProfile);
@@ -43,5 +46,5 @@ public abstract class ProfileActivity extends StoriesLoggedInActivity {
 
     abstract protected void setUserName(ApplicationProfile applicationProfile);
 
-    abstract protected ProfileController getController();
+    abstract protected ProfileController getNewController();
 }

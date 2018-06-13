@@ -4,7 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+
+import tallerii.stories.StoriesLoggedInActivity;
 
 public class ApplicationProfile {
 
@@ -20,8 +21,8 @@ public class ApplicationProfile {
     private String email;
     @SerializedName("picture")
     private String profilePicture;
-    private List<Storie> stories = null;
-    private List<Friend> friends = null;
+    private List<Storie> stories = new ArrayList<>();
+    private List<Friend> friends = new ArrayList<>();
 
     public List<Friend> getFriends() {
         return friends;
@@ -81,9 +82,34 @@ public class ApplicationProfile {
 
     //TODO verify if this should exist or be managed from app server
     public void addFriend(Friend friend) {
-        if (friends == null) {
-            friends = new ArrayList<>();
-        }
         friends.add(friend);
+    }
+
+    public ProfileType getType() {
+        ApplicationProfile profile = StoriesLoggedInActivity.getProfile();
+        if(profile == null) return ProfileType.USER;
+        String profileId = profile.getUserId();
+        if (profileId.equals(this.getUserId())){
+            return ProfileType.USER;
+        } else if (isFriend(profileId)) {
+            return ProfileType.FRIEND;
+        }
+        return ProfileType.STRANGER;
+    }
+
+    private boolean isFriend(String profileId) {
+        for (Friend friend: friends) {
+            if (friend.getUserId().equals(profileId)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public enum ProfileType {
+        USER,
+        FRIEND,
+        STRANGER,
+        STRANGER_PENDING_REQUEST
     }
 }

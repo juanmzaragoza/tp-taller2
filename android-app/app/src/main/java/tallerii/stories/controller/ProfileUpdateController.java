@@ -21,8 +21,8 @@ public class ProfileUpdateController extends ProfileController {
     /**call api rest and get the user**/
     public void putApplicationProfile(final ApplicationProfile profile) {
         EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
-        JsonElement jsonElement = new JsonParser().parse(new Gson().toJson(profile));
-        Call<JsonObject> responseCall = endpointsApi.putProfileById(profile.getUserId(), jsonElement.getAsJsonObject());
+        JsonElement jsonProfile = new JsonParser().parse(new Gson().toJson(profile));
+        Call<JsonObject> responseCall = endpointsApi.putProfileById(profile.getUserId(), jsonProfile.getAsJsonObject());
 
         responseCall.enqueue(new DefaultCallback<JsonObject>(activity) {
             @Override

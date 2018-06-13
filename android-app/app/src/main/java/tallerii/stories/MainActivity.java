@@ -18,7 +18,6 @@ import tallerii.stories.helpers.Store;
 public class MainActivity extends StoriesLoggedInActivity {
 
     public static final String EXTRA_MESSAGE = "tallerii.stories.loginactivity.MESSAGE";
-    public static final String TOKEN = "token";
 
     private Fragment fragment;
     private FragmentManager fragmentManager;
@@ -44,10 +43,10 @@ public class MainActivity extends StoriesLoggedInActivity {
             final Store store = new Store();
             showMessage(intent.getStringExtra(EXTRA_MESSAGE), 10);
         }
-
         // by default show home
-        setHomeFragment();
-        commitFragment(fragment);
+        fragment = new HomeFragment();
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_container, fragment).commit();
 
         // get bottom navigation menu
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -74,17 +73,16 @@ public class MainActivity extends StoriesLoggedInActivity {
                 setPostStorieFragment();
                 break;
         }
-        commitFragment(fragment);
+        final FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_container, fragment).commit();
         return true;
     }
 
     private void setHomeFragment() {
+        fragment = new HomeFragment();
         // get profile id and pass it to fragment
         Bundle bundleHomeFragment = getIntent().getExtras();
-        bundleHomeFragment.putString(ProfileActivity.PROFILE_ID,getProfile().getUserId());
-
-        fragment = null;
-        fragment = new HomeFragment();
+        bundleHomeFragment.putString(ProfileActivity.PROFILE_ID, getProfile().getUserId());
         fragment.setArguments(bundleHomeFragment);
     }
 

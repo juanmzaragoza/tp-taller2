@@ -1,6 +1,5 @@
 package tallerii.stories.controller;
 
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.util.Log;

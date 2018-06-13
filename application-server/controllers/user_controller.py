@@ -38,8 +38,8 @@ class UserController(flask_restful.Resource):
 
 			response = self.shared_api_client.userCreate(args["id"],args["username"],args["password"])
 			if not response:
-				return ErrorHandler.create_error_response("You haven't authorization", 401)
-			
+				return ErrorHandler.create_error_response("You don't have authorization", 401)
+
 			user_id = response["user"]["id"]
 			username = response["user"]["username"]
 			UserDataModel.insert_user(user_id, username)

@@ -54,7 +54,6 @@ public class StoriesAdapter extends BaseAdapter {
         this.activity = activity;
         this.controller = controller;
         this.stories = stories;
-        FirebaseStorage storage = FirebaseStorage.getInstance();
         imageHelper = new ImageHelper(activity);
         reactionButtons = new HashMap();
     }

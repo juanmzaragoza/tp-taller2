@@ -10,6 +10,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.gson.Gson;
 
 import tallerii.stories.helpers.Store;
+import tallerii.stories.network.ConstantsApplicationApiRest;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 import tallerii.stories.network.apimodels.Friend;
 
@@ -46,19 +47,10 @@ public class AuthorizationMainActivity extends AppCompatActivity {
                 LoginManager.getInstance().logOut();
             }
             //show login form
-            activityIntent = new Intent(this, UserProfileActivity.class);
+            activityIntent = new Intent(this, LoginActivity.class);
         }
         /*START TESTING SETTINGS*/
-        ApplicationProfile profile = new ApplicationProfile();
-        profile.setFirstName("Nico");
-        profile.setLastName("Dom");
-        profile.setUserId("5ae66a31d4ef925dac59a94f");
-        profile.setProfilePicture("profile");
-        profile.addFriend(new Gson().fromJson("{\"picture\":\"profile\",\"last_name\":\"Fernandez\",\"name\":\"Mario\",\"user_id\":\"4\"}", Friend.class));
-        profile.addFriend(new Gson().fromJson("{\"picture\":\"profile\",\"last_name\":\"Fernandez\",\"name\":\"Maria\",\"user_id\":\"2\"}", Friend.class));
-        profile.addFriend(new Gson().fromJson("{\"picture\":\"profile\",\"last_name\":\"Fernandez\",\"name\":\"Mariano\",\"user_id\":\"3\"}", Friend.class));
-        activityIntent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
-        activityIntent.putExtra(PROFILE_ID, "5ae66a31d4ef925dac59a94f");
+        ConstantsApplicationApiRest.ROOT_URL= "http://192.168.0.8:5858/";
         /*END TESTING SETTINGS*/
         startActivity(activityIntent);
         finish();

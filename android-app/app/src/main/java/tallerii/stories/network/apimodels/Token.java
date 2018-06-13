@@ -3,6 +3,7 @@ package tallerii.stories.network.apimodels;
 public class Token {
     private long expiresAt;
     private String token;
+    private String id;
 
     public String getToken() {
         return token;
@@ -21,4 +22,11 @@ public class Token {
     }
 
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 }

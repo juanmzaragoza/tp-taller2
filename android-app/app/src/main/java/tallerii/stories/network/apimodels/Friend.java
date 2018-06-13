@@ -3,15 +3,17 @@ package tallerii.stories.network.apimodels;
 import com.google.gson.annotations.SerializedName;
 
 public class Friend {
-    @SerializedName("user_id")
+    @SerializedName("_id")
     private String id;
+    @SerializedName("user_id")
+    private String userId;
     @SerializedName("last_name")
     private String lastName;
     private String name;
     private String picture;
 
-    public String getId() {
-        return id;
+    public String getUserId() {
+        return userId;
     }
 
     public String getFullName() {
@@ -20,5 +22,9 @@ public class Friend {
 
     public String getPicture() {
         return picture;
+    }
+
+    public String getId() {
+        return id;
     }
 }

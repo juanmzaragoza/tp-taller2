@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 
 import tallerii.stories.network.apimodels.ApplicationProfile;
 
+import static tallerii.stories.ProfileActivity.PROFILE_ID;
 import static tallerii.stories.ProfileActivity.PROFILE_OBJECT;
 
 public abstract class StoriesAppActivity extends AppCompatActivity {
@@ -79,10 +80,11 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
         finish();
     }
 
-    public void startMainActivity(String username, String token) {
+    public void startMainActivity(String username, String token, String profileId) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_MESSAGE, username);
-        intent.putExtra(MainActivity.TOKEN, token);
+        intent.putExtra(ProfileActivity.PROFILE_ID, profileId);
+        intent.putExtra(StoriesLoggedInActivity.TOKEN, token);
         startActivity(intent);
         finish();
     }
@@ -102,24 +104,57 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
         finish();
     }
 
-    public void startProfileActivity(String profile) {
+    public void startProfileUpdateActivity(String profileId, String token) {
+        Intent intent = new Intent(this, UserProfileUpdateActivity.class);
+        intent.putExtra(ProfileActivity.PROFILE_ID, profileId);
+        intent.putExtra(StoriesLoggedInActivity.TOKEN, token);
+        startActivity(intent);
+        finish();
+    }
+
+    public void startProfileActivity(String profileId) {
         Intent intent = new Intent(this, UserProfileActivity.class);
-        intent.putExtra(PROFILE_OBJECT, profile);
+        intent.putExtra(PROFILE_ID, profileId);
+        startActivity(intent);
+        finish();
+    }
+
+    public void startFriendRequestsActivity(ApplicationProfile profile) {
+        startLoggedInActivity(profile, FriendRequestActivity.class);
+    }
+
+    private void startLoggedInActivity(ApplicationProfile profile, Class<?> activityClass) {
+        Intent intent = new Intent(this, activityClass);
+        intent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
         startActivity(intent);
         finish();
     }
 
     public void startProfileActivity(ApplicationProfile profile) {
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        intent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
+        startLoggedInActivity(profile, UserProfileActivity.class);
+    }
+
+    public void startSearchUsersActivity(ApplicationProfile profile) {
+        startLoggedInActivity(profile, SearchUsersActivity.class);
+    }
+
+    public void startChatRoomsActivity(ApplicationProfile profile) {
+        startLoggedInActivity(profile, ChatRoomsActivity.class);
+    }
+
+    public void startLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
 
-    public void startChatRoomsActivity(ApplicationProfile profile) {
-        Intent intent = new Intent(this, ChatRoomsActivity.class);
-        intent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
-        startActivity(intent);
-        finish();
+    public static String abbreviate(final String text, int length) {
+        // Obtained from https://stackoverflow.com/questions/3597550/ideal-method-to-truncate-a-string-with-ellipsis
+        // The letters [iIl1] are slim enough to only count as half a character.
+        length += Math.ceil(text.replaceAll("[^iIl]", "").length() / 2.0d);
+        if (text.length() > length) {
+            return text.substring(0, length - 3) + "...";
+        }
+        return text;
     }
 }

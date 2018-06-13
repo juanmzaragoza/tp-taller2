@@ -23,6 +23,7 @@ from controllers.friend_request_detail_controller import FriendRequestDetailCont
 from controllers.be_friend_controller import BeFriendController
 from controllers.be_friend_detail_controller import BeFriendDetailController
 from controllers.response_builder import ResponseBuilder
+from controllers.notification_controller import NotificationsController
 
 app = flask.Flask(__name__)
 
@@ -44,7 +45,7 @@ with app.app_context():
 	# for shared-server endpoints
 	api.add_resource(PingController, '/ping')
 	api.add_resource(StatsController, '/stats')
-	
+
 	# app endpoints
 	api.add_resource(UserAppController, '/users/<string:user_id>')
 	api.add_resource(StorieController, '/stories')
@@ -60,6 +61,6 @@ with app.app_context():
 	api.add_resource(FriendRequestDetailController, '/befriend/requests/<string:request_id>')
 	api.add_resource(FriendController, '/friends/<string:user_id>')
 	api.add_resource(FriendDetailController, '/friends/<string:friend_id>')
-	
+	api.add_resource(NotificationsController, '/notification')
 	if __name__ == "__main__":
     		app.run(host='0.0.0.0', port=5858,debug=True)
