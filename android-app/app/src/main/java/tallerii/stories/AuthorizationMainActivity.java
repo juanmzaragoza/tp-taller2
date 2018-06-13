@@ -50,7 +50,7 @@ public class AuthorizationMainActivity extends AppCompatActivity {
             activityIntent = new Intent(this, LoginActivity.class);
         }
         /*START TESTING SETTINGS*/
-        ConstantsApplicationApiRest.ROOT_URL= "http://192.168.0.8:5858/";
+        //ConstantsApplicationApiRest.ROOT_URL= "http://192.168.0.8:5858/";
         /*END TESTING SETTINGS*/
         startActivity(activityIntent);
         finish();
