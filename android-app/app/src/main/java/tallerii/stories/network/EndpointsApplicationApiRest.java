@@ -12,6 +12,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import tallerii.stories.network.apimodels.Comment;
 import tallerii.stories.network.apimodels.FriendRequest;
 import tallerii.stories.network.apimodels.Storie;
 
@@ -50,7 +51,7 @@ public interface EndpointsApplicationApiRest {
 
     @Headers({CONTENT_TYPE_APPLICATION_JSON})
     @POST(ConstantsApplicationApiRest.POST_STORIE_COMMENT)
-    Call<Storie> postStorieComment(@Body JsonObject parameters);
+    Call<Comment> postStorieComment(@Body JsonObject parameters);
 
     @Headers({CONTENT_TYPE_APPLICATION_JSON})
     @POST(ConstantsApplicationApiRest.POST_STORIE_REACTION)

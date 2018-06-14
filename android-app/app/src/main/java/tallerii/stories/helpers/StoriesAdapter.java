@@ -6,6 +6,7 @@ import info.androidhive.listviewfeed.app.AppController;
 import info.androidhive.listviewfeed.data.FeedItem;*/
 import tallerii.stories.R;
 import tallerii.stories.controller.StoriesController;
+import tallerii.stories.fragments.main.StorieCommentsDialogFragment;
 import tallerii.stories.network.apimodels.Comment;
 import tallerii.stories.network.apimodels.Reaction;
 import tallerii.stories.network.apimodels.Storie;
@@ -15,15 +16,20 @@ import java.util.Map;
 import java.util.List;
 
 import android.app.Activity;
+import android.media.Image;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -44,14 +50,16 @@ public class StoriesAdapter extends BaseAdapter {
     private static final String I_GETBORED_REACTION = "GETBORED";
 
     private Activity activity;
+    private final Context context;
     private final StoriesController controller;
     private LayoutInflater inflater;
     private List<Storie> stories;
     private final ImageHelper imageHelper;
     HashMap<View, HashMap<ImageButton, Integer>> reactionButtons;
 
-    public StoriesAdapter(Activity activity, StoriesController controller, List<Storie> stories) {
+    public StoriesAdapter(Activity activity, Context context, StoriesController controller, List<Storie> stories) {
         this.activity = activity;
+        this.context = context;
         this.controller = controller;
         this.stories = stories;
         imageHelper = new ImageHelper(activity);
@@ -77,8 +85,7 @@ public class StoriesAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (inflater == null)
-            inflater = (LayoutInflater) activity
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
             convertView = inflater.inflate(R.layout.fragment_stories_item, null);
 
@@ -90,11 +97,13 @@ public class StoriesAdapter extends BaseAdapter {
         ImageView storieImageView = (ImageView) convertView.findViewById(R.id.storieImage1);
 
         View lastCommentView = convertView.findViewById(R.id.lastCommentView);
+        View messageComment = (TextView) convertView.findViewById(R.id.messageCommentText);
         ImageView userCommentPic = (ImageView) convertView.findViewById(R.id.userCommentPic);
         TextView lastComment = (TextView) convertView.findViewById(R.id.lastComment);
         TextView usernameLastComment = (TextView) convertView.findViewById(R.id.usernameLastComment);
+        ImageButton sendCommentButton = (ImageButton) convertView.findViewById(R.id.sendMessageCommentButton);
 
-        Storie storie = stories.get(position);
+        final Storie storie = stories.get(position);
 
         name.setText(storie.getUserName() +" "+storie.getUserLastName());
 
@@ -157,6 +166,22 @@ public class StoriesAdapter extends BaseAdapter {
             lastCommentView.setVisibility(View.GONE);
         }
 
+        messageComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    showCommentsDialog(storie.getId());
+                }
+            }
+        });
+        sendCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCommentsDialog(storie.getId());
+            }
+        });
+
+
 
         return convertView;
     }
@@ -201,6 +226,18 @@ public class StoriesAdapter extends BaseAdapter {
         // update reaction storie -> get user from MainActivity
         //controller.changeReaction(storieId,reactionName);
     }
+
+    private void showCommentsDialog(String storieId) {
+        FragmentManager fm = ((AppCompatActivity)context).getSupportFragmentManager();
+        StorieCommentsDialogFragment commentsDialogFragment = StorieCommentsDialogFragment.newInstance("Comments");
+
+        Bundle args = new Bundle();
+        args.putString("storieId", storieId);
+        commentsDialogFragment.setArguments(args);
+
+        commentsDialogFragment.showNow(fm, "fragment_storie_comments");
+    }
+
 
 
 

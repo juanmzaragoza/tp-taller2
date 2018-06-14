@@ -154,6 +154,7 @@
                 android:id="@+id/userCommentPic"
                 android:layout_width="@dimen/stories_item_profile_pic"
                 android:layout_height="@dimen/stories_item_profile_pic"
+                android:paddingRight="@dimen/stories_item_padding_left_right"
                 android:scaleType="fitCenter" />
 
             <LinearLayout
