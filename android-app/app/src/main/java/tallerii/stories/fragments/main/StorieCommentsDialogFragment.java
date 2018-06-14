@@ -23,7 +23,7 @@ import tallerii.stories.controller.CommentController;
 
 public class StorieCommentsDialogFragment extends DialogFragment {
 
-    final StoriesAppActivity activity;
+    private StoriesAppActivity activity;
     private CommentController controller;
 
     private ImageButton sendMessageCommentButton;
@@ -33,8 +33,6 @@ public class StorieCommentsDialogFragment extends DialogFragment {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance` instead as shown below
-        controller = new CommentController(this);
-        activity = (StoriesAppActivity) getActivity();
     }
 
     public static StorieCommentsDialogFragment newInstance(String title) {
@@ -54,33 +52,37 @@ public class StorieCommentsDialogFragment extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        controller = new CommentController(this);
+        activity = (StoriesAppActivity) getActivity();
+
         // Fetch arguments from bundle and set title
-        final String storieId = getArguments().getString("title");
-        if(storieId.isEmpty()){
+        final String storieId = getArguments().getString("storieId");
+        if(storieId == null || storieId.isEmpty()){
             activity.showMessage("An error has ocurrer with the resource storie id");
             getDialog().dismiss();
-        }
-        final String title = getArguments().getString("title", "Comments");
-        getDialog().setTitle(title);
+        } else {
+            final String title = getArguments().getString("title", "Comments");
+            getDialog().setTitle(title);
 
-        // Get field from view
-        sendMessageCommentButton = (ImageButton) view.findViewById(R.id.sendMessageCommentButton);
-        sendMessageCommentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(messageCommentText.getText().toString().isEmpty()){
-                    activity.showMessage("Please! Fill the text comment!!!");
-                } else{
-                    // do something
-                    controller.doComment(storieId,messageCommentText.getText().toString());
+            // Get field from view
+            sendMessageCommentButton = (ImageButton) view.findViewById(R.id.sendMessageCommentButton);
+            sendMessageCommentButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (messageCommentText.getText().toString().isEmpty()) {
+                        activity.showMessage("Please! Fill the text comment!!!");
+                    } else {
+                        // do something
+                        controller.doComment(storieId, messageCommentText.getText().toString());
+                    }
                 }
-            }
-        });
-        messageCommentText = (TextView) view.findViewById(R.id.messageCommentText);
+            });
+            messageCommentText = (TextView) view.findViewById(R.id.messageCommentText);
 
-        // Show soft keyboard automatically and request focus to field
-        //mEditText.requestFocus();
-        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+            // Show soft keyboard automatically and request focus to field
+            //mEditText.requestFocus();
+            getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        }
 
     }
 

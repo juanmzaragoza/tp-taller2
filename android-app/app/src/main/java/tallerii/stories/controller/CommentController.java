@@ -28,8 +28,8 @@ public class CommentController {
         EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
         JsonObject parameters = new JsonObject();
 
-        parameters.addProperty("storieId", storieId);
-        parameters.addProperty("userId", StoriesLoggedInActivity.getProfile().getId());
+        parameters.addProperty("storie_id", storieId);
+        parameters.addProperty("user_id", StoriesLoggedInActivity.getProfile().getId());
         parameters.addProperty("message", comment);
         parameters.addProperty("date", "");
         parameters.addProperty("_id", "");
