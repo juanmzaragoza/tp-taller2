@@ -113,6 +113,7 @@ public class StoriesController {
         ImageHelper imageHelper = new ImageHelper(this.fragment.getContext());
         MainActivity mainActivity = (MainActivity)fragment.getActivity();
         Date currentTime = Calendar.getInstance().getTime();
+        String multimediaName = UUID.randomUUID().toString();
 
         parameters = new JsonObject();
         parameters.addProperty("_id", "");
@@ -122,12 +123,12 @@ public class StoriesController {
         parameters.addProperty("location", location);
         parameters.addProperty("storyType", storyType);
         parameters.addProperty("title", title);
-        parameters.addProperty("multimedia", UUID.randomUUID().toString()); //TODO: upload to firebase before and get id
+        parameters.addProperty("multimedia", multimediaName);
         parameters.addProperty("updated_time", currentTime.toString());
         parameters.addProperty("userId", mainActivity.getProfile().getId());
         parameters.addProperty("visibility", visibility? "public":"private");
 
-        imageHelper.uploadMedia(UUID.randomUUID().toString(), uriMedia, onUploadMedia, onUploadMediaError);
+        imageHelper.uploadMedia(multimediaName, uriMedia, onUploadMedia, onUploadMediaError);
 
     }
 

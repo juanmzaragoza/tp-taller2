@@ -6,144 +6,153 @@
     android:layout_height="match_parent"
     tools:context="tallerii.stories.fragments.main.AnotherFragment">
 
-    <android.support.constraint.ConstraintLayout
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
         <android.support.constraint.ConstraintLayout
-            android:id="@+id/containerMedia"
             android:layout_width="match_parent"
-            android:layout_height="217dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginEnd="64dp"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="32dp"
-            android:background="?attr/colorButtonNormal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/storieImageView"
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/containerMedia"
                 android:layout_width="match_parent"
                 android:layout_height="217dp"
-                android:src="@android:drawable/ic_menu_camera"
-                android:focusable="false" android:clickable="true"/>
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="64dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="32dp"
+                android:background="?attr/colorButtonNormal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <VideoView
-                android:id="@+id/storieVideoView"
+                <ImageView
+                    android:id="@+id/storieImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="217dp"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:src="@android:drawable/ic_menu_camera" />
+
+                <VideoView
+                    android:id="@+id/storieVideoView"
+                    android:layout_width="match_parent"
+                    android:layout_height="217dp"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:src="@android:drawable/ic_menu_camera"
+                    android:visibility="gone" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <Button
+                android:id="@+id/choosePictureButton"
                 android:layout_width="match_parent"
-                android:layout_height="217dp"
-                android:src="@android:drawable/ic_menu_camera"
-                android:visibility="gone" android:focusable="false" android:clickable="true" />
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginEnd="64dp"
+                android:layout_marginStart="64dp"
+                android:layout_marginTop="16dp"
+                android:text="CHOOSE MEDIA"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/containerMedia" />
+
+            <EditText
+                android:id="@+id/titleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignStart="@+id/containerMedia"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="12dp"
+                android:ems="10"
+                android:hint="Title"
+                android:inputType="textPersonName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toogleTakeMedia" />
+
+            <EditText
+                android:id="@+id/descriptionText"
+                android:layout_width="322dp"
+                android:layout_height="47dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="Description"
+                android:inputType="textPersonName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titleText" />
+
+
+            <CheckBox
+                android:id="@+id/visibilityCheckBox"
+                android:layout_width="89dp"
+                android:layout_height="36dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:text="Public"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/descriptionText" />
+
+            <TextView
+                android:id="@+id/locationLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignStart="@+id/containerMedia"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="16dp"
+                android:text="Your Location"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/visibilityCheckBox"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/publishButton"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="228dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="32dp"
+                android:text="PUBLICAR HISTORIA"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/locationLabel" />
+
+            <TextView
+                android:id="@+id/locationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="This is yout location"
+                app:layout_constraintStart_toEndOf="@+id/locationLabel"
+                app:layout_constraintTop_toBottomOf="@+id/visibilityCheckBox" />
+
+            <Switch
+                android:id="@+id/toogleTakeMedia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:text="Photo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/choosePictureButton" />
 
         </android.support.constraint.ConstraintLayout>
-
-        <Button
-            android:id="@+id/choosePictureButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginEnd="64dp"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="16dp"
-            android:text="CHOOSE MEDIA"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/containerMedia" />
-
-        <EditText
-            android:id="@+id/titleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/containerMedia"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="12dp"
-            android:ems="10"
-            android:hint="Title"
-            android:inputType="textPersonName"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toogleTakeMedia" />
-
-        <EditText
-            android:id="@+id/descriptionText"
-            android:layout_width="322dp"
-            android:layout_height="47dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="Description"
-            android:inputType="textPersonName"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleText" />
-
-
-        <CheckBox
-            android:id="@+id/visibilityCheckBox"
-            android:layout_width="89dp"
-            android:layout_height="36dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            android:text="Public"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionText" />
-
-        <TextView
-            android:id="@+id/locationLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/containerMedia"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="16dp"
-            android:text="Your Location"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/visibilityCheckBox"
-            tools:ignore="MissingConstraints" />
-
-        <Button
-            android:id="@+id/publishButton"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="228dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            android:text="PUBLICAR HISTORIA"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/locationLabel" />
-
-        <TextView
-            android:id="@+id/locationText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="This is yout location"
-            app:layout_constraintStart_toEndOf="@+id/locationLabel"
-            app:layout_constraintTop_toBottomOf="@+id/visibilityCheckBox" />
-
-        <Switch
-            android:id="@+id/toogleTakeMedia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
-            android:text="Photo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/choosePictureButton" />
-
-    </android.support.constraint.ConstraintLayout>
+    </ScrollView>
 
 </FrameLayout>

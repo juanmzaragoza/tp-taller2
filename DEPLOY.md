@@ -78,6 +78,56 @@ cuyos logs se pueden ver haciendo
 heroku logs --remote heroku-sharedserver --tail
 ```
 
+##### Primer deploy
+
+Configurar el addon de postgresql para Heroku.
+Corroborar que no esta instalado
+
+```bash
+	heroku addons --remote heroku-sharedserver
+```
+
+Agregar el addon
+
+```bash
+heroku addons:create heroku-postgresql:hobby-dev --remote heroku-sharedserver
+```
+
+Ver la informacion del mismo
+
+```bash
+heroku pg:credentials:url DATABASE --remote heroku-sharedserver
+```
+
+Instalar psql en el localhost para poder acceder a la consola desde nuestra maquina.
+Para conectarse al posgresql:
+
+```bash
+heroku pg:psql --remote heroku-sharedserver
+```
+
+###### Subir un dump de nuestra base
+
+Generar el dump en nuestro local
+
+```bash
+PGPASSWORD=mypassword pg_dump -Fc --no-acl --no-owner -h localhost -U myuser mydb mydb.dump
+```
+
+e importarlo en el postgresql de Heroku
+
+```bash
+heroku pg:backups:restore 'url' DATABASE_URL
+```
+
+donde `url` es el archivo que subimos a una carpeta publicada en internet y accesible desde heroku (dropbox link por ejemplo).
+
+Por ultimo, entrar a la configuracion de Heroku https://dashboard.heroku.com/apps/heroku-sharedserver/settings y configurar las variables de entorno: DATABASE_PORT, DATABASE_USER, DATABASE_PASSWORD, DATABASE_NAME, DATABASE_HOST. Estos valores se obtienen obteniendo la informacion de postresql en la nube
+
+```bash
+heroku pg:credentials:url DATABASE --remote heroku-sharedserver
+```
+
 #### Paso 3: Subir application-server al cloud
 
 Loguearse en la aplicación ingresando las credenciales del application-server
