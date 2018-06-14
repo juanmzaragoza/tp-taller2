@@ -21,13 +21,13 @@ RouterHandler.addEndpointWithOutAuth({
 
 RouterHandler.addEndpointWithAuth({
     verb: 'get',
-    path: '/stats/:id',
-    handler: AppCtrl.stats
+    path: '/servers/stats/:id',
+    handler: ServerCtrl.stats
 });
 RouterHandler.addEndpointWithAuth({
     verb: 'get',
-    path: '/ping/:id',
-    handler: AppCtrl.ping
+    path: '/servers/ping/:id',
+    handler: ServerCtrl.ping
 });
 
 RouterHandler.addEndpointWithOutAuth({

@@ -18,7 +18,7 @@ export class ServerService {
     constructor(public RemoteServ: RemoteService){}
     get(){
        return this.RemoteServ.get('/servers')
-       .map( res=> res.servers)
+       .map( res=> this.mapperList(res.servers))
     }
     getActive = ():Observable<any> =>{
       var me:any = this
@@ -62,10 +62,11 @@ export class ServerService {
       return this.RemoteServ.put('/servers/'+serv.id, serv);
     }
     create(serv: Server){
-      return this.RemoteServ.post('/servers', serv);
+      return this.RemoteServ.post('/servers', serv)
+      .map( res=> this.mapper(res.server));
     }
     ping(id: string){
-      return this.RemoteServ.get('/ping/'+ id).map(res => res.ping);
+      return this.RemoteServ.get('/servers/ping/'+ id).map(res => res.ping);
     }
     ping2=(id: string)=>{
       var me:any = this
@@ -84,7 +85,7 @@ export class ServerService {
       })
     }
     stats(id: string){
-      return this.RemoteServ.get('/stats/'+ id).map(res => res.stats);
+      return this.RemoteServ.get('/servers/stats/'+ id).map(res => res.stats);
     }
     request(id:string , from:string, to:string){
       var req:Array<Request> = []
@@ -108,5 +109,17 @@ export class ServerService {
         }
       });
       return Observable.of(res)
+    }
+    mapper(obj:any){
+      var serv = _.clone(obj.server)
+      serv["token"] = _.clone(obj.token)
+      return serv
+    }
+    mapperList(res:Array<any>){
+      var servs:Array<Server> = []
+      res.forEach(item => {
+        servs.push(this.mapper(item))
+      });
+      return servs
     }
 } 
