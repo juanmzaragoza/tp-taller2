@@ -50,9 +50,11 @@ export class ServerComponent {
     if(vm.servers.length>0){
       vm.servers.forEach(s => {
         vm.ServerServ.ping(s.id).subscribe((ping) => {
+          console.info(ping)
           s["active"] = ping.status
         },
         error =>{
+          console.info("error")
           s["active"] = "none"
         });
       });
@@ -77,7 +79,6 @@ export class ServerComponent {
   edit(serv: Server){
     var me = this
     me.server = serv
-    console.log(serv)
     this.openModal();
   }
   delete(id:string){
@@ -120,7 +121,7 @@ export class ServerComponent {
     var me = this
     me.ServerServ.update(serv).subscribe((res) => {
       me.servers = me.JsonServ.removeItem(me.servers, {id:serv.id})
-      me.servers.push(res.server)
+      me.servers.push(serv)
       me.server = new Server()
       toast("the server was updated",4000)
     },
@@ -131,10 +132,9 @@ export class ServerComponent {
   create(serv: Server){
     var me = this
     serv.createdTime = Date.now()
-    serv.lastConnection = 0
     serv.createdBy = me.UserServ.getUser().username
-    me.ServerServ.create(serv).subscribe((res) => {
-      me.servers.push(res.server)
+    me.ServerServ.create(serv).subscribe((server) => {
+      me.servers.push(server)
       me.server = new Server()
       toast("the server was created",4000)
     },
@@ -150,5 +150,5 @@ export class ServerComponent {
     var me = this
     me.server = new Server()
     this.modalActions.emit({action:"modal",params:['close']});
-  } 
+  }
 }

@@ -96,10 +96,10 @@ export class StatusService {
                     var vec:Array<any> = []
                     if(servers.length >0){
                         /*eliminar este servidor dumy */
-                        let servDumy = new Server()
+                        /*let servDumy = new Server()
                         servDumy = _.clone(servers[0])
                         servDumy.name = "dummy"
-                        servers.push(servDumy)
+                        servers.push(servDumy)*/
                         /*eliminar este servidor dumy */
                         me.serversActives = _.clone(servers)
                         var from = "00",
