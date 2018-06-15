@@ -54,18 +54,4 @@ public class FCMNotificationController {
             }
         });
     }
-
-    private static void renewToken() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    FirebaseInstanceId.getInstance().deleteInstanceId();
-                    FirebaseInstanceId.getInstance().getToken();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
 }

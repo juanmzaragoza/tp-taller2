@@ -72,12 +72,7 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
 
     private void sendTokenToServer(String currentUserId) {
         final DatabaseReference usersRef = MyFirebaseInstanceIdService.getTokensRef();
-        usersRef.child(currentUserId).setValue(getTokenFromPrefs());
-    }
-
-    private String getTokenFromPrefs() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        return preferences.getString("registration_id", null);
+        usersRef.child(currentUserId).setValue(FirebaseInstanceId.getInstance().getToken());
     }
 
     private void updateProfile(String profileId) {
