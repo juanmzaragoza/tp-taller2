@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -65,6 +66,7 @@ public class UserProfileActivity extends ProfileActivity {
 
     private void addFriend(LinearLayout friendsLayout, final Friend friend) {
         LinearLayout friendLayout = new LinearLayout(this);
+        friendLayout.setOrientation(LinearLayout.VERTICAL);
         friendLayout.setLayoutParams(new LinearLayout.LayoutParams(85, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         ImageView pictureView = new ImageView((this));
@@ -82,15 +84,16 @@ public class UserProfileActivity extends ProfileActivity {
         friendLayout.addView(pictureView);
 
         TextView nameView = new TextView(this);
-        nameView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 15));
-        nameView.setText(friend.getFullName());
+        nameView.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        nameView.setText(friend.getName());
         friendLayout.addView(nameView);
 
         friendsLayout.addView(friendLayout);
     }
 
     protected void initAsUser(ApplicationProfile applicationProfile) {
-        actionButton.setText("Edit");
+        actionButton.setText(R.string.edit_button);
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +109,7 @@ public class UserProfileActivity extends ProfileActivity {
                 friendshipId = friends.getId();
             }
         }
-        actionButton.setText("Unfriend");
+        actionButton.setText(R.string.unfriend_button);
         actionButton.setOnClickListener(createOnClickListener(friendshipId, applicationProfile.getUserId()));
     }
 
@@ -129,7 +132,7 @@ public class UserProfileActivity extends ProfileActivity {
     }
 
     private void initAsStranger(final ApplicationProfile applicationProfile) {
-        actionButton.setText("Befriend");
+        actionButton.setText(R.string.befriend_button);
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

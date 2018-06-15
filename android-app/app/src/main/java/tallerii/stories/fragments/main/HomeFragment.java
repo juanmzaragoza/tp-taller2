@@ -1,18 +1,14 @@
 package tallerii.stories.fragments.main;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import tallerii.stories.MainActivity;
 import tallerii.stories.ProfileActivity;
 import tallerii.stories.R;
 import tallerii.stories.controller.StoriesController;
