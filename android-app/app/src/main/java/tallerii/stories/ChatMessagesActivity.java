@@ -121,19 +121,17 @@ public class ChatMessagesActivity extends StoriesLoggedInActivity {
     }
 
     private void queryMessages(){
-        mMessagesDBRef.addValueEventListener(new ValueEventListener() {
+        mMessagesDBRef.orderByChild("chatId")
+                .equalTo(ChatMessage.generateChatId(currentUserId, receiverId))
+                .addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mMessagesList.clear();
 
                 for(DataSnapshot snap: dataSnapshot.getChildren()){
                     ChatMessage chatMessage = snap.getValue(ChatMessage.class);
-                    //TODO get them with a select like query?
-                    //TODO this listens to all changes???????? cant we just be notified of necessary? investigate
                     assert chatMessage != null;
-                    if(chatMessage.getSenderId().equals(currentUserId) && chatMessage.getReceiverId().equals(receiverId) || chatMessage.getSenderId().equals(receiverId) && chatMessage.getReceiverId().equals(currentUserId)){
-                        mMessagesList.add(chatMessage);
-                    }
+                    mMessagesList.add(chatMessage);
 
                 }
                 populateMessagesRecyclerView();
