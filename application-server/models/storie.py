@@ -1,157 +1,190 @@
+import uuid
+from models.comment import CommentModel
+from models.reaction import ReactionModel
+from models.user_data import UserDataModel
 from constants import MONGODB_USER, MONGODB_PASSWD
 from controllers.db_controller import MongoController
-from errors_exceptions.no_data_found_exception import NoDataFoundException
-from models.user_data import UserDataModel
+from controllers.date_controller import DateController
 from errors_exceptions.data_version_exception import DataVersionException
-import bson
-import uuid
-import time
+from errors_exceptions.no_storie_found_exception import NoStorieFoundException
 
 class StorieModel:
+	
+	@staticmethod
+	def storie_exists(storie_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+
+		storie = db.stories.find_one({"_id": storie_id})
+		
+		if storie == None:
+			return False
+		
+		return True
+		
 	@staticmethod
 	def create_user_storie(body):
-		db = MongoController.get_mongodb_instance(MONGODB_USER,
-                	MONGODB_PASSWD)
-		storie_date = time.strftime('%d/%m/%Y %H:%M:%S', time.localtime())
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+		
 		storie_id = str(uuid.uuid4().hex)
-		storie = {
-			'_id': storie_id,
-			'created_time': storie_date,
-			'updated_time': "",
-			'_rev': body['_rev'],
-			'title': body['title'],
-			'description': body['description'],
-			'location': body['location'],
-			'visibility': body['visibility'],
-			'multimedia': body['multimedia'],
-			'story_type': body['storyType']}
+		created_time = DateController.get_date_time()
+		updated_time = ""
+		rev = ""
+		title = body['title']
+		desc = body["description"] if ("description" in body) else ""
+		location = body['location']
+		visibility = body['visibility']
+		mult = body['multimedia']
+		story_type = body['story_type']
+		user_id = body['user_id']	
+		storie = StorieModel.get_new_storie(storie_id, rev, created_time, updated_time, title, desc, location, visibility, mult, story_type)
+
 		#storie_id = db.stories.insert(storie)
 		db.stories.insert(storie)
-		db.users_stories.insert({'user_id': body['userId'],'storie_id': storie_id})
-		response = db.stories.find_one({'_id': storie_id})
-
-		response['user_id'] = body['userId']
-		return response
+		db.users_stories.insert({'user_id': user_id, 'storie_id': storie_id})
+		
+		storie['user_id'] = user_id
+		
+		return storie
 
 	@staticmethod
 	def update_storie(storie_id, body):
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 
-		storie = db.stories.find_one({'_id':  storie_id})
+		act_storie = db.stories.find_one({'_id':  storie_id})
 
-		if storie == None:
-			raise NoDataFoundException
+		if act_storie == None:
+			raise NoStorieFoundException
 
-		if storie['_rev'] != body.get('_rev'):
+		if act_storie['_rev'] != body.get('_rev'):
 			raise DataVersionException
 
-		storie = db.users_stories.find_one({'storie_id': storie_id})
+		rev = str(uuid.uuid4().hex)
+		created_time = body["created_time"] 
+		updated_time = DateController.get_date_time()
+		title = body["title"]
+		desc = body["description"] if ("description" in body) else "" 
+		location = body["location"]
+		visibility = body["visibility"]
+		mult = body["multimedia"]
+		story_type = body["story_type"]
+		
+		storie = StorieModel.get_new_storie(storie_id, rev, created_time, updated_time, title, desc, location, visibility, mult, story_type)
 
-		if storie['user_id'] != body.get('user_id'):
-			raise NoDataFoundException
-
-		body['_rev'] = uuid.uuid4().hex
-		del body['_id']
-		storie = db.stories.find_and_modify({'_id': storie_id},{'$set': body})
-		storie = db.stories.find_one({'_id': storie_id})
-		storie['_id'] = str(storie['_id'])
-		return storie
+		del storie['_id']
+		
+		res = db.stories.find_and_modify({'_id': storie_id},{'$set': storie})
+		#storie = db.stories.find_one({'_id': storie_id})
+		
+		return res
 
 	@staticmethod
 	def get_stories(user_id):
-		stories_id = []
-		response = {}
+		data = {}
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
-		stories_regs = db.users_stories.find({'user_id': {'$ne': user_id}})
-		for doc in stories_regs:
-			storie_id = str(doc['storie_id'])
-			user_data_response = UserDataModel.get_user_data_by_user_id(doc['user_id'])
-			response[storie_id] = {
-						'user_id': doc['user_id'],
-						'user_last_name': user_data_response['last_name'],
-						'user_name': user_data_response['name'],
-						'user_email': user_data_response['email'],
-						'user_picture': user_data_response['picture']
-						}
-			stories_id.append(storie_id)
-
-		stories = db.stories.find({'_id': {'$in': stories_id}})
-		for doc in stories:
-			storie_id = str(doc['_id'])
-			response[storie_id].update({'_id': storie_id})
-			response[storie_id].update({'_rev': doc['_rev']})
-			response[storie_id].update({'created_time': doc['created_time']})
-			response[storie_id].update({'updated_time': doc['updated_time']})
-			response[storie_id].update({'title': doc['title']})
-			response[storie_id].update({'description': doc['description']})
-			response[storie_id].update({'location': doc['location']})
-			response[storie_id].update({'visibility': doc['visibility']})
-			response[storie_id].update({'multimedia': doc['multimedia']})
-			response[storie_id].update({'story_type': doc['story_type']})
-			response[storie_id].update({'comments': []})
-			response[storie_id].update({'reactions': []})
-			comments = db.storie_comments.find({'storie_id': storie_id})
-			for com in comments:
-				response[storie_id]["comments"].append(com)
-			reactions = db.storie_reactions.find({'storie_id': storie_id})
-			for react in reactions:
-				response[storie_id]["reactions"].append(react)
-				
-		return list(response.values())
+		
+		stories = db.stories.aggregate([
+										   {
+											  "$lookup":
+												 {
+													"from": "users_stories",
+													"localField": "_id",
+													"foreignField": "storie_id",
+													"as": "users_storie"
+												}
+										   },
+										   {
+												"$sort": { "created_time": 1 }
+											}
+										]);
+		
+		for storie in stories:
+			storie_id = storie["users_storie"][0]["storie_id"]
+			storie_user_id = storie["users_storie"][0]["user_id"]
+			data[storie_id] = UserDataModel.get_user_reduced_data_by_user_id(storie_user_id)
+			data[storie_id]["user_id"] = data[storie_id].pop("_id")
+			data[storie_id]["_id"] = storie_id
+			data[storie_id]["_rev"] = storie["_rev"]
+			data[storie_id]["created_time"] = storie["created_time"]
+			data[storie_id]["updated_time"] = storie["updated_time"]
+			data[storie_id]["title"] = storie["title"]
+			data[storie_id]["description"] = storie["description"]
+			data[storie_id]["location"] = storie["location"]
+			data[storie_id]["visibility"] = storie["visibility"]
+			data[storie_id]["multimedia"] = storie["multimedia"]
+			data[storie_id]["story_type"] = storie["story_type"]
+			data[storie_id]["comments"] = CommentModel.get_storie_comments(storie_id)
+			data[storie_id]["reactions"] = ReactionModel.get_storie_reactions(storie_id)
+		
+		return list(data.values())
 
 	@staticmethod
 	def get_stories_by_user_id(user_id):
-		stories_id = []
-		response = {}
-		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
-		stories_regs = db.users_stories.find({'user_id': user_id})
-		for doc in stories_regs:
-			storie_id = str(doc['storie_id'])
-			user_data_response = UserDataModel.get_user_data_by_user_id(doc['user_id'])
-			response[storie_id] = {
-						'user_id': doc['user_id'],
-						'user_last_name': user_data_response['last_name'],
-						'user_name': user_data_response['name'],
-						'user_email': user_data_response['email'],
-						'user_picture': user_data_response['picture']}
-			stories_id.append(doc['storie_id'])
-
-		stories = db.stories.find({'_id': {'$in': stories_id}})
-		for doc in stories:
-			storie_id = str(doc['_id'])
-			response[storie_id].update({'_id': storie_id})
-			response[storie_id].update({'_rev': doc['_rev']})
-			response[storie_id].update({'created_time': doc['created_time']})
-			response[storie_id].update({'updated_time': doc['updated_time']})
-			response[storie_id].update({'title': doc['title']})
-			response[storie_id].update({'description': doc['description']})
-			response[storie_id].update({'location': doc['location']})
-			response[storie_id].update({'visibility': doc['visibility']})
-			response[storie_id].update({'multimedia': doc['multimedia']})
-			response[storie_id].update({'story_type': doc['story_type']})
-			response[storie_id].update({'comments': []})
-			response[storie_id].update({'reactions': []})
-			comments = db.storie_comments.find({'storie_id': storie_id})
-			for com in comments:
-				response[storie_id]["comments"].append(com)
-			reactions = db.storie_reactions.find({'storie_id': storie_id})
-			for react in reactions:
-				response[storie_id]["reactions"].append(react)
-					
-		return list(response.values())
-
-	@staticmethod
-	def delete_storie(storie_id, body):
+		data = {}
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		
-		storie = db.users_stories.find_one({'storie_id': storie_id,'user_id': body['user_id']})
+		stories = db.stories.aggregate([
+										   {
+											  "$lookup":
+												 {
+													"from": "users_stories",
+													"localField": "_id",
+													"foreignField": "storie_id",
+													"as": "users_storie"
+												}
+										   },
+										   {
+											  "$match": { "users_storie.user_id": user_id }
+										   },
+										   {
+												"$sort": { "created_time": 1 }
+											}
+										]);
+		
+		for storie in stories:
+			storie_id = storie["users_storie"][0]["storie_id"]
+			data[storie_id] = UserDataModel.get_user_reduced_data_by_user_id(user_id)
+			data[storie_id]["user_id"] = data[storie_id].pop("_id")
+			data[storie_id]["_id"] = storie_id
+			data[storie_id]["_rev"] = storie["_rev"]
+			data[storie_id]["created_time"] = storie["created_time"]
+			data[storie_id]["updated_time"] = storie["updated_time"]
+			data[storie_id]["title"] = storie["title"]
+			data[storie_id]["description"] = storie["description"]
+			data[storie_id]["location"] = storie["location"]
+			data[storie_id]["visibility"] = storie["visibility"]
+			data[storie_id]["multimedia"] = storie["multimedia"]
+			data[storie_id]["story_type"] = storie["story_type"]
+			data[storie_id]["comments"] = CommentModel.get_storie_comments(storie_id)
+			data[storie_id]["reactions"] = ReactionModel.get_storie_reactions(storie_id)
+		
+		return list(data.values())
+		
+	@staticmethod
+	def delete_storie(storie_id, storie_user_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+		
+		us_storie = db.users_stories.find_one({'storie_id': storie_id,'user_id': storie_user_id})
 
-		if storie == None:
-			raise NoDataFoundException
+		if us_storie == None:
+			raise NoStorieFoundException
 
-		response = db.stories.find_one({'_id': storie_id})
+		storie = db.stories.find_one({'_id': storie_id})
 		db.stories.remove({'_id': storie_id})
-		db.users_stories.remove({'storie_id': storie_id,'user_id': body['user_id']})
+		db.users_stories.remove({'storie_id': storie_id,'user_id': storie_user_id})
 
-		response['_id'] = str(response['_id'])
-		return response
+		return storie
+	
+	@staticmethod
+	def get_new_storie(storie_id, rev, created_time, updated_time, title, desc, location, visibility, mult, story_type):
+		return{ 
+			"_id": storie_id,
+			"_rev" : rev,
+			"created_time" : created_time, 
+			"updated_time" : updated_time, 
+			"title" : title, 
+			"description" : desc, 
+			"location" : location, 
+			"visibility" : visibility, 
+			"multimedia" : mult, 
+			"story_type" : story_type
+		}

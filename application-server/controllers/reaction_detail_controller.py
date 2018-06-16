@@ -1,12 +1,12 @@
-import flask_restful
 import json
+import flask_restful
 from flask import request
-from controllers.response_builder import ResponseBuilder
-from controllers.error_handler import ErrorHandler
-from api_client.db_connection_error import DBConnectionError
 from models.reaction import ReactionModel
-from errors_exceptions.no_data_found_exception import NoDataFoundException
+from controllers.error_handler import ErrorHandler
+from controllers.response_builder import ResponseBuilder
+from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.data_version_exception import DataVersionException
+from errors_exceptions.no_reaction_found_exception import NoReactionFoundException
 
 class ReactionDetailController(flask_restful.Resource):
 	
@@ -14,7 +14,7 @@ class ReactionDetailController(flask_restful.Resource):
 		try:
 			 reaction = ReactionModel.remove_reaction(reaction_id)
 			 return self._get_reactions_response(reaction)
-		except NoDataFoundException as e:
+		except NoReactionFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)

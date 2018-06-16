@@ -1,12 +1,12 @@
-import flask_restful
 import json
+import flask_restful
 from flask import request
-from controllers.friend_controller import FriendController
-from controllers.response_builder import ResponseBuilder
-from controllers.error_handler import ErrorHandler
-from api_client.db_connection_error import DBConnectionError
 from models.user_data import UserDataModel
+from controllers.error_handler import ErrorHandler
 from models.friend_request import FriendRequestModel
+from controllers.response_builder import ResponseBuilder
+from controllers.friend_controller import FriendController
+from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_data_found_exception import NoDataFoundException
 from errors_exceptions.data_already_exists_exception import DataAlreadyExistsException
 
@@ -17,7 +17,7 @@ class BeFriendDetailController(flask_restful.Resource):
 			 self._validate_user_id(user_id)
 			 friends_requests = FriendRequestModel.get_friends_requests_rcv_by_user_id(user_id)
 			 return self._create_get_response(friends_requests)
-		except NoDataFoundException as e:
+		except NoUserDataFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
@@ -33,8 +33,6 @@ class BeFriendDetailController(flask_restful.Resource):
 		try:
 			friends_requests = FriendRequestModel.get_friends_requests_rcv_by_user_id(user_id)
 			return self._create_get_friends_requests_response(friends_requests)
-		except NoDataFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 	
@@ -42,25 +40,14 @@ class BeFriendDetailController(flask_restful.Resource):
 		try:
 			friends_requests = FriendRequestModel.get_friends_requests_sent_by_user_id(user_id)
 			return self._create_get_friends_requests_response(friends_requests)
-		except NoDataFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
-
+		
 	def _validate_user_id(self, user_id):
 		 return UserDataModel.exist_user(user_id)
 			
 	def _create_get_friends_requests_response(self, friends_requests):
 		response = []
-		for doc in friends_requests:
-			response.append(self._format_friend_request(doc))
+		for req in friends_requests:
+			response.append(req)
 		return response
-
-	def _format_friend_request(self, friend_request):
-        	return {
-					'_id': friend_request['_id'],
-					'user_id': friend_request['user_id'],
-            		'last_name': friend_request['last_name'],
-            		'name': friend_request['name'],
-            		'date': friend_request['date']
-        	}

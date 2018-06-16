@@ -1,12 +1,13 @@
-import flask_restful
 import json
+import flask_restful
 from flask import request
-from controllers.friend_controller import FriendController
-from controllers.response_builder import ResponseBuilder
 from controllers.error_handler import ErrorHandler
-from api_client.db_connection_error import DBConnectionError
 from models.friend_request import FriendRequestModel
+from controllers.response_builder import ResponseBuilder
+from controllers.friend_controller import FriendController
+from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_data_found_exception import NoDataFoundException
+from errors_exceptions.no_friend_request_found_exception import NoFriendRequestFoundException
 
 class FriendRequestDetailController(flask_restful.Resource):
 	
@@ -15,7 +16,7 @@ class FriendRequestDetailController(flask_restful.Resource):
 			 self._validate_request_id(request_id)
 			 friend_request = FriendRequestModel.get_friend_request(request_id)
 			 return self._get_friends_requests_response(friend_request)
-		except NoDataFoundException as e:
+		except NoFriendRequestFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
@@ -25,7 +26,7 @@ class FriendRequestDetailController(flask_restful.Resource):
 			 self._validate_request_id(request_id)
 			 friend_request = FriendRequestModel.remove_friend_request(request_id)
 			 return self._get_friends_requests_response(friend_request)
-		except NoDataFoundException as e:
+		except NoFriendRequestFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)

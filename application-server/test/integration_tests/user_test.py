@@ -6,7 +6,7 @@ import json
 import sys
 import app
 
-class TestFlaskUserApi(unittest.TestCase):
+class TestUserApi(unittest.TestCase):
 
     def setUp(self):
         self.app = app.app.test_client()
