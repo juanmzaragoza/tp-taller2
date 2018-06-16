@@ -28,10 +28,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         controller = new StoriesController(this);
-        Bundle arguments = getArguments();
-        if (arguments != null) {
-            controller.getStories(arguments.getString(ProfileActivity.PROFILE_ID));
-        }
+        getStories();
 
         // get root view and then access to objects like R.id.usernameView
         rootView = inflater.inflate(R.layout.fragment_stories, container, false);
@@ -40,9 +37,17 @@ public class HomeFragment extends Fragment {
         return rootView;
     }
 
+    private void getStories(){
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            controller.getStories(arguments.getString(ProfileActivity.PROFILE_ID));
+        }
+    }
+
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        getStories();
     }
 
     public void populateStories(List<Storie> storiesToPopulate) {
