@@ -51,7 +51,7 @@ public class FriendRequestController {
     public void acceptFriendRequest(final String requestId, final FriendRequestAdapter adapter) {
         EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
         JsonObject request = new JsonObject();
-        request.addProperty("requestId", requestId);
+        request.addProperty("request_id", requestId);
         Call<JsonObject> responseCall = endpointsApi.acceptFriendRequest(request);
         setOnSuccessRemove(responseCall, adapter, requestId, "Request Accepted");
     }

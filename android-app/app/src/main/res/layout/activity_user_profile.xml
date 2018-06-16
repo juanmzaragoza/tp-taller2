@@ -98,8 +98,6 @@
             android:layout_height="1dp"
             android:background="@android:color/darker_gray"
             android:includeFontPadding="false"/>
-            android:orientation="horizontal">
-        </LinearLayout>
 
         <!--Insert StoriesFragment here??-->
     </LinearLayout>
