@@ -6,7 +6,7 @@ import json
 import sys
 import app
 
-class TestFlaskLoginApi(unittest.TestCase):
+class TestLoginApi(unittest.TestCase):
 
     def setUp(self):
         self.app = app.app.test_client()
@@ -45,7 +45,7 @@ class TestFlaskLoginApi(unittest.TestCase):
         self.assertIn("code", response_data)
         self.assertEqual(400,response_data["code"])
         self.assertIn("message", response_data)
-
+        
     @patch('api_client.shared_api_client.requests.post')
     def test_token(self, mock_post):
         # set up
