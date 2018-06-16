@@ -79,4 +79,7 @@ public interface EndpointsApplicationApiRest {
     @GET(ConstantsApplicationApiRest.USERS)
     Call<JsonObject> getUsers(@Path("id")String userId);
 
+    @Headers({ACCEPT_APPLICATION_JSON})
+    @GET(ConstantsApplicationApiRest.GET_COMMENTS_BY_STORIE)
+    Call<List<Comment>> getStorieComments(@Path("id") String storieId);
 }

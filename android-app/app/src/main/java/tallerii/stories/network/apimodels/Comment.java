@@ -16,6 +16,19 @@ public class Comment extends ObjectApiApp {
     @SerializedName("message")
     public String message;
 
+    private String userName;
+
+    private String userPicture;
+
+    public Comment(String storieId, String userId,String userName,String userPicture, String date, String message) {
+        this.storieId = storieId;
+        this.userId = userId;
+        this.userName = userName;
+        this.userPicture = userPicture;
+        this.date = date;
+        this.message = message;
+    }
+
     public String getStorieId() {
         return storieId;
     }
@@ -30,6 +43,22 @@ public class Comment extends ObjectApiApp {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserPicture() {
+        return userPicture;
+    }
+
+    public void setUserPicture(String userPicture) {
+        this.userPicture = userPicture;
     }
 
     public String getDate() {

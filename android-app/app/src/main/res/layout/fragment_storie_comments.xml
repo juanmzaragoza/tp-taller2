@@ -21,12 +21,22 @@
                     android:layout_height="fill_parent"
                     android:divider="@null" />
 
+                <View
+                    android:id="@+id/divider2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"
+                    android:background="?android:attr/listDivider"
+                    android:paddingBottom="5dp"/>
+
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:paddingLeft="@dimen/stories_item_padding_left_right"
-                    android:paddingRight="@dimen/stories_item_padding_left_right" >
+                    android:paddingRight="@dimen/stories_item_padding_left_right"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="20dp">
 
                     <EditText
                         android:id="@+id/messageCommentText"

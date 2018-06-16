@@ -12,6 +12,7 @@ public final class ConstantsApplicationApiRest {
     public static final String GET_STORIES_BY_USER = REST_API + "stories/{id}";
     public static final String POST_STORIE_COMMENT = REST_API + "stories/comments";
     public static final String POST_STORIE_REACTION = REST_API + "stories/reactions";
+    public static final String GET_COMMENTS_BY_STORIE = REST_API + "stories/{id}/comments";
 
     public static final String FCM_SEND = REST_API + "notification";
     public static final String BEFRIEND = REST_API + "befriend";

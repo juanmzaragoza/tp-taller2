@@ -1,5 +1,6 @@
 package tallerii.stories.fragments.main;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,16 +24,18 @@ public class HomeFragment extends Fragment {
 
     private StoriesController controller;
     private View rootView;
+    private HelperFragment helperFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        helperFragment = new HelperFragment(getContext());
         controller = new StoriesController(this);
-        getStories();
 
         // get root view and then access to objects like R.id.usernameView
         rootView = inflater.inflate(R.layout.fragment_stories, container, false);
 
+        getStories();
 
         return rootView;
     }
@@ -41,6 +44,7 @@ public class HomeFragment extends Fragment {
         Bundle arguments = getArguments();
         if (arguments != null) {
             controller.getStories(arguments.getString(ProfileActivity.PROFILE_ID));
+            helperFragment.showMessageLoading("Wait while loading stories...");
         }
     }
 
@@ -59,6 +63,8 @@ public class HomeFragment extends Fragment {
 
         // notify data changes to list adapater
         listAdapter.notifyDataSetChanged();
+
+        helperFragment.dismissMessageLoading();
 
     }
 }
