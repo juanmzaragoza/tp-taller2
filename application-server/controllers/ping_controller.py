@@ -1,8 +1,8 @@
 import flask_restful
 from constants import MONGODB_USER, MONGODB_PASSWD
+from controllers.error_handler import ErrorHandler
 from controllers.db_controller import MongoController
 from controllers.response_builder import ResponseBuilder
-from controllers.error_handler import ErrorHandler
 from api_client.db_connection_error import DBConnectionError
 
 class PingController(flask_restful.Resource):

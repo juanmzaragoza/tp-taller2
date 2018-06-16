@@ -4,16 +4,11 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js -p $PORT",
+    "start": "ng serve",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e",
-    "postinstall": "ng build --aot -prod"
-  },
-  "engines": {
-    "node": "6.11.1",
-    "npm": "3.10.9"
+    "e2e": "ng e2e"
   },
   "private": true,
   "dependencies": {

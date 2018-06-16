@@ -110,6 +110,43 @@ class ServerController {
                 }
             });
         };
+        this.ping = (req, res, next) => {
+            try{
+                var id = req.params.id;
+                ServerService.ping(id, req.models)
+                .then((ping) => {
+                    console.log(ping)
+                    ResServ.ok(ResEnum.Value, "ping", ping, res, next);
+                })
+                .catch((e) => {
+                    console.log(e)
+                    ResServ.error(res, messages.BadRequest);
+                });
+            }
+            catch(e){
+                console.log(e)
+                ResServ.error(res, messages.InternalServerError);
+            }
+        };
+        this.stats = (req, res, next) => {
+            try{
+                var id = req.params.id;
+                ServerService.stats(id, req.models)
+                .then((stats) => {
+                    console.log(stats)
+                    ResServ.ok(ResEnum.Value, "stats", stats, res, next);
+                })
+                .catch((e) => {
+                    console.log(e)
+                    ResServ.error(res, messages.BadRequest);
+                });
+            }
+            catch(e){
+                console.log(e)
+                ResServ.error(res, messages.InternalServerError);
+            }
+
+        };
     }
 }
 module.exports = new ServerController();
