@@ -66,6 +66,11 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:includeFontPadding="false"/>
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
@@ -87,6 +92,11 @@
                 android:orientation="horizontal">
             </LinearLayout>
         </HorizontalScrollView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:includeFontPadding="false"/>
         <TextView
             android:id="@+id/textView4"
             android:layout_width="match_parent"

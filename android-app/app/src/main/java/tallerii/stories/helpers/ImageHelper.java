@@ -35,11 +35,14 @@ public class ImageHelper {
     public void setFirebaseImage(String imageId, ImageView imageView) {
         if (imageId != null && imageId.length() > 0) {
             StorageReference imageRef = storageReference.child("media").child(imageId);
-            Glide
+            GlideApp
                 .with(context)
                 .load(imageRef)
+                .placeholder(R.drawable.ic_account_circle_white_24dp)
                 .into(imageView)
             ;
+        } else {
+            imageView.setImageResource(R.drawable.ic_account_circle_white_24dp);
         }
     }
 

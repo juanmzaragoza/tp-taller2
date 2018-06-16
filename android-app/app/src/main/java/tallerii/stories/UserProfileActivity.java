@@ -2,10 +2,11 @@ package tallerii.stories;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -67,8 +68,28 @@ public class UserProfileActivity extends ProfileActivity {
     private void addFriend(LinearLayout friendsLayout, final Friend friend) {
         LinearLayout friendLayout = new LinearLayout(this);
         friendLayout.setOrientation(LinearLayout.VERTICAL);
-        friendLayout.setLayoutParams(new LinearLayout.LayoutParams(85, LinearLayout.LayoutParams.WRAP_CONTENT));
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(85, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(getPx(3), getPx(0), getPx(3), getPx(0));
+        friendLayout.setLayoutParams(layoutParams);
+        ImageView pictureView = getFriendPicture(friend);
+        friendLayout.addView(pictureView);
+        TextView nameView = getFriendName(friend);
+        friendLayout.addView(nameView);
 
+        friendsLayout.addView(friendLayout);
+    }
+
+    @NonNull
+    private TextView getFriendName(Friend friend) {
+        TextView nameView = new TextView(this);
+        nameView.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        nameView.setText(friend.getName());
+        return nameView;
+    }
+
+    @NonNull
+    private ImageView getFriendPicture(final Friend friend) {
         ImageView pictureView = new ImageView((this));
         pictureView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,85));
         imageHelper.setFirebaseImage(friend.getPicture(), pictureView);
@@ -81,15 +102,12 @@ public class UserProfileActivity extends ProfileActivity {
                 finish();
             }
         });
-        friendLayout.addView(pictureView);
+        return pictureView;
+    }
 
-        TextView nameView = new TextView(this);
-        nameView.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        nameView.setText(friend.getName());
-        friendLayout.addView(nameView);
-
-        friendsLayout.addView(friendLayout);
+    private int getPx(int value) {
+        Resources r = getContext().getResources();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, r.getDisplayMetrics());
     }
 
     protected void initAsUser(ApplicationProfile applicationProfile) {
