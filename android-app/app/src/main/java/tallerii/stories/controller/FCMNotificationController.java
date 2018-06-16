@@ -1,20 +1,16 @@
 package tallerii.stories.controller;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.JsonObject;
-
-import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Response;
-import tallerii.stories.StoriesAppActivity;
+import tallerii.stories.activities.StoriesAppActivity;
 import tallerii.stories.helpers.MyFirebaseInstanceIdService;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;

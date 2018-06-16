@@ -1,4 +1,4 @@
-package tallerii.stories;
+package tallerii.stories.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,8 +16,8 @@ import com.google.gson.Gson;
 
 import tallerii.stories.network.apimodels.ApplicationProfile;
 
-import static tallerii.stories.ProfileActivity.PROFILE_ID;
-import static tallerii.stories.ProfileActivity.PROFILE_OBJECT;
+import static tallerii.stories.activities.ProfileActivity.PROFILE_ID;
+import static tallerii.stories.activities.ProfileActivity.PROFILE_OBJECT;
 
 public abstract class StoriesAppActivity extends AppCompatActivity {
     abstract protected Context getContext();

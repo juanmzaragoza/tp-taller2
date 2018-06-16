@@ -26,8 +26,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".AuthorizationMainActivity"
-            android:parentActivityName=".AuthorizationMainActivity"
+            android:name=".activities.AuthorizationMainActivity"
+            android:parentActivityName=".activities.AuthorizationMainActivity"
             android:theme="@android:style/Theme.NoDisplay">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,9 +35,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".RegistrationActivity" />
+        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.RegistrationActivity" />
 
         <!-- Facebook SDK -->
         <meta-data
@@ -60,12 +60,12 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".UserProfileActivity" />
-        <activity android:name=".UserProfileUpdateActivity" />
-        <activity android:name=".ChatMessagesActivity" />
-        <activity android:name=".ChatRoomsActivity" />
-        <activity android:name=".FriendRequestActivity" />
-        <activity android:name=".SearchUsersActivity" />
+        <activity android:name=".activities.UserProfileActivity" />
+        <activity android:name=".activities.UserProfileUpdateActivity" />
+        <activity android:name=".activities.ChatMessagesActivity" />
+        <activity android:name=".activities.ChatRoomsActivity" />
+        <activity android:name=".activities.FriendRequestActivity" />
+        <activity android:name=".activities.SearchUsersActivity" />
         <!-- End Facebook SDK -->
         <service android:name=".helpers.MyFirebaseMessagingService">
             <intent-filter>

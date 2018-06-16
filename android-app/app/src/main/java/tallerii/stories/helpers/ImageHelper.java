@@ -3,13 +3,10 @@ package tallerii.stories.helpers;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -18,8 +15,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import tallerii.stories.R;
-import tallerii.stories.StoriesAppActivity;
-import tallerii.stories.controller.ProfileUpdateController;
+import tallerii.stories.activities.StoriesAppActivity;
 
 public class ImageHelper {
 

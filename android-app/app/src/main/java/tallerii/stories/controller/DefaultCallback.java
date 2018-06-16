@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import tallerii.stories.StoriesAppActivity;
+import tallerii.stories.activities.StoriesAppActivity;
 import tallerii.stories.network.apimodels.ServerError;
 
 public abstract class DefaultCallback<T> implements Callback<T> {

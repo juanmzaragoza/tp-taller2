@@ -9,7 +9,7 @@ import android.widget.ListView;
 
 import java.util.List;
 
-import tallerii.stories.ProfileActivity;
+import tallerii.stories.activities.ProfileActivity;
 import tallerii.stories.R;
 import tallerii.stories.controller.StoriesController;
 import tallerii.stories.helpers.StoriesAdapter;

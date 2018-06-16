@@ -1,24 +1,15 @@
-package tallerii.stories;
+package tallerii.stories.activities;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
 import java.util.UUID;
 
+import tallerii.stories.R;
 import tallerii.stories.controller.ProfileController;
 import tallerii.stories.controller.ProfileUpdateController;
 import tallerii.stories.helpers.ImageHelper;

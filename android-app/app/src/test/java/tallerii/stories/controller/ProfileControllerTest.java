@@ -15,7 +15,7 @@ import java.nio.file.Files;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import tallerii.stories.UserProfileActivity;
+import tallerii.stories.activities.UserProfileActivity;
 import tallerii.stories.network.ConstantsApplicationApiRest;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 

@@ -11,7 +11,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
-import tallerii.stories.FriendRequestActivity;
+import tallerii.stories.activities.FriendRequestActivity;
 import tallerii.stories.helpers.FriendRequestAdapter;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;

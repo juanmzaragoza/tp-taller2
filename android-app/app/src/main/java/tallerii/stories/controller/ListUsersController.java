@@ -10,7 +10,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
-import tallerii.stories.SearchUsersActivity;
+import tallerii.stories.activities.SearchUsersActivity;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
 import tallerii.stories.network.apimodels.Users;

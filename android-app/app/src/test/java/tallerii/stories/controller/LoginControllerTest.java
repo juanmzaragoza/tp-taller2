@@ -13,7 +13,7 @@ import java.time.Instant;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import tallerii.stories.LoginActivity;
+import tallerii.stories.activities.LoginActivity;
 import tallerii.stories.network.ConstantsApplicationApiRest;
 import tallerii.stories.network.apimodels.EntityMetadata;
 import tallerii.stories.network.apimodels.LoginResult;

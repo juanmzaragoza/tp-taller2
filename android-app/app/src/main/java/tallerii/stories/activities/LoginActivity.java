@@ -1,4 +1,4 @@
-package tallerii.stories;
+package tallerii.stories.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import java.util.Arrays;
 
+import tallerii.stories.R;
 import tallerii.stories.controller.LoginController;
 
 public class LoginActivity extends StoriesAppActivity {

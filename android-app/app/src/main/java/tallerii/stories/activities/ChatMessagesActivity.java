@@ -1,4 +1,4 @@
-package tallerii.stories;
+package tallerii.stories.activities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import tallerii.stories.R;
 import tallerii.stories.controller.FCMNotificationController;
 import tallerii.stories.helpers.MessagesAdapter;
 import tallerii.stories.network.apimodels.ChatMessage;

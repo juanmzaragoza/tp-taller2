@@ -1,15 +1,11 @@
 package tallerii.stories.helpers;
 
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
-
-import tallerii.stories.StoriesLoggedInActivity;
 
 public class MyFirebaseInstanceIdService extends FirebaseInstanceIdService {
 

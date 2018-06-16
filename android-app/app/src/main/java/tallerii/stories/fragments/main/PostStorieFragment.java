@@ -8,7 +8,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -26,7 +25,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import tallerii.stories.R;
-import tallerii.stories.StoriesAppActivity;
+import tallerii.stories.activities.StoriesAppActivity;
 import tallerii.stories.controller.StoriesController;
 import tallerii.stories.helpers.LocationHelper;
 import tallerii.stories.helpers.MediaFile;

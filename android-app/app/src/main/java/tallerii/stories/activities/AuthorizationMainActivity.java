@@ -1,4 +1,4 @@
-package tallerii.stories;
+package tallerii.stories.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,15 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
 
 import tallerii.stories.helpers.Store;
 import tallerii.stories.network.ConstantsApplicationApiRest;
-import tallerii.stories.network.apimodels.ApplicationProfile;
-import tallerii.stories.network.apimodels.Friend;
-
-import static tallerii.stories.ProfileActivity.PROFILE_ID;
-import static tallerii.stories.ProfileActivity.PROFILE_OBJECT;
 
 /*
  * -----------------
@@ -50,7 +44,7 @@ public class AuthorizationMainActivity extends AppCompatActivity {
             activityIntent = new Intent(this, LoginActivity.class);
         }
         /*START TESTING SETTINGS*/
-        //ConstantsApplicationApiRest.ROOT_URL= "http://192.168.0.8:5858/";
+//        ConstantsApplicationApiRest.ROOT_URL= "http://192.168.0.76:5858/";
         /*END TESTING SETTINGS*/
         startActivity(activityIntent);
         finish();

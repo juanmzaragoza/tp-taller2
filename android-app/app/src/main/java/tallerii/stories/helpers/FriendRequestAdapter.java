@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import tallerii.stories.R;
-import tallerii.stories.StoriesAppActivity;
+import tallerii.stories.activities.StoriesAppActivity;
 import tallerii.stories.controller.FriendRequestController;
 import tallerii.stories.network.apimodels.FriendRequest;
 

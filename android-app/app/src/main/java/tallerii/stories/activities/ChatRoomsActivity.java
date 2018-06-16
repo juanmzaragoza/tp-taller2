@@ -1,4 +1,4 @@
-package tallerii.stories;
+package tallerii.stories.activities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import tallerii.stories.R;
 import tallerii.stories.helpers.FriendsAdapter;
 import tallerii.stories.network.apimodels.Friend;
 

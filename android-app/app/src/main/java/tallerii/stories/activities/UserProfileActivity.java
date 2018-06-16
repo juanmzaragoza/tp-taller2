@@ -1,4 +1,4 @@
-package tallerii.stories;
+package tallerii.stories.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import tallerii.stories.R;
 import tallerii.stories.controller.ProfileController;
 import tallerii.stories.controller.ProfileUserController;
 import tallerii.stories.network.apimodels.ApplicationProfile;

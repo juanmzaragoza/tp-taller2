@@ -1,8 +1,6 @@
-package tallerii.stories;
+package tallerii.stories.activities;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,13 +15,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
+import tallerii.stories.R;
 import tallerii.stories.controller.ProfileController;
 import tallerii.stories.helpers.MyFirebaseInstanceIdService;
 import tallerii.stories.helpers.Store;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 
-import static tallerii.stories.ProfileActivity.PROFILE_ID;
-import static tallerii.stories.ProfileActivity.PROFILE_OBJECT;
+import static tallerii.stories.activities.ProfileActivity.PROFILE_ID;
+import static tallerii.stories.activities.ProfileActivity.PROFILE_OBJECT;
 
 public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
     public static final String TOKEN = "token";

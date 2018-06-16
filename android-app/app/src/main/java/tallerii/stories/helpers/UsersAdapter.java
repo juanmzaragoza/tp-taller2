@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import tallerii.stories.ProfileActivity;
+import tallerii.stories.activities.ProfileActivity;
 import tallerii.stories.R;
-import tallerii.stories.UserProfileActivity;
+import tallerii.stories.activities.UserProfileActivity;
 import tallerii.stories.network.apimodels.Users;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
