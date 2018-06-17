@@ -37,10 +37,10 @@ public class Storie extends ObjectApiApp{
     @SerializedName("storie_type")
     public String storieType;
 
-    @SerializedName("user_name")
+    @SerializedName("name")
     public String userName;
 
-    @SerializedName("user_last_name")
+    @SerializedName("last_name")
     public String userLastName;
 
     @SerializedName("user_email")
