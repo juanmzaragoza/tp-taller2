@@ -10,6 +10,7 @@ from controllers.friend_controller import FriendController
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_friend_request_found_exception import NoFriendRequestFoundException
 from errors_exceptions.friendship_already_exists_exception import FriendshipAlreadyExistsException
+from auth_service import login_required
 
 class FriendRequestController(flask_restful.Resource):
 	

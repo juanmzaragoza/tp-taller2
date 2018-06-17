@@ -8,6 +8,7 @@ from controllers.error_handler import ErrorHandler
 from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
+from auth_service import login_required
 
 class StorieCommentController(flask_restful.Resource):
 	

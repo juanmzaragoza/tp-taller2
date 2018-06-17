@@ -5,6 +5,7 @@ from controllers.error_handler import ErrorHandler
 from models.request_counter import RequestCounterModel
 from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
+from auth_service import login_required
 
 class RequestCounterController(flask_restful.Resource):
 	

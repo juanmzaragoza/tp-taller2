@@ -6,6 +6,7 @@ from controllers.error_handler import ErrorHandler
 from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_friend_found_exception import NoFriendFoundException
+from auth_service import login_required
 
 class FriendDetailController(flask_restful.Resource):
 	def delete(self, friend_id):

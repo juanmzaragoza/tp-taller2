@@ -13,6 +13,7 @@ from controllers.storie_detail_controller import StorieDetailController
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
 from controllers.be_friend_detail_controller import BeFriendDetailController
+from auth_service import login_required
 
 class ProfileController(flask_restful.Resource):
 	

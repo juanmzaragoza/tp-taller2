@@ -13,6 +13,7 @@ from errors_exceptions.no_user_data_found_exception import NoUserDataFoundExcept
 from errors_exceptions.data_already_exists_exception import DataAlreadyExistsException
 from errors_exceptions.friendship_already_exists_exception import FriendshipAlreadyExistsException
 from errors_exceptions.friend_request_already_exists_exception import FriendRequestAlreadyExistsException
+from auth_service import login_required
 
 class BeFriendController(flask_restful.Resource):
 	

@@ -7,6 +7,7 @@ from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_reaction_found_exception import NoReactionFoundException
+from auth_service import login_required
 
 class ReactionDetailController(flask_restful.Resource):
 	

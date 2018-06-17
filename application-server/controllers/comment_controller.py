@@ -9,6 +9,7 @@ from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
+from auth_service import login_required
 
 class CommentController(flask_restful.Resource):
 	
