@@ -45,7 +45,7 @@ public class MainActivity extends StoriesLoggedInActivity {
             showMessage(intent.getStringExtra(EXTRA_MESSAGE), 10);
         }
         // by default show home
-        fragment = new HomeFragment();
+        setHomeFragment(ProfileActivity.PROFILE_ID);
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_container, fragment).commit();
 
@@ -65,7 +65,7 @@ public class MainActivity extends StoriesLoggedInActivity {
     private boolean switchContent(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_home:
-                setHomeFragment();
+                setHomeFragment(null); // if null -> take id from getProfile()
                 break;
             case R.id.action_account:
                 fragment = new AnotherFragment();
@@ -79,11 +79,11 @@ public class MainActivity extends StoriesLoggedInActivity {
         return true;
     }
 
-    private void setHomeFragment() {
+    private void setHomeFragment(String profileId) {
         fragment = new HomeFragment();
         // get profile id and pass it to fragment
         Bundle bundleHomeFragment = getIntent().getExtras();
-        bundleHomeFragment.putString(ProfileActivity.PROFILE_ID, getProfile().getUserId());
+        bundleHomeFragment.putString(ProfileActivity.PROFILE_ID, profileId != null? profileId:getProfile().getUserId());
         fragment.setArguments(bundleHomeFragment);
     }
 

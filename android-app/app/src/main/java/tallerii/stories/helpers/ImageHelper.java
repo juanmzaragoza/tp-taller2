@@ -5,12 +5,15 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.VideoView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -28,17 +31,58 @@ public class ImageHelper {
         this.storageReference = storage.getReference();
     }
 
-    public void setFirebaseImage(String imageId, ImageView imageView) {
+    public void setFirebaseImage(final String imageId, final ImageView imageView) {
         if (imageId != null && imageId.length() > 0) {
-            StorageReference imageRef = storageReference.child("media").child(imageId);
-            GlideApp
-                .with(context)
-                .load(imageRef)
-                .placeholder(R.drawable.ic_account_circle_white_24dp)
-                .into(imageView)
-            ;
+            final StorageReference imageRef = storageReference.child("media").child(imageId);
+            imageRef.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+                @Override
+                public void onSuccess(StorageMetadata storageMetadata) {
+                    // Metadata now contains the metadata for 'images/forest.jpg'
+                    if(storageMetadata.getContentType().contains("image")){
+                        GlideApp.with(context)
+                                .load(imageRef)
+                                .placeholder(R.drawable.ic_account_circle_white_24dp)
+                                .into(imageView);
+                        imageView.setVisibility(View.VISIBLE);
+                    } else{
+                        imageView.setVisibility(View.GONE);
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Uh-oh, an error occurred
+                    Log.i("FIREBASE","An error ocurrer on get "+imageId);
+                    imageView.setVisibility(View.GONE);
+                }
+            });
         } else {
             imageView.setImageResource(R.drawable.ic_account_circle_white_24dp);
+        }
+    }
+
+    public void setFirebaseVideo(final String videoId, final VideoView videoView) {
+        if (videoId != null && videoId.length() > 0) {
+            final StorageReference videoRef = storageReference.child("media").child(videoId);
+            videoRef.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+                @Override
+                public void onSuccess(StorageMetadata storageMetadata) {
+                    // Metadata now contains the metadata
+                    if(storageMetadata.getContentType().contains("video")){
+                        videoView.setVideoURI(videoRef.getDownloadUrl().getResult());
+                        videoView.setVisibility(View.VISIBLE);
+                    } else{
+                        videoView.setVisibility(View.GONE);
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Uh-oh, an error occurred
+                    Log.i("FIREBASE","An error ocurred on get "+videoId);
+                    videoView.setVisibility(View.GONE);
+                }
+            });
         }
     }
 

@@ -12,6 +12,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import tallerii.stories.network.apimodels.Comment;
 import tallerii.stories.network.apimodels.FriendRequest;
 import tallerii.stories.network.apimodels.Storie;
 
@@ -44,9 +45,17 @@ public interface EndpointsApplicationApiRest {
     @GET(ConstantsApplicationApiRest.GET_STORIES_BY_USER)
     Call<List<Storie>> getStoriesByUserId(@Path("id") String user_id);
 
-    @Headers({"Accept:application/json"})
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
     @POST(ConstantsApplicationApiRest.POST_STORIE)
     Call<Storie> postStorie(@Body JsonObject parameters);
+
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
+    @POST(ConstantsApplicationApiRest.POST_STORIE_COMMENT)
+    Call<Comment> postStorieComment(@Body JsonObject parameters);
+
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
+    @POST(ConstantsApplicationApiRest.POST_STORIE_REACTION)
+    Call<Storie> postStorieReaction(@Body JsonObject parameters);
 
     @Headers({ACCEPT_APPLICATION_JSON})
     @GET(ConstantsApplicationApiRest.GET_FRIEND_REQUESTS)
@@ -69,4 +78,8 @@ public interface EndpointsApplicationApiRest {
     @Headers({ACCEPT_APPLICATION_JSON})
     @GET(ConstantsApplicationApiRest.USERS)
     Call<JsonObject> getUsers(@Path("id")String userId);
+
+    @Headers({ACCEPT_APPLICATION_JSON})
+    @GET(ConstantsApplicationApiRest.GET_COMMENTS_BY_STORIE)
+    Call<List<Comment>> getStorieComments(@Path("id") String storieId);
 }

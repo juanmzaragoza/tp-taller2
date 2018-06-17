@@ -4,13 +4,11 @@ package tallerii.stories.network.apimodels;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Storie {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-    @SerializedName("_id")
-    public String id;
-
-    @SerializedName("_rev")
-    public String rev;
+public class Storie extends ObjectApiApp{
 
     @SerializedName("user_id")
     public String userId;
@@ -51,21 +49,11 @@ public class Storie {
     @SerializedName("user_picture")
     public String userPicture;
 
-    public String getId() {
-        return id;
-    }
+    @SerializedName("comments")
+    public List<Comment> comments = new ArrayList<Comment>();;
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getRev() {
-        return rev;
-    }
-
-    public void setRev(String rev) {
-        this.rev = rev;
-    }
+    @SerializedName("reactions")
+    public List<Reaction> reactions = new ArrayList<Reaction>();
 
     public String getUserId() {
         return userId;
@@ -170,6 +158,54 @@ public class Storie {
     public void setUserPicture(String userPicture) {
         this.userPicture = userPicture;
     }
+
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<Reaction> getReactions() {
+        return reactions;
+    }
+
+    public void setReactions(List<Reaction> reactions) {
+        this.reactions = reactions;
+    }
+
+    public List<Reaction> getReactionsBy(String name){
+        List<Reaction> result = new ArrayList<Reaction>();
+        for (Reaction reaction : this.reactions) {
+            if (reaction.getReaction().equals(name)) {
+                result.add(reaction);
+            }
+        }
+        return result;
+    }
+
+    public Reaction getReactionByUser(String userId){
+        for (Reaction reaction : this.reactions) {
+            if (reaction.getUserId().equals(userId)) {
+                return reaction;
+            }
+        }
+        return null;
+    }
+
+    public Reaction getReactionByUser(String userId, String reactionName){
+        for (Reaction reaction : this.reactions) {
+            if (reaction.getUserId().equals(userId)) {
+                return reaction.getReaction().equals(reactionName)?reaction:null;
+            }
+        }
+        return null;
+    }
+
+
 
 
 
