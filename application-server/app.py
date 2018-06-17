@@ -15,6 +15,7 @@ from controllers.reaction_detail_controller import ReactionDetailController
 from controllers.stats_controller import StatsController
 from controllers.profile_controller import ProfileController
 from controllers.storie_controller import StorieController
+from controllers.storie_comment_controller import StorieCommentController
 from controllers.storie_detail_controller import StorieDetailController
 from controllers.friend_controller import FriendController
 from controllers.friend_detail_controller import FriendDetailController
@@ -53,6 +54,7 @@ with app.app_context():
 	api.add_resource(UserAppController, '/users/<string:user_id>')
 	api.add_resource(StorieController, '/stories')
 	api.add_resource(CommentController, '/stories/comments')
+	api.add_resource(StorieCommentController, '/stories/<string:storie_id>/comments')
 	api.add_resource(CommentDetailController, '/stories/comments/<string:comment_id>')
 	api.add_resource(ReactionController, '/stories/reactions')
 	api.add_resource(ReactionDetailController, '/stories/reactions/<string:reaction_id>')

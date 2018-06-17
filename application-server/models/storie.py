@@ -1,4 +1,5 @@
 import uuid
+import pymongo
 from models.comment import CommentModel
 from models.reaction import ReactionModel
 from models.user_data import UserDataModel
@@ -43,6 +44,8 @@ class StorieModel:
 		db.users_stories.insert({'user_id': user_id, 'storie_id': storie_id})
 		
 		storie['user_id'] = user_id
+		storie['created_time'] = str(storie['created_time'])
+		storie['updated_time'] = str(storie['updated_time'])
 		
 		return storie
 
@@ -59,7 +62,7 @@ class StorieModel:
 			raise DataVersionException
 
 		rev = str(uuid.uuid4().hex)
-		created_time = body["created_time"] 
+		created_time = act_storie["created_time"] 
 		updated_time = DateController.get_date_time()
 		title = body["title"]
 		desc = body["description"] if ("description" in body) else "" 
@@ -74,12 +77,14 @@ class StorieModel:
 		
 		res = db.stories.find_and_modify({'_id': storie_id},{'$set': storie})
 		#storie = db.stories.find_one({'_id': storie_id})
-		
+		res['created_time'] = str(res['created_time'])
+		res['updated_time'] = str(res['updated_time'])
 		return res
 
 	@staticmethod
 	def get_stories(user_id):
-		data = {}
+		#data = {}
+		data = []
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		
 		stories = db.stories.aggregate([
@@ -93,33 +98,33 @@ class StorieModel:
 												}
 										   },
 										   {
-												"$sort": { "created_time": 1 }
+												"$sort": { "created_time": -1 }
 											}
 										]);
-		
 		for storie in stories:
 			storie_id = storie["users_storie"][0]["storie_id"]
 			storie_user_id = storie["users_storie"][0]["user_id"]
-			data[storie_id] = UserDataModel.get_user_reduced_data_by_user_id(storie_user_id)
-			data[storie_id]["user_id"] = data[storie_id].pop("_id")
-			data[storie_id]["_id"] = storie_id
-			data[storie_id]["_rev"] = storie["_rev"]
-			data[storie_id]["created_time"] = storie["created_time"]
-			data[storie_id]["updated_time"] = storie["updated_time"]
-			data[storie_id]["title"] = storie["title"]
-			data[storie_id]["description"] = storie["description"]
-			data[storie_id]["location"] = storie["location"]
-			data[storie_id]["visibility"] = storie["visibility"]
-			data[storie_id]["multimedia"] = storie["multimedia"]
-			data[storie_id]["story_type"] = storie["story_type"]
-			data[storie_id]["comments"] = CommentModel.get_storie_comments(storie_id)
-			data[storie_id]["reactions"] = ReactionModel.get_storie_reactions(storie_id)
+			storieJson = UserDataModel.get_user_reduced_data_by_user_id(storie_user_id)
+			storieJson["user_id"] = storieJson.pop("_id")
+			storieJson["_id"] = storie_id
+			storieJson["_rev"] = storie["_rev"]
+			storieJson["created_time"] = str(storie["created_time"])
+			storieJson["updated_time"] = str(storie["updated_time"])
+			storieJson["title"] = storie["title"]
+			storieJson["description"] = storie["description"]
+			storieJson["location"] = storie["location"]
+			storieJson["visibility"] = storie["visibility"]
+			storieJson["multimedia"] = storie["multimedia"]
+			storieJson["story_type"] = storie["story_type"]
+			storieJson["comments"] = CommentModel.get_last_storie_comment(storie_id)
+			storieJson["reactions"] = ReactionModel.get_storie_reactions(storie_id)
+			data.append(storieJson)
 		
-		return list(data.values())
-
+		return data
+		
 	@staticmethod
 	def get_stories_by_user_id(user_id):
-		data = {}
+		data = []
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		
 		stories = db.stories.aggregate([
@@ -136,28 +141,30 @@ class StorieModel:
 											  "$match": { "users_storie.user_id": user_id }
 										   },
 										   {
-												"$sort": { "created_time": 1 }
+												"$sort": { "created_time": -1 }
 											}
 										]);
 		
 		for storie in stories:
 			storie_id = storie["users_storie"][0]["storie_id"]
-			data[storie_id] = UserDataModel.get_user_reduced_data_by_user_id(user_id)
-			data[storie_id]["user_id"] = data[storie_id].pop("_id")
-			data[storie_id]["_id"] = storie_id
-			data[storie_id]["_rev"] = storie["_rev"]
-			data[storie_id]["created_time"] = storie["created_time"]
-			data[storie_id]["updated_time"] = storie["updated_time"]
-			data[storie_id]["title"] = storie["title"]
-			data[storie_id]["description"] = storie["description"]
-			data[storie_id]["location"] = storie["location"]
-			data[storie_id]["visibility"] = storie["visibility"]
-			data[storie_id]["multimedia"] = storie["multimedia"]
-			data[storie_id]["story_type"] = storie["story_type"]
-			data[storie_id]["comments"] = CommentModel.get_storie_comments(storie_id)
-			data[storie_id]["reactions"] = ReactionModel.get_storie_reactions(storie_id)
+			storieJson = UserDataModel.get_user_reduced_data_by_user_id(user_id)
+			storieJson["user_id"] = storieJson.pop("_id")
+			storieJson["_id"] = storie_id
+			storieJson["_rev"] = storie["_rev"]
+			storieJson["created_time"] = str(storie["created_time"])
+			storieJson["updated_time"] = str(storie["updated_time"])
+			storieJson["title"] = storie["title"]
+			storieJson["description"] = storie["description"]
+			storieJson["location"] = storie["location"]
+			storieJson["visibility"] = storie["visibility"]
+			storieJson["multimedia"] = storie["multimedia"]
+			storieJson["story_type"] = storie["story_type"]
+			storieJson["comments"] = CommentModel.get_last_storie_comment(storie_id)
+			storieJson["reactions"] = ReactionModel.get_storie_reactions(storie_id)
+			data.append(storieJson)
 		
-		return list(data.values())
+		
+		return data
 		
 	@staticmethod
 	def delete_storie(storie_id, storie_user_id):
@@ -171,7 +178,8 @@ class StorieModel:
 		storie = db.stories.find_one({'_id': storie_id})
 		db.stories.remove({'_id': storie_id})
 		db.users_stories.remove({'storie_id': storie_id,'user_id': storie_user_id})
-
+		storie['created_time'] = str(storie['created_time'])
+		storie['updated_time'] = str(storie['updated_time'])
 		return storie
 	
 	@staticmethod

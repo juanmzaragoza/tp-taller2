@@ -23,7 +23,7 @@ class FriendRequestModel():
 			data[friend_req_id] = UserDataModel.get_user_reduced_data_by_user_id(friend_req_id)
 			data[friend_req_id]["user_id"] = data[friend_req_id].pop("_id")
 			data[friend_req_id]["_id"] = freq["_id"]
-			data[friend_req_id]["date"] = freq["date"]
+			data[friend_req_id]["date"] = str(freq["date"])
 			data[friend_req_id]["message"] = freq["message"]
 		
 		return list(data.values())
@@ -40,7 +40,7 @@ class FriendRequestModel():
 			data[friend_req_id] = UserDataModel.get_user_reduced_data_by_user_id(friend_req_id)
 			data[friend_req_id]["user_id"] = data[friend_req_id].pop("_id")
 			data[friend_req_id]["_id"] = freq["_id"]
-			data[friend_req_id]["date"] = freq["date"]
+			data[friend_req_id]["date"] = str(freq["date"])
 			data[friend_req_id]["message"] = freq["message"]
 		
 		return list(data.values())
@@ -53,7 +53,8 @@ class FriendRequestModel():
 
 		if request == None:
 			raise NoFriendRequestFoundException
-
+			
+		request["date"] = str(request["date"])
 		return request
 	
 	@staticmethod
@@ -63,7 +64,8 @@ class FriendRequestModel():
 		
 		if friend_req == None:
 			raise NoFriendRequestFoundException
-			
+		
+		friend_req["date"] = str(friend_req["date"])
 		return friend_req
 
 	@staticmethod
@@ -76,7 +78,7 @@ class FriendRequestModel():
 			raise NoFriendRequestFoundException
 		
 		db.friends_request.remove({'_id': request_id})
-		
+		friend_req["date"] = str(friend_req["date"])
 		return friend_req
 	
 	@staticmethod
@@ -99,7 +101,7 @@ class FriendRequestModel():
 		friend_request = FriendRequestModel.get_new_friend_request(friend_req_id, user_id_sender, user_id_rcv, msg, date, picture)
 		
 		db.friends_request.insert(friend_request)
-		
+		friend_request["date"] = str(friend_request["date"])
 		return friend_request
 	
 	@staticmethod

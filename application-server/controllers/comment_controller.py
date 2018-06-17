@@ -8,6 +8,7 @@ from controllers.error_handler import ErrorHandler
 from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
+from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
 
 class CommentController(flask_restful.Resource):
 	
@@ -26,6 +27,8 @@ class CommentController(flask_restful.Resource):
 			 
 		except BadRequest as ex:
 			return ErrorHandler.create_error_response("Fields message, user_id and storie_id are mandatory", 400)
+		except NoUserDataFoundException as e:
+			return ErrorHandler.create_error_response(str(e), 404)
 		except NoStorieFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:

@@ -1,4 +1,5 @@
 import pymongo
+import datetime
 import time
 
 class DateController():
@@ -15,5 +16,6 @@ class DateController():
 				
 	@staticmethod
 	def get_date_time():
-		date_time = time.strftime('%d/%m/%Y %H:%M:%S', time.localtime())
+		date_time = datetime.datetime.utcnow()
+		#date_time = time.strftime('%d/%m/%Y %H:%M:%S', time.localtime())
 		return date_time
