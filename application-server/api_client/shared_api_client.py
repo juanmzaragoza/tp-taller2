@@ -14,7 +14,11 @@ class SharedApiClient():
 
 	def __init__(self):
 		self.url = os.environ['SHARED_URI']
-		self.headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+		self.headers = {
+			'Content-type': 'application/json', 
+			'Accept': 'text/plain',
+			'api-key': 'defaultToken'
+		}
 
 	def login(self, username, password):
 		# app.logger.error('url: %s', self.url)

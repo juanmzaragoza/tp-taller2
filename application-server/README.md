@@ -11,6 +11,10 @@ Para establecer la conexion a la base de datos, se debe indicar la URI a traves 
 * LOCAL/TRAVIS  `export MONGO_URI='mongodb://localhost:27017'`  
 * DOCKER `export MONGO_URI='mongodb://mongo:27017'`  
 
+### Inicializar datos en MONGO
+`docker exec -it 'mongo' bash`
+`./docker-entrypoint.sh`
+
 ## Logging
 Para loggear en flask:
 * Importar Flask: `import flask`
