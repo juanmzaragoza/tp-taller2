@@ -45,7 +45,7 @@ public class Storie extends ObjectApiApp{
     @SerializedName("user_email")
     public String userEmail;
 
-    @SerializedName("user_picture")
+    @SerializedName("picture")
     public String userPicture;
 
     @SerializedName("comments")
