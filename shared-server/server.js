@@ -17,7 +17,7 @@ const HOST = config.get('server.host');
 const app = express();
 
 // set middleware parse json
-app.use(bodyParser.json({ type: 'application/json' }));
+app.use(bodyParser.json({ type: 'application/json', limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true })); 
 
 //user-defined middleware

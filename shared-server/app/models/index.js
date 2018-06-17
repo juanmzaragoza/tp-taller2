@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize');
-// var config = require('config');
 var env = process.env.NODE_ENV || 'development';
 var config = require(__dirname + '/../../config/database.json')[env];
 
@@ -37,6 +36,7 @@ function loadDatabase() {
 
     require('./user')(Sequelize, sequelize, models);
     require('./app_server')(Sequelize, sequelize, models);
+    require('./file')(Sequelize, sequelize, models);
     
     return {
         db: sequelize,

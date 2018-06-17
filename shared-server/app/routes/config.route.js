@@ -7,18 +7,26 @@ var UserCtrl    = require('../controllers/user.controller');
 var ServerCtrl  = require('../controllers/server.controller');
 var AppCtrl     = require('../controllers/app.controller')
 
+// Login
 RouterHandler.addEndpointWithOutAuth({
     verb: 'post',
     path: '/token',
     handler: LoginCont.token
 });
+
+// Users
 RouterHandler.addEndpointWithOutAuth({
     verb: 'post',
     path: '/user',
     handler: UserCtrl.user
 });
+RouterHandler.addEndpointWithOutAuth({
+    verb: 'get',
+    path: '/user/:id',
+    handler: UserCtrl.getById
+});
 
-
+// App
 RouterHandler.addEndpointWithAuth({
     verb: 'get',
     path: '/servers/stats/:id',
@@ -30,56 +38,67 @@ RouterHandler.addEndpointWithAuth({
     handler: ServerCtrl.ping
 });
 
-RouterHandler.addEndpointWithOutAuth({
+// Files
+RouterHandler.addEndpointWithAuth({
     verb: 'get',
-    path: '/user/:id',
-    handler: UserCtrl.getById
+    path: '/files/:id',
+    handler: FileCtrl.getById
 });
-
 RouterHandler.addEndpointWithAuth({
     verb: 'get',
     path: '/files',
     handler: FileCtrl.get
 });
-
 RouterHandler.addEndpointWithAuth({
     verb: 'post',
     path: '/files/upload',
-    handler: FileCtrl.postUpload
+    handler: FileCtrl.uploadFile
+});
+RouterHandler.addEndpointWithAuth({
+    verb: 'post',
+    path: '/files',
+    handler: FileCtrl.create
+});
+RouterHandler.addEndpointWithAuth({
+    verb: 'put',
+    path: '/files/:id',
+    handler: FileCtrl.update
+});
+RouterHandler.addEndpointWithAuth({
+    verb: 'delete',
+    path: '/files/:id',
+    handler: FileCtrl.delete
 });
 
+// Servers
 RouterHandler.addEndpointWithAuth({
     verb: 'post',
     path: '/servers',
     handler: ServerCtrl.post
 });
-
 RouterHandler.addEndpointWithAuth({
     verb: 'post',
     path: '/servers/:id',
     handler: ServerCtrl.refreshToken
 });
-
 RouterHandler.addEndpointWithAuth({
     verb: 'get',
     path: '/servers',
     handler: ServerCtrl.get
 });
-
 RouterHandler.addEndpointWithAuth({
     verb: 'get',
     path: '/servers/:id',
     handler: ServerCtrl.getById
 });
-
 RouterHandler.addEndpointWithAuth({
     verb: 'put',
     path: '/servers/:id',
     handler: ServerCtrl.put
 });
-
 RouterHandler.addEndpointWithAuth({
     verb: 'delete',
     path: '/servers/:id',
     handler: ServerCtrl.delete
 });
+
