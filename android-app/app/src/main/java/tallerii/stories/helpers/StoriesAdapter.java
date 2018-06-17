@@ -19,6 +19,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -90,6 +91,7 @@ public class StoriesAdapter extends BaseAdapter {
         //TextView url = (TextView) convertView.findViewById(R.id.txtUrl);
         ImageView profilePic = convertView.findViewById(R.id.profilePic);
         ImageView storieImageView = convertView.findViewById(R.id.storieImage1);
+        VideoView storieVideoView = convertView.findViewById(R.id.storieVideoView);
 
         View lastCommentView = convertView.findViewById(R.id.lastCommentView);
         View messageComment = convertView.findViewById(R.id.messageCommentText);
@@ -103,8 +105,8 @@ public class StoriesAdapter extends BaseAdapter {
         name.setText(String.format("%s %s", storie.getUserName(), storie.getUserLastName()));
 
         // Converting timestamp into x ago format
-        DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
         try {
+            DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
             timestamp.setText(DateUtils.printDifference(sdf.parse(storie.getCreatedTime())));
         } catch (ParseException e) {
             timestamp.setText("unknown");
@@ -137,11 +139,12 @@ public class StoriesAdapter extends BaseAdapter {
 
         // storie image
         if (storie.getMultimedia() != null && !storie.getMultimedia().isEmpty()) {
-            storieImageView.setVisibility(View.VISIBLE);
+            //storieImageView.setVisibility(View.VISIBLE);
             imageHelper.setFirebaseImage(storie.getMultimedia(), storieImageView);
-        } else {
+            imageHelper.setFirebaseVideo(storie.getMultimedia(), storieVideoView);
+        } /*else {
             storieImageView.setVisibility(View.GONE);
-        }
+        }*/
 
         // prepare reaction buttons -> add each button to a reaction not pressed
         HashMap<ImageButton, Integer> buttons = new HashMap<>();

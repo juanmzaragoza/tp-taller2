@@ -33,7 +33,7 @@ public class Storie extends ObjectApiApp{
     @SerializedName("multimedia")
     public String multimedia;
 
-    @SerializedName("storie_type")
+    @SerializedName("story_type")
     public String storieType;
 
     @SerializedName("name")

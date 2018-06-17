@@ -2,6 +2,7 @@ package tallerii.stories.helpers;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -69,8 +70,21 @@ public class ImageHelper {
                 public void onSuccess(StorageMetadata storageMetadata) {
                     // Metadata now contains the metadata
                     if(storageMetadata.getContentType().contains("video")){
-                        videoView.setVideoURI(videoRef.getDownloadUrl().getResult());
-                        videoView.setVisibility(View.VISIBLE);
+                        videoRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                videoView.setVideoURI(uri);
+                                videoView.setVisibility(View.VISIBLE);
+                                videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                                    @Override
+                                    public void onPrepared(MediaPlayer mp) {
+                                        mp.setLooping(true);
+                                    }
+                                });
+                                videoView.start();
+                            }
+                        });
+
                     } else{
                         videoView.setVisibility(View.GONE);
                     }

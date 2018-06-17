@@ -111,14 +111,14 @@ public class StoriesController {
         parameters = new JsonObject();
         parameters.addProperty("_id", "");
         parameters.addProperty("_rev", "");
-        parameters.addProperty("created_time", currentTime.toString());
+        //parameters.addProperty("created_time", currentTime.toString());
         parameters.addProperty("description", description);
         parameters.addProperty("location", location);
-        parameters.addProperty("storyType", storyType);
+        parameters.addProperty("story_type", storyType);
         parameters.addProperty("title", title);
         parameters.addProperty("multimedia", multimediaName);
         parameters.addProperty("updated_time", currentTime.toString());
-        parameters.addProperty("userId", context.getLoggedInActivity().getProfile().getId());
+        parameters.addProperty("user_id", context.getLoggedInActivity().getProfile().getId());
         parameters.addProperty("visibility", visibility? "public":"private");
 
         imageHelper.uploadMedia(multimediaName, uriMedia, onUploadMedia, onUploadMediaError);
