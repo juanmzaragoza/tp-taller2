@@ -12,9 +12,6 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.gson.Gson;
-
-import tallerii.stories.network.apimodels.ApplicationProfile;
 
 import static tallerii.stories.activities.ProfileActivity.PROFILE_ID;
 import static tallerii.stories.activities.ProfileActivity.PROFILE_OBJECT;
@@ -117,29 +114,6 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
         intent.putExtra(PROFILE_ID, profileId);
         startActivity(intent);
         finish();
-    }
-
-    public void startFriendRequestsActivity(ApplicationProfile profile) {
-        startLoggedInActivity(profile, FriendRequestActivity.class);
-    }
-
-    private void startLoggedInActivity(ApplicationProfile profile, Class<?> activityClass) {
-        Intent intent = new Intent(this, activityClass);
-        intent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
-        startActivity(intent);
-        finish();
-    }
-
-    public void startProfileActivity(ApplicationProfile profile) {
-        startLoggedInActivity(profile, UserProfileActivity.class);
-    }
-
-    public void startSearchUsersActivity(ApplicationProfile profile) {
-        startLoggedInActivity(profile, SearchUsersActivity.class);
-    }
-
-    public void startChatRoomsActivity(ApplicationProfile profile) {
-        startLoggedInActivity(profile, ChatRoomsActivity.class);
     }
 
     public void startLoginActivity() {

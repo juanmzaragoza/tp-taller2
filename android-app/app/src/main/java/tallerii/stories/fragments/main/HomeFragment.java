@@ -11,11 +11,13 @@ import java.util.List;
 
 import tallerii.stories.activities.ProfileActivity;
 import tallerii.stories.R;
+import tallerii.stories.activities.StoriesLoggedInActivity;
 import tallerii.stories.controller.StoriesController;
 import tallerii.stories.helpers.StoriesAdapter;
+import tallerii.stories.interfaces.StoriesAware;
 import tallerii.stories.network.apimodels.Storie;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements StoriesAware {
 
     private StoriesController controller;
     private View rootView;
@@ -41,6 +43,12 @@ public class HomeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
+    public StoriesLoggedInActivity getLoggedInActivity() {
+        return (StoriesLoggedInActivity) getActivity();
+    }
+
+    @Override
     public void populateStories(List<Storie> storiesToPopulate) {
 
         ListView listView = (ListView) rootView.findViewById(R.id.list);

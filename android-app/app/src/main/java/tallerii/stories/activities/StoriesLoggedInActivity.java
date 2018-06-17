@@ -1,5 +1,6 @@
 package tallerii.stories.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Menu;
@@ -94,24 +95,33 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
                 startMainActivity();
                 return true;
             case R.id.action_chat:
-                startChatRoomsActivity(profile);
+                startLoggedInActivity(ChatRoomsActivity.class);
                 return true;
             case R.id.action_friend_requests:
-                startFriendRequestsActivity(profile);
+                startLoggedInActivity(FriendRequestActivity.class);
                 return true;
             case R.id.action_profile:
-                //startProfileActivity(profile.getUserId());
-                startProfileActivity(profile);
+                startLoggedInActivity(UserProfileActivity.class);
                 return true;
             case R.id.action_search:
-                startSearchUsersActivity(profile);
+                startLoggedInActivity(SearchUsersActivity.class);
                 return true;
             case R.id.action_logout:
                 logout();
                 return true;
+            case R.id.stories_map:
+                startLoggedInActivity(MapsActivity.class);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void startLoggedInActivity(Class<?> activityClass) {
+        Intent intent = new Intent(this, activityClass);
+        intent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
+        startActivity(intent);
+        finish();
     }
 
     private void logout() {

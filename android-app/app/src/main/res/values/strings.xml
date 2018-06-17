@@ -43,6 +43,8 @@
     <string name="user_name">User name</string>
     <string name="action">Action</string>
     <string name="friendcounts">FriendCounts</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="stories_map">Stories Map</string>
 
 
 </resources>
