@@ -20,6 +20,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -99,8 +103,12 @@ public class StoriesAdapter extends BaseAdapter {
         name.setText(String.format("%s %s", storie.getUserName(), storie.getUserLastName()));
 
         // Converting timestamp into x ago format
-        //TODO parse and convert to local time
-        timestamp.setText(storie.getCreatedTime());
+        DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+        try {
+            timestamp.setText(DateUtils.printDifference(sdf.parse(storie.getCreatedTime())));
+        } catch (ParseException e) {
+            timestamp.setText("unknown");
+        }
 
         // Chcek for empty status message
         if (!TextUtils.isEmpty(storie.getDescription())) {
@@ -147,10 +155,8 @@ public class StoriesAdapter extends BaseAdapter {
         // get last comment
         if (!storie.getComments().isEmpty()) {
             Comment comment = storie.getComments().get(0);
-            //TODO: change by user profile pic
-            imageHelper.setFirebaseImage(storie.getUserPicture(), userCommentPic);
-            //TODO: change by username
-            usernameLastComment.setText("Username To Modify");
+            imageHelper.setFirebaseImage(comment.getUserPicture(), userCommentPic);
+            usernameLastComment.setText(comment.getUserName());
             lastComment.setText(comment.getMessage());
             lastCommentView.setVisibility(View.VISIBLE);
         } else{
