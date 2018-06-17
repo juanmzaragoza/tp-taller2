@@ -9,16 +9,13 @@ public class HelperFragment {
     private final Context context;
 
     public HelperFragment(Context context){
-
         this.context = context;
-
-        waitToResponse = new ProgressDialog(context);
-        waitToResponse.setCancelable(false); // disable dismiss by tapping outside of the dialog
-
     }
 
     public void showMessageLoading(String messageLoading){
         if(waitToResponse == null){
+            waitToResponse = new ProgressDialog(context);
+            waitToResponse.setCancelable(true); // disable dismiss by tapping outside of the dialog
             waitToResponse.setTitle("Loading");
             waitToResponse.setMessage(messageLoading);
             waitToResponse.show();
@@ -26,7 +23,7 @@ public class HelperFragment {
     }
 
     public void dismissMessageLoading(){
-        if(waitToResponse != null && waitToResponse.isShowing()){
+        if(waitToResponse != null){
             waitToResponse.dismiss();
             waitToResponse = null;
         }
