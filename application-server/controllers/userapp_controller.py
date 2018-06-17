@@ -6,6 +6,7 @@ from models.user_data import UserDataModel
 from controllers.error_handler import ErrorHandler
 from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
+from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
 
 class UserAppController(flask_restful.Resource):
 	
@@ -13,6 +14,8 @@ class UserAppController(flask_restful.Resource):
 		try:
 			user_data_response = UserDataModel.get_all_users_except(user_id)
 			return self._create_get_response(user_data_response)
+		except NoUserDataFoundException as e:
+			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 			

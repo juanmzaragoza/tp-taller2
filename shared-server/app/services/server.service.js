@@ -188,7 +188,6 @@ class ServerService {
                 DaoService.findAll(models.app_server, include)
                 .then( function(appServers) {
                     var serversJson = appServers.map(function(appServer) {
-                        //return getServerReturnData(appServer);
                         return {
                             server: getServerReturnData(appServer),
                             token: getTokenData(appServer)

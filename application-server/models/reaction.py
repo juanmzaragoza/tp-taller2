@@ -17,7 +17,7 @@ class ReactionModel:
 			raise NoReactionFoundException
 			
 		db.storie_reactions.remove({"_id": reaction_id})
-
+		reaction["date"] = str(reaction["date"])
 		return reaction
 	
 	@staticmethod
@@ -39,7 +39,8 @@ class ReactionModel:
 		reaction = ReactionModel.get_new_reaction(reaction_id, storie_id, user_id, rev, reaction_date, reaction)
 			
 		db.storie_reactions.insert(reaction)
-
+		reaction["date"] = str(reaction["date"])
+		
 		return reaction
 	
 	@staticmethod
@@ -50,9 +51,9 @@ class ReactionModel:
 		reactions = db.storie_reactions.find({'storie_id': storie_id})
 		
 		for reaction in reactions:
+			reaction["date"] = str(reaction["date"])
 			response.append(reaction)
-		print("storie_id")
-		print(storie_id)
+
 		return response
 
 	@staticmethod

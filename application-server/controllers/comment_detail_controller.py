@@ -9,6 +9,7 @@ from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_comment_found_exception import NoCommentFoundException
+from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
 
 class CommentDetailController(flask_restful.Resource):
 	
@@ -40,6 +41,8 @@ class CommentDetailController(flask_restful.Resource):
 		
 		except BadRequest as ex:
 			return ErrorHandler.create_error_response("Fields id, rev, storie_id, user_id and message are mandatory", 400)
+		except NoUserDataFoundException as e:
+			return ErrorHandler.create_error_response(str(e), 404)
 		except NoCommentFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DataVersionException as e:
