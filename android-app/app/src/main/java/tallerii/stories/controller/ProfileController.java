@@ -4,8 +4,7 @@ import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.Response;
-import tallerii.stories.ProfileActivity;
-import tallerii.stories.StoriesLoggedInActivity;
+import tallerii.stories.activities.StoriesLoggedInActivity;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
 import tallerii.stories.network.apimodels.ApplicationProfile;

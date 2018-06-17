@@ -9,25 +9,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:orientation="vertical"
-        android:paddingBottom="10dp">
+        android:paddingBottom="5dp">
 
         <TextView
             android:id="@+id/chatMsgTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxWidth="200dp"
-            android:padding="10dp" />
+            android:includeFontPadding="false"
+            android:maxWidth="200dp"/>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@android:color/darker_gray"/>
+            android:background="@android:color/darker_gray"
+            android:includeFontPadding="false"/>
         <TextView
             android:id="@+id/chatMsgDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="8sp"
             android:maxWidth="200dp"
-            android:padding="10dp" />
+            android:includeFontPadding="false"/>
 
     </LinearLayout>
 

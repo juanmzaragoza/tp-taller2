@@ -1,8 +1,10 @@
-package tallerii.stories;
+package tallerii.stories.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,6 +16,7 @@ import com.google.gson.Gson;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import tallerii.stories.R;
 import tallerii.stories.controller.ProfileController;
 import tallerii.stories.controller.ProfileUserController;
 import tallerii.stories.network.apimodels.ApplicationProfile;
@@ -65,8 +68,29 @@ public class UserProfileActivity extends ProfileActivity {
 
     private void addFriend(LinearLayout friendsLayout, final Friend friend) {
         LinearLayout friendLayout = new LinearLayout(this);
-        friendLayout.setLayoutParams(new LinearLayout.LayoutParams(85, LinearLayout.LayoutParams.WRAP_CONTENT));
+        friendLayout.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(85, LinearLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins(getPx(3), getPx(0), getPx(3), getPx(0));
+        friendLayout.setLayoutParams(layoutParams);
+        ImageView pictureView = getFriendPicture(friend);
+        friendLayout.addView(pictureView);
+        TextView nameView = getFriendName(friend);
+        friendLayout.addView(nameView);
 
+        friendsLayout.addView(friendLayout);
+    }
+
+    @NonNull
+    private TextView getFriendName(Friend friend) {
+        TextView nameView = new TextView(this);
+        nameView.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        nameView.setText(friend.getName());
+        return nameView;
+    }
+
+    @NonNull
+    private ImageView getFriendPicture(final Friend friend) {
         ImageView pictureView = new ImageView((this));
         pictureView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,85));
         imageHelper.setFirebaseImage(friend.getPicture(), pictureView);
@@ -79,18 +103,16 @@ public class UserProfileActivity extends ProfileActivity {
                 finish();
             }
         });
-        friendLayout.addView(pictureView);
+        return pictureView;
+    }
 
-        TextView nameView = new TextView(this);
-        nameView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 15));
-        nameView.setText(friend.getFullName());
-        friendLayout.addView(nameView);
-
-        friendsLayout.addView(friendLayout);
+    private int getPx(int value) {
+        Resources r = getContext().getResources();
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, r.getDisplayMetrics());
     }
 
     protected void initAsUser(ApplicationProfile applicationProfile) {
-        actionButton.setText("Edit");
+        actionButton.setText(R.string.edit_button);
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,7 +128,7 @@ public class UserProfileActivity extends ProfileActivity {
                 friendshipId = friends.getId();
             }
         }
-        actionButton.setText("Unfriend");
+        actionButton.setText(R.string.unfriend_button);
         actionButton.setOnClickListener(createOnClickListener(friendshipId, applicationProfile.getUserId()));
     }
 
@@ -129,7 +151,7 @@ public class UserProfileActivity extends ProfileActivity {
     }
 
     private void initAsStranger(final ApplicationProfile applicationProfile) {
-        actionButton.setText("Befriend");
+        actionButton.setText(R.string.befriend_button);
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

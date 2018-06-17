@@ -18,7 +18,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import tallerii.stories.R;
-import tallerii.stories.StoriesAppActivity;
+import tallerii.stories.activities.StoriesAppActivity;
 import tallerii.stories.controller.CommentController;
 import tallerii.stories.helpers.CommentsAdapter;
 import tallerii.stories.network.apimodels.Comment;
@@ -79,7 +79,7 @@ public class StorieCommentsDialogFragment extends DialogFragment {
             getDialog().setTitle(title);
 
             // Get field from view
-            sendMessageCommentButton = (ImageButton) rootView.findViewById(R.id.sendMessageCommentButton);
+            sendMessageCommentButton = rootView.findViewById(R.id.sendMessageCommentButton);
             sendMessageCommentButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -91,7 +91,7 @@ public class StorieCommentsDialogFragment extends DialogFragment {
                     }
                 }
             });
-            messageCommentText = (TextView) rootView.findViewById(R.id.messageCommentText);
+            messageCommentText = rootView.findViewById(R.id.messageCommentText);
 
             // Show soft keyboard automatically and request focus to field
             //mEditText.requestFocus();
@@ -138,7 +138,7 @@ public class StorieCommentsDialogFragment extends DialogFragment {
 
         //helperFragment.dismissMessageLoading();
 
-        ListView listView = (ListView) rootView.findViewById(R.id.commentsList);
+        ListView listView = rootView.findViewById(R.id.commentsList);
 
         CommentsAdapter listAdapter = new CommentsAdapter(getActivity(), getContext(), controller, storiesToComment);
         listView.setAdapter(listAdapter);

@@ -12,7 +12,7 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import tallerii.stories.ChatRoomsActivity;
+import tallerii.stories.activities.ChatRoomsActivity;
 import tallerii.stories.R;
 
 /**

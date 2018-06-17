@@ -1,9 +1,10 @@
-package tallerii.stories;
+package tallerii.stories.activities;
 
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import tallerii.stories.R;
 import tallerii.stories.controller.ProfileController;
 import tallerii.stories.helpers.ImageHelper;
 import tallerii.stories.network.apimodels.ApplicationProfile;

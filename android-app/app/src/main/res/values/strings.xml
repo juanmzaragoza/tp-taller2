@@ -35,6 +35,16 @@
     <string name="friend_requests">Friend Requests</string>
     <string name="logout">Logout</string>
     <string name="discover_users">Discover Users</string>
+    <string name="friends">Friends</string>
+    <string name="stories">Stories</string>
+    <string name="edit_button">Edit</string>
+    <string name="unfriend_button">Unfriend</string>
+    <string name="befriend_button">Befriend</string>
+    <string name="user_name">User name</string>
+    <string name="action">Action</string>
+    <string name="friendcounts">FriendCounts</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="stories_map">Stories Map</string>
 
 
 </resources>

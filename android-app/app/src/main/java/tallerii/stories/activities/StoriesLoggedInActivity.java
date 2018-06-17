@@ -1,8 +1,7 @@
-package tallerii.stories;
+package tallerii.stories.activities;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,13 +16,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 
+import tallerii.stories.R;
 import tallerii.stories.controller.ProfileController;
 import tallerii.stories.helpers.MyFirebaseInstanceIdService;
 import tallerii.stories.helpers.Store;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 
-import static tallerii.stories.ProfileActivity.PROFILE_ID;
-import static tallerii.stories.ProfileActivity.PROFILE_OBJECT;
+import static tallerii.stories.activities.ProfileActivity.PROFILE_ID;
+import static tallerii.stories.activities.ProfileActivity.PROFILE_OBJECT;
 
 public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
     public static final String TOKEN = "token";
@@ -72,12 +72,7 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
 
     private void sendTokenToServer(String currentUserId) {
         final DatabaseReference usersRef = MyFirebaseInstanceIdService.getTokensRef();
-        usersRef.child(currentUserId).setValue(getTokenFromPrefs());
-    }
-
-    private String getTokenFromPrefs() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        return preferences.getString("registration_id", null);
+        usersRef.child(currentUserId).setValue(FirebaseInstanceId.getInstance().getToken());
     }
 
     private void updateProfile(String profileId) {
@@ -100,24 +95,33 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
                 startMainActivity();
                 return true;
             case R.id.action_chat:
-                startChatRoomsActivity(profile);
+                startLoggedInActivity(ChatRoomsActivity.class);
                 return true;
             case R.id.action_friend_requests:
-                startFriendRequestsActivity(profile);
+                startLoggedInActivity(FriendRequestActivity.class);
                 return true;
             case R.id.action_profile:
-                //startProfileActivity(profile.getUserId());
-                startProfileActivity(profile);
+                startLoggedInActivity(UserProfileActivity.class);
                 return true;
             case R.id.action_search:
-                startSearchUsersActivity(profile);
+                startLoggedInActivity(SearchUsersActivity.class);
                 return true;
             case R.id.action_logout:
                 logout();
                 return true;
+            case R.id.stories_map:
+                startLoggedInActivity(MapsActivity.class);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void startLoggedInActivity(Class<?> activityClass) {
+        Intent intent = new Intent(this, activityClass);
+        intent.putExtra(PROFILE_OBJECT, new Gson().toJson(profile));
+        startActivity(intent);
+        finish();
     }
 
     private void logout() {

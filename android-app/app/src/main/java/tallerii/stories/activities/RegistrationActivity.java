@@ -1,4 +1,4 @@
-package tallerii.stories;
+package tallerii.stories.activities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import tallerii.stories.R;
 import tallerii.stories.controller.RegistrationController;
 
 public class RegistrationActivity extends StoriesAppActivity {

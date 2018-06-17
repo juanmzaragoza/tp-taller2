@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import tallerii.stories.ChatMessagesActivity;
+import tallerii.stories.activities.ChatMessagesActivity;
 import tallerii.stories.R;
 import tallerii.stories.network.apimodels.Friend;
 

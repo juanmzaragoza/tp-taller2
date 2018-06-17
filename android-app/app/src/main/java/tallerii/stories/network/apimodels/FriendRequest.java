@@ -9,6 +9,7 @@ public class FriendRequest {
     private String createdTime;
     @SerializedName("user_id")
     private String senderUserId;
+    @SerializedName("rcv_user_id")
     private String rcvUserId;
     private String message;
     private String picture;

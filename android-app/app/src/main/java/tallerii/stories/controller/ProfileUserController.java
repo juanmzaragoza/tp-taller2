@@ -6,7 +6,7 @@ import java.io.IOException;
 
 import retrofit2.Call;
 import retrofit2.Response;
-import tallerii.stories.UserProfileActivity;
+import tallerii.stories.activities.UserProfileActivity;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
 import tallerii.stories.network.apimodels.FriendRequest;

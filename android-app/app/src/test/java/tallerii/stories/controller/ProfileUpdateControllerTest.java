@@ -14,7 +14,7 @@ import java.io.IOException;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import tallerii.stories.UserProfileUpdateActivity;
+import tallerii.stories.activities.UserProfileUpdateActivity;
 import tallerii.stories.network.ConstantsApplicationApiRest;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-import tallerii.stories.StoriesLoggedInActivity;
+import tallerii.stories.activities.StoriesLoggedInActivity;
 
 public class ApplicationProfile {
 

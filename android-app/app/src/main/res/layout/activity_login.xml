@@ -18,7 +18,7 @@
         android:layout_height="match_parent"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        tools:context="tallerii.stories.LoginActivity">
+        tools:context="tallerii.stories.activities.LoginActivity">
 
         <TextView
             android:id="@+id/textView"

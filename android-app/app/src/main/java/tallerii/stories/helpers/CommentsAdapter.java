@@ -61,9 +61,9 @@ public class CommentsAdapter extends BaseAdapter{
 
         // get views
         View commentView = convertView.findViewById(R.id.commentView);
-        TextView userNameComment = (TextView) convertView.findViewById(R.id.userNameComment);
-        ImageView userCommentPic = (ImageView) convertView.findViewById(R.id.userCommentPic);
-        TextView messageComment = (TextView) convertView.findViewById(R.id.messageCommentText);
+        TextView userNameComment = convertView.findViewById(R.id.userNameComment);
+        ImageView userCommentPic = convertView.findViewById(R.id.userCommentPic);
+        TextView messageComment = convertView.findViewById(R.id.messageCommentText);
 
 
         // get comment and populate view

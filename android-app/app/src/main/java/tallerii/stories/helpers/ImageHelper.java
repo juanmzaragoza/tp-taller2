@@ -3,15 +3,12 @@ package tallerii.stories.helpers;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.VideoView;
 
-import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -21,8 +18,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import tallerii.stories.R;
-import tallerii.stories.StoriesAppActivity;
-import tallerii.stories.controller.ProfileUpdateController;
+import tallerii.stories.activities.StoriesAppActivity;
 
 public class ImageHelper {
 
@@ -43,7 +39,10 @@ public class ImageHelper {
                 public void onSuccess(StorageMetadata storageMetadata) {
                     // Metadata now contains the metadata for 'images/forest.jpg'
                     if(storageMetadata.getContentType().contains("image")){
-                        Glide.with(context).load(imageRef).into(imageView);
+                        GlideApp.with(context)
+                                .load(imageRef)
+                                .placeholder(R.drawable.ic_account_circle_white_24dp)
+                                .into(imageView);
                         imageView.setVisibility(View.VISIBLE);
                     } else{
                         imageView.setVisibility(View.GONE);
@@ -57,7 +56,8 @@ public class ImageHelper {
                     imageView.setVisibility(View.GONE);
                 }
             });
-
+        } else {
+            imageView.setImageResource(R.drawable.ic_account_circle_white_24dp);
         }
     }
 
@@ -83,7 +83,6 @@ public class ImageHelper {
                     videoView.setVisibility(View.GONE);
                 }
             });
-
         }
     }
 

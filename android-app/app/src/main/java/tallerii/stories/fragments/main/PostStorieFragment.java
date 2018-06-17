@@ -8,7 +8,6 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -25,15 +24,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import java.util.List;
+
 import tallerii.stories.R;
-import tallerii.stories.StoriesAppActivity;
+import tallerii.stories.activities.StoriesAppActivity;
+import tallerii.stories.activities.StoriesLoggedInActivity;
 import tallerii.stories.controller.StoriesController;
 import tallerii.stories.helpers.LocationHelper;
 import tallerii.stories.helpers.MediaFile;
+import tallerii.stories.interfaces.StoriesAware;
+import tallerii.stories.network.apimodels.Storie;
 
 import static android.app.Activity.RESULT_OK;
 
-public class PostStorieFragment extends Fragment {
+public class PostStorieFragment extends Fragment implements StoriesAware {
 
     private final static int REQUEST_CODE_TAKE_IMAGE = 0;
     private final static int REQUEST_CODE_CHOOSE_IMAGE = 1;
@@ -119,13 +123,13 @@ public class PostStorieFragment extends Fragment {
     Runnable publish = new Runnable() {
         public void run() {
 
-            titleText = (EditText) rootView.findViewById(R.id.titleText);
+            titleText = rootView.findViewById(R.id.titleText);
             String title = titleText.getText().toString();
 
-            descriptionText = (EditText) rootView.findViewById(R.id.descriptionText);
+            descriptionText = rootView.findViewById(R.id.descriptionText);
             String description = descriptionText.getText().toString();
 
-            visibilityCheckBox = (CheckBox) rootView.findViewById(R.id.visibilityCheckBox);
+            visibilityCheckBox = rootView.findViewById(R.id.visibilityCheckBox);
             boolean isPublic = visibilityCheckBox.isChecked();
 
             locationText = rootView.findViewById(R.id.locationText);
@@ -230,7 +234,7 @@ public class PostStorieFragment extends Fragment {
         LocationHelper locationHelper = new LocationHelper(getActivity(), PostStorieFragment.this.getContext());
         locationHelper.getLocation();
         locationText = rootView.findViewById(R.id.locationText);
-        locationText.setText("("+locationHelper.getLatitude()+","+locationHelper.getLongitude()+")");
+        locationText.setText(LocationHelper.getLocationString(locationHelper.getLatitude(), locationHelper.getLongitude()));
 
         // publish button
         publishButton = executeActionOnClickBy(R.id.publishButton, publish);
@@ -284,6 +288,16 @@ public class PostStorieFragment extends Fragment {
 
         });
         return view;
+    }
+
+    @Override
+    public StoriesLoggedInActivity getLoggedInActivity() {
+        return (StoriesLoggedInActivity) getActivity();
+    }
+
+    @Override
+    public void populateStories(List<Storie> stories) {
+
     }
 }
 
