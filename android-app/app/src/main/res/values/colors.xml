@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#3f51b5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
@@ -9,7 +9,11 @@
     <!-- to background stories -->
     <color name="stories_bg">#D3D6DB</color>
     <color name="stories_item_bg">#FFFFFF</color>
-    <color name="stories_item_border">#C2C3C8</color>
+    <color name="stories_item_border">#C2C3C8</color>FFC8C9CA
     <color name="link">#0A80D1</color>
     <color name="timestamp">#A0A3A7</color>
+    <color name="stories_comment_item">#dedee1</color>
+
+    <color name="reaction_button_pressed">#0A80D1</color>
+    <color name="reaction_button_not_pressed">#FF000000</color>
 </resources>

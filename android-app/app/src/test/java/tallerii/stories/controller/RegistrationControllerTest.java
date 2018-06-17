@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
-import tallerii.stories.RegistrationActivity;
+import tallerii.stories.activities.RegistrationActivity;
 import tallerii.stories.network.ConstantsApplicationApiRest;
 import tallerii.stories.network.apimodels.ServerError;
 

@@ -28,7 +28,8 @@
         "../node_modules/materialize-css/dist/js/materialize.js",
         "../src/app/libs/d3.v5.min.js",
         "../src/app/libs/loader.js",
-        "../node_modules/underscore/underscore.js"
+        "../node_modules/underscore/underscore.js",
+        "../src/app/libs/moment.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

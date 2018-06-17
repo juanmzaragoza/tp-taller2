@@ -1,102 +1,129 @@
+import uuid
+from models.friend import FriendModel
+from models.user_data import UserDataModel
 from constants import MONGODB_USER, MONGODB_PASSWD
 from controllers.db_controller import MongoController
-from errors_exceptions.no_data_found_exception import NoDataFoundException
+from controllers.date_controller import DateController
 from errors_exceptions.data_already_exists_exception import DataAlreadyExistsException
-from bson.objectid import ObjectId
-import bson
-import time
+from errors_exceptions.no_friend_request_found_exception import NoFriendRequestFoundException
+from errors_exceptions.friendship_already_exists_exception import FriendshipAlreadyExistsException
+from errors_exceptions.friend_request_already_exists_exception import FriendRequestAlreadyExistsException
 
 class FriendRequestModel():
 
 	@staticmethod
 	def get_friends_requests_rcv_by_user_id(user_id):
-		friends_requests_user_id = []
-		response = []
 		data = {}
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 
 		friends_requests_rcv = db.friends_request.find({'user_id_rcv': user_id})
-		for doc in friends_requests_rcv:
-			friends_requests_user_id.append(ObjectId(doc["user_id_sender"]))
-			data[doc["user_id_sender"]] = {
-												"_id": str(doc["_id"]),
-												"user_id": doc["user_id_sender"],
-												"last_name": "",
-												"name": "",
-												"date": doc["date"]
-											}
 		
-		friends_requests_data = db.users.find({'_id':{"$in":friends_requests_user_id}});
-		for doc in friends_requests_data:
-			data[str(doc["_id"])]["last_name"] = doc["last_name"]
-			data[str(doc["_id"])]["name"] = doc["name"]
-
-		return data.values()
-
+		for freq in friends_requests_rcv:
+			friend_req_id = freq["user_id_sender"]
+			data[friend_req_id] = UserDataModel.get_user_reduced_data_by_user_id(friend_req_id)
+			data[friend_req_id]["user_id"] = data[friend_req_id].pop("_id")
+			data[friend_req_id]["_id"] = freq["_id"]
+			data[friend_req_id]["date"] = str(freq["date"])
+			data[friend_req_id]["message"] = freq["message"]
+		
+		return list(data.values())
+		
 	@staticmethod
 	def get_friends_requests_sent_by_user_id(user_id):
-		friends_requests_user_id = []
-		response = []
 		data = {}
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 
-		friends_requests_rcv = db.friends_request.find({'user_id_sender': user_id})
-		for doc in friends_requests_rcv:
-			friends_requests_user_id.append(ObjectId(doc["user_id_rcv"]))
-			data[doc["user_id_rcv"]] = {
-												"_id": str(doc["_id"]),
-												"user_id": doc["user_id_rcv"],
-												"last_name": "",
-												"name": "",
-												"date": doc["date"]
-											}
+		friends_requests_sent = db.friends_request.find({"user_id_sender": user_id})
 		
-		friends_requests_data = db.users.find({'_id':{"$in":friends_requests_user_id}});
-		for doc in friends_requests_data:
-			data[str(doc["_id"])]["last_name"] = doc["last_name"]
-			data[str(doc["_id"])]["name"] = doc["name"]
+		for freq in friends_requests_sent:
+			friend_req_id = freq["user_id_rcv"]
+			data[friend_req_id] = UserDataModel.get_user_reduced_data_by_user_id(friend_req_id)
+			data[friend_req_id]["user_id"] = data[friend_req_id].pop("_id")
+			data[friend_req_id]["_id"] = freq["_id"]
+			data[friend_req_id]["date"] = str(freq["date"])
+			data[friend_req_id]["message"] = freq["message"]
+		
+		return list(data.values())
 
-		return data.values()
-	
 	@staticmethod
 	def exists_request(request_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
-		if (bson.objectid.ObjectId.is_valid(request_id) == False):
-			raise NoDataFoundException
 
-		request = db.friends_request.find_one({'_id': ObjectId(request_id)})
+		request = db.friends_request.find_one({'_id': request_id})
 
 		if request == None:
-			raise NoDataFoundException
+			raise NoFriendRequestFoundException
+			
+		request["date"] = str(request["date"])
+		return request
 	
 	@staticmethod
 	def get_friend_request(request_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
-		friend_req = db.friends_request.find_one({'_id': ObjectId(request_id)})
-		friend_req['_id'] = str(friend_req['_id'])
+		friend_req = db.friends_request.find_one({'_id': request_id})
+		
+		if friend_req == None:
+			raise NoFriendRequestFoundException
+		
+		friend_req["date"] = str(friend_req["date"])
 		return friend_req
 
 	@staticmethod
 	def remove_friend_request(request_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
-		friend_req = db.friends_request.find_one({'_id': ObjectId(request_id)})
-		db.friends_request.remove({'_id': ObjectId(request_id)})
-		friend_req['_id'] = str(friend_req['_id'])
+		
+		friend_req = db.friends_request.find_one({'_id': request_id})
+
+		if friend_req == None:
+			raise NoFriendRequestFoundException
+		
+		db.friends_request.remove({'_id': request_id})
+		friend_req["date"] = str(friend_req["date"])
 		return friend_req
 	
 	@staticmethod
-	def create_friend_request(user_id_sender, user_id_rcv, msg):
+	def create_friend_request(user_id_sender, user_id_rcv, msg, picture):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
-		request = db.friends_request.find_one({'user_id_sender': user_id_sender, 'user_id_rcv': user_id_rcv})
+		friend_request_exists = FriendRequestModel.friend_request_exists(user_id_sender, user_id_rcv)
+		
+		if (friend_request_exists == True):
+			raise FriendRequestAlreadyExistsException
+		
+		friendship_exists = FriendModel.friendship_exists(user_id_sender, user_id_rcv)
+		
+		if friendship_exists == True:
+			raise FriendshipAlreadyExistsException
+		
+		
+		friend_req_id = str(uuid.uuid4().hex)
+		date = DateController.get_date_time()
 
-		if (request != None):
-			raise DataAlreadyExistsException
+		friend_request = FriendRequestModel.get_new_friend_request(friend_req_id, user_id_sender, user_id_rcv, msg, date, picture)
 		
-		date = time.strftime("%d/%m/%Y", time.localtime())
-		friend_req_id = db.friends_request.insert({'user_id_sender': user_id_sender,
-												'user_id_rcv': user_id_rcv,
-												'date': date})
+		db.friends_request.insert(friend_request)
+		friend_request["date"] = str(friend_request["date"])
+		return friend_request
+	
+	@staticmethod
+	def friend_request_exists(user_id_sender, user_id_rcv):
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+
+		opt1 = {'user_id_sender': user_id_sender, 'user_id_rcv': user_id_rcv}
+		opt2 = {'user_id_sender': user_id_rcv, 'user_id_rcv': user_id_sender}
+		friendship = db.friends_request.find_one({ "$or": [ opt1, opt2 ]})
 		
-		friend_req = db.friends_request.find_one({'_id': ObjectId(friend_req_id)})
-		friend_req['_id'] = str(friend_req['_id'])
-		return friend_req
+		if friendship == None:
+			return False
+		
+		return True
+		
+	@staticmethod
+	def get_new_friend_request(friend_req_id, user_id_sender, user_id_rcv, message, date, picture):
+		return {
+			"_id": friend_req_id,
+			"user_id_sender": user_id_sender,
+			"user_id_rcv": user_id_rcv,
+			"message": message,
+			"picture": picture,
+			"date": date
+		}

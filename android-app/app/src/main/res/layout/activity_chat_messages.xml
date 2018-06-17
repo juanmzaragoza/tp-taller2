@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dp"
-    tools:context="tallerii.stories.ChatMessagesActivity">
+    tools:context="tallerii.stories.activities.ChatMessagesActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/messagesRecyclerView"

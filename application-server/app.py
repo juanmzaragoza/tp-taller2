@@ -8,10 +8,14 @@ from controllers.user_controller import UserController
 from controllers.user_detail_controller import UserDetailController
 from controllers.userapp_controller import UserAppController
 from controllers.ping_controller import PingController
-#from controllers.comment_controller import CommentController
+from controllers.comment_controller import CommentController
+from controllers.comment_detail_controller import CommentDetailController
+from controllers.reaction_controller import ReactionController
+from controllers.reaction_detail_controller import ReactionDetailController
 from controllers.stats_controller import StatsController
 from controllers.profile_controller import ProfileController
 from controllers.storie_controller import StorieController
+from controllers.storie_comment_controller import StorieCommentController
 from controllers.storie_detail_controller import StorieDetailController
 from controllers.friend_controller import FriendController
 from controllers.friend_detail_controller import FriendDetailController
@@ -20,6 +24,8 @@ from controllers.friend_request_detail_controller import FriendRequestDetailCont
 from controllers.be_friend_controller import BeFriendController
 from controllers.be_friend_detail_controller import BeFriendDetailController
 from controllers.response_builder import ResponseBuilder
+from controllers.request_counter_controller import RequestCounterController
+from controllers.notification_controller import NotificationsController
 
 app = flask.Flask(__name__)
 
@@ -29,6 +35,7 @@ with app.app_context():
 	class HelloWorld(flask_restful.Resource):
 		def get(self):
 			response = {'hello': "appServer"}
+			RequestCounterController.save_new_request()
 			return ResponseBuilder.build_response(response, 200)
 
 	api.add_resource(HelloWorld, '/')
@@ -41,11 +48,16 @@ with app.app_context():
 	# for shared-server endpoints
 	api.add_resource(PingController, '/ping')
 	api.add_resource(StatsController, '/stats')
+	api.add_resource(RequestCounterController, '/requests')
 	
 	# app endpoints
 	api.add_resource(UserAppController, '/users/<string:user_id>')
 	api.add_resource(StorieController, '/stories')
-	#api.add_resource(CommentController, '/stories/comments')
+	api.add_resource(CommentController, '/stories/comments')
+	api.add_resource(StorieCommentController, '/stories/<string:storie_id>/comments')
+	api.add_resource(CommentDetailController, '/stories/comments/<string:comment_id>')
+	api.add_resource(ReactionController, '/stories/reactions')
+	api.add_resource(ReactionDetailController, '/stories/reactions/<string:reaction_id>')
 	api.add_resource(StorieDetailController, '/stories/<string:id>')
 	api.add_resource(BeFriendController, '/befriend')
 	api.add_resource(BeFriendDetailController, '/befriend/<string:user_id>')
@@ -54,6 +66,7 @@ with app.app_context():
 	api.add_resource(FriendRequestDetailController, '/befriend/requests/<string:request_id>')
 	api.add_resource(FriendController, '/friends/<string:user_id>')
 	api.add_resource(FriendDetailController, '/friends/<string:friend_id>')
-	
+	api.add_resource(NotificationsController, '/notification')
+
 	if __name__ == "__main__":
     		app.run(host='0.0.0.0', port=5858,debug=True)

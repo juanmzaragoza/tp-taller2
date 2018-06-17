@@ -1,61 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserProfileActivity">
+    tools:context=".activities.UserProfileActivity">
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="180dp">
-
-            <ImageView
-                android:id="@+id/profile_picture"
-                android:layout_width="168dp"
-                android:layout_height="182dp"
-                android:layout_gravity="center"
-                android:contentDescription="@string/profile_picture"
-                app:srcCompat="@drawable/ic_account_circle_white_24dp" />
-        </FrameLayout>
-
-        <TextView
-            android:id="@+id/user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="User name" />
-
-        <Button
-            android:id="@+id/edit_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="editProfile"
-            android:text="Edit" />
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center_horizontal"
+            android:baselineAligned="false"
+            android:layout_width="match_parent"
+            android:layout_height="182dp"
             android:orientation="horizontal">
-            <TextView
-                android:id="@+id/friend_count_text"
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="180dp">
+
+                <ImageView
+                    android:id="@+id/profile_picture"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/profile_picture"
+                    app:srcCompat="@drawable/ic_account_circle_white_24dp" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="0.5"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/user_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="32sp"
+                    android:text="@string/user_name" />
+
+                <Button
+                    android:id="@+id/profile_action_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/action" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/friend_count_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/number_of_friends" />
+                    <TextView
+                        android:id="@+id/friend_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/friendcounts" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:includeFontPadding="false"/>
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/friends"
+            android:layout_margin="5dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:includeFontPadding="false"/>
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/friends_holder"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Number of friends: " />
-            <TextView
-            android:id="@+id/friend_count"
-            android:layout_width="wrap_content"
+                android:orientation="horizontal">
+            </LinearLayout>
+        </HorizontalScrollView>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:includeFontPadding="false"/>
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="FriendCounts" />
-        </LinearLayout>
+            android:text="@string/stories"
+            android:layout_margin="5dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:includeFontPadding="false"/>
 
         <!--Insert StoriesFragment here??-->
     </LinearLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+</ScrollView>

@@ -7,6 +7,7 @@ import sys
 import app
     
 class TestFlaskApiUsingRequests(unittest.TestCase):
+	
 	def setUp(self):
 		self.app = app.app.test_client()
 

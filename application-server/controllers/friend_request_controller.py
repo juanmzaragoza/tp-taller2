@@ -1,23 +1,38 @@
-import flask_restful
 import json
+import flask_restful
 from flask import request
-from controllers.friend_controller import FriendController
-from controllers.response_builder import ResponseBuilder
+from flask_restful import reqparse
+from werkzeug.exceptions import BadRequest
 from controllers.error_handler import ErrorHandler
-from api_client.db_connection_error import DBConnectionError
 from models.friend_request import FriendRequestModel
-from errors_exceptions.no_data_found_exception import NoDataFoundException
+from controllers.response_builder import ResponseBuilder
+from controllers.friend_controller import FriendController
+from api_client.db_connection_error import DBConnectionError
+from errors_exceptions.no_friend_request_found_exception import NoFriendRequestFoundException
+from errors_exceptions.friendship_already_exists_exception import FriendshipAlreadyExistsException
 
 class FriendRequestController(flask_restful.Resource):
-
+	
+	def __init__(self):
+		self.parser = reqparse.RequestParser(bundle_errors=True)
+		
 	def post(self):
 		try:
-			 request_id = self._get_request_id(request)
-			 self._validate_request_id(request_id)
-			 friends_requests = self._accept_friend_request(request_id)
-			 return self._get_friends_requests_response(friends_requests)
-		except NoDataFoundException as e:
+			self.parser.add_argument('request_id', required=True, help="Field request_id is mandatory")
+			
+			args = self.parser.parse_args()
+
+			request_id = self._get_request_id(request)
+			self._validate_request_id(request_id)
+			friends_requests = self._accept_friend_request(request_id)
+			return self._get_friends_requests_response(friends_requests)
+			
+		except BadRequest as ex:
+			return ErrorHandler.create_error_response("Fields request_id are mandatory", 400)
+		except NoFriendRequestFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
+		except FriendshipAlreadyExistsException as e:
+			return ErrorHandler.create_error_response(str(e), 500)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 	
@@ -36,4 +51,4 @@ class FriendRequestController(flask_restful.Resource):
 		
 	def _get_request_id(self, request):
 		 body = request.get_json()
-		 return body['requestId']
+		 return body['request_id']

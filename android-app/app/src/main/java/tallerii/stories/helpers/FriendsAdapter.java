@@ -9,19 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 import java.util.List;
 
-import tallerii.stories.ChatMessagesActivity;
+import tallerii.stories.activities.ChatMessagesActivity;
 import tallerii.stories.R;
 import tallerii.stories.network.apimodels.Friend;
 
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHolder> {
-    private final StorageReference storageReference;
     private final ImageHelper imageHelper;
     private List<Friend> friendsList;
     private Context context;
@@ -30,8 +24,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
     public FriendsAdapter(List<Friend> dataSet, Context context, String userId) {
         this.friendsList = dataSet;
         this.context = context;
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        this.storageReference = storage.getReference();
         this.currentUserId = userId;
         this.imageHelper = new ImageHelper(context);
     }
@@ -52,7 +44,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToChatMessagesActivity(user.getId(), user.getFullName());
+                goToChatMessagesActivity(user.getUserId(), user.getFullName());
             }
         });
 

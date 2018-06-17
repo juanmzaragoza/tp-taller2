@@ -10,6 +10,11 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static android.content.Context.LOCATION_SERVICE;
 
 public class LocationHelper {
@@ -66,7 +71,7 @@ public class LocationHelper {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
         }
         locationManger.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, locationListener);
-        return this.location;
+        return location;
     }
 
     /**
@@ -93,4 +98,17 @@ public class LocationHelper {
         return longitude;
     }
 
+    public static String getLocationString(double latitude, double longitude) {
+        return String.format("(%s,%s)", latitude, longitude);
+    }
+
+    public static LatLng getLocation(String location) {
+        String regex ="([\\d.+-]+),([\\d.+-]+)";
+        Matcher matcher = Pattern.compile(regex).matcher(location);
+        if (matcher.find()) {
+            return new LatLng(Double.valueOf(matcher.group(1)),Double.valueOf(matcher.group(2)));
+        } else {
+            return new LatLng(0, 0);
+        }
+    }
 }

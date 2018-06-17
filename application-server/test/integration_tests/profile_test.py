@@ -36,7 +36,7 @@ class TestProfileApi(unittest.TestCase):
 
         # execution
 
-        userId = '5ae66a31d4ef925dac59a94b'
+        userId = '10'
         response = self.__make_get_request(userId)
 
         # assertions
@@ -44,9 +44,9 @@ class TestProfileApi(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         response_data = self.__get_response_data(response)
         self.assertIn('name', response_data['profile'])
-        self.assertEqual('Pepe', response_data['profile']['name'])
+        self.assertEqual('Nico', response_data['profile']['name'])
         self.assertIn('last_name', response_data['profile'])
-        self.assertEqual('Gomez', response_data['profile']['last_name'])
+        self.assertEqual('fb', response_data['profile']['last_name'])
         self.assertIn('email', response_data['profile'])
         self.assertEqual('pepe@email.com', response_data['profile'
                          ]['email'])

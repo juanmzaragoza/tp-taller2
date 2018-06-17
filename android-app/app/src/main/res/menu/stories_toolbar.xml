@@ -6,4 +6,12 @@
         android:title="@string/profile" />
     <item android:id="@+id/action_chat"
         android:title="@string/chats" />
+    <item android:id="@+id/action_friend_requests"
+        android:title="@string/friend_requests" />
+    <item android:id="@+id/action_search"
+        android:title="@string/discover_users" />
+    <item android:id="@+id/stories_map"
+        android:title="@string/stories_map" />
+    <item android:id="@+id/action_logout"
+        android:title="@string/logout" />
 </menu>

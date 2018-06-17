@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/stories_bg"
@@ -78,6 +79,141 @@
             android:background="@color/white"
             android:scaleType="fitXY"
             android:visibility="visible" />
+
+        <VideoView
+            android:id="@+id/storieVideoView"
+            android:layout_width="match_parent"
+            android:layout_height="217dp"
+            android:clickable="true"
+            android:focusable="false"
+            android:src="@android:drawable/ic_menu_camera"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingLeft="@dimen/stories_item_padding_left_right"
+            android:paddingRight="@dimen/stories_item_padding_left_right" >
+
+
+            <ImageButton
+                android:id="@+id/likeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:paddingLeft="@dimen/stories_item_status_pad_left_right"
+                android:paddingRight="@dimen/stories_item_status_pad_left_right"
+                android:background="@drawable/roundcorner"
+                android:focusable="false"
+                app:srcCompat="@drawable/ic_sentiment_satisfied_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/dontLikeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/stories_item_status_pad_left_right"
+                android:paddingRight="@dimen/stories_item_status_pad_left_right"
+                android:background="@drawable/roundcorner"
+                android:clickable="true"
+                app:srcCompat="@drawable/ic_sentiment_dissatisfied_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/enjoyButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:paddingLeft="@dimen/stories_item_status_pad_left_right"
+                android:paddingRight="@dimen/stories_item_status_pad_left_right"
+                android:background="@drawable/roundcorner"
+                app:srcCompat="@drawable/ic_sentiment_very_satisfied_black_24dp" />
+
+            <ImageButton
+                android:id="@+id/getBoredButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:paddingLeft="@dimen/stories_item_status_pad_left_right"
+                android:paddingRight="@dimen/stories_item_status_pad_left_right"
+                android:background="@drawable/roundcorner"
+                app:srcCompat="@drawable/ic_sentiment_very_dissatisfied_black_24dp" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="?android:attr/listDivider"
+            android:paddingBottom="5dp"/>
+
+        <LinearLayout
+            android:id="@+id/lastCommentView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10dp"
+            android:paddingLeft="@dimen/stories_item_padding_left_right"
+            android:paddingRight="@dimen/stories_item_padding_left_right" >
+
+            <ImageView
+                android:id="@+id/userCommentPic"
+                android:layout_width="@dimen/stories_item_profile_pic"
+                android:layout_height="@dimen/stories_item_profile_pic"
+                android:paddingRight="@dimen/stories_item_padding_left_right"
+                android:scaleType="fitCenter" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/stories_item_profile_info_padd"
+                android:paddingRight="@dimen/stories_item_padding_left_right"
+                android:background="@drawable/commentroundcorner">
+
+                <TextView
+                    android:id="@+id/usernameLastComment"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/stories_item_profile_name"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lastComment"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/stories_item_padding_left_right"
+            android:paddingRight="@dimen/stories_item_padding_left_right" >
+
+            <EditText
+                android:id="@+id/messageCommentText"
+                android:layout_width="wrap_content"
+                android:layout_weight="3"
+                android:hint="I want to say..."
+                android:layout_height="wrap_content" />
+
+            <ImageButton
+                android:id="@+id/sendMessageCommentButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/stories_item_status_pad_left_right"
+                android:src="@drawable/ic_send_black_24dp" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

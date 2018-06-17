@@ -1,22 +1,18 @@
 package tallerii.stories.controller;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Response;
-import tallerii.stories.ProfileActivity;
+import tallerii.stories.activities.StoriesLoggedInActivity;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 
 public class ProfileController {
-    protected ProfileActivity activity;
-    private Gson gson = new Gson();
+    protected StoriesLoggedInActivity activity;
 
-    public ProfileController(ProfileActivity activity) {
+    public ProfileController(StoriesLoggedInActivity activity) {
         this.activity = activity;
     }
 

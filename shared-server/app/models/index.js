@@ -7,12 +7,12 @@ function loadDatabase() {
     
     // Create db connection
     const sequelize = new Sequelize(
-        config.database,
-        config.username,
-        config.password,
+        process.env.DATABASE_NAME || config.database,
+        process.env.DATABASE_USER || config.username,
+        process.env.DATABASE_PASSWORD || config.password,
         {
-            host: config.host,
-            port : config.port,
+            host: process.env.DATABASE_HOST || config.host,
+            port : process.env.DATABASE_PORT ||config.port,
             dialect: config.dialect,
             define: {
                 timestamps: false,

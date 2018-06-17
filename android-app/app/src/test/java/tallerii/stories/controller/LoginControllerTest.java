@@ -13,8 +13,7 @@ import java.time.Instant;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import tallerii.stories.LoginActivity;
-import tallerii.stories.controller.LoginController;
+import tallerii.stories.activities.LoginActivity;
 import tallerii.stories.network.ConstantsApplicationApiRest;
 import tallerii.stories.network.apimodels.EntityMetadata;
 import tallerii.stories.network.apimodels.LoginResult;
@@ -54,6 +53,7 @@ public class LoginControllerTest {
         String tokenString = "t0k3n";
         token.setToken(tokenString);
         token.setExpiresAt(Instant.now().plusSeconds(10).toEpochMilli());
+        token.setId("10");
         LoginResult loginResult = new LoginResult();
         loginResult.setMetadata(metadata);
         loginResult.setToken(token);
@@ -62,7 +62,7 @@ public class LoginControllerTest {
 
         controller.login(username, "password");
 
-        verify(mockActivity, timeout(2000).times(1)).startMainActivity(username, tokenString);
+        verify(mockActivity, timeout(2000).times(1)).startMainActivity(username, tokenString, "10");
     }
 
     @Test

@@ -2,6 +2,7 @@
 const AuthService       = require('./auth.service')
 const StorageServ       = require('./storage.service')
 const DaoService    = require('../services/dao.service')
+const RemoteServ  = require('../services/remote.service')
 var _               = require("underscore")
 
 
@@ -229,6 +230,38 @@ class ServerService {
                     resolve();
                 }
             });
+        }
+        this.ping = (id, models)=>{
+            return new Promise((resolve, reject)=>{
+                var filter = {"id": id};
+                DaoService.findOne(filter, models.app_server)
+                .then( function(server) {
+                    var url = server.host + '/ping'
+                    console.log(url)
+                    RemoteServ.get(url)
+                    .then(res=>{
+                        resolve(res.server)
+                    })
+                    .catch(reject)
+                })
+                .catch(reject)
+            })
+        }
+        this.stats = (id, models)=>{
+            return new Promise((resolve, reject)=>{
+                var filter = {"id": id};
+                DaoService.findOne(filter, models.app_server)
+                .then( function(server) {
+                    var url = server.host + '/stats'
+                    console.log(url)
+                    RemoteServ.get(url)
+                    .then(res=>{
+                        resolve(res.stats)
+                    })
+                    .catch(reject)
+                })
+                .catch(reject)
+            })
         }
     }
 }
