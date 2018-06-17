@@ -59,7 +59,7 @@ public class HomeFragment extends Fragment implements StoriesAware {
     @Override
     public void populateStories(List<Storie> storiesToPopulate) {
 
-        ListView listView = (ListView) rootView.findViewById(R.id.list);
+        ListView listView = rootView.findViewById(R.id.list);
 
         StoriesAdapter listAdapter = new StoriesAdapter(getActivity(), getContext(), controller, storiesToPopulate);
         listView.setAdapter(listAdapter);

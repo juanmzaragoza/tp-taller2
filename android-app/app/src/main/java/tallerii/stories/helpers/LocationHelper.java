@@ -71,7 +71,7 @@ public class LocationHelper {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
         }
         locationManger.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, locationListener);
-        return this.location;
+        return location;
     }
 
     /**

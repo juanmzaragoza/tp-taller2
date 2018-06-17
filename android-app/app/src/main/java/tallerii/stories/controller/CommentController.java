@@ -1,8 +1,5 @@
 package tallerii.stories.controller;
 
-import android.app.DialogFragment;
-
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
@@ -11,13 +8,11 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import tallerii.stories.StoriesAppActivity;
-import tallerii.stories.StoriesLoggedInActivity;
+import tallerii.stories.activities.StoriesLoggedInActivity;
 import tallerii.stories.fragments.main.StorieCommentsDialogFragment;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
 import tallerii.stories.network.apimodels.Comment;
-import tallerii.stories.network.apimodels.Storie;
 
 public class CommentController {
 

@@ -89,19 +89,19 @@ public class StoriesAdapter extends BaseAdapter {
         if (convertView == null)
             convertView = inflater.inflate(R.layout.fragment_stories_item, null);
 
-        TextView name = (TextView) convertView.findViewById(R.id.name);
-        TextView timestamp = (TextView) convertView.findViewById(R.id.timestamp);
-        TextView statusMsg = (TextView) convertView.findViewById(R.id.txtStatusMsg);
+        TextView name = convertView.findViewById(R.id.name);
+        TextView timestamp = convertView.findViewById(R.id.timestamp);
+        TextView statusMsg = convertView.findViewById(R.id.txtStatusMsg);
         //TextView url = (TextView) convertView.findViewById(R.id.txtUrl);
         ImageView profilePic = convertView.findViewById(R.id.profilePic);
-        ImageView storieImageView = (ImageView) convertView.findViewById(R.id.storieImage1);
+        ImageView storieImageView = convertView.findViewById(R.id.storieImage1);
 
         View lastCommentView = convertView.findViewById(R.id.lastCommentView);
-        View messageComment = (TextView) convertView.findViewById(R.id.messageCommentText);
-        ImageView userCommentPic = (ImageView) convertView.findViewById(R.id.userCommentPic);
-        TextView lastComment = (TextView) convertView.findViewById(R.id.lastComment);
-        TextView usernameLastComment = (TextView) convertView.findViewById(R.id.usernameLastComment);
-        ImageButton sendCommentButton = (ImageButton) convertView.findViewById(R.id.sendMessageCommentButton);
+        View messageComment = convertView.findViewById(R.id.messageCommentText);
+        ImageView userCommentPic = convertView.findViewById(R.id.userCommentPic);
+        TextView lastComment = convertView.findViewById(R.id.lastComment);
+        TextView usernameLastComment = convertView.findViewById(R.id.usernameLastComment);
+        ImageButton sendCommentButton = convertView.findViewById(R.id.sendMessageCommentButton);
 
         final Storie storie = stories.get(position);
 
@@ -187,7 +187,7 @@ public class StoriesAdapter extends BaseAdapter {
     }
 
     public ImageButton changeStatusOnClickBy(final View convertView, int id, final String reactionName){
-        ImageButton view = (ImageButton) convertView.findViewById(id);
+        ImageButton view = convertView.findViewById(id);
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 changeStatus(convertView,(ImageButton)v, reactionName);

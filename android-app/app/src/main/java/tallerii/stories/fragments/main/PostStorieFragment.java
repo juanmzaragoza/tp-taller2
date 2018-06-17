@@ -123,13 +123,13 @@ public class PostStorieFragment extends Fragment implements StoriesAware {
     Runnable publish = new Runnable() {
         public void run() {
 
-            titleText = (EditText) rootView.findViewById(R.id.titleText);
+            titleText = rootView.findViewById(R.id.titleText);
             String title = titleText.getText().toString();
 
-            descriptionText = (EditText) rootView.findViewById(R.id.descriptionText);
+            descriptionText = rootView.findViewById(R.id.descriptionText);
             String description = descriptionText.getText().toString();
 
-            visibilityCheckBox = (CheckBox) rootView.findViewById(R.id.visibilityCheckBox);
+            visibilityCheckBox = rootView.findViewById(R.id.visibilityCheckBox);
             boolean isPublic = visibilityCheckBox.isChecked();
 
             locationText = rootView.findViewById(R.id.locationText);

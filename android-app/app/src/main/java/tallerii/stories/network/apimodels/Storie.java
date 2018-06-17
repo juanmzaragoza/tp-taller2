@@ -50,7 +50,7 @@ public class Storie extends ObjectApiApp{
     public String userPicture;
 
     @SerializedName("comments")
-    public List<Comment> comments = new ArrayList<Comment>();;
+    public List<Comment> comments = new ArrayList<Comment>();
 
     @SerializedName("reactions")
     public List<Reaction> reactions = new ArrayList<Reaction>();
