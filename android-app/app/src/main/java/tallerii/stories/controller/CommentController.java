@@ -108,8 +108,8 @@ public class CommentController {
 //            }
 //        });
         List<Comment> comments = new ArrayList<Comment>();
-        for(int i=0;i<=10;i++){
-            Comment c = new Comment(storieId, "TODO24ob0vbx-3msdf","Comentario Usuario", "c1fdc8666ff0446eba0600c256ea040e", "10/06/2018 20:37:09", "This is the "+i+" comment");
+        for(int i=0;i<=20;i++){
+            Comment c = new Comment(storieId, "TODO24ob0vbx-3msdf","Comentario Usuario", "fd18f7da-31e9-425d-8274-a4174fccddb6", "10/06/2018 20:37:09", "This is the "+i+" comment");
             comments.add(c);
         }
 

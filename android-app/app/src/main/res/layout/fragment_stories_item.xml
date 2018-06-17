@@ -80,6 +80,15 @@
             android:scaleType="fitXY"
             android:visibility="visible" />
 
+        <VideoView
+            android:id="@+id/storieVideoView"
+            android:layout_width="match_parent"
+            android:layout_height="217dp"
+            android:clickable="true"
+            android:focusable="false"
+            android:src="@android:drawable/ic_menu_camera"
+            android:visibility="gone" />
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

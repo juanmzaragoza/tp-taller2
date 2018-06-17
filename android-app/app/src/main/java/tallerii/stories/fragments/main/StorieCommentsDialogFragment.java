@@ -106,6 +106,12 @@ public class StorieCommentsDialogFragment extends DialogFragment {
     }
 
     public void onResume() {
+        resizeDialog();
+        // Call super onResume after sizing
+        super.onResume();
+    }
+
+    public void resizeDialog(){
         // Store access variables for window and blank point
         Window window = getDialog().getWindow();
         Point size = new Point();
@@ -113,14 +119,8 @@ public class StorieCommentsDialogFragment extends DialogFragment {
         Display display = window.getWindowManager().getDefaultDisplay();
         display.getSize(size);
         // Set the width of the dialog proportional to 75% of the screen width
-        window.setLayout((int) (size.y * 0.75), WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setLayout((int) (size.x * 0.75), WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setLayout((int) (size.x * 0.9), WindowManager.LayoutParams.WRAP_CONTENT);
         window.setGravity(Gravity.CENTER);
-        // Call super onResume after sizing
-        super.onResume();
-
-        // call api comments
-        getComments();
     }
 
     public void onSuccessComment(String userId, String message, String storieId) {

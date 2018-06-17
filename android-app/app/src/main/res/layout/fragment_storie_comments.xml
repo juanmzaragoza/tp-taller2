@@ -3,59 +3,45 @@
     android:id="@+id/storieComments"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center" android:orientation="vertical"  >
+    android:layout_gravity="center"
+    android:orientation="vertical"  >
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center" android:orientation="vertical">
+        <ListView
+            android:id="@+id/commentsList"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:divider="@null"
+            android:layout_weight="1"
+            android:layout_above="@+id/doComment"/>
 
-                <ListView
-                    android:id="@+id/commentsList"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:divider="@null" />
 
-                <View
-                    android:id="@+id/divider2"
-                    android:layout_width="fill_parent"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"
-                    android:background="?android:attr/listDivider"
-                    android:paddingBottom="5dp"/>
 
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/stories_item_padding_left_right"
-                    android:paddingRight="@dimen/stories_item_padding_left_right"
-                    android:paddingTop="10dp"
-                    android:paddingBottom="20dp">
+        <LinearLayout
+            android:id="@+id/doComment"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:paddingLeft="@dimen/stories_item_padding_left_right"
+            android:paddingRight="@dimen/stories_item_padding_left_right"
+            android:paddingTop="10dp"
+            android:paddingBottom="20dp">
 
-                    <EditText
-                        android:id="@+id/messageCommentText"
-                        android:layout_width="wrap_content"
-                        android:layout_weight="3"
-                        android:hint="I want to say..."
-                        android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/messageCommentText"
+                android:layout_width="wrap_content"
+                android:layout_weight="3"
+                android:hint="I want to say..."
+                android:layout_height="wrap_content" />
 
-                    <ImageButton
-                        android:id="@+id/sendMessageCommentButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="@dimen/stories_item_status_pad_left_right"
-                        android:src="@drawable/ic_send_black_24dp" />
+            <ImageButton
+                android:id="@+id/sendMessageCommentButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/stories_item_status_pad_left_right"
+                android:src="@drawable/ic_send_black_24dp" />
 
-            </LinearLayout>
+        </LinearLayout>
 
-            </LinearLayout>
-
-    </ScrollView>
 </LinearLayout>
