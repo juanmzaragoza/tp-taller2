@@ -4,32 +4,15 @@ package tallerii.stories.helpers;
 import info.androidhive.listviewfeed.R;
 import info.androidhive.listviewfeed.app.AppController;
 import info.androidhive.listviewfeed.data.FeedItem;*/
-import tallerii.stories.R;
-import tallerii.stories.controller.StoriesController;
-import tallerii.stories.fragments.main.StorieCommentsDialogFragment;
-import tallerii.stories.network.apimodels.Comment;
-import tallerii.stories.network.apimodels.Reaction;
-import tallerii.stories.network.apimodels.Storie;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
 
 import android.app.Activity;
-import android.media.Image;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.provider.ContactsContract;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.TextUtils;
-import android.text.format.DateUtils;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -37,7 +20,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.storage.FirebaseStorage;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import tallerii.stories.R;
+import tallerii.stories.controller.StoriesController;
+import tallerii.stories.fragments.main.StorieCommentsDialogFragment;
+import tallerii.stories.network.apimodels.Comment;
+import tallerii.stories.network.apimodels.Storie;
 
 public class StoriesAdapter extends BaseAdapter {
 
@@ -63,7 +54,7 @@ public class StoriesAdapter extends BaseAdapter {
         this.controller = controller;
         this.stories = stories;
         imageHelper = new ImageHelper(activity);
-        reactionButtons = new HashMap();
+        reactionButtons = new HashMap<>();
     }
 
     @Override
@@ -105,11 +96,11 @@ public class StoriesAdapter extends BaseAdapter {
 
         final Storie storie = stories.get(position);
 
-        name.setText(storie.getUserName() +" "+storie.getUserLastName());
+        name.setText(String.format("%s %s", storie.getUserName(), storie.getUserLastName()));
 
         // Converting timestamp into x ago format
-        //Integer timeAgo = storie.getCreatedTime();
-        timestamp.setText("22 hours ago");
+        //TODO parse and convert to local time
+        timestamp.setText(storie.getCreatedTime());
 
         // Chcek for empty status message
         if (!TextUtils.isEmpty(storie.getDescription())) {

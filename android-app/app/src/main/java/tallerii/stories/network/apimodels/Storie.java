@@ -5,7 +5,6 @@ package tallerii.stories.network.apimodels;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Storie extends ObjectApiApp{
