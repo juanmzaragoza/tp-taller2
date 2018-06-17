@@ -6,7 +6,7 @@ import os
 
 from .request_exception import RequestException
 from api_client.user_not_exists_exception import UserNotExistsException
-from constants import APPLICATION_OWNER
+from constants import APPLICATION_OWNER, API_KEY
 
 app = flask.Flask(__name__)
 
@@ -14,7 +14,11 @@ class SharedApiClient():
 
 	def __init__(self):
 		self.url = os.environ['SHARED_URI']
-		self.headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+		self.headers = {
+			'Content-type': 'application/json', 
+			'Accept': 'text/plain',
+			'api-key': API_KEY
+		}
 
 	def login(self, username, password):
 		# app.logger.error('url: %s', self.url)

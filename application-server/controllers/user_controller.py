@@ -9,6 +9,7 @@ from models.user_data import UserDataModel
 
 from controllers.response_builder import ResponseBuilder
 from controllers.error_handler import ErrorHandler
+from auth_service import login_required
 
 class UserController(flask_restful.Resource):
 	def __init__(self):

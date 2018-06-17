@@ -7,6 +7,7 @@ from controllers.error_handler import ErrorHandler
 from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
+from auth_service import login_required
 
 class UserAppController(flask_restful.Resource):
 	

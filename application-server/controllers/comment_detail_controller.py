@@ -10,6 +10,7 @@ from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_comment_found_exception import NoCommentFoundException
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
+from auth_service import login_required
 
 class CommentDetailController(flask_restful.Resource):
 	

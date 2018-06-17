@@ -31,7 +31,7 @@ app = flask.Flask(__name__)
 
 with app.app_context():
 	api = flask_restful.Api(app, prefix="/api/v1")
-
+	
 	class HelloWorld(flask_restful.Resource):
 		def get(self):
 			response = {'hello': "appServer"}

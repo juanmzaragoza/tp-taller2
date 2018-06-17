@@ -7,6 +7,7 @@ from api_client.request_exception import RequestException
 
 from controllers.response_builder import ResponseBuilder
 from controllers.error_handler import ErrorHandler
+from auth_service import login_required
 
 class UserDetailController(Resource):
 	def __init__(self):

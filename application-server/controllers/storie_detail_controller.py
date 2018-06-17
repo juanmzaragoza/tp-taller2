@@ -10,13 +10,14 @@ from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_data_found_exception import NoDataFoundException
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
-
+from auth_service import login_required
 
 class StorieDetailController(flask_restful.Resource):
 	
 	def __init__(self):
 		self.parser = reqparse.RequestParser(bundle_errors=True)
-		
+	
+	@login_required	
 	def get(self, id):
 		try:
 			 stories = StorieModel.get_stories(id)
@@ -24,6 +25,7 @@ class StorieDetailController(flask_restful.Resource):
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 	
+	@login_required	
 	def put(self, id):
 		try:
 			self.parser.add_argument('_id', required=True, help="Field id is mandatory")
@@ -36,6 +38,7 @@ class StorieDetailController(flask_restful.Resource):
 			self.parser.add_argument('user_id', required=True, help="Field user_id is mandatory")
 
 			args = self.parser.parse_args()
+			app.logger.error('args: %s', args)
 
 			body = json.loads(request.data.decode('utf-8'))
 			
@@ -50,7 +53,8 @@ class StorieDetailController(flask_restful.Resource):
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
-			
+
+	@login_required				
 	def delete(self, id):
 		try:
 			body = json.loads(request.data.decode('utf-8'))

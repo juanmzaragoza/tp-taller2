@@ -9,6 +9,7 @@ from controllers.friend_controller import FriendController
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_data_found_exception import NoDataFoundException
 from errors_exceptions.data_already_exists_exception import DataAlreadyExistsException
+from auth_service import login_required
 
 class BeFriendDetailController(flask_restful.Resource):
 

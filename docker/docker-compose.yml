@@ -49,7 +49,7 @@ services:
   mongo:
     container_name: mongo
     build: ./mongo
-    image: mongo:3.0.14
+    image: mongo:3.2.20
     volumes:
       - ./data/mongo:/data/db
     ports:

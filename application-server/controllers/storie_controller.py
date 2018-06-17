@@ -7,6 +7,7 @@ from werkzeug.exceptions import BadRequest
 from controllers.error_handler import ErrorHandler
 from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
+from auth_service import login_required
 
 class StorieController(flask_restful.Resource):
 	
