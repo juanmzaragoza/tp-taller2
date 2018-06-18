@@ -125,7 +125,7 @@ public class StorieCommentsDialogFragment extends DialogFragment {
 
     public void onSuccessComment(String userId, String message, String storieId) {
         //helperFragment.dismissMessageLoading();
-        activity.showMessage("Your comment was successfully sended");
+        activity.showMessage("Your comment was successfully sent");
         getDialog().dismiss();
     }
 
