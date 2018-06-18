@@ -1,13 +1,16 @@
 package tallerii.stories.activities;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Matrix;
 import android.support.annotation.NonNull;
+import android.text.InputType;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -29,6 +32,7 @@ public class UserProfileActivity extends ProfileActivity {
     private ProfileUserController profileUserController;
     private Button actionButton;
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    private String requestMessage;
 
     @Override
     protected void initWithChildResource() {
@@ -162,9 +166,32 @@ public class UserProfileActivity extends ProfileActivity {
         });
     }
 
-    private void befriend(ApplicationProfile applicationProfile) {
+    private void befriend(final ApplicationProfile applicationProfile) {
+        requestMessage = "";
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Request message");
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+        builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                requestMessage = input.getText().toString();
+                createFriendRequest(applicationProfile, requestMessage);
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.show();
+    }
+
+    private void createFriendRequest(ApplicationProfile applicationProfile, String message) {
         FriendRequest friendRequest = new FriendRequest();
-        friendRequest.setMessage("Placeholder message");
+        friendRequest.setMessage(message);
         ApplicationProfile currentUser = getProfile();
         friendRequest.setFirstName(currentUser.getName());
         friendRequest.setLastName(currentUser.getLastName());
