@@ -3,6 +3,7 @@ package tallerii.stories.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Matrix;
 import android.support.annotation.NonNull;
 import android.util.TypedValue;
 import android.view.View;
@@ -103,6 +104,7 @@ public class UserProfileActivity extends ProfileActivity {
                 finish();
             }
         });
+        pictureView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         return pictureView;
     }
 
