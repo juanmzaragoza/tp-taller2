@@ -39,26 +39,30 @@ public class ImageHelper {
                 @Override
                 public void onSuccess(StorageMetadata storageMetadata) {
                     // Metadata now contains the metadata for 'images/forest.jpg'
-                    if(storageMetadata.getContentType().contains("image")){
-                        GlideApp.with(context)
-                                .load(imageRef)
-                                .placeholder(R.drawable.ic_account_circle_white_24dp)
-                                .into(imageView);
-                        imageView.setVisibility(View.VISIBLE);
-                    } else{
-                        imageView.setVisibility(View.GONE);
-                    }
+                    setImage(storageMetadata, imageRef, imageView);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
                     // Uh-oh, an error occurred
-                    Log.i("FIREBASE","An error ocurrer on get "+imageId);
+                    Log.i("FIREBASE","An error ocurred on get "+imageId);
                     imageView.setVisibility(View.GONE);
                 }
             });
         } else {
             imageView.setImageResource(R.drawable.ic_account_circle_white_24dp);
+        }
+    }
+
+    private void setImage(StorageMetadata storageMetadata, StorageReference imageRef, ImageView imageView) {
+        if(storageMetadata.getContentType().contains("image")){
+            GlideApp.with(context.getApplicationContext())
+                    .load(imageRef)
+                    .placeholder(R.drawable.ic_account_circle_white_24dp)
+                    .into(imageView);
+            imageView.setVisibility(View.VISIBLE);
+        } else{
+            imageView.setVisibility(View.GONE);
         }
     }
 
