@@ -17,7 +17,7 @@ class StorieDetailController(flask_restful.Resource):
 	def __init__(self):
 		self.parser = reqparse.RequestParser(bundle_errors=True)
 	
-	@login_required	
+	#@login_required	
 	def get(self, id):
 		try:
 			 stories = StorieModel.get_stories(id)
@@ -25,7 +25,7 @@ class StorieDetailController(flask_restful.Resource):
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 	
-	@login_required	
+	#@login_required	
 	def put(self, id):
 		try:
 			self.parser.add_argument('_id', required=True, help="Field id is mandatory")
@@ -54,7 +54,7 @@ class StorieDetailController(flask_restful.Resource):
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 
-	@login_required				
+	#@login_required				
 	def delete(self, id):
 		try:
 			body = json.loads(request.data.decode('utf-8'))

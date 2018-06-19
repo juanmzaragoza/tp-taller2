@@ -8,6 +8,7 @@ from controllers.error_handler import ErrorHandler
 from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
+from errors_exceptions.storie_reaction_already_exists_exception import StorieReactionAlreadyFoundException
 from auth_service import login_required
 
 class ReactionController(flask_restful.Resource):
@@ -29,5 +30,7 @@ class ReactionController(flask_restful.Resource):
 			return ErrorHandler.create_error_response("Fields reaction, user_id and storie_id are mandatory", 400)
 		except NoStorieFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
+		except StorieReactionAlreadyFoundException as e:
+			return ErrorHandler.create_error_response(str(e), 500)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)

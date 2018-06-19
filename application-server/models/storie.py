@@ -117,7 +117,7 @@ class StorieModel:
 			storieJson["multimedia"] = storie["multimedia"]
 			storieJson["story_type"] = storie["story_type"]
 			storieJson["comments"] = CommentModel.get_last_storie_comment(storie_id)
-			storieJson["reactions"] = ReactionModel.get_storie_reactions(storie_id)
+			storieJson["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
 			data.append(storieJson)
 		
 		return data
@@ -160,7 +160,7 @@ class StorieModel:
 			storieJson["multimedia"] = storie["multimedia"]
 			storieJson["story_type"] = storie["story_type"]
 			storieJson["comments"] = CommentModel.get_last_storie_comment(storie_id)
-			storieJson["reactions"] = ReactionModel.get_storie_reactions(storie_id)
+			storieJson["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
 			data.append(storieJson)
 		
 		
