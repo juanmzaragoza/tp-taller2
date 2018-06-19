@@ -5,6 +5,7 @@ from controllers.date_controller import DateController
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
 from errors_exceptions.no_reaction_found_exception import NoReactionFoundException
+from errors_exceptions.storie_reaction_already_exists_exception import StorieReactionAlreadyFoundException
 
 class ReactionModel:
 	
@@ -29,9 +30,13 @@ class ReactionModel:
 
 		if StorieModel.storie_exists(storie_id) == False:
 			raise NoStorieFoundException
+		
+		user_id = body["user_id"]
+		
+		if ReactionModel.reaction_exists(storie_id, user_id) == True:
+			raise StorieReactionAlreadyFoundException
 			
 		reaction_id = str(uuid.uuid4().hex)
-		user_id = body["user_id"]
 		rev = ""
 		reaction_date = DateController.get_date_time()
 		reaction = body["reaction"]
@@ -44,18 +49,46 @@ class ReactionModel:
 		return reaction
 	
 	@staticmethod
-	def get_storie_reactions(storie_id):
-		response = []
+	def reaction_exists(storie_id, user_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+		react = db.storie_reactions.find_one({'storie_id': storie_id, 'user_id': user_id})
+		
+		if react == None:
+			return False
+		
+		return True
+		
+	@staticmethod
+	def get_storie_reactions(storie_id, user_id):
+		response = {}
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 		
-		reactions = db.storie_reactions.find({'storie_id': storie_id})
+		like = ReactionModel.get_storie_resume_reactions(storie_id, user_id, 'LIKE')
+		nolike = ReactionModel.get_storie_resume_reactions(storie_id, user_id, 'NOLIKE')
+		response["LIKE"] = like
+		response["NOLIKE"] = nolike
+		#reactions = db.storie_reactions.find({'storie_id': storie_id})
 		
-		for reaction in reactions:
-			reaction["date"] = str(reaction["date"])
-			response.append(reaction)
+		#for reaction in reactions:
+			#reaction["date"] = str(reaction["date"])
+			#response.append(reaction)
 
 		return response
+	
+	@staticmethod
+	def get_storie_resume_reactions(storie_id, user_id, reaction):
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+		counter = db.storie_reactions.find({'storie_id': storie_id, 'reaction': reaction}).count()
+		react = db.storie_reactions.find_one({'storie_id': storie_id, 'user_id': user_id, 'reaction': reaction},{"date":1, "_id":0})
+		
+		if (react != None):
+			react["date"] = str(react["date"]) 
 
+		return {
+			"count": counter,
+			"react": react
+		}
+		
 	@staticmethod
 	def get_new_reaction(reaction_id, storie_id, user_id, rev, date, reaction):
 		return {
