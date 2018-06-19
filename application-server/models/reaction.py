@@ -62,11 +62,16 @@ class ReactionModel:
 	def get_storie_reactions(storie_id, user_id):
 		response = {}
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
-		
+
 		like = ReactionModel.get_storie_resume_reactions(storie_id, user_id, 'LIKE')
-		nolike = ReactionModel.get_storie_resume_reactions(storie_id, user_id, 'NOLIKE')
+		notlike = ReactionModel.get_storie_resume_reactions(storie_id, user_id, 'NOTLIKE')
+		enjoy = ReactionModel.get_storie_resume_reactions(storie_id, user_id, 'ENJOY')
+		bored = ReactionModel.get_storie_resume_reactions(storie_id, user_id, 'GETBORED')
+		
 		response["LIKE"] = like
-		response["NOLIKE"] = nolike
+		response["NOTLIKE"] = notlike
+		response["ENJOY"] = enjoy
+		response["GETBORED"] = bored
 		#reactions = db.storie_reactions.find({'storie_id': storie_id})
 		
 		#for reaction in reactions:
