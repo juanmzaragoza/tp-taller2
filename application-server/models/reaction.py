@@ -10,6 +10,11 @@ from errors_exceptions.storie_reaction_already_exists_exception import StorieRea
 class ReactionModel:
 	
 	@staticmethod
+	def remove_reaction_by_storie_id(storie_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+		db.storie_reactions.remove({"storie_id": storie_id})
+		
+	@staticmethod
 	def remove_reaction(reaction_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 		reaction = db.storie_reactions.find_one({"_id": reaction_id})
