@@ -45,7 +45,7 @@ class UserDataModel():
 		del user['_id']
 		
 		user = db.users.find_and_modify({"_id": user_id}, {'$set': user })
-		#user = db.users.find_one({"_id": user_id})
+		user = db.users.find_one({"_id": user_id})
 
 		return user
 

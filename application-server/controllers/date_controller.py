@@ -16,6 +16,13 @@ class DateController():
 				
 	@staticmethod
 	def get_date_time():
-		date_time = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+		date_time = datetime.datetime.now()
 		#date_time = time.strftime('%d/%m/%Y %H:%M:%S', time.localtime())
+		return date_time
+		
+	@staticmethod
+	def get_date_time_with_format(date):
+		date_time = ""
+		if (date != ""):
+			date_time = date.strftime('%d/%m/%Y %H:%M:%S')
 		return date_time

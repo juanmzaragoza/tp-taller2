@@ -27,7 +27,7 @@ class FriendModel():
 			data[friend_user_id] = UserDataModel.get_user_reduced_data_by_user_id(friend_user_id)
 			data[friend_user_id]["user_id"] = data[friend_user_id].pop("_id")
 			data[friend_user_id]["_id"] = friend["_id"]
-			data[friend_user_id]["date"] = str(friend["date"])
+			data[friend_user_id]["date"] = DateController.get_date_time_with_format(friend["date"])
 
 		return data.values()
 	
@@ -47,7 +47,7 @@ class FriendModel():
 		friend = FriendModel.get_new_friend(friend_id, user_id_sender, user_id_rcv, date)
 		db.friends.insert(friend)
 		
-		friend["date"] = str(friend["date"])
+		friend["date"] = DateController.get_date_time_with_format(friend["date"])
 		return friend
 	
 	@staticmethod
@@ -73,7 +73,7 @@ class FriendModel():
 			raise NoFriendFoundException
 
 		db.friends.remove({'_id': friend_id})
-		response["date"] = str(response["date"])
+		response["date"] = DateController.get_date_time_with_format(response["date"])
 		return response
 		
 	@staticmethod

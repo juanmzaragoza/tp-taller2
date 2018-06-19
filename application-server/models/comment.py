@@ -17,7 +17,7 @@ class CommentModel:
 		
 		if comment != None:
 			user_comment = CommentModel.get_comment_with_user_data(comment)
-			user_comment["date"] = str(user_comment["date"])
+			user_comment["date"] = DateController.get_date_time_with_format(user_comment["date"])
 			response.append(user_comment)
 		
 		return response
@@ -31,7 +31,7 @@ class CommentModel:
 			raise NoCommentFoundException
 			
 		db.storie_comments.remove({"_id": comment_id})
-		comment["date"] = str(comment["date"])
+		comment["date"] = DateController.get_date_time_with_format(comment["date"])
 		
 		return comment
 	
@@ -59,8 +59,8 @@ class CommentModel:
 		del comment['_id']
 		
 		comment = db.storie_comments.find_and_modify({'_id': comment_id},{'$set': comment})
-		#comment = db.storie_comments.find_one({'_id': comment_id})
-		comment["date"] = str(comment["date"])
+		comment = db.storie_comments.find_one({'_id': comment_id})
+		comment["date"] = DateController.get_date_time_with_format(comment["date"])
 		return comment
 	
 	@staticmethod
@@ -85,7 +85,7 @@ class CommentModel:
 		comment = CommentModel.get_new_comment(comment_id,storie_id,user_id,rev,comment_date,message)
 			
 		db.storie_comments.insert(comment)
-		comment["date"] = str(comment["date"])
+		comment["date"] = DateController.get_date_time_with_format(comment["date"])
 		return comment
 	
 	@staticmethod
@@ -97,7 +97,7 @@ class CommentModel:
 		
 		for com in comments:
 			user_comment = CommentModel.get_comment_with_user_data(com)
-			user_comment["date"] = str(user_comment["date"])
+			user_comment["date"] = DateController.get_date_time_with_format(user_comment["date"])
 			response.append(user_comment)
 		
 		return response
