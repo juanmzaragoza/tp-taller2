@@ -38,7 +38,7 @@ class StorieDetailController(flask_restful.Resource):
 			self.parser.add_argument('user_id', required=True, help="Field user_id is mandatory")
 
 			args = self.parser.parse_args()
-			app.logger.error('args: %s', args)
+			#app.logger.error('args: %s', args)
 
 			body = json.loads(request.data.decode('utf-8'))
 			

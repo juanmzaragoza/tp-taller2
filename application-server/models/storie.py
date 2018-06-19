@@ -44,8 +44,8 @@ class StorieModel:
 		db.users_stories.insert({'user_id': user_id, 'storie_id': storie_id})
 		
 		storie['user_id'] = user_id
-		storie['created_time'] = str(storie['created_time'])
-		storie['updated_time'] = str(storie['updated_time'])
+		storie['created_time'] = DateController.get_date_time_with_format(storie['created_time'])
+		storie['updated_time'] = DateController.get_date_time_with_format(storie['updated_time'])
 		
 		return storie
 
@@ -76,9 +76,9 @@ class StorieModel:
 		del storie['_id']
 		
 		res = db.stories.find_and_modify({'_id': storie_id},{'$set': storie})
-		#storie = db.stories.find_one({'_id': storie_id})
-		res['created_time'] = str(res['created_time'])
-		res['updated_time'] = str(res['updated_time'])
+		res = db.stories.find_one({'_id': storie_id})
+		res['created_time'] = DateController.get_date_time_with_format(res['created_time'])
+		res['updated_time'] = DateController.get_date_time_with_format(res['updated_time'])
 		return res
 
 	@staticmethod
@@ -108,8 +108,8 @@ class StorieModel:
 			storieJson["user_id"] = storieJson.pop("_id")
 			storieJson["_id"] = storie_id
 			storieJson["_rev"] = storie["_rev"]
-			storieJson["created_time"] = str(storie["created_time"])
-			storieJson["updated_time"] = str(storie["updated_time"])
+			storieJson["created_time"] = DateController.get_date_time_with_format(storie["created_time"])
+			storieJson["updated_time"] = DateController.get_date_time_with_format(storie["updated_time"])
 			storieJson["title"] = storie["title"]
 			storieJson["description"] = storie["description"]
 			storieJson["location"] = storie["location"]
@@ -151,8 +151,8 @@ class StorieModel:
 			storieJson["user_id"] = storieJson.pop("_id")
 			storieJson["_id"] = storie_id
 			storieJson["_rev"] = storie["_rev"]
-			storieJson["created_time"] = str(storie["created_time"])
-			storieJson["updated_time"] = str(storie["updated_time"])
+			storieJson["created_time"] = DateController.get_date_time_with_format(storie["created_time"])
+			storieJson["updated_time"] = DateController.get_date_time_with_format(storie["updated_time"])
 			storieJson["title"] = storie["title"]
 			storieJson["description"] = storie["description"]
 			storieJson["location"] = storie["location"]
@@ -178,8 +178,8 @@ class StorieModel:
 		storie = db.stories.find_one({'_id': storie_id})
 		db.stories.remove({'_id': storie_id})
 		db.users_stories.remove({'storie_id': storie_id,'user_id': storie_user_id})
-		storie['created_time'] = str(storie['created_time'])
-		storie['updated_time'] = str(storie['updated_time'])
+		storie['created_time'] = DateController.get_date_time_with_format(storie['created_time'])
+		storie['updated_time'] = DateController.get_date_time_with_format(storie['updated_time'])
 		return storie
 	
 	@staticmethod

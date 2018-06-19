@@ -18,7 +18,7 @@ class ReactionModel:
 			raise NoReactionFoundException
 			
 		db.storie_reactions.remove({"_id": reaction_id})
-		reaction["date"] = str(reaction["date"])
+		reaction["date"] = DateController.get_date_time_with_format(reaction["date"])
 		return reaction
 	
 	@staticmethod
@@ -44,7 +44,7 @@ class ReactionModel:
 		reaction = ReactionModel.get_new_reaction(reaction_id, storie_id, user_id, rev, reaction_date, reaction)
 			
 		db.storie_reactions.insert(reaction)
-		reaction["date"] = str(reaction["date"])
+		reaction["date"] = DateController.get_date_time_with_format(reaction["date"])
 		
 		return reaction
 	
@@ -87,7 +87,7 @@ class ReactionModel:
 		react = db.storie_reactions.find_one({'storie_id': storie_id, 'user_id': user_id, 'reaction': reaction},{"date":1, "_id":0})
 		
 		if (react != None):
-			react["date"] = str(react["date"]) 
+			react["date"] = DateController.get_date_time_with_format(react["date"]) 
 
 		return {
 			"count": counter,
