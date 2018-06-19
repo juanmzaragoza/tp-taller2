@@ -29,6 +29,7 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
     public static final String TOKEN = "token";
     public static final String TOKEN_STORE = "token";
     private static ApplicationProfile profile;
+    private static Store store;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
     private void login() {
         Bundle bundle = getIntent().getExtras();
         if(bundle != null && bundle.getString(TOKEN) != null) {
-            final Store store = new Store();
+            store = new Store();
             store.save(TOKEN_STORE, bundle.getString(TOKEN));
             FirebaseInstanceId.getInstance().getToken();
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -141,6 +142,10 @@ public abstract class StoriesLoggedInActivity extends StoriesAppActivity {
 
     public static ApplicationProfile getProfile() {
         return profile;
+    }
+
+    public static String getToken() {
+        return store != null ? store.get(TOKEN_STORE) : null;
     }
 
     public void updateProfile() {

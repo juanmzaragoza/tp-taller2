@@ -29,7 +29,7 @@ public class ProfileUpdateController extends ProfileController {
             public void onResponse(Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     activity.showMessage("Successfully updated profile");
-                    getUser(profile.getUserId());//Obtain updated profile to match revision
+                    activity.startProfileActivity(profile.getUserId());
                 } else {
                     manageErrors(response);
                 }

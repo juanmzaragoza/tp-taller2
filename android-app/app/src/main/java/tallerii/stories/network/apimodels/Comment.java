@@ -10,7 +10,7 @@ public class Comment extends ObjectApiApp {
     @SerializedName("user_id")
     public String userId;
 
-    @SerializedName("user_name")
+    @SerializedName("name")
     public String userName;
 
     @SerializedName("last_name")
