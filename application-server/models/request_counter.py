@@ -29,22 +29,35 @@ class RequestCounterModel():
 			db.server_requests.insert(data)
 				
 	@staticmethod
-	def get_requests():
-		friends_requests_user_id = []
-		response = []
+	def get_requests(fromHour = None, toHour = None):
+		server_requests = RequestCounterModel._find_requests(fromHour, toHour)
+
 		data = {}
-		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
-		
-		RequestCounterModel.create_structure()
-		server_requests = db.server_requests.find()
 		for reg in server_requests:
 			data[reg["hour"]] = {
-									"date": reg["date"],
-									"hour": reg["hour"],
-									"count": reg["count"]
-								}
-		
+				"date": reg["date"],
+				"hour": reg["hour"],
+				"count": reg["count"]
+			}
 		return list(data.values())
+
+	@staticmethod
+	def _find_requests(fromHour, toHour):
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+
+		date = DateController.get_date()
+		andArgs = [{"date": date}]
+
+		if (fromHour is not None):
+			andArgs.append({"hour": {'$gte': int(fromHour)}})
+
+		if (toHour is not None):
+			andArgs.append({"hour": {'$lte': int(toHour)}})	
+
+		server_requests = db.server_requests.find({"$and": andArgs})
+		return server_requests
+
+		
 		
 	@staticmethod
 	def inc_requests():
