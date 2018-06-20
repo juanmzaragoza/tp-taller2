@@ -37,18 +37,19 @@ class StorieModel:
 		mult = body['multimedia']
 		story_type = body['story_type']
 		user_id = body['user_id']	
-		storie = StorieModel.get_new_storie(storie_id, rev, created_time, updated_time, title, desc, location, visibility, mult, story_type)
-
-		#storie_id = db.stories.insert(storie)
-		db.stories.insert(storie)
-		db.users_stories.insert({'user_id': user_id, 'storie_id': storie_id})
 		
-		storie['user_id'] = user_id
-		storie['created_time'] = DateController.get_date_time_with_format(storie['created_time'])
-		storie['updated_time'] = DateController.get_date_time_with_format(storie['updated_time'])
+		storie = StorieModel.get_new_storie(storie_id, rev, user_id, created_time, updated_time, title, desc, location, visibility, mult, story_type)
+		db.stories.insert(storie)		
+		storie = StorieModel.format_storie_dates(storie)
 		
 		return storie
-
+	
+	@staticmethod
+	def format_storie_dates(storie):
+		storie['created_time'] = DateController.get_date_time_with_format(storie['created_time'])
+		storie['updated_time'] = DateController.get_date_time_with_format(storie['updated_time'])
+		return storie
+	
 	@staticmethod
 	def update_storie(storie_id, body):
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
@@ -60,7 +61,7 @@ class StorieModel:
 
 		if act_storie['_rev'] != body.get('_rev'):
 			raise DataVersionException
-
+		
 		rev = str(uuid.uuid4().hex)
 		created_time = act_storie["created_time"] 
 		updated_time = DateController.get_date_time()
@@ -70,123 +71,80 @@ class StorieModel:
 		visibility = body["visibility"]
 		mult = body["multimedia"]
 		story_type = body["story_type"]
+		user_id = body["user_id"]
 		
-		storie = StorieModel.get_new_storie(storie_id, rev, created_time, updated_time, title, desc, location, visibility, mult, story_type)
-
+		storie = StorieModel.get_new_storie(storie_id, rev, user_id, created_time, updated_time, title, desc, location, visibility, mult, story_type)
+		
 		del storie['_id']
-		
 		res = db.stories.find_and_modify({'_id': storie_id},{'$set': storie})
 		res = db.stories.find_one({'_id': storie_id})
-		res['created_time'] = DateController.get_date_time_with_format(res['created_time'])
-		res['updated_time'] = DateController.get_date_time_with_format(res['updated_time'])
+		res = StorieModel.format_storie_dates(res)
+		
 		return res
-
+	
 	@staticmethod
 	def get_stories(user_id):
-		#data = {}
 		data = []
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		
-		stories = db.stories.aggregate([
-										   {
-											  "$lookup":
-												 {
-													"from": "users_stories",
-													"localField": "_id",
-													"foreignField": "storie_id",
-													"as": "users_storie"
-												}
-										   },
-										   {
-												"$sort": { "created_time": -1 }
-											}
-										]);
+		stories = db.stories.find({}).sort('created_time',pymongo.DESCENDING);
+		
 		for storie in stories:
-			storie_id = storie["users_storie"][0]["storie_id"]
-			storie_user_id = storie["users_storie"][0]["user_id"]
-			storieJson = UserDataModel.get_user_reduced_data_by_user_id(storie_user_id)
-			storieJson["user_id"] = storieJson.pop("_id")
-			storieJson["_id"] = storie_id
-			storieJson["_rev"] = storie["_rev"]
-			storieJson["created_time"] = DateController.get_date_time_with_format(storie["created_time"])
-			storieJson["updated_time"] = DateController.get_date_time_with_format(storie["updated_time"])
-			storieJson["title"] = storie["title"]
-			storieJson["description"] = storie["description"]
-			storieJson["location"] = storie["location"]
-			storieJson["visibility"] = storie["visibility"]
-			storieJson["multimedia"] = storie["multimedia"]
-			storieJson["story_type"] = storie["story_type"]
-			storieJson["comments"] = CommentModel.get_last_storie_comment(storie_id)
-			storieJson["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
-			data.append(storieJson)
+			storie_id = storie["_id"]
+			storie = StorieModel.format_storie_dates(storie)
+			storie["comments"] = CommentModel.get_last_storie_comment(storie_id)
+			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
+			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
+			data.append(storie_with_user_data)
 		
 		return data
-		
+	
 	@staticmethod
-	def get_stories_by_user_id(user_id):
+	def get_profile_stories_by_user_id(user_id):
 		data = []
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		
-		stories = db.stories.aggregate([
-										   {
-											  "$lookup":
-												 {
-													"from": "users_stories",
-													"localField": "_id",
-													"foreignField": "storie_id",
-													"as": "users_storie"
-												}
-										   },
-										   {
-											  "$match": { "users_storie.user_id": user_id }
-										   },
-										   {
-												"$sort": { "created_time": -1 }
-											}
-										]);
+		stories = db.stories.find({'user_id': user_id}).sort('created_time',pymongo.DESCENDING);
 		
 		for storie in stories:
-			storie_id = storie["users_storie"][0]["storie_id"]
-			storieJson = UserDataModel.get_user_reduced_data_by_user_id(user_id)
-			storieJson["user_id"] = storieJson.pop("_id")
-			storieJson["_id"] = storie_id
-			storieJson["_rev"] = storie["_rev"]
-			storieJson["created_time"] = DateController.get_date_time_with_format(storie["created_time"])
-			storieJson["updated_time"] = DateController.get_date_time_with_format(storie["updated_time"])
-			storieJson["title"] = storie["title"]
-			storieJson["description"] = storie["description"]
-			storieJson["location"] = storie["location"]
-			storieJson["visibility"] = storie["visibility"]
-			storieJson["multimedia"] = storie["multimedia"]
-			storieJson["story_type"] = storie["story_type"]
-			storieJson["comments"] = CommentModel.get_last_storie_comment(storie_id)
-			storieJson["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
-			data.append(storieJson)
-		
+			storie_id = storie["_id"]
+			storie = StorieModel.format_storie_dates(storie)
+			storie["comments"] = CommentModel.get_last_storie_comment(storie_id)
+			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
+			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
+			data.append(storie_with_user_data)
 		
 		return data
+	
+	@staticmethod
+	def get_storie_with_user_data(storie):
+		user_id = storie["user_id"]
+		user_data = UserDataModel.get_user_reduced_data_by_user_id(user_id)
+		storie_with_user_data = {**user_data, **storie}
+		return storie_with_user_data
 		
 	@staticmethod
 	def delete_storie(storie_id, storie_user_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		
-		us_storie = db.users_stories.find_one({'storie_id': storie_id,'user_id': storie_user_id})
-
-		if us_storie == None:
+		storie = db.stories.find_one({'_id': storie_id,'user_id': storie_user_id})
+		
+		if storie == None:
 			raise NoStorieFoundException
-
-		storie = db.stories.find_one({'_id': storie_id})
+		
+		CommentModel.remove_comment_by_storie_id(storie_id)	
+		ReactionModel.remove_reaction_by_storie_id(storie_id)	
 		db.stories.remove({'_id': storie_id})
-		db.users_stories.remove({'storie_id': storie_id,'user_id': storie_user_id})
-		storie['created_time'] = DateController.get_date_time_with_format(storie['created_time'])
-		storie['updated_time'] = DateController.get_date_time_with_format(storie['updated_time'])
+		storie = StorieModel.format_storie_dates(storie)
+		
 		return storie
 	
 	@staticmethod
-	def get_new_storie(storie_id, rev, created_time, updated_time, title, desc, location, visibility, mult, story_type):
+	def get_new_storie(storie_id, rev, user_id, created_time, updated_time, title, desc, location, visibility, mult, story_type):
 		return{ 
 			"_id": storie_id,
 			"_rev" : rev,
+			"user_id" : user_id,
 			"created_time" : created_time, 
 			"updated_time" : updated_time, 
 			"title" : title, 
