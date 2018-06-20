@@ -1,5 +1,6 @@
 import unittest
-import unittest.mock as mock
+#import unittest.mock as mock
+from mock import MagicMock
 from models.user_data import UserDataModel
 from controllers.storie_detail_controller import StorieDetailController
 from controllers.friend_controller import FriendController
