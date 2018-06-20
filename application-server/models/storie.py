@@ -86,24 +86,6 @@ class StorieModel:
 		res = StorieModel.format_storie_dates(res)
 		
 		return res
-	'''
-	@staticmethod
-	def get_stories(user_id):
-		data = []
-		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
-		
-		stories = db.stories.find({}).sort('created_time',pymongo.DESCENDING);
-		
-		for storie in stories:
-			storie_id = storie["_id"]
-			storie = StorieModel.format_storie_dates(storie)
-			storie["comments"] = CommentModel.get_last_storie_comment(storie_id)
-			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
-			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
-			data.append(storie_with_user_data)
-		
-		return data
-	'''
 	
 	@staticmethod
 	def get_stories(user_id):
@@ -112,28 +94,10 @@ class StorieModel:
 		
 		friends_id = FriendModel.get_friends_array_by_user_id(user_id)
 		friends_id.append(user_id)
-		#stories = db.stories.find({"user_id": {"$in": friends_id}}).sort("created_time",pymongo.DESCENDING)
+		
 		opt1 = {"expired_time": ""}
 		opt2 = {"expired_time": {"$gte": DateController.get_date_time()}}
-		#public_stories = db.stories.find({{"created_time": { "$or": [ "", opt2 ]}}, "user_id": {"$nin": friends_id}, "visibility": "public"}).sort("created_time",pymongo.DESCENDING) 
-		#public_stories = db.stories.find({{"created_time": { "$or": [ "", opt2 ]}}, "user_id": {"$nin": friends_id}, "visibility": "public"}).sort("created_time",pymongo.DESCENDING) 
-		'''
-		stories = db.stories.find( {
-										"$and" : [
-											{ "$or" : [ opt1, opt2 ] },
-											{ "user_id": {"$in": friends_id}}
-										]
-									} ).sort("created_time",pymongo.DESCENDING)
 		
-		
-		public_stories = db.stories.find( {
-											"$and" : [
-												{ "$or" : [ opt1, opt2 ] },
-												{ "user_id": {"$nin": friends_id} },
-												{ "visibility": "public" }
-											]
-										} ).sort("created_time",pymongo.DESCENDING)
-		'''
 		
 		stories = db.stories.find( { "$or":[{
 										"$and" : [
@@ -156,15 +120,7 @@ class StorieModel:
 			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
 			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
 			data.append(storie_with_user_data)
-		'''
-		for storie in public_stories:
-			storie_id = storie["_id"]
-			storie = StorieModel.format_storie_dates(storie)
-			storie["comments"] = CommentModel.get_last_storie_comment(storie_id)
-			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
-			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
-			data.append(storie_with_user_data)
-		'''	
+			
 		return data
 	
 	@staticmethod
@@ -172,7 +128,17 @@ class StorieModel:
 		data = []
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		
-		stories = db.stories.find({'user_id': user_id}).sort('created_time',pymongo.DESCENDING);
+		opt1 = {"expired_time": ""}
+		opt2 = {"expired_time": {"$gte": DateController.get_date_time()}}
+		
+		stories = db.stories.find({
+									
+									"$and" : [
+											{ "$or" : [ opt1, opt2 ] },
+											{'user_id': user_id}
+									]
+									
+								}).sort('created_time',pymongo.DESCENDING);
 		
 		for storie in stories:
 			storie_id = storie["_id"]
