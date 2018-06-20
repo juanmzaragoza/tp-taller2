@@ -43,3 +43,8 @@ class DateController():
 		today = DateController.today()
 		tomorrow = today + datetime.timedelta(1)
 		return tomorrow
+
+	@staticmethod
+	def now():
+		now = datetime.datetime.now()
+		return now

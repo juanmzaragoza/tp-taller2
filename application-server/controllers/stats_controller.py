@@ -3,6 +3,7 @@ from controllers.error_handler import ErrorHandler
 from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from models.user_data import UserDataModel
+from models.user_activity import UserActivityModel
 from models.storie import StorieModel
 from models.comment import CommentModel
 
@@ -35,7 +36,7 @@ class StatsController(flask_restful.Resource):
 		return UserDataModel.count_all_users()
 
 	def _get_num_users_today(self):
-		return 1
+		return UserActivityModel.count_today_activities()
 
 	def _get_num_stories(self):
 		return StorieModel.count_stories()
