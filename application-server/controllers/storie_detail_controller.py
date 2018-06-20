@@ -20,7 +20,7 @@ class StorieDetailController(flask_restful.Resource):
 	def __init__(self):
 		self.parser = reqparse.RequestParser(bundle_errors=True)
 	
-	@login_required	
+	#@login_required	
 	def get(self, id):
 		try:
 			 stories = StorieModel.get_stories(id)
