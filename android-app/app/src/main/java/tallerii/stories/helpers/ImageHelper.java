@@ -2,6 +2,9 @@ package tallerii.stories.helpers;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Path;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.NonNull;

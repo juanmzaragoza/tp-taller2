@@ -1,16 +1,22 @@
 package tallerii.stories.fragments.main;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,20 +30,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.zomato.photofilters.SampleFilters;
+import com.zomato.photofilters.imageprocessors.Filter;
+
 import java.util.List;
 
 import tallerii.stories.R;
 import tallerii.stories.activities.StoriesAppActivity;
 import tallerii.stories.activities.StoriesLoggedInActivity;
 import tallerii.stories.controller.StoriesController;
+import tallerii.stories.helpers.BitmapHelper;
 import tallerii.stories.helpers.LocationHelper;
 import tallerii.stories.helpers.MediaFile;
+import tallerii.stories.helpers.ThumbnailItem;
+import tallerii.stories.helpers.ThumbnailsAdapter;
+import tallerii.stories.helpers.ThumbnailsManager;
 import tallerii.stories.interfaces.StoriesAware;
+import tallerii.stories.interfaces.ThumbnailCallback;
 import tallerii.stories.network.apimodels.Storie;
 
 import static android.app.Activity.RESULT_OK;
 
-public class PostStorieFragment extends Fragment implements StoriesAware {
+public class PostStorieFragment extends Fragment implements StoriesAware, ThumbnailCallback {
 
     private final static int REQUEST_CODE_TAKE_IMAGE = 0;
     private final static int REQUEST_CODE_CHOOSE_IMAGE = 1;
@@ -49,6 +63,7 @@ public class PostStorieFragment extends Fragment implements StoriesAware {
     private View rootView;
     private ImageView imageView;
     private VideoView videoView;
+    private RecyclerView thumbListView;
 
     private View choosePictureButton;
     private View publishButton;
@@ -66,6 +81,7 @@ public class PostStorieFragment extends Fragment implements StoriesAware {
 
     private boolean takeVideo = false;
     private Uri fileUri;
+    private Bitmap filteredBitmap;
 
     Runnable takeMedia = new Runnable() { // from camera
         public void run() {
@@ -136,7 +152,13 @@ public class PostStorieFragment extends Fragment implements StoriesAware {
             String location = locationText.getText().toString();
 
             if(fileUri != null){
+
+                if(!takeVideo && filteredBitmap != null){
+                    fileUri = BitmapHelper.getImageUri(getContext(),filteredBitmap);
+                }
+
                 controller.publishStorie(fileUri, title, description, isPublic, location, "normal");
+
             } else{
                 StoriesAppActivity activity = (StoriesAppActivity) getActivity();
                 activity.showMessage("Please, select a  content media to post!", Toast.LENGTH_SHORT);
@@ -165,6 +187,7 @@ public class PostStorieFragment extends Fragment implements StoriesAware {
                 case REQUEST_CODE_CHOOSE_IMAGE:
                     imageView.setImageURI(null);
                     imageView.setImageURI(fileUri);
+                    initUIWidgets();
                     break;
                 case REQUEST_CODE_TAKE_VIDEO:
                 case REQUEST_CODE_CHOOSE_VIDEO:
@@ -224,6 +247,7 @@ public class PostStorieFragment extends Fragment implements StoriesAware {
 
             }
         });
+        thumbListView = (RecyclerView) rootView.findViewById(R.id.thumbnails);
 
         updateViewOnChangeMediaType();
 
@@ -242,17 +266,95 @@ public class PostStorieFragment extends Fragment implements StoriesAware {
     }
 
     private void updateViewOnChangeMediaType(){
-
         if(takeVideo){
             imageView.setVisibility(View.GONE);
             videoView.setVisibility(View.VISIBLE);
             togleTakeMedia.setText("Video");
+            thumbListView.setVisibility(View.GONE);
         } else{
             imageView.setVisibility(View.VISIBLE);
             videoView.setVisibility(View.GONE);
             togleTakeMedia.setText("Photo");
+
+            thumbListView.setVisibility(View.VISIBLE);
+            filteredBitmap = null;
+
         }
 
+    }
+
+    private void initUIWidgets() {
+        if(fileUri != null){
+            imageView.setImageBitmap(Bitmap.createScaledBitmap(BitmapHelper.loadBitmap(getActivity().getContentResolver(),fileUri), 640, 640, false));
+        }
+        initHorizontalList();
+    }
+
+    private void initHorizontalList() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        layoutManager.scrollToPosition(0);
+        thumbListView.setLayoutManager(layoutManager);
+        thumbListView.setHasFixedSize(true);
+        thumbListView.setVisibility(View.VISIBLE);
+        bindDataToAdapter();
+    }
+
+    private void bindDataToAdapter() {
+        final Context context = getContext();
+        Handler handler = new Handler();
+        Runnable r = new Runnable() {
+            public void run() {
+                if(fileUri != null) {
+                    Bitmap thumbImage = Bitmap.createScaledBitmap(BitmapHelper.loadBitmap(getActivity().getContentResolver(),fileUri), 640, 640, false);
+                    ThumbnailItem t1 = new ThumbnailItem();
+                    ThumbnailItem t2 = new ThumbnailItem();
+                    ThumbnailItem t3 = new ThumbnailItem();
+                    ThumbnailItem t4 = new ThumbnailItem();
+                    ThumbnailItem t5 = new ThumbnailItem();
+                    ThumbnailItem t6 = new ThumbnailItem();
+
+                    t1.image = thumbImage;
+                    t2.image = thumbImage;
+                    t3.image = thumbImage;
+                    t4.image = thumbImage;
+                    t5.image = thumbImage;
+                    t6.image = thumbImage;
+                    ThumbnailsManager.clearThumbs();
+                    ThumbnailsManager.addThumb(t1); // Original Image
+
+                    t2.filter = SampleFilters.getStarLitFilter();
+                    ThumbnailsManager.addThumb(t2);
+
+                    t3.filter = SampleFilters.getBlueMessFilter();
+                    ThumbnailsManager.addThumb(t3);
+
+                    t4.filter = SampleFilters.getAweStruckVibeFilter();
+                    ThumbnailsManager.addThumb(t4);
+
+                    t5.filter = SampleFilters.getLimeStutterFilter();
+                    ThumbnailsManager.addThumb(t5);
+
+                    t6.filter = SampleFilters.getNightWhisperFilter();
+                    ThumbnailsManager.addThumb(t6);
+
+                    List<ThumbnailItem> thumbs = ThumbnailsManager.processThumbs(context);
+
+                    ThumbnailsAdapter adapter = new ThumbnailsAdapter(thumbs, (ThumbnailCallback) PostStorieFragment.this);
+                    thumbListView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        };
+        handler.post(r);
+    }
+
+    @Override
+    public void onThumbnailClick(Filter filter) {
+        if(fileUri != null){
+            filteredBitmap = filter.processFilter(Bitmap.createScaledBitmap(BitmapHelper.loadBitmap(getActivity().getContentResolver(),fileUri), 640, 640, false));
+            imageView.setImageBitmap(filteredBitmap);
+        }
     }
 
     private void bindVideoViewAction(){
