@@ -81,48 +81,7 @@ class StorieModel:
 		res = StorieModel.format_storie_dates(res)
 		
 		return res
-	'''
-	@staticmethod
-	def get_stories(user_id):
-		#data = {}
-		data = []
-		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
-		
-		stories = db.stories.aggregate([
-										   {
-											  "$lookup":
-												 {
-													"from": "users_stories",
-													"localField": "_id",
-													"foreignField": "storie_id",
-													"as": "users_storie"
-												}
-										   },
-										   {
-												"$sort": { "created_time": -1 }
-											}
-										]);
-		for storie in stories:
-			storie_id = storie["users_storie"][0]["storie_id"]
-			storie_user_id = storie["users_storie"][0]["user_id"]
-			storieJson = UserDataModel.get_user_reduced_data_by_user_id(storie_user_id)
-			storieJson["user_id"] = storieJson.pop("_id")
-			storieJson["_id"] = storie_id
-			storieJson["_rev"] = storie["_rev"]
-			storieJson["created_time"] = DateController.get_date_time_with_format(storie["created_time"])
-			storieJson["updated_time"] = DateController.get_date_time_with_format(storie["updated_time"])
-			storieJson["title"] = storie["title"]
-			storieJson["description"] = storie["description"]
-			storieJson["location"] = storie["location"]
-			storieJson["visibility"] = storie["visibility"]
-			storieJson["multimedia"] = storie["multimedia"]
-			storieJson["story_type"] = storie["story_type"]
-			storieJson["comments"] = CommentModel.get_last_storie_comment(storie_id)
-			storieJson["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
-			data.append(storieJson)
-		
-		return data
-	'''
+	
 	@staticmethod
 	def get_stories(user_id):
 		data = []
@@ -132,17 +91,16 @@ class StorieModel:
 		
 		for storie in stories:
 			storie_id = storie["_id"]
-			storie_user_id = storie["user_id"]
 			storie = StorieModel.format_storie_dates(storie)
-			storie["owner"] = UserDataModel.get_user_reduced_data_by_user_id(storie_user_id)
 			storie["comments"] = CommentModel.get_last_storie_comment(storie_id)
 			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
-			data.append(storie)
+			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
+			data.append(storie_with_user_data)
 		
 		return data
 	
 	@staticmethod
-	def get_stories_by_user_id(user_id):
+	def get_profile_stories_by_user_id(user_id):
 		data = []
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		
@@ -150,60 +108,21 @@ class StorieModel:
 		
 		for storie in stories:
 			storie_id = storie["_id"]
-			storie_user_id = storie["user_id"]
 			storie = StorieModel.format_storie_dates(storie)
-			storie["owner"] = UserDataModel.get_user_reduced_data_by_user_id(storie_user_id)
 			storie["comments"] = CommentModel.get_last_storie_comment(storie_id)
 			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
-			data.append(storie)
+			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
+			data.append(storie_with_user_data)
 		
 		return data
-		
-	'''
+	
 	@staticmethod
-	def get_stories_by_user_id(user_id):
-		data = []
-		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+	def get_storie_with_user_data(storie):
+		user_id = storie["user_id"]
+		user_data = UserDataModel.get_user_reduced_data_by_user_id(user_id)
+		storie_with_user_data = {**user_data, **storie}
+		return storie_with_user_data
 		
-		stories = db.stories.aggregate([
-										   {
-											  "$lookup":
-												 {
-													"from": "users_stories",
-													"localField": "_id",
-													"foreignField": "storie_id",
-													"as": "users_storie"
-												}
-										   },
-										   {
-											  "$match": { "users_storie.user_id": user_id }
-										   },
-										   {
-												"$sort": { "created_time": -1 }
-											}
-										]);
-		
-		for storie in stories:
-			storie_id = storie["users_storie"][0]["storie_id"]
-			storieJson = UserDataModel.get_user_reduced_data_by_user_id(user_id)
-			storieJson["user_id"] = storieJson.pop("_id")
-			storieJson["_id"] = storie_id
-			storieJson["_rev"] = storie["_rev"]
-			storieJson["created_time"] = DateController.get_date_time_with_format(storie["created_time"])
-			storieJson["updated_time"] = DateController.get_date_time_with_format(storie["updated_time"])
-			storieJson["title"] = storie["title"]
-			storieJson["description"] = storie["description"]
-			storieJson["location"] = storie["location"]
-			storieJson["visibility"] = storie["visibility"]
-			storieJson["multimedia"] = storie["multimedia"]
-			storieJson["story_type"] = storie["story_type"]
-			storieJson["comments"] = CommentModel.get_last_storie_comment(storie_id)
-			storieJson["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
-			data.append(storieJson)
-		
-		
-		return data
-	'''	
 	@staticmethod
 	def delete_storie(storie_id, storie_user_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)

@@ -14,7 +14,7 @@ class TestStorieApi(unittest.TestCase):
 
     def test_user_stories_db_conn_failed(self):
         user_id = '1'
-        StorieModel.get_stories_by_user_id = \
+        StorieModel.get_profile_stories_by_user_id = \
             mock.MagicMock(side_effect=DBConnectionError(""))
         ErrorHandler.create_error_response = \
             mock.MagicMock(return_value=no_db_conn_mock)
@@ -25,7 +25,7 @@ class TestStorieApi(unittest.TestCase):
 
     def test_user_stories_successful(self):
         user_id = '1'
-        StorieModel.get_stories_by_user_id = \
+        StorieModel.get_profile_stories_by_user_id = \
             mock.MagicMock(return_value=stories_raw_mock)
         service = StorieDetailController()
         service._create_get_stories_response = \

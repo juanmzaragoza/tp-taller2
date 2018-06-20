@@ -16,7 +16,14 @@ stories_successful_mock = [{
 	"story_type": "normal", 
 	"title": "First Storie", 
 	"updated_time": "", 
-	"visibility": "public"
+	"visibility": "public",
+	"comments": [],
+	"reactions": [],	
+	"user_name": "userName6",
+	"last_name": "heanna",
+	"picture": "",
+	"name": "kaoru",
+	"_id": "5"
 }]
 
 friends_successful_mock = [{

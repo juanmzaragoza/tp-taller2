@@ -68,7 +68,7 @@ class StorieDetailController(flask_restful.Resource):
 						
 	def get_stories_by_user_id(self, user_id):
 		try:
-			stories = StorieModel.get_stories_by_user_id(user_id)
+			stories = StorieModel.get_profile_stories_by_user_id(user_id)
 			return self._create_get_stories_response(stories)
 		except NoDataFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
