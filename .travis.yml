@@ -5,9 +5,8 @@ matrix:
       services:
         - mongodb
       before_install:
-        - pip3 install pytest pytest-cov
-        - pip3 install codecov
-        - pip3 install mock
+        - pip install pytest pytest-cov
+        - pip install codecov
       install:
         - cd $TRAVIS_BUILD_DIR/application-server/ && pip install -r requirements.txt
       script:
@@ -16,7 +15,7 @@ matrix:
         - export SHARED_URI=http://172.17.0.1:8081/api
         - cd $TRAVIS_BUILD_DIR/docker/mongo/
         - ./docker-entrypoint.sh
-        - python3 app.py &
+        - python app.py &
         - cd $TRAVIS_BUILD_DIR/application-server/test/ && pytest --cov=./
         - codecov
     - language: android
