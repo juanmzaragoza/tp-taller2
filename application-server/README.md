@@ -21,6 +21,12 @@ Para loggear en flask:
 * Acceder a la app: `app = flask.Flask(__name__)`
 * Loggear con distinto niveles: `app.logger.error('url: %s', self.url)`
 
+`
+import flask
+app = flask.Flask(__name__)
+app.logger.error('url: %s', self.url)
+`
+
 ## Unit Tests
 
 La idea es siempre utilizar en los entornos de desarrollo Docker, para evitar conflicto de versiones.

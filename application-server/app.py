@@ -26,8 +26,10 @@ from controllers.be_friend_detail_controller import BeFriendDetailController
 from controllers.response_builder import ResponseBuilder
 from controllers.request_counter_controller import RequestCounterController
 from controllers.notification_controller import NotificationsController
+from request_middleware import RequestMiddleware
 
 app = flask.Flask(__name__)
+app.wsgi_app = RequestMiddleware(app.wsgi_app)
 
 with app.app_context():
 	api = flask_restful.Api(app, prefix="/api/v1")
@@ -35,7 +37,6 @@ with app.app_context():
 	class HelloWorld(flask_restful.Resource):
 		def get(self):
 			response = {'hello': "appServer"}
-			RequestCounterController.save_new_request()
 			return ResponseBuilder.build_response(response, 200)
 
 	api.add_resource(HelloWorld, '/')

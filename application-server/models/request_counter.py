@@ -1,5 +1,5 @@
 from constants import MONGODB_USER, MONGODB_PASSWD
-from controllers.db_controller import MongoController
+from controllers.db_controller import MongoController, RETURN_DOCUMENT_AFTER
 from controllers.date_controller import DateController
 from errors_exceptions.no_data_found_exception import NoDataFoundException
 from errors_exceptions.data_already_exists_exception import DataAlreadyExistsException
@@ -55,14 +55,13 @@ class RequestCounterModel():
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 		data = {'date': date, 'hour': hour}
 		request = db.server_requests.find_one(data)
-		
 		if (request == None):
 			RequestCounterModel.create_structure()
-			data['count'] = 1
-			response = db.server_requests.find_and_modify({'hour': hour},{'$set': data})
-		else:
-			num_requests = request['count'] + 1
-			data['count'] = num_requests
-			response = db.server_requests.find_and_modify({'date': date, 'hour': hour},{'$set': data})
-
+			request = db.server_requests.find_one(data)
+		
+		response = db.server_requests.find_one_and_update(
+			{'date': date, 'hour': hour},
+			{'$inc': {'count': 1}},
+			return_document=RETURN_DOCUMENT_AFTER
+		)
 		return response
