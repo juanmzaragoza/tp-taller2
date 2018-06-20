@@ -3,6 +3,7 @@ import pymongo
 from models.comment import CommentModel
 from models.reaction import ReactionModel
 from models.user_data import UserDataModel
+from models.friend import FriendModel
 from constants import MONGODB_USER, MONGODB_PASSWD
 from controllers.db_controller import MongoController
 from controllers.date_controller import DateController
@@ -36,9 +37,11 @@ class StorieModel:
 		visibility = body['visibility']
 		mult = body['multimedia']
 		story_type = body['story_type']
+		expired_time = DateController.get_date_time_inc_by_hours(4) if (story_type == "fast") else ""
 		user_id = body['user_id']	
 		
-		storie = StorieModel.get_new_storie(storie_id, rev, user_id, created_time, updated_time, title, desc, location, visibility, mult, story_type)
+		
+		storie = StorieModel.get_new_storie(storie_id, rev, user_id, created_time, updated_time, expired_time, title, desc, location, visibility, mult, story_type)
 		db.stories.insert(storie)		
 		storie = StorieModel.format_storie_dates(storie)
 		
@@ -48,6 +51,7 @@ class StorieModel:
 	def format_storie_dates(storie):
 		storie['created_time'] = DateController.get_date_time_with_format(storie['created_time'])
 		storie['updated_time'] = DateController.get_date_time_with_format(storie['updated_time'])
+		storie['expired_time'] = DateController.get_date_time_with_format(storie['expired_time'])
 		return storie
 	
 	@staticmethod
@@ -64,6 +68,7 @@ class StorieModel:
 		
 		rev = str(uuid.uuid4().hex)
 		created_time = act_storie["created_time"] 
+		expired_time = act_storie["expired_time"] 
 		updated_time = DateController.get_date_time()
 		title = body["title"]
 		desc = body["description"] if ("description" in body) else "" 
@@ -73,7 +78,7 @@ class StorieModel:
 		story_type = body["story_type"]
 		user_id = body["user_id"]
 		
-		storie = StorieModel.get_new_storie(storie_id, rev, user_id, created_time, updated_time, title, desc, location, visibility, mult, story_type)
+		storie = StorieModel.get_new_storie(storie_id, rev, user_id, created_time, updated_time, expired_time, title, desc, location, visibility, mult, story_type)
 		
 		del storie['_id']
 		res = db.stories.find_and_modify({'_id': storie_id},{'$set': storie})
@@ -81,7 +86,7 @@ class StorieModel:
 		res = StorieModel.format_storie_dates(res)
 		
 		return res
-	
+	'''
 	@staticmethod
 	def get_stories(user_id):
 		data = []
@@ -97,6 +102,69 @@ class StorieModel:
 			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
 			data.append(storie_with_user_data)
 		
+		return data
+	'''
+	
+	@staticmethod
+	def get_stories(user_id):
+		data = []
+		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+		
+		friends_id = FriendModel.get_friends_array_by_user_id(user_id)
+		friends_id.append(user_id)
+		#stories = db.stories.find({"user_id": {"$in": friends_id}}).sort("created_time",pymongo.DESCENDING)
+		opt1 = {"expired_time": ""}
+		opt2 = {"expired_time": {"$gte": DateController.get_date_time()}}
+		#public_stories = db.stories.find({{"created_time": { "$or": [ "", opt2 ]}}, "user_id": {"$nin": friends_id}, "visibility": "public"}).sort("created_time",pymongo.DESCENDING) 
+		#public_stories = db.stories.find({{"created_time": { "$or": [ "", opt2 ]}}, "user_id": {"$nin": friends_id}, "visibility": "public"}).sort("created_time",pymongo.DESCENDING) 
+		'''
+		stories = db.stories.find( {
+										"$and" : [
+											{ "$or" : [ opt1, opt2 ] },
+											{ "user_id": {"$in": friends_id}}
+										]
+									} ).sort("created_time",pymongo.DESCENDING)
+		
+		
+		public_stories = db.stories.find( {
+											"$and" : [
+												{ "$or" : [ opt1, opt2 ] },
+												{ "user_id": {"$nin": friends_id} },
+												{ "visibility": "public" }
+											]
+										} ).sort("created_time",pymongo.DESCENDING)
+		'''
+		
+		stories = db.stories.find( { "$or":[{
+										"$and" : [
+											{ "$or" : [ opt1, opt2 ] },
+											{ "user_id": {"$in": friends_id}}
+										]
+									},
+									{
+										"$and" : [
+											{ "$or" : [ opt1, opt2 ] },
+											{ "user_id": {"$nin": friends_id} },
+											{ "visibility": "public" }
+										]
+									}]
+									} ).sort("created_time",pymongo.DESCENDING)
+		for storie in stories:
+			storie_id = storie["_id"]
+			storie = StorieModel.format_storie_dates(storie)
+			storie["comments"] = CommentModel.get_last_storie_comment(storie_id)
+			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
+			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
+			data.append(storie_with_user_data)
+		'''
+		for storie in public_stories:
+			storie_id = storie["_id"]
+			storie = StorieModel.format_storie_dates(storie)
+			storie["comments"] = CommentModel.get_last_storie_comment(storie_id)
+			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
+			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
+			data.append(storie_with_user_data)
+		'''	
 		return data
 	
 	@staticmethod
@@ -140,13 +208,14 @@ class StorieModel:
 		return storie
 	
 	@staticmethod
-	def get_new_storie(storie_id, rev, user_id, created_time, updated_time, title, desc, location, visibility, mult, story_type):
+	def get_new_storie(storie_id, rev, user_id, created_time, updated_time, expired_time, title, desc, location, visibility, mult, story_type):
 		return{ 
 			"_id": storie_id,
 			"_rev" : rev,
 			"user_id" : user_id,
 			"created_time" : created_time, 
 			"updated_time" : updated_time, 
+			"expired_time" : expired_time, 
 			"title" : title, 
 			"description" : desc, 
 			"location" : location, 
