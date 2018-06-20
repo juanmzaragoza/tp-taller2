@@ -52,6 +52,7 @@ services:
     image: mongo:3.2.20
     volumes:
       - ./data/mongo:/data/db
+      - ./mongo/docker-entrypoint.sh:/docker-entrypoint.sh
     ports:
       - "27017"
     stdin_open: true

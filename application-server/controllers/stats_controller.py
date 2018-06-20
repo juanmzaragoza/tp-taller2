@@ -40,10 +40,10 @@ class StatsController(flask_restful.Resource):
 		return StorieModel.count_stories()
 
 	def _get_num_stories_today(self):
-		return 3
+		return StorieModel.count_today_stories()
 
 	def _get_num_fast_stories_today(self):
-		return 4
+		return StorieModel.count_today_stories('fast')
 
 	def _get_num_user_messages(self):
 		return 5
