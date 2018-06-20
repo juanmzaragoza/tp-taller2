@@ -4,6 +4,7 @@ from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from models.user_data import UserDataModel
 from models.storie import StorieModel
+from models.comment import CommentModel
 
 class StatsController(flask_restful.Resource):
 	
@@ -46,10 +47,10 @@ class StatsController(flask_restful.Resource):
 		return StorieModel.count_today_stories('fast')
 
 	def _get_num_user_messages(self):
-		return 5
+		return CommentModel.count_comments()
 
 	def _get_num_user_messages_today(self):
-		return 6
+		return CommentModel.count_today_comments()
 
 	def _get_num_accepted_contacts_today(self):
 		return 7

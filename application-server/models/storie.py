@@ -209,11 +209,5 @@ class StorieModel:
 				{ "created_time" : {'$lt': date_to} },
 			]
 		}).count()
-		# import flask
-		# app = flask.Flask(__name__)
-		# app.logger.error('-------------------')
-		# app.logger.error('date_from: %s', date_from)
-		# app.logger.error('date_to: %s', date_to)
-		# app.logger.error('-------------------')
 		return count
 
