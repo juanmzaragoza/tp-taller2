@@ -6,6 +6,7 @@ from models.user_data import UserDataModel
 from models.user_activity import UserActivityModel
 from models.storie import StorieModel
 from models.comment import CommentModel
+from models.friend import FriendModel
 
 class StatsController(flask_restful.Resource):
 	
@@ -54,4 +55,4 @@ class StatsController(flask_restful.Resource):
 		return CommentModel.count_today_comments()
 
 	def _get_num_accepted_contacts_today(self):
-		return 7
+		return FriendModel.count_today_friends()
