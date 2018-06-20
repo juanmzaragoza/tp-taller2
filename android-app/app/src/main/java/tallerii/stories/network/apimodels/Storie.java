@@ -52,7 +52,7 @@ public class Storie extends ObjectApiApp{
     public List<Comment> comments = new ArrayList<Comment>();
 
     @SerializedName("reactions")
-    public List<Reaction> reactions = new ArrayList<Reaction>();
+    public Reactions reactions = new Reactions();
 
     public String getUserId() {
         return userId;
@@ -167,45 +167,5 @@ public class Storie extends ObjectApiApp{
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
-
-    public List<Reaction> getReactions() {
-        return reactions;
-    }
-
-    public void setReactions(List<Reaction> reactions) {
-        this.reactions = reactions;
-    }
-
-    public List<Reaction> getReactionsBy(String name){
-        List<Reaction> result = new ArrayList<Reaction>();
-        for (Reaction reaction : this.reactions) {
-            if (reaction.getReaction().equals(name)) {
-                result.add(reaction);
-            }
-        }
-        return result;
-    }
-
-    public Reaction getReactionByUser(String userId){
-        for (Reaction reaction : this.reactions) {
-            if (reaction.getUserId().equals(userId)) {
-                return reaction;
-            }
-        }
-        return null;
-    }
-
-    public Reaction getReactionByUser(String userId, String reactionName){
-        for (Reaction reaction : this.reactions) {
-            if (reaction.getUserId().equals(userId)) {
-                return reaction.getReaction().equals(reactionName)?reaction:null;
-            }
-        }
-        return null;
-    }
-
-
-
-
 
 }

@@ -36,6 +36,11 @@ class CommentModel:
 		return comment
 	
 	@staticmethod
+	def remove_comment_by_storie_id(storie_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+		db.storie_comments.remove({"storie_id": storie_id})
+		
+	@staticmethod
 	def update_comment(comment_id, body):
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		
