@@ -138,3 +138,9 @@ class UserDataModel():
 			"name": name,
 			"picture": pic
 		}
+
+	@staticmethod
+	def count_all_users():
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+		count = db.users.find().count();
+		return count
