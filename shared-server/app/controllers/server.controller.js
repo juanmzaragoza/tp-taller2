@@ -133,6 +133,7 @@ class ServerController {
                 ServerService.stats(id, req.models)
                 .then((stats) => {
                     console.log(stats)
+                    stats["_id"] = id;
                     ResServ.ok(ResEnum.Value, "stats", stats, res, next);
                 })
                 .catch((e) => {

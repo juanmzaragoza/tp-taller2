@@ -124,3 +124,22 @@ class CommentModel:
 			"date": date,
 			"message": message
 		}
+
+	@staticmethod
+	def count_comments():
+		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+		count = db.storie_comments.find().count()
+		return count
+
+	@staticmethod
+	def count_today_comments():
+		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+		date_from = DateController.today()
+		date_to = DateController.tomorrow()
+		count = db.storie_comments.find({
+			"$and" : [
+				{ "date" : {'$gte': date_from} },
+				{ "date" : {'$lt': date_to} }
+			]
+		}).count()
+		return count

@@ -31,3 +31,20 @@ class DateController():
 	def get_date_time_inc_by_hours(hours):
 		date = DateController.get_date_time() + datetime.timedelta(hours=hours)
 		return date
+
+	@staticmethod
+	def today():
+		now = datetime.datetime.now()
+		today = datetime.datetime(now.year, now.month, now.day)
+		return today
+
+	@staticmethod
+	def tomorrow():
+		today = DateController.today()
+		tomorrow = today + datetime.timedelta(1)
+		return tomorrow
+
+	@staticmethod
+	def now():
+		now = datetime.datetime.now()
+		return now

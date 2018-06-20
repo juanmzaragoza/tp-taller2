@@ -130,3 +130,16 @@ class FriendModel():
 			"user_id_rcv": user_id_rcv,
 			"date": date
 		}
+
+	@staticmethod
+	def count_today_friends():
+		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+		date_from = DateController.today()
+		date_to = DateController.tomorrow()
+		count = db.friends.find({
+			"$and" : [
+				{ "date" : {'$gte': date_from} },
+				{ "date" : {'$lt': date_to} }
+			]
+		}).count()
+		return count

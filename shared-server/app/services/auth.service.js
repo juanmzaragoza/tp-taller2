@@ -6,7 +6,11 @@ var config = require('../../config/default')
 class AuthService {
     constructor(){
         this.token = (usr) => {
-            var token = auth0.sign({ data: { username: usr.username, role: usr.role } }, 
+            var token = auth0.sign({ data: { 
+                userId: usr.id,
+                username: usr.username,
+                role: usr.role 
+            } }, 
             config.auth.tokenSecret, { expiresIn: config.auth.timeExp });
             return token;
         }
