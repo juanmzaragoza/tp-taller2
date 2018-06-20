@@ -1,6 +1,7 @@
 import { Component, OnInit }    from '@angular/core'
 import { SharedService } from '../../services/common/shared.service'
 import { UserService } from '../../services/user/user.service'
+import { Config } from '../../config'
 declare var $ :any;
 
 @Component({
@@ -9,6 +10,7 @@ declare var $ :any;
 })
 export class NavBarComponent {
     role: string
+    public tags: Array<any> =[]
     constructor(public SharedServ: SharedService, public UserServ: UserService){
         var me = this;
         me.role = 'default'
@@ -28,6 +30,8 @@ export class NavBarComponent {
     }
     
     ngOnInit() {
+        this.tags = Config.web.tags
+        console.info(this.tags)
         $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month
             selectYears: 15 // Creates a dropdown of 15 years to control year
