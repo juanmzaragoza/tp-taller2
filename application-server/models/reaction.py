@@ -36,21 +36,32 @@ class ReactionModel:
 		if StorieModel.storie_exists(storie_id) == False:
 			raise NoStorieFoundException
 
+		
 		user_id = body["user_id"]
-
-		if ReactionModel.reaction_exists(storie_id, user_id) == True:
-			raise StorieReactionAlreadyFoundException
-
-		reaction_id = str(uuid.uuid4().hex)
-		rev = ""
-		reaction_date = DateController.get_date_time()
 		reaction = body["reaction"]
 
-		reaction = ReactionModel.get_new_reaction(reaction_id, storie_id, user_id, rev, reaction_date, reaction)
+		if (reaction != "" ):
 
-		db.storie_reactions.insert(reaction)
+			if ReactionModel.reaction_exists(storie_id, user_id) == True:
+				raise StorieReactionAlreadyFoundException
+			
+			reaction_id = str(uuid.uuid4().hex)
+			rev = ""
+			reaction_date = DateController.get_date_time()
+			reaction = body["reaction"]
+
+			reaction = ReactionModel.get_new_reaction(reaction_id, storie_id, user_id, rev, reaction_date, reaction)
+
+			db.storie_reactions.insert(reaction)
+		else:
+			reaction = db.storie_reactions.find_one({"user_id": user_id, "storie_id": storie_id})
+
+			if reaction == None:
+				raise NoReactionFoundException
+
+			db.storie_reactions.remove({"user_id": user_id, "storie_id": storie_id})
+			
 		reaction["date"] = DateController.get_date_time_with_format(reaction["date"])
-
 		return reaction
 
 	@staticmethod
