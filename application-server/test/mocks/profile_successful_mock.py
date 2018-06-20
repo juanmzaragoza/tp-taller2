@@ -16,6 +16,7 @@ stories_successful_mock = [{
 	"story_type": "normal", 
 	"title": "First Storie", 
 	"updated_time": "", 
+	"expired_time" : "",
 	"visibility": "public",
 	"comments": [],
 	"reactions": [],	

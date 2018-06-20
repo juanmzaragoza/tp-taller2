@@ -7,7 +7,7 @@ from errors_exceptions.no_friend_found_exception import NoFriendFoundException
 from errors_exceptions.friendship_already_exists_exception import FriendshipAlreadyExistsException
 
 class FriendModel():
-
+	'''
 	@staticmethod
 	def get_friends_by_user_id(user_id):
 		data = {}
@@ -30,7 +30,53 @@ class FriendModel():
 			data[friend_user_id]["date"] = DateController.get_date_time_with_format(friend["date"])
 
 		return data.values()
-	
+	'''
+	@staticmethod
+	def get_friends_array_by_user_id(user_id):
+		data = []
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+		
+		opt1 = {'user_id_sender': user_id}
+		opt2 = {'user_id_rcv': user_id}
+		friends = db.friends.find({ "$or": [ opt1, opt2 ]})
+		
+		for friend in friends:
+			user_id_rcv = friend['user_id_rcv']
+			user_id_sender = friend['user_id_sender']
+			friend_user_id = user_id_rcv if (user_id == user_id_sender) else user_id_sender
+			data.append(friend_user_id)
+			
+		return data
+		
+	@staticmethod
+	def get_friends_by_user_id(user_id):
+		data = []
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+		
+		opt1 = {'user_id_sender': user_id}
+		opt2 = {'user_id_rcv': user_id}
+		friends = db.friends.find({ "$or": [ opt1, opt2 ]})
+		
+		for friend in friends:
+			user_id_rcv = friend['user_id_rcv']
+			user_id_sender = friend['user_id_sender']
+			friend_user_id = user_id_rcv if (user_id == user_id_sender) else user_id_sender
+			friend.pop("user_id_rcv")
+			friend.pop("user_id_sender")
+			friend["user_id"] = friend_user_id
+			friend["date"] = DateController.get_date_time_with_format(friend["date"])
+			friend_with_user_data = FriendModel.get_friend_with_user_data(friend, friend["user_id"])
+			data.append(friend_with_user_data)
+			
+
+		return data
+		
+	@staticmethod
+	def get_friend_with_user_data(friend, user_id):
+		user_data = UserDataModel.get_user_reduced_data_by_user_id(user_id)
+		friend_with_user_data = {**user_data, **friend}
+		return friend_with_user_data
+
 	@staticmethod
 	def create_friend(friend):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
