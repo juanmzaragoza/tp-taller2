@@ -18,8 +18,6 @@ class StatsController(flask_restful.Resource):
 		
 	def _get_appserver_stats_response(self):
 		stats = {
-			"_id": "",
-			"_rev": "",
 			"numUsers": self._get_num_users(),
 			"numUsersActiveToday": self._get_num_users_today(),
 			"numStories": self._get_num_stories(),
