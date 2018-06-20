@@ -189,3 +189,9 @@ class StorieModel:
 			"multimedia" : mult, 
 			"story_type" : story_type
 		}
+
+	@staticmethod
+	def count_stories():
+		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+		count = db.stories.find().count()
+		return count

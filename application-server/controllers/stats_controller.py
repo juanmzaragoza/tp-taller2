@@ -3,6 +3,7 @@ from controllers.error_handler import ErrorHandler
 from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from models.user_data import UserDataModel
+from models.storie import StorieModel
 
 class StatsController(flask_restful.Resource):
 	
@@ -17,13 +18,13 @@ class StatsController(flask_restful.Resource):
 			"_id": "",
 			"_rev": "",
 			"numUsers": self._get_num_users(),
-			"numUsersActiveToday": "78",
-			"numStoriesToday": "48",
-			"numFastStoriesToday": "28",
-			"numStories": "448",
-			"numUsersMessages": "208",
-			"numUsersMessagesToday": "20",
-			"numAcceptedContactsToday": "8"
+			"numUsersActiveToday": self._get_num_users_today(),
+			"numStories": self._get_num_stories(),
+			"numStoriesToday": self._get_num_stories_today(),
+			"numFastStoriesToday": self._get_num_fast_stories_today(),
+			"numUsersMessages": self._get_num_user_messages(),
+			"numUsersMessagesToday": self._get_num_user_messages_today(),
+			"numAcceptedContactsToday": self._get_num_accepted_contacts_today()
 		}
 		
 		return ResponseBuilder.get_build_response(stats, 'stats', 200)
@@ -31,3 +32,24 @@ class StatsController(flask_restful.Resource):
 
 	def _get_num_users(self):
 		return UserDataModel.count_all_users()
+
+	def _get_num_users_today(self):
+		return 1
+
+	def _get_num_stories(self):
+		return StorieModel.count_stories()
+
+	def _get_num_stories_today(self):
+		return 3
+
+	def _get_num_fast_stories_today(self):
+		return 4
+
+	def _get_num_user_messages(self):
+		return 5
+
+	def _get_num_user_messages_today(self):
+		return 6
+
+	def _get_num_accepted_contacts_today(self):
+		return 7
