@@ -9,7 +9,8 @@ class RequestCounterModel():
 	@staticmethod
 	def create_structure():
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
-		request = db.server_requests.find_one()
+		date = DateController.get_date()
+		request = db.server_requests.find_one({"date": date})
 		
 		if (request != None):
 			return
@@ -17,14 +18,14 @@ class RequestCounterModel():
 		date = DateController.get_date()
 		hour = 0
 		data = {
-					'date': date,
-					'_id': 0,
-					'hour': 0,
-					'count': 0
-				}
+			'date': date,
+			'_id': 0,
+			'hour': 0,
+			'count': 0
+		}
 				
 		for hour in range(0, 24):
-			data['_id'] = hour		
+			data['_id'] = date + ' ' + str(hour)
 			data['hour'] = hour		
 			db.server_requests.insert(data)
 				
