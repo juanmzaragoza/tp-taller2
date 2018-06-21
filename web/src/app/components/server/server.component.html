@@ -27,22 +27,38 @@
 
 <div class="show-for-small-only hide-on-med-only hide-on-large-only">
   <div style="border-bottom:1px solid #3f51b5" class="row pointer" *ngFor="let server of servers">
-    <div (click)="edit(server)" class="indigo-text left-align col s4">Name:</div>
-    <div (click)="edit(server)" class="left-align col s8">{{server.name}}</div>
-    <div (click)="edit(server)" class="indigo-text left-align col s4">CreatedBy:</div>
-    <div (click)="edit(server)" class="left-align col s8">{{server.createdBy}}</div>
-    <div (click)="edit(server)" class="indigo-text left-align col s4">CreatedTime:</div>
-    <div (click)="edit(server)" class="left-align col s8">{{server.createdTime | date: 'dd/MM/yyyy'}}</div>
-    <div (click)="edit(server)" class="indigo-text left-align col s4">LastConnection:</div>
-    <div (click)="edit(server)" class="left-align col s8">{{server.lastConnection | date: 'dd/MM/yyyy'}}</div>
-    <div (click)="edit(server)" class="indigo-text left-align col s4">Host:</div>
-    <div (click)="edit(server)" class="left-align col s8">{{server.host}}</div>
-    <div class="indigo-text left-align col s4">Token:</div>
-    <div (click)="copyToken(server.token)" class="left-align col s8"><a><i class="material-icons">content_copy</i></a></div>
-    <div class="indigo-text left-align col s4">R. Token:</div>
-    <div (click)="refreshToken(server.id)" class="left-align col s8"><a><i class="material-icons">update</i></a></div>
-    <div class="indigo-text left-align col s4">Drop:</div>
-    <div (click)="delete(server.id)" class="left-align col s8"><a><i class="material-icons">delete</i></a></div>
+    <div class="row">
+      <div (click)="edit(server)" class="indigo-text left-align col s4">Name:</div>
+      <div class="left-align col s8">{{server.name}}</div>
+    </div>
+    <div class="row">
+        <div (click)="edit(server)" class="indigo-text left-align col s4">CreatedBy:</div>
+        <div class="left-align col s8">{{server.createdBy}}</div>
+    </div>
+    <div class="row">
+        <div (click)="edit(server)" class="indigo-text left-align col s4">CreatedTime:</div>
+        <div class="left-align col s8">{{server.createdTime | date: 'dd/MM/yyyy'}}</div>
+    </div>
+    <div class="row">
+        <div (click)="edit(server)" class="indigo-text left-align col s4">LastConnect.:</div>
+        <div class="left-align col s8">{{server.lastConnection | date: 'dd/MM/yyyy'}}</div>
+    </div>
+    <div class="row">
+        <div (click)="edit(server)" class="indigo-text left-align col s4">Host:</div>
+        <div class="left-align col s8">{{server.host}}</div>
+    </div>
+    <div class="row">
+        <div (click)="edit(server)" class="indigo-text left-align col s4">Token:</div>
+        <div class="left-align col s8"><a><i class="material-icons">content_copy</i></a></div>
+    </div>
+    <div class="row">
+        <div (click)="edit(server)" class="indigo-text left-align col s4">R. Token:</div>
+        <div class="left-align col s8"><a><i class="material-icons">update</i></a></div>
+    </div>
+    <div class="row">
+        <div (click)="edit(server)" class="indigo-text left-align col s4">Drop:</div>
+        <div class="left-align col s8"><a><i class="material-icons">delete</i></a></div>
+    </div>
   </div>
 </div>
 
