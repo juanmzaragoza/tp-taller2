@@ -1,10 +1,5 @@
 package tallerii.stories.helpers;
 
-/*import info.androidhive.listviewfeed.storieImageView;
-import info.androidhive.listviewfeed.R;
-import info.androidhive.listviewfeed.app.AppController;
-import info.androidhive.listviewfeed.data.FeedItem;*/
-
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -139,12 +134,9 @@ public class StoriesAdapter extends BaseAdapter {
 
         // storie image
         if (storie.getMultimedia() != null && !storie.getMultimedia().isEmpty()) {
-            //storieImageView.setVisibility(View.VISIBLE);
             imageHelper.setFirebaseImage(storie.getMultimedia(), storieImageView);
             imageHelper.setFirebaseVideo(storie.getMultimedia(), storieVideoView);
-        } /*else {
-            storieImageView.setVisibility(View.GONE);
-        }*/
+        }
 
         // prepare reaction buttons -> add each button to a reaction not pressed
         Reactions reactions = storie.getReactions();

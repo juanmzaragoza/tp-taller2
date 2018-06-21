@@ -32,7 +32,7 @@ public class StorieCommentsDialogFragment extends DialogFragment {
     private View rootView;
     private ImageButton sendMessageCommentButton;
     private TextView messageCommentText;
-    //private HelperFragment helperFragment;
+    private HelperFragment helperFragment;
 
     private String storieId;
 
@@ -64,7 +64,7 @@ public class StorieCommentsDialogFragment extends DialogFragment {
 
         controller = new CommentController(this);
         activity = (StoriesAppActivity) getActivity();
-        //helperFragment = new HelperFragment(getContext());
+        helperFragment = new HelperFragment(getContext());
 
         // Fetch arguments from bundle and set title
         storieId = getArguments().getString("storieId");
@@ -102,7 +102,7 @@ public class StorieCommentsDialogFragment extends DialogFragment {
 
     private void getComments(){
         controller.getCommentsByStorie(storieId);
-        //helperFragment.showMessageLoading("Wait while loading comments storie...");
+        helperFragment.showMessageLoading("Wait while loading comments storie...");
     }
 
     public void onResume() {
@@ -130,13 +130,13 @@ public class StorieCommentsDialogFragment extends DialogFragment {
     }
 
     public void onErrorComment(String message) {
-        //helperFragment.dismissMessageLoading();
+        helperFragment.dismissMessageLoading();
         activity.showMessage(message);
     }
 
     public void populateComments(List<Comment> storiesToComment) {
 
-        //helperFragment.dismissMessageLoading();
+        helperFragment.dismissMessageLoading();
 
         ListView listView = rootView.findViewById(R.id.commentsList);
 

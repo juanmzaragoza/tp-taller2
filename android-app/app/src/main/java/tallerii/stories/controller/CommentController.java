@@ -72,42 +72,35 @@ public class CommentController {
 
         parameters.addProperty("storie_id", storieId);
         //TODO: uncomment on bind to api
-//        Call<List<Comment>> responseCall = endpointsApi.getStorieComments(storieId);
-//        responseCall.enqueue(new Callback<List<Comment>>() {
-//            @Override
-//            public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
-//                // if username and password match
-//                if (response.isSuccessful() && response.code() == 200) {
-//                    /* Response
-//                     *  {
-//                     *      "storie_id": "5ae66a31d4ef925dac59a97b",
-//                     *      "user_id": "1",
-//                     *      "_rev": "",
-//                     *      "date": "",
-//                     *      "_id": "21cd6a03e9874b5ba0d5b27ae9c79793",
-//                     *      "message": "Comment 1"
-//                     *  }
-//                     */
-//                    List<Comment> comments = response.body();
-//                    if (comments != null) {
-//                        fragment.populateComments(comments);
-//                    }
-//                } else {
-//                    fragment.onErrorComment(response.message());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<Comment>> call, Throwable t) {
-//                fragment.onErrorComment("An error has ocurred while fetching comments");
-//            }
-//        });
-        List<Comment> comments = new ArrayList<Comment>();
-        for(int i=0;i<=20;i++){
-            Comment c = new Comment(storieId, "TODO24ob0vbx-3msdf","Comentario Usuario", "fd18f7da-31e9-425d-8274-a4174fccddb6", "10/06/2018 20:37:09", "This is the "+i+" comment");
-            comments.add(c);
-        }
+        Call<List<Comment>> responseCall = endpointsApi.getStorieComments(storieId);
+        responseCall.enqueue(new Callback<List<Comment>>() {
+            @Override
+            public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+                // if username and password match
+                if (response.isSuccessful() && response.code() == 200) {
+                    /* Response
+                     *  {
+                     *      "storie_id": "5ae66a31d4ef925dac59a97b",
+                     *      "user_id": "1",
+                     *      "_rev": "",
+                     *      "date": "",
+                     *      "_id": "21cd6a03e9874b5ba0d5b27ae9c79793",
+                     *      "message": "Comment 1"
+                     *  }
+                     */
+                    List<Comment> comments = response.body();
+                    if (comments != null) {
+                        fragment.populateComments(comments);
+                    }
+                } else {
+                    fragment.onErrorComment(response.message());
+                }
+            }
 
-        fragment.populateComments(comments);
+            @Override
+            public void onFailure(Call<List<Comment>> call, Throwable t) {
+                fragment.onErrorComment("An error has ocurred while fetching comments");
+            }
+        });
     }
 }
