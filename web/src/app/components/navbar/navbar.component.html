@@ -3,9 +3,11 @@
   <div class="nav-wrapper">
       <a id="logo-container" href="#" class="brand-logo">AppMaker</a>
     <ul class="right hide-on-med-and-down">
-        <li *ngFor="let tag of tags">
-          <a routerLink="{{tag.routerLink}}" title="{{tag.title}}">{{tag.name}}</a>
-        </li>
+        <ng-template [ngIf]="role=='admin'">
+            <li *ngFor="let tag of tags">
+              <a routerLink="{{tag.routerLink}}" title="{{tag.title}}">{{tag.name}}</a>
+            </li>
+        </ng-template>
       <!--<li *ngIf="role=='admin'"><a routerLink="status" title="View Status">Status</a></li>
       <li *ngIf="role=='admin'"><a routerLink="server" title="view servers">Servers</a></li>-->
       <app-user></app-user>

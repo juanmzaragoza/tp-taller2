@@ -15,14 +15,18 @@ import { TokenInterceptor } from './services/remote/token.interceptor'
 import { ClipBoardService } from './services/common/clipboard.service'
 import { StatusService } from './services/status/status.service'
 import { ServerService } from './services/server/server.service'
+import { FileService } from './services/file/file.service'
+
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component'
 import { HomeComponent } from './components/home/home.component'
 import { UserComponent } from './components/user/user.component'
+import { UserListComponent } from './components/user/user.list.component'
 import { ServerComponent } from './components/server/server.component'
 import { NavBarComponent } from './components/navbar/navbar.component'
 import { StatusComponent } from './components/status/status.component'
+import { FileComponent } from './components/file/file.component'
 
 import { EventKeyDirective } from './directives/event.key.directive'
 import { FixButtonDirective } from './directives/fix.button.directive'
@@ -38,7 +42,9 @@ import { FixButtonDirective } from './directives/fix.button.directive'
     NavBarComponent,
     StatusComponent,
     EventKeyDirective,
-    FixButtonDirective
+    FixButtonDirective,
+    UserListComponent,
+    FileComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +67,8 @@ import { FixButtonDirective } from './directives/fix.button.directive'
     ClipBoardService,
     DatePipe,
     StatusService,
-    ServerService
+    ServerService,
+    FileService
   ],
   bootstrap: [AppComponent]
 })
