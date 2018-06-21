@@ -153,8 +153,8 @@ public class StoriesController {
                 if (response.isSuccessful()) {
                     Storie storie = response.body();
                     if (storie != null) {
-                        StoriesAppActivity activity = context.getLoggedInActivity();
-                        activity.startMainActivity("You has reacted !!!");
+                        //StoriesAppActivity activity = context.getLoggedInActivity();
+                        //activity.startMainActivity("You has reacted !!!");
                     }
                 } else{
                     StoriesAppActivity activity = context.getLoggedInActivity();

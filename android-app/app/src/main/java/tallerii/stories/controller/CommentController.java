@@ -71,7 +71,7 @@ public class CommentController {
         JsonObject parameters = new JsonObject();
 
         parameters.addProperty("storie_id", storieId);
-        //TODO: uncomment on bind to api
+
         Call<List<Comment>> responseCall = endpointsApi.getStorieComments(storieId);
         responseCall.enqueue(new Callback<List<Comment>>() {
             @Override
