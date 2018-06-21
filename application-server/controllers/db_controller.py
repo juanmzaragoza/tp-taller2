@@ -1,6 +1,9 @@
 import os
 import pymongo
 from api_client.db_connection_error import DBConnectionError
+from pymongo import ReturnDocument
+
+RETURN_DOCUMENT_AFTER = ReturnDocument.AFTER
 
 class MongoController():
 	

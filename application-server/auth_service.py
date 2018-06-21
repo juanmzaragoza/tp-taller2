@@ -4,12 +4,14 @@ from constants import JWT_SECRET
 import jwt
 from jwt import ExpiredSignatureError
 from flask import request
-import flask
-app = flask.Flask(__name__)
+from models.user_activity import UserActivityModel
 
 def is_authenticated():
 	token = _get_token()
-	return _is_token_valid(token)
+	is_valid = _is_token_valid(token)
+	if (is_valid):
+		_save_user_activity()
+	return is_valid
 
 def _get_token():
 	authorization = request.headers.get('authorization')
@@ -27,13 +29,20 @@ def _is_token_valid(token):
 
 def _decode_token(token):
 	payload = jwt.decode(token, JWT_SECRET)
-	# app.logger.error('payload: %s', payload)
 	return payload
 
-def _get_username(payload):
+def get_user_id():
+	token = _get_token()
+	if (not _is_token_valid(token)):
+		return None
+	payload = _decode_token(token)
 	data = payload.get('data')
-	username = data.get('username')
-	return username
+	user_id = data.get('userId')
+	return user_id
+
+def _save_user_activity():
+	user_id = get_user_id()
+	UserActivityModel.update_user_activiy(user_id)
 
 def login_required(f):
     @wraps(f)

@@ -16,7 +16,7 @@ matrix:
         - cd $TRAVIS_BUILD_DIR/docker/mongo/
         - ./docker-entrypoint.sh
         - python app.py &
-        - cd $TRAVIS_BUILD_DIR/application-server/test/ && python3 -m pytest --cov=./
+        - cd $TRAVIS_BUILD_DIR/application-server/ && pytest --cov=./
         - codecov
     - language: android
       jdk: oraclejdk8

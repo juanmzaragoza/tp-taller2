@@ -263,6 +263,28 @@ class ServerService {
                 .catch(reject)
             })
         }
+        this.requests = (id, args, models)=>{
+            return new Promise((resolve, reject)=>{
+                var filter = {"id": id};
+                DaoService.findOne(filter, models.app_server)
+                .then( function(server) {
+                    var url = server.host + '/requests'
+                    if (args.from && args.to){
+                        url += '?from=' + args.from + '&to=' + args.to;
+                    } else if (args.from) {
+                        url += '?from=' + args.from;
+                    } else if (args.to) {
+                        url += '?to=' + args.to;
+                    }
+                    RemoteServ.get(url)
+                    .then(res=>{
+                        resolve(res)
+                    })
+                    .catch(reject)
+                })
+                .catch(reject)
+            })
+        }
     }
 }
 module.exports = new ServerService();

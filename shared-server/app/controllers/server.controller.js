@@ -133,6 +133,7 @@ class ServerController {
                 ServerService.stats(id, req.models)
                 .then((stats) => {
                     console.log(stats)
+                    stats["_id"] = id;
                     ResServ.ok(ResEnum.Value, "stats", stats, res, next);
                 })
                 .catch((e) => {
@@ -144,7 +145,24 @@ class ServerController {
                 console.log(e)
                 ResServ.error(res, messages.InternalServerError);
             }
+        };
 
+        this.requests = (req, res, next) => {
+            try{
+                var id = req.params.id;
+                ServerService.requests(id, req.query, req.models)
+                .then((requests) => {
+                    ResServ.ok(ResEnum.Value, "requests", requests, res, next);
+                })
+                .catch((e) => {
+                    console.log(e)
+                    ResServ.error(res, messages.BadRequest);
+                });
+            }
+            catch(e){
+                console.log(e)
+                ResServ.error(res, messages.InternalServerError);
+            }
         };
     }
 }

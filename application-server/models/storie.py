@@ -9,6 +9,7 @@ from controllers.db_controller import MongoController
 from controllers.date_controller import DateController
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
+import datetime
 
 class StorieModel:
 	
@@ -189,3 +190,24 @@ class StorieModel:
 			"multimedia" : mult, 
 			"story_type" : story_type
 		}
+
+	@staticmethod
+	def count_stories(story_type = 'normal'):
+		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+		count = db.stories.find({"story_type": story_type}).count()
+		return count
+
+	@staticmethod
+	def count_today_stories(story_type = 'normal'):
+		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+		date_from = DateController.today()
+		date_to = DateController.tomorrow()
+		count = db.stories.find({
+			"$and" : [
+				{ "story_type": story_type},
+				{ "created_time" : {'$gte': date_from} },
+				{ "created_time" : {'$lt': date_to} },
+			]
+		}).count()
+		return count
+
