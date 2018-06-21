@@ -43,8 +43,9 @@ class ReactionModel:
 		if (reaction != "" ):
 
 			if ReactionModel.reaction_exists(storie_id, user_id) == True:
-				raise StorieReactionAlreadyFoundException
-			
+				#raise StorieReactionAlreadyFoundException
+				db.storie_reactions.remove({"user_id": user_id, "storie_id": storie_id})
+				
 			reaction_id = str(uuid.uuid4().hex)
 			rev = ""
 			reaction_date = DateController.get_date_time()
