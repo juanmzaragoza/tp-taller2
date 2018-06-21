@@ -5,7 +5,6 @@ var FileCtrl    = require('../controllers/file.controller');
 var LoginCont   = require('../controllers/login.controller');
 var UserCtrl    = require('../controllers/user.controller');
 var ServerCtrl  = require('../controllers/server.controller');
-var AppCtrl     = require('../controllers/app.controller')
 
 // Login
 RouterHandler.addEndpointWithOutAuth({
@@ -36,6 +35,11 @@ RouterHandler.addEndpointWithAuth({
     verb: 'get',
     path: '/servers/ping/:id',
     handler: ServerCtrl.ping
+});
+RouterHandler.addEndpointWithAuth({
+    verb: 'get',
+    path: '/servers/request/:id',
+    handler: ServerCtrl.requests
 });
 
 // Files
