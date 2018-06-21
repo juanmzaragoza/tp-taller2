@@ -24,7 +24,6 @@ import android.widget.VideoView;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +32,7 @@ import tallerii.stories.R;
 import tallerii.stories.controller.StoriesController;
 import tallerii.stories.fragments.main.StorieCommentsDialogFragment;
 import tallerii.stories.network.apimodels.Comment;
+import tallerii.stories.network.apimodels.Reactions;
 import tallerii.stories.network.apimodels.Storie;
 
 public class StoriesAdapter extends BaseAdapter {
@@ -147,11 +147,20 @@ public class StoriesAdapter extends BaseAdapter {
         }*/
 
         // prepare reaction buttons -> add each button to a reaction not pressed
+        Reactions reactions = storie.getReactions();
         HashMap<ImageButton, Integer> buttons = new HashMap<>();
-        buttons.put(changeStatusOnClickBy(convertView,R.id.likeButton, I_LIKE_REACTION),REACTION_BUTTON_NOT_PRESSED);
-        buttons.put(changeStatusOnClickBy(convertView,R.id.dontLikeButton, I_NOTLIKE_REACTION),REACTION_BUTTON_NOT_PRESSED);
-        buttons.put(changeStatusOnClickBy(convertView,R.id.enjoyButton, I_ENJOY_REACTION),REACTION_BUTTON_NOT_PRESSED);
-        buttons.put(changeStatusOnClickBy(convertView,R.id.getBoredButton, I_GETBORED_REACTION),REACTION_BUTTON_NOT_PRESSED);
+
+        int status = reactions.getLike().imVoted()?REACTION_BUTTON_PRESSED:REACTION_BUTTON_NOT_PRESSED;
+        buttons.put(changeStatusOnClickBy(convertView,R.id.likeButton, I_LIKE_REACTION,status),status);
+
+        status = reactions.getNotLike().imVoted()?REACTION_BUTTON_PRESSED:REACTION_BUTTON_NOT_PRESSED;
+        buttons.put(changeStatusOnClickBy(convertView,R.id.dontLikeButton, I_NOTLIKE_REACTION,status),status);
+
+        status = reactions.getEnjoy().imVoted()?REACTION_BUTTON_PRESSED:REACTION_BUTTON_NOT_PRESSED;
+        buttons.put(changeStatusOnClickBy(convertView,R.id.enjoyButton, I_ENJOY_REACTION,status),status);
+
+        status = reactions.getBored().imVoted()?REACTION_BUTTON_PRESSED:REACTION_BUTTON_NOT_PRESSED;
+        buttons.put(changeStatusOnClickBy(convertView,R.id.getBoredButton, I_GETBORED_REACTION,status),status);
         // save it
         reactionButtons.put(convertView,buttons);
 
@@ -186,8 +195,13 @@ public class StoriesAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public ImageButton changeStatusOnClickBy(final View convertView, int id, final String reactionName){
+    public ImageButton changeStatusOnClickBy(final View convertView, int id, final String reactionName, int status){
         ImageButton view = convertView.findViewById(id);
+
+        if(status == REACTION_BUTTON_PRESSED){
+            view.setColorFilter(ContextCompat.getColor(activity, R.color.reaction_button_pressed), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 changeStatus(convertView,(ImageButton)v, reactionName);

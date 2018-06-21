@@ -126,4 +126,43 @@ public class StoriesController {
     }
 
 
+    public void changeReaction(String storieId, String reactionName) {
+
+        Date currentTime = Calendar.getInstance().getTime();
+
+        parameters = new JsonObject();
+        parameters.addProperty("_id", "");
+        parameters.addProperty("_rev", "");
+        parameters.addProperty("date","");
+        parameters.addProperty("storie_id", storieId);
+        parameters.addProperty("user_id", context.getLoggedInActivity().getProfile().getId());
+        parameters.addProperty("reaction", reactionName);
+
+        EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
+        Call<Storie> responseCall = endpointsApi.postStorieReaction(parameters);
+
+        responseCall.enqueue(new Callback<Storie>() {
+
+            @Override
+            public void onFailure(Call<Storie> call, Throwable t) {
+                Log.e("PostStorieReaction", t.toString());
+            }
+
+            @Override
+            public void onResponse(Call<Storie> call, Response<Storie> response) {
+                if (response.isSuccessful()) {
+                    Storie storie = response.body();
+                    if (storie != null) {
+                        StoriesAppActivity activity = context.getLoggedInActivity();
+                        activity.startMainActivity("You has reacted !!!");
+                    }
+                } else{
+                    StoriesAppActivity activity = context.getLoggedInActivity();
+                    activity.showMessage("Couldn't react to storie. Please, intent you in a few minutes again.", 5);
+
+                }
+            }
+        });
+
+    }
 }

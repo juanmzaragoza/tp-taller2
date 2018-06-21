@@ -168,4 +168,12 @@ public class Storie extends ObjectApiApp{
         this.comments = comments;
     }
 
+    public Reactions getReactions() {
+        return reactions;
+    }
+
+    public void setReactions(Reactions reactions) {
+        this.reactions = reactions;
+    }
+
 }
