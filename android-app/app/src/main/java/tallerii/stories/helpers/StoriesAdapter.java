@@ -51,7 +51,7 @@ public class StoriesAdapter extends BaseAdapter {
     private LayoutInflater inflater;
     private List<Storie> stories;
     private final ImageHelper imageHelper;
-    HashMap<View, HashMap<ImageButton, Integer>> reactionButtons;
+    HashMap<Integer, HashMap<ImageButton, Integer>> reactionButtons;
 
     public StoriesAdapter(Activity activity, Context context, StoriesController controller, List<Storie> stories) {
         this.activity = activity;
@@ -151,18 +151,18 @@ public class StoriesAdapter extends BaseAdapter {
         HashMap<ImageButton, Integer> buttons = new HashMap<>();
 
         int status = reactions.getLike().imVoted()?REACTION_BUTTON_PRESSED:REACTION_BUTTON_NOT_PRESSED;
-        buttons.put(changeStatusOnClickBy(convertView,R.id.likeButton, I_LIKE_REACTION,status),status);
+        buttons.put(changeStatusOnClickBy(convertView,R.id.likeButton, I_LIKE_REACTION,status,position),status);
 
         status = reactions.getNotLike().imVoted()?REACTION_BUTTON_PRESSED:REACTION_BUTTON_NOT_PRESSED;
-        buttons.put(changeStatusOnClickBy(convertView,R.id.dontLikeButton, I_NOTLIKE_REACTION,status),status);
+        buttons.put(changeStatusOnClickBy(convertView,R.id.dontLikeButton, I_NOTLIKE_REACTION,status,position),status);
 
         status = reactions.getEnjoy().imVoted()?REACTION_BUTTON_PRESSED:REACTION_BUTTON_NOT_PRESSED;
-        buttons.put(changeStatusOnClickBy(convertView,R.id.enjoyButton, I_ENJOY_REACTION,status),status);
+        buttons.put(changeStatusOnClickBy(convertView,R.id.enjoyButton, I_ENJOY_REACTION,status,position),status);
 
         status = reactions.getBored().imVoted()?REACTION_BUTTON_PRESSED:REACTION_BUTTON_NOT_PRESSED;
-        buttons.put(changeStatusOnClickBy(convertView,R.id.getBoredButton, I_GETBORED_REACTION,status),status);
+        buttons.put(changeStatusOnClickBy(convertView,R.id.getBoredButton, I_GETBORED_REACTION,status,position),status);
         // save it
-        reactionButtons.put(convertView,buttons);
+        reactionButtons.put(position,buttons);
 
         // get last comment
         if (!storie.getComments().isEmpty()) {
@@ -195,7 +195,7 @@ public class StoriesAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public ImageButton changeStatusOnClickBy(final View convertView, int id, final String reactionName, int status){
+    public ImageButton changeStatusOnClickBy(final View convertView, int id, final String reactionName, int status, final int position){
         ImageButton view = convertView.findViewById(id);
 
         if(status == REACTION_BUTTON_PRESSED){
@@ -204,41 +204,36 @@ public class StoriesAdapter extends BaseAdapter {
 
         view.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                changeStatus(convertView,(ImageButton)v, reactionName);
+                changeStatus(convertView,(ImageButton)v, reactionName, position);
             }
         });
         return view;
     }
 
-    private void changeStatus(final View convertView, ImageButton v, String reactionName) {
+    private void changeStatus(final View convertView, ImageButton v, String reactionName, int positionListView) {
         // For vector drawable
         // https://stackoverflow.com/questions/20121938/how-to-set-tint-for-an-image-view-programmatically-in-android
-        if(reactionButtons.get(convertView).get(v).equals(REACTION_BUTTON_PRESSED)){
-            changeToUnpressed(convertView,v);
+        if(reactionButtons.get(positionListView).get(v).equals(REACTION_BUTTON_PRESSED)){
+            changeToUnpressed(positionListView,v);
         } else{
-            changeToPressed(convertView,v);
-            for (Map.Entry<ImageButton, Integer> reactionButton: reactionButtons.get(convertView).entrySet()) {
+            changeToPressed(positionListView,v);
+            for (Map.Entry<ImageButton, Integer> reactionButton: reactionButtons.get(positionListView).entrySet()) {
                 if(!reactionButton.getKey().equals(v)){
-                    changeToUnpressed(convertView, reactionButton.getKey());
+                    changeToUnpressed(positionListView, reactionButton.getKey());
                 }
             }
         }
 
     }
 
-    private void changeToPressed(final View convertView, ImageButton v){
+    private void changeToPressed(final int positionListView, ImageButton v){
         v.setColorFilter(ContextCompat.getColor(activity, R.color.reaction_button_pressed), android.graphics.PorterDuff.Mode.SRC_IN);
-        reactionButtons.get(convertView).put(v,REACTION_BUTTON_PRESSED);
+        reactionButtons.get(positionListView).put(v,REACTION_BUTTON_PRESSED);
     }
 
-    private void changeToUnpressed(final View convertView, ImageButton v){
+    private void changeToUnpressed(final int positionListView, ImageButton v){
         v.setColorFilter(ContextCompat.getColor(activity, R.color.reaction_button_not_pressed), android.graphics.PorterDuff.Mode.SRC_IN);
-        reactionButtons.get(convertView).put(v,REACTION_BUTTON_NOT_PRESSED);
-    }
-
-    private void updateResource(){
-        // update reaction storie -> get user from MainActivity
-        //controller.changeReaction(storieId,reactionName);
+        reactionButtons.get(positionListView).put(v,REACTION_BUTTON_NOT_PRESSED);
     }
 
     private void showCommentsDialog(String storieId) {
