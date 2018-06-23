@@ -11,10 +11,12 @@ declare var $ :any;
 export class FileComponent {
     title: string;
     files: Array<File>;
+    uploadByFirebase: boolean;
     public file:File = new File();
     constructor(public FileServ: FileService){
         this.files = []
         this.title = 'File'
+        this.uploadByFirebase = false
     }
     
     ngOnInit() {
@@ -37,14 +39,21 @@ export class FileComponent {
       this.modalActions.emit({action:"modal",params:['close']});
     }
     save(file :File){
-        var me = this
+        var vm = this
+        console.info(this)
         if(file.id){
+          file.updatedTime = Date.now()
           console.log("edit", file)
           //me.update(file);
         }
         else{
-          console.log("create",file)
-          //me.create(file);
+          file.createdTime = Date.now()
+          if(vm.uploadByFirebase){
+            vm.createbyFirebase(file);
+          }
+          else{
+
+          }
         }
     }
 
@@ -55,8 +64,8 @@ export class FileComponent {
           let file = event.target.files[0];
           reader.readAsDataURL(file);
           reader.onload = () => {
-            console.info(file)
-            console.info(reader.result.split(',')[1])
+            vm.file.size = file.size
+            vm.file.resource = reader.result.split(',')[1]
           };
         }
       }
@@ -72,26 +81,23 @@ export class FileComponent {
         error =>{
           console.log(error)
         });
-      }
-      create(serv: Server){
-        var me = this
-        serv.createdTime = Date.now()
-        serv.createdBy = me.UserServ.getUser().username
-        me.ServerServ.create(serv).subscribe((server) => {
-          me.servers.push(server)
-          me.server = new Server()
-          toast("the server was created",4000)
+      }*/
+      createbyFirebase(file: File){
+        var vm = this
+        vm.FileServ.createbyFirebase(file).subscribe((file) => {
+          vm.files.push(file)
+          vm.file = new File()
+          toast("the file was created",4000)
         },
         error =>{
           console.log(error)
         });
-      }*/
+      }
 
     private get(){
         var vm:any = this
         vm.FileServ.get().subscribe((files: Array<File>) =>{
             vm.files = files
-            console.info(vm.files)
         })
     }
 }

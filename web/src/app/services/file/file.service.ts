@@ -28,4 +28,14 @@ export class FileService {
         ])
        //return this.RemoteServ.get('/files').map( res=> res.files)
     }
+    createbyFirebase = (file: File): Observable<File> =>{
+        var aux:File = _.clone(file)
+        aux.resource = ""
+        var body = {
+            "file": file.resource,
+            "metadata": aux
+        }
+        console.info(body)
+        return Observable.of(file)
+    }
 }

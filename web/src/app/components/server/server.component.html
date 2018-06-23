@@ -26,38 +26,42 @@
 </table>
 
 <div class="show-for-small-only hide-on-med-only hide-on-large-only">
-  <div style="border-bottom:1px solid #3f51b5" class="row pointer" *ngFor="let server of servers">
+  <div style="border-bottom:1px solid #3f51b5" class="row pointer" *ngFor="let server of servers" [ngClass]="{'#c8e6c9 lighten-4':true,'green':server.active === 'active', 'red':server.active === 'none'}">
     <div class="row">
-      <div (click)="edit(server)" class="indigo-text left-align col s4">Name:</div>
-      <div class="left-align col s8">{{server.name}}</div>
+      <div (click)="edit(server)" class="indigo-text left-align col s4 tam-font-s">Name:</div>
+      <div class="left-align col s8 tam-font-s">{{server.name}}</div>
     </div>
     <div class="row">
-        <div (click)="edit(server)" class="indigo-text left-align col s4">CreatedBy:</div>
-        <div class="left-align col s8">{{server.createdBy}}</div>
+        <div (click)="edit(server)" class="indigo-text left-align col s4 tam-font-s">CreatedBy:</div>
+        <div class="left-align col s8 tam-font-s">{{server.createdBy}}</div>
     </div>
     <div class="row">
-        <div (click)="edit(server)" class="indigo-text left-align col s4">CreatedTime:</div>
-        <div class="left-align col s8">{{server.createdTime | date: 'dd/MM/yyyy'}}</div>
+        <div (click)="edit(server)" class="indigo-text left-align col s4 tam-font-s">CreatedTime:</div>
+        <div class="left-align col s8 tam-font-s">{{server.createdTime | date: 'dd/MM/yyyy'}}</div>
     </div>
     <div class="row">
-        <div (click)="edit(server)" class="indigo-text left-align col s4">LastConnect.:</div>
-        <div class="left-align col s8">{{server.lastConnection | date: 'dd/MM/yyyy'}}</div>
+        <div (click)="edit(server)" class="indigo-text left-align col s4 tam-font-s">LastConnect.:</div>
+        <div class="left-align col s8 tam-font-s">{{server.lastConnection | date: 'dd/MM/yyyy'}}</div>
     </div>
     <div class="row">
-        <div (click)="edit(server)" class="indigo-text left-align col s4">Host:</div>
-        <div class="left-align col s8">{{server.host}}</div>
+        <div (click)="edit(server)" class="indigo-text left-align col s4 tam-font-s">Host:</div>
+        <div class="left-align col s8 tam-font-s">{{server.host}}</div>
     </div>
     <div class="row">
-        <div (click)="edit(server)" class="indigo-text left-align col s4">Token:</div>
-        <div class="left-align col s8"><a><i class="material-icons">content_copy</i></a></div>
+        <div class="indigo-text left-align col s4 tam-font-s">Token:</div>
+        <div class="left-align col s8"><a><i class="material-icons tam-icons-s">content_copy</i></a></div>
     </div>
     <div class="row">
-        <div (click)="edit(server)" class="indigo-text left-align col s4">R. Token:</div>
-        <div class="left-align col s8"><a><i class="material-icons">update</i></a></div>
+        <div class="indigo-text left-align col s4 tam-font-s">R. Token:</div>
+        <div class="left-align col s8 tam-font-s"><a><i class="material-icons tam-icons-s">update</i></a></div>
     </div>
     <div class="row">
-        <div (click)="edit(server)" class="indigo-text left-align col s4">Drop:</div>
-        <div class="left-align col s8"><a><i class="material-icons">delete</i></a></div>
+        <div class="indigo-text left-align col s4 tam-font-s">Drop:</div>
+        <div class="left-align col s8 tam-font-s"><a><i class="material-icons tam-icons-s">delete</i></a></div>
+    </div>
+    <div class="row">
+        <div (click)="edit(server)" class="indigo-text left-align col s4 tam-font-s">Active:</div>
+        <div class="left-align col s8 tam-font-s">{{server.active}}</div>
     </div>
   </div>
 </div>
@@ -70,11 +74,13 @@
     <div class="row">
       <form class="col s12">
           <div class="row">
-              <div class="input-field col s6">
+              <div class="input-field col s12">
                   <input name='name' [(ngModel)]="server.name" type="text" class="validate">
                   <label for="name">Name</label>
               </div>
-              <div class="input-field col s6">
+          </div>
+          <div class="row">
+              <div class="input-field col s12">
                   <input name='host' [(ngModel)]="server.host" type="text" class="validate">
                   <label for="host">Host</label>
             </div>

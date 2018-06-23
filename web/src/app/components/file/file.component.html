@@ -1,5 +1,62 @@
-
-
+<table class="hide-on-small-only">
+    <tr> 
+      <th class="indigo-text"> Filename </th> 
+      <th class="indigo-text"> CreatedTime </th> 
+      <th class="indigo-text"> UpdatedTime </th> 
+      <th class="indigo-text"> Size </th>
+      <th class="indigo-text"> View Image </th>
+      <th class="indigo-text"> Drop </th>
+    </tr>
+    <tr class="pointer" *ngFor="let file of files">
+      <td (click)="edit(file)"> {{file.filename}} </td>
+      <td (click)="edit(file)"> {{file.createdTime | date: 'dd/MM/yyyy'}} </td>
+      <td (click)="edit(file)"> {{file.updatedTime | date: 'dd/MM/yyyy'}} </td>
+      <td (click)="edit(file)"> {{file.size}} </td>
+      <td (click)="view(file.resource)"><a><i class="material-icons">visibility</i></a></td>
+      <td (click)="delete(file.id)"><a><i class="material-icons">delete</i></a></td>
+    </tr>
+  </table>
+  
+  <div class="show-for-small-only hide-on-med-only hide-on-large-only">
+    <div style="border-bottom:1px solid #3f51b5" class="row pointer" *ngFor="let server of servers" [ngClass]="{'#c8e6c9 lighten-4':true,'green':server.active === 'active', 'red':server.active === 'none'}">
+      <div class="row">
+        <div (click)="edit(server)" class="indigo-text left-align col s4 tam-font-s">Name:</div>
+        <div class="left-align col s8 tam-font-s">{{server.name}}</div>
+      </div>
+      <div class="row">
+          <div (click)="edit(server)" class="indigo-text left-align col s4 tam-font-s">CreatedBy:</div>
+          <div class="left-align col s8 tam-font-s">{{server.createdBy}}</div>
+      </div>
+      <div class="row">
+          <div (click)="edit(server)" class="indigo-text left-align col s4 tam-font-s">CreatedTime:</div>
+          <div class="left-align col s8 tam-font-s">{{server.createdTime | date: 'dd/MM/yyyy'}}</div>
+      </div>
+      <div class="row">
+          <div (click)="edit(server)" class="indigo-text left-align col s4 tam-font-s">LastConnect.:</div>
+          <div class="left-align col s8 tam-font-s">{{server.lastConnection | date: 'dd/MM/yyyy'}}</div>
+      </div>
+      <div class="row">
+          <div (click)="edit(server)" class="indigo-text left-align col s4 tam-font-s">Host:</div>
+          <div class="left-align col s8 tam-font-s">{{server.host}}</div>
+      </div>
+      <div class="row">
+          <div class="indigo-text left-align col s4 tam-font-s">Token:</div>
+          <div class="left-align col s8"><a><i class="material-icons tam-icons-s">content_copy</i></a></div>
+      </div>
+      <div class="row">
+          <div class="indigo-text left-align col s4 tam-font-s">R. Token:</div>
+          <div class="left-align col s8 tam-font-s"><a><i class="material-icons tam-icons-s">update</i></a></div>
+      </div>
+      <div class="row">
+          <div class="indigo-text left-align col s4 tam-font-s">Drop:</div>
+          <div class="left-align col s8 tam-font-s"><a><i class="material-icons tam-icons-s">delete</i></a></div>
+      </div>
+      <div class="row">
+          <div (click)="edit(server)" class="indigo-text left-align col s4 tam-font-s">Active:</div>
+          <div class="left-align col s8 tam-font-s">{{server.active}}</div>
+      </div>
+    </div>
+  </div>
 
 
 
@@ -7,6 +64,7 @@
 <div id="modal1" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
     <div class="modal-content">
       <h4 class="indigo-text">New File</h4>
+      
       <div class="row">
         <form class="col s12">
             <div class="row">
@@ -17,8 +75,15 @@
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <input name='resource' [(ngModel)]="file.resource" type="file" (change)="onFileChange($event)" class="validate">
-                    <label for="resource">Resource</label>
+                    <input name='resource' type="file" (change)="onFileChange($event)" class="validate">
+                </div>
+            </div>
+            <br>
+            <br>
+            <div class="row">
+                <div class="col s12">
+                    <input type="checkbox" id="check" name="upFire" [(ngModel)]="uploadByFirebase">
+                    <label for="check">Upload by Firebase</label>
                 </div>
             </div>
         </form>
