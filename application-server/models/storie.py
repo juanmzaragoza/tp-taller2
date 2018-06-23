@@ -131,7 +131,7 @@ class StorieModel:
 			storie["comments"] = CommentModel.get_last_storie_comment(storie_id)
 			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
 			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
-
+			'''
 			if (storie_user_id not in users_activity):
 				users_activity[storie_user_id] = UserActivityModel.log_user_activity_resume(storie_user_id, 10)
 			
@@ -139,7 +139,7 @@ class StorieModel:
 						"user_data": users_activity[storie_user_id],
 						"storie_data": StorieModel.get_storie_resume(storie)
 			}
-			
+			'''
 			data.append(storie)
 			#rules_machine.process_storie_data(rule_src_data)
 			#stories_list[storie_id] = storie
