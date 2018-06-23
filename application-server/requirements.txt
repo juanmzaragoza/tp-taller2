@@ -7,6 +7,7 @@ chardet==3.0.4
 click==6.7
 codecov==2.0.15
 coverage==4.5.1
+durable-rules==0.33.125
 Flask==0.12.2
 Flask-PyMongo==0.5.1
 Flask-RESTful==0.3.6

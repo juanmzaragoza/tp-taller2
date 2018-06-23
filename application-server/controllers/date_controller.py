@@ -31,7 +31,12 @@ class DateController():
 	def get_date_time_inc_by_hours(hours):
 		date = DateController.get_date_time() + datetime.timedelta(hours=hours)
 		return date
-
+	
+	@staticmethod
+	def get_date_time_dec_by_days(days):
+		date = DateController.get_date_time() - datetime.timedelta(days=days)
+		return date
+		
 	@staticmethod
 	def today():
 		now = datetime.datetime.now()
@@ -48,3 +53,11 @@ class DateController():
 	def now():
 		now = datetime.datetime.now()
 		return now
+	
+	@staticmethod
+	def get_past_days(date):
+		date = datetime.datetime.strptime(date, "%d/%m/%Y %H:%M:%S")
+		now = DateController.get_date_time()
+		diff = now - date
+		return diff.days
+	

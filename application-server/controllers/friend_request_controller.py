@@ -11,6 +11,7 @@ from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_friend_request_found_exception import NoFriendRequestFoundException
 from errors_exceptions.friendship_already_exists_exception import FriendshipAlreadyExistsException
 from auth_service import login_required
+from models.user_activity import UserActivityModel
 
 class FriendRequestController(flask_restful.Resource):
 	
@@ -25,8 +26,12 @@ class FriendRequestController(flask_restful.Resource):
 
 			request_id = self._get_request_id(request)
 			self._validate_request_id(request_id)
-			friends_requests = self._accept_friend_request(request_id)
-			return self._get_friends_requests_response(friends_requests)
+			friend = self._accept_friend_request(request_id)
+			print (friend)
+			UserActivityModel.log_friend_activity(friend["user_id_rcv"], friend["user_id_sender"], "ADD")
+			UserActivityModel.log_friend_activity(friend["user_id_sender"], friend["user_id_rcv"], "ADD")
+
+			return self._get_friends_requests_response(friend)
 			
 		except BadRequest as ex:
 			return ErrorHandler.create_error_response("Fields request_id are mandatory", 400)

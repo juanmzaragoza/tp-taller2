@@ -78,4 +78,6 @@ class RequestCounterModel():
 			{'$inc': {'count': 1}},
 			return_document=RETURN_DOCUMENT_AFTER
 		)
+		
+		#response["date"] = DateController.get_date_time_with_format(response["date"])
 		return response
