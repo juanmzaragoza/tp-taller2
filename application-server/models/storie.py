@@ -93,7 +93,7 @@ class StorieModel:
 		return res
 	
 	@staticmethod
-	def get_stories(user_id):
+	def get_stories(user_id, story_type = 'normal'):
 		data = []
 		stories_list = {}
 		users_activity = {}
@@ -106,20 +106,24 @@ class StorieModel:
 		opt2 = {"expired_time": {"$gte": DateController.get_date_time()}}
 		
 		
-		stories = db.stories.find( { "$or":[{
-										"$and" : [
-											{ "$or" : [ opt1, opt2 ] },
-											{ "user_id": {"$in": friends_id}}
-										]
-									},
-									{
-										"$and" : [
-											{ "$or" : [ opt1, opt2 ] },
-											{ "user_id": {"$nin": friends_id} },
-											{ "visibility": "public" }
-										]
-									}]
-									}).sort("created_time",pymongo.DESCENDING)
+		stories = db.stories.find({
+			"$or" : [
+				{
+					"$and" : [
+						{ "story_type": story_type},
+						{ "$or" : [ opt1, opt2 ] },
+						{ "user_id": {"$in": friends_id}}
+					]
+				},
+				{
+					"$and" : [
+						{ "story_type": story_type},
+						{ "$or" : [ opt1, opt2 ] },
+						{ "user_id": {"$nin": friends_id} },
+						{ "visibility": "public" }
+					]
+				}
+			]}).sort("created_time",pymongo.DESCENDING)
 		
 		#rules_machine = RuleMachineProxy()
 		#rules_machine.new_rule_process()

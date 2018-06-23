@@ -24,8 +24,11 @@ class StorieDetailController(flask_restful.Resource):
 	#@login_required	
 	def get(self, id):
 		try:
-			 stories = StorieModel.get_stories(id)
-			 return self._create_get_stories_response(stories)
+			storie_type = request.args.get('story_type')
+			if (storie_type not in ['normal', 'fast']):
+				storie_type = 'normal'
+			stories = StorieModel.get_stories(id, storie_type)
+			return self._create_get_stories_response(stories)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 	
