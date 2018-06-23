@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import tallerii.stories.R;
 import tallerii.stories.fragments.main.AnotherFragment;
 import tallerii.stories.fragments.main.HomeFragment;
+import tallerii.stories.fragments.main.PostFlashStorieFragment;
 import tallerii.stories.fragments.main.PostStorieFragment;
 import tallerii.stories.helpers.Store;
 
@@ -68,7 +69,7 @@ public class MainActivity extends StoriesLoggedInActivity {
                 setHomeFragment(null); // if null -> take id from getProfile()
                 break;
             case R.id.action_account:
-                fragment = new AnotherFragment();
+                setPostFlashStorieFragment();
                 break;
             case R.id.action_new:
                 setPostStorieFragment();
@@ -90,6 +91,11 @@ public class MainActivity extends StoriesLoggedInActivity {
     private void setPostStorieFragment() {
         fragment = null;
         fragment = new PostStorieFragment();
+    }
+
+    private void setPostFlashStorieFragment() {
+        fragment = null;
+        fragment = new PostFlashStorieFragment();
     }
 
     private void commitFragment(Fragment fragment){

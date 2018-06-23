@@ -45,6 +45,7 @@
     <string name="friendcounts">FriendCounts</string>
     <string name="title_activity_maps">Map</string>
     <string name="stories_map">Stories Map</string>
+    <string name="action_take_flash">Flash</string>
 
 
 </resources>

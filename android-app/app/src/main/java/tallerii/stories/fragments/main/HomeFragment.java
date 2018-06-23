@@ -70,4 +70,9 @@ public class HomeFragment extends Fragment implements StoriesAware {
         helperFragment.dismissMessageLoading();
 
     }
+
+    @Override
+    public View getRootView(LayoutInflater inflater, ViewGroup container) {
+        return null;
+    }
 }

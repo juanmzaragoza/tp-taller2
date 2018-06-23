@@ -17,8 +17,8 @@
     <item
         android:id="@+id/action_account"
         android:enabled="true"
-        android:icon="@drawable/ic_account_circle_white_24dp"
-        android:title="@string/action_account"
+        android:icon="@drawable/ic_flash_on_white_24dp"
+        android:title="@string/action_take_flash"
         app:showAsAction="ifRoom" />
 
 </menu>
