@@ -121,8 +121,8 @@ class StorieModel:
 									}]
 									}).sort("created_time",pymongo.DESCENDING)
 		
-		rules_machine = RuleMachineProxy()
-		rules_machine.new_rule_process()
+		#rules_machine = RuleMachineProxy()
+		#rules_machine.new_rule_process()
 		
 		for storie in stories:
 			storie_user_id = storie["user_id"]
@@ -140,16 +140,17 @@ class StorieModel:
 						"storie_data": StorieModel.get_storie_resume(storie)
 			}
 			
-			rules_machine.process_storie_data(rule_src_data)
-			stories_list[storie_id] = storie
+			data.append(storie)
+			#rules_machine.process_storie_data(rule_src_data)
+			#stories_list[storie_id] = storie
 			
-		result = rules_machine.get_results()
-		stories_importance = result["result"]
-		sorted_by_importance = sorted(stories_importance.items(), key=lambda kv: kv[1], reverse=True)
+		#result = rules_machine.get_results()
+		#stories_importance = result["result"]
+		#sorted_by_importance = sorted(stories_importance.items(), key=lambda kv: kv[1], reverse=True)
 		
-		for storie in sorted_by_importance:
-			storie_id = storie[0]
-			data.append(stories_list[storie_id])
+		#for storie in sorted_by_importance:
+			#storie_id = storie[0]
+			#data.append(stories_list[storie_id])
 		
 		return data
 	
