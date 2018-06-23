@@ -19,14 +19,14 @@ declare var _:any
 export class FileService {
     constructor(public RemoteServ: RemoteService){}
     get = (): Observable<Array<File>>=>{
-        return Observable.of([
-            new File("file 1", 30, "http://localhost/firebase/file-1.jpg", Date.now()),
-            new File("file 2", 80, "http://localhost/firebase/file-2.jpg", Date.now()),
-            new File("file 3", 22, "http://localhost/firebase/file-3.jpg", Date.now()),
-            new File("file 4", 70, "http://localhost/firebase/file-4.jpg", Date.now()),
-            new File("file 5", 14, "http://localhost/firebase/file-5.jpg", Date.now())
-        ])
-       //return this.RemoteServ.get('/files').map( res=> res.files)
+      /*  return Observable.of([
+            new File("file 1", 30, "http://localhost/firebase/file-1.jpg", Date.now(),Date.now()),
+            new File("file 2", 80, "http://localhost/firebase/file-2.jpg", Date.now(),Date.now()),
+            new File("file 3", 22, "http://localhost/firebase/file-3.jpg", Date.now(),Date.now()),
+            new File("file 4", 70, "http://localhost/firebase/file-4.jpg", Date.now(),Date.now()),
+            new File("file 5", 14, "http://localhost/firebase/file-5.jpg", Date.now(),Date.now())
+        ])*/
+       return this.RemoteServ.get('/files').map( res=> res.files)
     }
     createbyFirebase = (file: File): Observable<File> =>{
         var aux:File = _.clone(file)
@@ -36,6 +36,18 @@ export class FileService {
             "metadata": aux
         }
         console.info(body)
-        return Observable.of(file)
+
+        return this.RemoteServ.post('/files/upload', body)
+      //.map( res=> this.mapper(res.server));
+        //return Observable.of(file)
+    }
+    create = (file: File): Observable<File> =>{
+        console.info(file)
+        return this.RemoteServ.post('/files', file)
+      .map( res=> res.file);
+        //return Observable.of(file)
+    }
+    delete(id:string){
+      return this.RemoteServ.delete('/files/'+id);
     }
 }

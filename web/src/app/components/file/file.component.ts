@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, OnDestroy } from '@angular/core'
 import { MaterializeDirective, MaterializeAction, toast} from "angular2-materialize";
 import { File }             from '../../models/file'
 import { FileService }      from '../../services/file/file.service'
+import { JsonService }        from '../../services/common/json.service'
 
 declare var $ :any;
 
@@ -10,10 +11,11 @@ declare var $ :any;
 })
 export class FileComponent {
     title: string;
-    files: Array<File>;
+    files: Array<any>;
     uploadByFirebase: boolean;
     public file:File = new File();
-    constructor(public FileServ: FileService){
+    constructor(public FileServ: FileService,
+                public JsonServ: JsonService){
         this.files = []
         this.title = 'File'
         this.uploadByFirebase = false
@@ -52,11 +54,20 @@ export class FileComponent {
             vm.createbyFirebase(file);
           }
           else{
-
+            vm.create(file);
           }
         }
     }
-
+    delete(id:string){
+      var me = this
+      me.FileServ.delete(id).subscribe((res) => {
+        me.files = me.JsonServ.removeItem(me.files, {id:id})
+        toast("the server was deleted",4000)
+      },
+      error =>{
+        console.log(error)
+      });
+    }
     onFileChange(event:any) {
         let reader = new FileReader();
         var vm = this
@@ -85,6 +96,17 @@ export class FileComponent {
       createbyFirebase(file: File){
         var vm = this
         vm.FileServ.createbyFirebase(file).subscribe((file) => {
+          vm.files.push(file)
+          vm.file = new File()
+          toast("the file was upload",4000)
+        },
+        error =>{
+          console.log(error)
+        });
+      }
+      create(file: File){
+        var vm = this
+        vm.FileServ.create(file).subscribe((file) => {
           vm.files.push(file)
           vm.file = new File()
           toast("the file was created",4000)
