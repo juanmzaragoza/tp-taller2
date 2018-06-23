@@ -8,6 +8,7 @@ from controllers.error_handler import ErrorHandler
 from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from auth_service import login_required
+from models.user_activity import UserActivityModel
 
 class StorieController(flask_restful.Resource):
 	
@@ -27,6 +28,7 @@ class StorieController(flask_restful.Resource):
 			args = self.parser.parse_args()
 			
 			storie = self._create_user_storie_request(request)
+			UserActivityModel.log_storie_activity(storie["user_id"], storie["_id"], "ADD") 
 			return storie
 		
 		except BadRequest as ex:

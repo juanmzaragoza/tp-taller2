@@ -1,5 +1,7 @@
 import uuid
+import json
 import pymongo
+import requests
 from models.comment import CommentModel
 from models.reaction import ReactionModel
 from models.user_data import UserDataModel
@@ -7,8 +9,10 @@ from models.friend import FriendModel
 from constants import MONGODB_USER, MONGODB_PASSWD
 from controllers.db_controller import MongoController
 from controllers.date_controller import DateController
+from controllers.rule_machine_proxy import RuleMachineProxy
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
+from models.user_activity import UserActivityModel
 import datetime
 
 class StorieModel:
@@ -91,6 +95,8 @@ class StorieModel:
 	@staticmethod
 	def get_stories(user_id):
 		data = []
+		stories_list = {}
+		users_activity = {}
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		
 		friends_id = FriendModel.get_friends_array_by_user_id(user_id)
@@ -113,16 +119,54 @@ class StorieModel:
 											{ "visibility": "public" }
 										]
 									}]
-									} ).sort("created_time",pymongo.DESCENDING)
+									}).sort("created_time",pymongo.DESCENDING)
+		
+		rules_machine = RuleMachineProxy()
+		rules_machine.new_rule_process()
+		
 		for storie in stories:
+			storie_user_id = storie["user_id"]
 			storie_id = storie["_id"]
 			storie = StorieModel.format_storie_dates(storie)
 			storie["comments"] = CommentModel.get_last_storie_comment(storie_id)
 			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
 			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
-			data.append(storie_with_user_data)
+
+			if (storie_user_id not in users_activity):
+				users_activity[storie_user_id] = UserActivityModel.log_user_activity_resume(storie_user_id, 10)
 			
+			rule_src_data = {
+						"user_data": users_activity[storie_user_id],
+						"storie_data": StorieModel.get_storie_resume(storie)
+			}
+			
+			rules_machine.process_storie_data(rule_src_data)
+			stories_list[storie_id] = storie
+			
+		result = rules_machine.get_results()
+		stories_importance = result["result"]
+		sorted_by_importance = sorted(stories_importance.items(), key=lambda kv: kv[1], reverse=True)
+		
+		for storie in sorted_by_importance:
+			storie_id = storie[0]
+			data.append(stories_list[storie_id])
+		
 		return data
+	
+	@staticmethod
+	def get_storie_resume(storie):
+		storie_resume = {
+				"storie_id": storie["_id"],
+				"past": DateController.get_past_days(storie["created_time"]),
+				"num_comments": len(storie["comments"]),
+				"num_reactions": (storie["reactions"]["LIKE"]["count"] +
+								storie["reactions"]["NOTLIKE"]["count"] +
+								storie["reactions"]["GETBORED"]["count"] +
+								storie["reactions"]["ENJOY"]["count"] 
+				)
+		}
+		
+		return storie_resume
 	
 	@staticmethod
 	def get_profile_stories_by_user_id(user_id):

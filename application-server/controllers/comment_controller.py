@@ -10,6 +10,7 @@ from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
 from auth_service import login_required
+from models.user_activity import UserActivityModel
 
 class CommentController(flask_restful.Resource):
 	
@@ -24,6 +25,8 @@ class CommentController(flask_restful.Resource):
 
 			args = self.parser.parse_args()
 			comment = CommentModel.create_comment(args)
+			UserActivityModel.log_comment_activity(comment["user_id"], comment["storie_id"], "ADD")
+
 			return comment
 			 
 		except BadRequest as ex:

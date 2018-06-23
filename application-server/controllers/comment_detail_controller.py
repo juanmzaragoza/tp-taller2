@@ -11,6 +11,7 @@ from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_comment_found_exception import NoCommentFoundException
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
 from auth_service import login_required
+from models.user_activity import UserActivityModel
 
 class CommentDetailController(flask_restful.Resource):
 	
@@ -20,6 +21,7 @@ class CommentDetailController(flask_restful.Resource):
 	def delete(self, comment_id):
 		try:
 			 comment = CommentModel.remove_comment(comment_id)
+			 UserActivityModel.log_comment_activity(comment["user_id"], comment["storie_id"], "DELETE")
 			 return self._get_comments_response(comment)
 		except NoCommentFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
@@ -38,6 +40,8 @@ class CommentDetailController(flask_restful.Resource):
 			
 			body = json.loads(request.data.decode('utf-8'))
 			comment = CommentModel.update_comment(comment_id, body)
+			UserActivityModel.log_comment_activity(comment["user_id"], comment["storie_id"], "EDIT")
+
 			return ResponseBuilder.build_response(comment, 200)
 		
 		except BadRequest as ex:
