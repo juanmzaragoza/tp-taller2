@@ -48,7 +48,6 @@ public class HomeFragment extends Fragment implements StoriesAware {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getStories();
     }
 
     @Override
