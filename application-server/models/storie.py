@@ -132,10 +132,11 @@ class StorieModel:
 			storie_user_id = storie["user_id"]
 			storie_id = storie["_id"]
 			storie = StorieModel.format_storie_dates(storie)
+			storie = StorieModel.get_storie_with_user_data(storie)
 			storie["comments"] = CommentModel.get_last_storie_comment(storie_id)
 			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
-			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
 			'''
+			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
 			if (storie_user_id not in users_activity):
 				users_activity[storie_user_id] = UserActivityModel.log_user_activity_resume(storie_user_id, 10)
 			
