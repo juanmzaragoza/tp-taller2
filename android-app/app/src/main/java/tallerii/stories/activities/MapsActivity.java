@@ -80,11 +80,6 @@ public class MapsActivity extends StoriesLoggedInActivity implements OnMapReadyC
         goToCurrentLocation();
     }
 
-    @Override
-    public View getRootView(LayoutInflater inflater, ViewGroup container) {
-        return null;
-    }
-
     @SuppressLint("MissingPermission")
     private void goToCurrentLocation() {
         if (hasLocationPermissions()) {

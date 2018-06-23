@@ -71,8 +71,4 @@ public class HomeFragment extends Fragment implements StoriesAware {
 
     }
 
-    @Override
-    public View getRootView(LayoutInflater inflater, ViewGroup container) {
-        return null;
-    }
 }

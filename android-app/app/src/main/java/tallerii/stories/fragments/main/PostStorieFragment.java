@@ -45,13 +45,14 @@ import tallerii.stories.helpers.MediaFile;
 import tallerii.stories.helpers.ThumbnailItem;
 import tallerii.stories.helpers.ThumbnailsAdapter;
 import tallerii.stories.helpers.ThumbnailsManager;
+import tallerii.stories.interfaces.ShowStoriesAware;
 import tallerii.stories.interfaces.StoriesAware;
 import tallerii.stories.interfaces.ThumbnailCallback;
 import tallerii.stories.network.apimodels.Storie;
 
 import static android.app.Activity.RESULT_OK;
 
-public class PostStorieFragment extends Fragment implements StoriesAware, ThumbnailCallback {
+public class PostStorieFragment extends Fragment implements StoriesAware, ShowStoriesAware, ThumbnailCallback {
 
     protected final static int REQUEST_CODE_TAKE_IMAGE = 0;
     protected final static int REQUEST_CODE_CHOOSE_IMAGE = 1;
@@ -246,16 +247,8 @@ public class PostStorieFragment extends Fragment implements StoriesAware, Thumbn
         bindVideoViewAction();
 
         // choose a photo or a video
-        togleTakeMedia = rootView.findViewById(R.id.toogleTakeMedia);
-        togleTakeMedia.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // isChecked will be true if the switch is in the On position
-                takeVideo = isChecked;
+        bindToggleMediaAction();
 
-                updateViewOnChangeMediaType();
-
-            }
-        });
         thumbListView = (RecyclerView) rootView.findViewById(R.id.thumbnails);
 
         updateViewOnChangeMediaType();
@@ -274,7 +267,7 @@ public class PostStorieFragment extends Fragment implements StoriesAware, Thumbn
 
     }
 
-    protected void updateViewOnChangeMediaType(){
+    public void updateViewOnChangeMediaType(){
         if(takeVideo){
             imageView.setVisibility(View.GONE);
             videoView.setVisibility(View.VISIBLE);
@@ -366,12 +359,25 @@ public class PostStorieFragment extends Fragment implements StoriesAware, Thumbn
         }
     }
 
-    protected void bindVideoViewAction(){
+    public void bindVideoViewAction(){
         // take video from camera
         videoView = (VideoView) executeActionOnTouchToBy(R.id.storieVideoView,takeMedia);
     }
 
-    protected void bindImageViewAction(){
+    public void bindToggleMediaAction(){
+        togleTakeMedia = rootView.findViewById(R.id.toogleTakeMedia);
+        togleTakeMedia.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // isChecked will be true if the switch is in the On position
+                takeVideo = isChecked;
+
+                updateViewOnChangeMediaType();
+
+            }
+        });
+    }
+
+    public void bindImageViewAction(){
         // take picture from camera
         imageView = (ImageView) executeActionOnClickBy(R.id.storieImageView,takeMedia);
     }
