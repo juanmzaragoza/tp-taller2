@@ -76,5 +76,11 @@ with app.app_context():
 
 @app.before_request
 def log_request_info():
-    app.logger.debug('Headers: %s', request.headers)
-    app.logger.debug('Body: %s', request.get_data())
+    app.logger.debug('Request Headers: %s', request.headers)
+    app.logger.debug('Request Body: %s', request.get_data())
+
+@app.after_request
+def log_request_output(response):
+    app.logger.debug('Response Status: %s', response.status)
+    app.logger.debug('Response Body: %s', response.get_data())
+    return response
