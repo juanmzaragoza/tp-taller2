@@ -149,3 +149,11 @@ class CommentModel:
 			]
 		}).count()
 		return count
+
+	@staticmethod
+	def get_comment_with_id(comment_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+		comment = db.storie_comments.find_one({"_id": comment_id})
+		if comment == None:
+			raise NoCommentFoundException
+		return comment

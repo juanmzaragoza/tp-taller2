@@ -10,7 +10,8 @@ from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_comment_found_exception import NoCommentFoundException
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
-from auth_service import login_required
+from errors_exceptions.user_mismatch_exception import UserMismatchException
+from auth_service import login_required, validate_sender
 from models.user_activity import UserActivityModel
 
 class CommentDetailController(flask_restful.Resource):
@@ -18,13 +19,17 @@ class CommentDetailController(flask_restful.Resource):
 	def __init__(self):
 		self.parser = reqparse.RequestParser(bundle_errors=True)
 		
+	@login_required
 	def delete(self, comment_id):
 		try:
-			 comment = CommentModel.remove_comment(comment_id)
-			 UserActivityModel.log_comment_activity(comment["user_id"], comment["storie_id"], "DELETE")
-			 return self._get_comments_response(comment)
+			self._validate_author(comment_id)
+			comment = CommentModel.remove_comment(comment_id)
+			UserActivityModel.log_comment_activity(comment["user_id"], comment["storie_id"], "DELETE")
+			return self._get_comments_response(comment)
 		except NoCommentFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
+		except UserMismatchException as e:
+			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 	
@@ -57,3 +62,8 @@ class CommentDetailController(flask_restful.Resource):
 					 		 
 	def _get_comments_response(self, comments):
 		return comments
+
+	def _validate_author(self, comment_id):
+		comment = CommentModel.get_comment_with_id(comment_id)
+		author_id = comment.get('user_id')
+		validate_sender(author_id)
