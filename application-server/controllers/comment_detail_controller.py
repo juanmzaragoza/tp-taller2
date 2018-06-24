@@ -33,6 +33,7 @@ class CommentDetailController(flask_restful.Resource):
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 	
+	@login_required
 	def put(self, comment_id):
 		try:
 			self.parser.add_argument('_id', required=True, help="Field id is mandatory")
@@ -41,6 +42,7 @@ class CommentDetailController(flask_restful.Resource):
 			self.parser.add_argument('user_id', required=True, help="Field user_id is mandatory")
 			self.parser.add_argument('message', required=True, help="Field message is mandatory")
 
+			self._validate_author(comment_id)
 			args = self.parser.parse_args()
 			
 			body = json.loads(request.data.decode('utf-8'))
@@ -56,6 +58,8 @@ class CommentDetailController(flask_restful.Resource):
 		except NoCommentFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DataVersionException as e:
+			return ErrorHandler.create_error_response(str(e), 409)
+		except UserMismatchException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
