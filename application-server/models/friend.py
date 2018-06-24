@@ -143,3 +143,11 @@ class FriendModel():
 			]
 		}).count()
 		return count
+
+	@staticmethod
+	def get_friend(friend_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+		response = db.friends.find_one({'_id': friend_id})
+		if response == None:
+			raise NoFriendFoundException
+		return response
