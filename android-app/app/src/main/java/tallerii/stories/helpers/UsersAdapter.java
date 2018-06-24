@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,10 +18,11 @@ import tallerii.stories.R;
 import tallerii.stories.activities.UserProfileActivity;
 import tallerii.stories.network.apimodels.Users;
 
-public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
+public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder>  implements Filterable {
     private final ImageHelper imageHelper;
     private List<Users> usersList;
     private Context context;
+    private UsersFilter filter;
 
     public UsersAdapter(List<Users> dataSet, Context context) {
         this.usersList = dataSet;
@@ -58,6 +61,18 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
     @Override
     public int getItemCount() {
         return usersList.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (filter == null) {
+            filter = new UsersFilter(usersList, this);
+        }
+        return filter;
+    }
+
+    public void setUsersList(List<Users> usersList) {
+        this.usersList = usersList;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
