@@ -43,4 +43,4 @@ class CommentController(flask_restful.Resource):
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
-	
+

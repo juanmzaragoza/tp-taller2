@@ -75,7 +75,7 @@ class CommentModel:
 		
 		storie_id = body["storie_id"]
 
-		if StorieModel.storie_exists(storie_id) == None:
+		if not StorieModel.storie_exists(storie_id):
 			raise NoStorieFoundException
 			
 		comment_id = str(uuid.uuid4().hex)
