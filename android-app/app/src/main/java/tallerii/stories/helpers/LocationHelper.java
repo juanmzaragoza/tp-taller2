@@ -34,6 +34,33 @@ public class LocationHelper {
     public LocationHelper(Activity activity, Context context){
         this.activity = activity;
         this.context = context;
+        locationListener = getLocationListener();
+    }
+
+    // location listener for get location
+    private LocationListener getLocationListener() {
+        return new LocationListener() {
+
+            @Override
+            public void onLocationChanged(final Location location) {
+                //location = location;
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
     }
 
     public Location getLocation(){
@@ -49,7 +76,7 @@ public class LocationHelper {
     }
 
     /**
-     * Get latitude mathod
+     * Function to get latitude
      * */
     public double getLatitude() {
         if (location != null) {
@@ -61,7 +88,7 @@ public class LocationHelper {
     }
 
     /**
-     * Get longitude method
+     * Function to get longitude
      * */
     public double getLongitude() {
         if (location != null) {
