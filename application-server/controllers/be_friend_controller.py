@@ -13,22 +13,24 @@ from errors_exceptions.no_user_data_found_exception import NoUserDataFoundExcept
 from errors_exceptions.data_already_exists_exception import DataAlreadyExistsException
 from errors_exceptions.friendship_already_exists_exception import FriendshipAlreadyExistsException
 from errors_exceptions.friend_request_already_exists_exception import FriendRequestAlreadyExistsException
-from auth_service import login_required
+from errors_exceptions.user_mismatch_exception import UserMismatchException
+from auth_service import login_required, get_user_id
 
 class BeFriendController(flask_restful.Resource):
 	
 	def __init__(self):
 		self.parser = reqparse.RequestParser(bundle_errors=True)
 		
+	@login_required
 	def post(self):
 		try:
 			self.parser.add_argument('user_id', required=True, help="Field user_id is mandatory")
 			self.parser.add_argument('rcv_user_id', required=True, help="Field rcv_user_id is mandatory")
 
 			args = self.parser.parse_args()
-			
-			user_sender_id, user_rcv_id, msg, picture = self._get_friend_request_data(request)
+			user_sender_id, user_rcv_id, msg, picture = self._get_friend_request_data(args)
 			self._validate_user_id(user_sender_id)
+			self._validate_sender(user_sender_id)
 			self._validate_user_id(user_rcv_id)
 			
 			be_friend_request = self._create_be_friend_request(user_sender_id, user_rcv_id, msg, picture)
@@ -44,12 +46,17 @@ class BeFriendController(flask_restful.Resource):
 			return ErrorHandler.create_error_response(str(e), 409)
 		except NoUserDataFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
+		except UserMismatchException as e:
+			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 					
-	def _get_friend_request_data(self, request):
-		body = request.get_json()
-		return body['user_id'], body['rcv_user_id'], body['message'], body['picture']
+	def _get_friend_request_data(self, args):
+		user_id = args.get('user_id')
+		rcv_user_id = args.get('rcv_user_id')
+		message = args.get('message', None)
+		picture = args.get('picture', None)
+		return user_id, rcv_user_id, message, picture
 		
 	def _create_be_friend_request(self, user_sender_id, user_rcv_id, msg, picture):
 		friend_request = FriendRequestModel.create_friend_request(user_sender_id, user_rcv_id, msg, picture)
@@ -60,3 +67,8 @@ class BeFriendController(flask_restful.Resource):
 	
 	def _get_be_friend_request_response(self, be_friend_request):
 		return be_friend_request
+
+	def _validate_sender(self, sender_id):
+		user_id = get_user_id()
+		if (int(user_id) != int(sender_id)):
+			raise UserMismatchException()

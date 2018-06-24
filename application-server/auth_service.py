@@ -15,17 +15,16 @@ def is_authenticated():
 
 def _get_token():
 	authorization = request.headers.get('authorization')
+	if (not authorization):
+		return None
 	token = authorization.replace('Basic ','')
 	return token
 
 def _is_token_valid(token):
 	if (not token):
 		return False
-	try:
-		payload = _decode_token(token)
-		return True
-	except ExpiredSignatureError:
-		return False
+	payload = _decode_token(token)
+	return True
 
 def _decode_token(token):
 	payload = jwt.decode(token, JWT_SECRET)
@@ -46,10 +45,14 @@ def _save_user_activity():
 	UserActivityModel.log_user_login_activity(user_id)
 	
 def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if (not is_authenticated()):
-        	return ErrorHandler.create_error_response('token-expired', 401)
-        return f(*args, **kwargs)
-    return decorated_function
+	@wraps(f)
+	def decorated_function(*args, **kwargs):
+		try:
+			if (not is_authenticated()):
+				return ErrorHandler.create_error_response('invalid_token', 401)
+			return f(*args, **kwargs)
+		except ExpiredSignatureError:
+			return ErrorHandler.create_error_response('token-expired', 401)
+
+	return decorated_function
 
