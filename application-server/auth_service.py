@@ -5,6 +5,7 @@ import jwt
 from jwt import ExpiredSignatureError
 from flask import request
 from models.user_activity import UserActivityModel
+from errors_exceptions.user_mismatch_exception import UserMismatchException
 
 def is_authenticated():
 	token = _get_token()
@@ -55,4 +56,9 @@ def login_required(f):
 			return ErrorHandler.create_error_response('token-expired', 401)
 
 	return decorated_function
+
+def validate_sender(sender_id):
+	user_id = get_user_id()
+	if (int(user_id) != int(sender_id)):
+		raise UserMismatchException()
 
