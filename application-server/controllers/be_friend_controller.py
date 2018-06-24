@@ -14,7 +14,7 @@ from errors_exceptions.data_already_exists_exception import DataAlreadyExistsExc
 from errors_exceptions.friendship_already_exists_exception import FriendshipAlreadyExistsException
 from errors_exceptions.friend_request_already_exists_exception import FriendRequestAlreadyExistsException
 from errors_exceptions.user_mismatch_exception import UserMismatchException
-from auth_service import login_required, get_user_id
+from auth_service import login_required, validate_sender
 
 class BeFriendController(flask_restful.Resource):
 	
@@ -30,7 +30,7 @@ class BeFriendController(flask_restful.Resource):
 			args = self.parser.parse_args()
 			user_sender_id, user_rcv_id, msg, picture = self._get_friend_request_data(args)
 			self._validate_user_id(user_sender_id)
-			self._validate_sender(user_sender_id)
+			validate_sender(user_sender_id)
 			self._validate_user_id(user_rcv_id)
 			
 			be_friend_request = self._create_be_friend_request(user_sender_id, user_rcv_id, msg, picture)
@@ -67,8 +67,3 @@ class BeFriendController(flask_restful.Resource):
 	
 	def _get_be_friend_request_response(self, be_friend_request):
 		return be_friend_request
-
-	def _validate_sender(self, sender_id):
-		user_id = get_user_id()
-		if (int(user_id) != int(sender_id)):
-			raise UserMismatchException()
