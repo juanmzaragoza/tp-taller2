@@ -9,7 +9,8 @@ from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
 from errors_exceptions.storie_reaction_already_exists_exception import StorieReactionAlreadyFoundException
-from auth_service import login_required
+from errors_exceptions.user_mismatch_exception import UserMismatchException
+from auth_service import login_required, validate_sender
 from models.user_activity import UserActivityModel
 
 class ReactionController(flask_restful.Resource):
@@ -17,6 +18,7 @@ class ReactionController(flask_restful.Resource):
 	def __init__(self):
 		self.parser = reqparse.RequestParser(bundle_errors=True)
 	
+	@login_required
 	def post(self):
 		try:
 			self.parser.add_argument('reaction', required=True, help="Field reaction is mandatory")
@@ -24,6 +26,7 @@ class ReactionController(flask_restful.Resource):
 			self.parser.add_argument('storie_id', required=True, help="Field storie_id is mandatory")
 
 			args = self.parser.parse_args()
+			validate_sender(args.get('user_id'))
 			reaction = ReactionModel.create_reaction(args)
 			UserActivityModel.log_reaction_activity(reaction["user_id"], reaction["storie_id"], reaction["reaction"], "ADD")
 			return reaction
@@ -32,6 +35,8 @@ class ReactionController(flask_restful.Resource):
 			return ErrorHandler.create_error_response("Fields reaction, user_id and storie_id are mandatory", 400)
 		except NoStorieFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
+		except UserMismatchException as e:
+			return ErrorHandler.create_error_response(str(e), 409)
 		except StorieReactionAlreadyFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 		except DBConnectionError as e:
