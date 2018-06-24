@@ -1,6 +1,5 @@
 package tallerii.stories.helpers;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -21,13 +20,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import tallerii.stories.R;
+import tallerii.stories.activities.StoriesLoggedInActivity;
 import tallerii.stories.controller.StoriesController;
 import tallerii.stories.fragments.main.StorieCommentsDialogFragment;
 import tallerii.stories.network.apimodels.Comment;
-import tallerii.stories.network.apimodels.Reactions;
+import tallerii.stories.network.apimodels.ReactionResume;
 import tallerii.stories.network.apimodels.Storie;
 
 public class StoriesAdapter extends BaseAdapter {
@@ -35,20 +36,15 @@ public class StoriesAdapter extends BaseAdapter {
     private static final int REACTION_BUTTON_NOT_PRESSED = 0;
     private static final int REACTION_BUTTON_PRESSED = 1;
 
-    private static final String I_LIKE_REACTION = "LIKE";
-    private static final String I_NOTLIKE_REACTION = "NOTLIKE";
-    private static final String I_ENJOY_REACTION = "ENJOY";
-    private static final String I_GETBORED_REACTION = "GETBORED";
-
-    private Activity activity;
+    private StoriesLoggedInActivity activity;
     private final Context context;
     private final StoriesController controller;
     private LayoutInflater inflater;
     private List<Storie> stories;
     private final ImageHelper imageHelper;
-    HashMap<Integer, HashMap<ImageButton, Integer>> reactionButtons;
+    private HashMap<Integer, HashMap<ImageButton, Integer>> reactionButtons;
 
-    public StoriesAdapter(Activity activity, Context context, StoriesController controller, List<Storie> stories) {
+    public StoriesAdapter(StoriesLoggedInActivity activity, Context context, StoriesController controller, List<Storie> stories) {
         this.activity = activity;
         this.context = context;
         this.controller = controller;
@@ -76,99 +72,68 @@ public class StoriesAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (inflater == null)
-            inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (convertView == null)
+            inflater = LayoutInflater.from(parent.getContext());
+
+        ViewHolder holder;
+        if(convertView == null) {
             convertView = inflater.inflate(R.layout.fragment_stories_item, null);
-
-        TextView name = convertView.findViewById(R.id.name);
-        TextView timestamp = convertView.findViewById(R.id.timestamp);
-        TextView statusMsg = convertView.findViewById(R.id.txtStatusMsg);
-        //TextView url = (TextView) convertView.findViewById(R.id.txtUrl);
-        ImageView profilePic = convertView.findViewById(R.id.profilePic);
-        ImageView storieImageView = convertView.findViewById(R.id.storieImage1);
-        VideoView storieVideoView = convertView.findViewById(R.id.storieVideoView);
-
-        View lastCommentView = convertView.findViewById(R.id.lastCommentView);
-        View messageComment = convertView.findViewById(R.id.messageCommentText);
-        ImageView userCommentPic = convertView.findViewById(R.id.userCommentPic);
-        TextView lastComment = convertView.findViewById(R.id.lastComment);
-        TextView usernameLastComment = convertView.findViewById(R.id.usernameLastComment);
-        ImageButton sendCommentButton = convertView.findViewById(R.id.sendMessageCommentButton);
+            holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
+        }
 
         final Storie storie = stories.get(position);
 
-        name.setText(String.format("%s %s", storie.getUserName(), storie.getUserLastName()));
+        holder.name.setText(String.format("%s %s", storie.getUserName(), storie.getUserLastName()));
 
         // Converting timestamp into x ago format
         try {
-            DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
-            timestamp.setText(DateUtils.printDifference(sdf.parse(storie.getCreatedTime())));
+            DateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault());
+            holder.timestamp.setText(DateUtils.printDifference(sdf.parse(storie.getCreatedTime())));
         } catch (ParseException e) {
-            timestamp.setText("unknown");
+            holder.timestamp.setText("unknown");
         }
 
-        // Chcek for empty status message
+        // Check for empty status message
         if (!TextUtils.isEmpty(storie.getDescription())) {
-            statusMsg.setText(storie.getDescription());
-            statusMsg.setVisibility(View.VISIBLE);
+            holder.statusMsg.setText(storie.getDescription());
+            holder.statusMsg.setVisibility(View.VISIBLE);
         } else {
             // status is empty, remove from view
-            statusMsg.setVisibility(View.GONE);
+            holder.statusMsg.setVisibility(View.GONE);
         }
-
-        // Checking for null feed url
-        /*if (storie.getUrl() != null) {
-            url.setText(Html.fromHtml("<a href=\"" + storie.getUrl() + "\">"
-                    + storie.getUrl() + "</a> "));
-
-            // Making url clickable
-            url.setMovementMethod(LinkMovementMethod.getInstance());
-            url.setVisibility(View.VISIBLE);
-        } else {
-            // url is null, remove from the view
-            url.setVisibility(View.GONE);
-        }*/
 
         // user profile pic
-        imageHelper.setFirebaseImage(storie.getUserPicture(), profilePic);
-
+        imageHelper.setFirebaseImage(storie.getUserPicture(), holder.profilePic);
         // storie image
         if (storie.getMultimedia() != null && !storie.getMultimedia().isEmpty()) {
-            imageHelper.setFirebaseImage(storie.getMultimedia(), storieImageView);
-            imageHelper.setFirebaseVideo(storie.getMultimedia(), storieVideoView);
+            imageHelper.setFirebaseImage(storie.getMultimedia(), holder.storieImageView);
+            imageHelper.setFirebaseVideo(storie.getMultimedia(), holder.storieVideoView);
         }
 
-        // prepare reaction buttons -> add each button to a reaction not pressed
-        String storieId = storie.getId();
-        Reactions reactions = storie.getReactions();
         HashMap<ImageButton, Integer> buttons = new HashMap<>();
-
-        int status = reactions.getLike().imVoted()?REACTION_BUTTON_PRESSED:REACTION_BUTTON_NOT_PRESSED;
-        buttons.put(changeStatusOnClickBy(convertView,R.id.likeButton, I_LIKE_REACTION,status,position,storieId),status);
-
-        status = reactions.getNotLike().imVoted()?REACTION_BUTTON_PRESSED:REACTION_BUTTON_NOT_PRESSED;
-        buttons.put(changeStatusOnClickBy(convertView,R.id.dontLikeButton, I_NOTLIKE_REACTION,status,position,storieId),status);
-
-        status = reactions.getEnjoy().imVoted()?REACTION_BUTTON_PRESSED:REACTION_BUTTON_NOT_PRESSED;
-        buttons.put(changeStatusOnClickBy(convertView,R.id.enjoyButton, I_ENJOY_REACTION,status,position,storieId),status);
-
-        status = reactions.getBored().imVoted()?REACTION_BUTTON_PRESSED:REACTION_BUTTON_NOT_PRESSED;
-        buttons.put(changeStatusOnClickBy(convertView,R.id.getBoredButton, I_GETBORED_REACTION,status,position,storieId),status);
-        // save it
+        prepareReactionButtons(holder.layout, buttons, storie.getReactions().obtainReactions(), storie.getId(), position);
         reactionButtons.put(position,buttons);
 
+        setUpComment(holder, storie);
+
+        return holder.layout;
+    }
+
+    private void setUpComment(ViewHolder holder, final Storie storie) {
         // get last comment
         if (!storie.getComments().isEmpty()) {
             Comment comment = storie.getComments().get(0);
-            imageHelper.setFirebaseImage(comment.getUserPicture(), userCommentPic);
-            usernameLastComment.setText(comment.getUserName());
-            lastComment.setText(comment.getMessage());
-            lastCommentView.setVisibility(View.VISIBLE);
+            imageHelper.setFirebaseImage(comment.getUserPicture(), holder.userCommentPic);
+            holder.usernameLastComment.setText(comment.getUserName());
+            holder.lastComment.setText(comment.getMessage());
+            holder.lastCommentView.setVisibility(View.VISIBLE);
         } else{
-            lastCommentView.setVisibility(View.GONE);
+            holder.lastCommentView.setVisibility(View.GONE);
         }
 
-        messageComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        holder.messageComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus){
@@ -176,61 +141,12 @@ public class StoriesAdapter extends BaseAdapter {
                 }
             }
         });
-        sendCommentButton.setOnClickListener(new View.OnClickListener() {
+        holder.sendCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showCommentsDialog(storie.getId());
             }
         });
-
-
-
-        return convertView;
-    }
-
-    public ImageButton changeStatusOnClickBy(final View convertView, int id, final String reactionName, int status, final int position, final String storieId){
-        ImageButton view = convertView.findViewById(id);
-
-        if(status == REACTION_BUTTON_PRESSED){
-            view.setColorFilter(ContextCompat.getColor(activity, R.color.reaction_button_pressed), android.graphics.PorterDuff.Mode.SRC_IN);
-        }
-
-        view.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                changeStatus(convertView,(ImageButton)v, reactionName, position, storieId);
-            }
-        });
-        return view;
-    }
-
-    private void changeStatus(final View convertView, ImageButton v, String reactionName, int positionListView, String storieId) {
-        // For vector drawable
-        // https://stackoverflow.com/questions/20121938/how-to-set-tint-for-an-image-view-programmatically-in-android
-        if(reactionButtons.get(positionListView).get(v).equals(REACTION_BUTTON_PRESSED)){
-            changeToUnpressed(positionListView,v);
-            // call to api - empty for unset
-            controller.changeReaction(storieId,"");
-        } else{
-            changeToPressed(positionListView,v);
-            for (Map.Entry<ImageButton, Integer> reactionButton: reactionButtons.get(positionListView).entrySet()) {
-                if(!reactionButton.getKey().equals(v)){
-                    changeToUnpressed(positionListView, reactionButton.getKey());
-                }
-            }
-            // call to api
-            controller.changeReaction(storieId,reactionName);
-        }
-
-    }
-
-    private void changeToPressed(final int positionListView, ImageButton v){
-        v.setColorFilter(ContextCompat.getColor(activity, R.color.reaction_button_pressed), android.graphics.PorterDuff.Mode.SRC_IN);
-        reactionButtons.get(positionListView).put(v,REACTION_BUTTON_PRESSED);
-    }
-
-    private void changeToUnpressed(final int positionListView, ImageButton v){
-        v.setColorFilter(ContextCompat.getColor(activity, R.color.reaction_button_not_pressed), android.graphics.PorterDuff.Mode.SRC_IN);
-        reactionButtons.get(positionListView).put(v,REACTION_BUTTON_NOT_PRESSED);
     }
 
     private void showCommentsDialog(String storieId) {
@@ -244,7 +160,96 @@ public class StoriesAdapter extends BaseAdapter {
         commentsDialogFragment.showNow(fm, "fragment_storie_comments");
     }
 
+    private void prepareReactionButtons(final View layout, HashMap<ImageButton, Integer> buttons,
+                                        List<ReactionResume> reactionResumes, final String storieId, final int positionListView) {
+        for (final ReactionResume reactionResume : reactionResumes) {
+            final TextView countView = layout.findViewById(reactionResume.getCountId());
+            countView.setText(String.valueOf(reactionResume.getCount()));
+            ImageButton button = layout.findViewById(reactionResume.getViewId());
+            Integer status;
+            if (reactionResume.getReact() != null) {
+                status = REACTION_BUTTON_PRESSED;
+                button.setColorFilter(ContextCompat.getColor(activity, R.color.reaction_button_pressed), android.graphics.PorterDuff.Mode.SRC_IN);
+            } else {
+                status = REACTION_BUTTON_NOT_PRESSED;
+                button.setColorFilter(ContextCompat.getColor(activity, R.color.reaction_button_not_pressed), android.graphics.PorterDuff.Mode.SRC_IN);
+            }
+            button.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    changeStatus((ImageButton)v, reactionResume.getReactionType(), positionListView, storieId, countView);
+                }
+            });
+            buttons.put(button, status);
+        }
+    }
 
+    private void changeStatus(ImageButton button, String reactionName, int positionListView, String storieId, TextView countView) {
+        // For vector drawable
+        // https://stackoverflow.com/questions/20121938/how-to-set-tint-for-an-image-view-programmatically-in-android
+        int reactionCount = Integer.parseInt(countView.getText().toString());
+        if(reactionButtons.get(positionListView).get(button).equals(REACTION_BUTTON_PRESSED)){
+            changeToUnpressed(positionListView, button);
+            countView.setText(String.valueOf(reactionCount - 1));
+            // call to api - empty for unset
+            controller.changeReaction(storieId,"");
+        } else{
+            changeToPressed(positionListView, button);
+            for (Map.Entry<ImageButton, Integer> reactionButton: reactionButtons.get(positionListView).entrySet()) {
+                if(!reactionButton.getKey().equals(button)){
+                    changeToUnpressed(positionListView, reactionButton.getKey());
+                }
+            }
+            countView.setText(String.valueOf(reactionCount + 1));
+            // call to api
+            controller.changeReaction(storieId,reactionName);
+        }
+    }
 
+    private void changeToPressed(final int positionListView, ImageButton v){
+        v.setColorFilter(ContextCompat.getColor(activity, R.color.reaction_button_pressed), android.graphics.PorterDuff.Mode.SRC_IN);
+        reactionButtons.get(positionListView).put(v,REACTION_BUTTON_PRESSED);
+    }
 
+    private void changeToUnpressed(final int positionListView, ImageButton v){
+        v.setColorFilter(ContextCompat.getColor(activity, R.color.reaction_button_not_pressed), android.graphics.PorterDuff.Mode.SRC_IN);
+        reactionButtons.get(positionListView).put(v,REACTION_BUTTON_NOT_PRESSED);
+    }
+
+    public StoriesLoggedInActivity getActivity() {
+        return activity;
+    }
+
+    public static class ViewHolder {
+        public final TextView name;
+        public final TextView timestamp;
+        public final TextView statusMsg;
+        public final ImageView profilePic;
+        public final ImageView storieImageView;
+        public final VideoView storieVideoView;
+        public View layout;
+
+        public View lastCommentView;
+        public View messageComment;
+        public ImageView userCommentPic;
+        public TextView lastComment;
+        public TextView usernameLastComment;
+        public ImageButton sendCommentButton;
+
+        public ViewHolder(View v) {
+            layout = v;
+            name = v.findViewById(R.id.name);
+            timestamp = v.findViewById(R.id.timestamp);
+            statusMsg = v.findViewById(R.id.txtStatusMsg);
+            profilePic = v.findViewById(R.id.profilePic);
+            storieImageView = v.findViewById(R.id.storieImage1);
+            storieVideoView = v.findViewById(R.id.storieVideoView);
+
+            lastCommentView = layout.findViewById(R.id.lastCommentView);
+            messageComment = layout.findViewById(R.id.messageCommentText);
+            userCommentPic = layout.findViewById(R.id.userCommentPic);
+            lastComment = layout.findViewById(R.id.lastComment);
+            usernameLastComment = layout.findViewById(R.id.usernameLastComment);
+            sendCommentButton = layout.findViewById(R.id.sendMessageCommentButton);
+        }
+    }
 }

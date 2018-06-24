@@ -115,6 +115,12 @@
                 android:background="@drawable/roundcorner"
                 android:focusable="false"
                 app:srcCompat="@drawable/ic_sentiment_satisfied_black_24dp" />
+            <TextView
+                android:id="@+id/likeButtonCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/stories_item_status_count_pad_left_right"
+                android:text="0"/>
 
             <ImageButton
                 android:id="@+id/dontLikeButton"
@@ -125,6 +131,12 @@
                 android:background="@drawable/roundcorner"
                 android:clickable="true"
                 app:srcCompat="@drawable/ic_sentiment_dissatisfied_black_24dp" />
+            <TextView
+                android:id="@+id/dontLikeButtonCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/stories_item_status_count_pad_left_right"
+                android:text="0"/>
 
             <ImageButton
                 android:id="@+id/enjoyButton"
@@ -135,6 +147,12 @@
                 android:paddingRight="@dimen/stories_item_status_pad_left_right"
                 android:background="@drawable/roundcorner"
                 app:srcCompat="@drawable/ic_sentiment_very_satisfied_black_24dp" />
+            <TextView
+                android:id="@+id/enjoyButtonCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/stories_item_status_count_pad_left_right"
+                android:text="0"/>
 
             <ImageButton
                 android:id="@+id/getBoredButton"
@@ -145,6 +163,12 @@
                 android:paddingRight="@dimen/stories_item_status_pad_left_right"
                 android:background="@drawable/roundcorner"
                 app:srcCompat="@drawable/ic_sentiment_very_dissatisfied_black_24dp" />
+            <TextView
+                android:id="@+id/getBoredButtonCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/stories_item_status_count_pad_left_right"
+                android:text="0"/>
 
         </LinearLayout>
 
