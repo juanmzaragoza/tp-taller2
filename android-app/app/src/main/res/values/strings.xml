@@ -47,6 +47,14 @@
     <string name="stories_map">Stories Map</string>
     <string name="action_take_flash">Flash</string>
     <string name="action_flash_stories">Flashes</string>
+    <string name="first_name">First name:</string>
+    <string name="last_name">Last name:</string>
+    <string name="birthday">Birthday:</string>
+    <string name="gender">Gender:</string>
+    <string name="unknown_date">Unknown</string>
+    <string name="storie_picture">Storie picture</string>
+    <string name="commnet_user_picture">Commnet user picture</string>
+    <string name="i_want_to_say">I want to say...</string>
 
 
 </resources>

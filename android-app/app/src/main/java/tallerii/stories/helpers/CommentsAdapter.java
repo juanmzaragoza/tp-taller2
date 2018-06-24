@@ -13,6 +13,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import tallerii.stories.R;
+import tallerii.stories.activities.StoriesLoggedInActivity;
 import tallerii.stories.controller.CommentController;
 import tallerii.stories.network.apimodels.Comment;
 import tallerii.stories.network.apimodels.Storie;
@@ -69,6 +70,12 @@ public class CommentsAdapter extends BaseAdapter{
         // get comment and populate view
         final Comment comment = comments.get(position);
         userNameComment.setText(comment.getUserName());
+        userNameComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((StoriesLoggedInActivity)activity).startProfileActivity(comment.getUserId());
+            }
+        });
         messageComment.setText(comment.getMessage());
         imageHelper.setFirebaseImage(comment.getUserPicture(), userCommentPic);
 

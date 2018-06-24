@@ -14,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import tallerii.stories.activities.StoriesAppActivity;
+import tallerii.stories.activities.StoriesLoggedInActivity;
 import tallerii.stories.helpers.ImageHelper;
 import tallerii.stories.interfaces.StoriesAware;
 import tallerii.stories.network.AdapterApplicationApiRest;
@@ -161,9 +162,9 @@ public class StoriesController {
         parameters = new JsonObject();
         parameters.addProperty("_id", "");
         parameters.addProperty("_rev", "");
-        parameters.addProperty("date","");
+        parameters.addProperty("date",currentTime.toString());
         parameters.addProperty("storie_id", storieId);
-        parameters.addProperty("user_id", context.getLoggedInActivity().getProfile().getId());
+        parameters.addProperty("user_id", StoriesLoggedInActivity.getProfile().getId());
         parameters.addProperty("reaction", reactionName);
 
         EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
@@ -186,7 +187,7 @@ public class StoriesController {
                     }
                 } else{
                     StoriesAppActivity activity = context.getLoggedInActivity();
-                    activity.showMessage("Couldn't react to storie. Please, intent you in a few minutes again.", 5);
+                    activity.showMessage("Couldn't react to storie. Please, try again in a few minutes.", 5);
 
                 }
             }

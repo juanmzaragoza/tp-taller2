@@ -5,58 +5,71 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Reactions {
-    @SerializedName("LIKE")
-    private Reaction like = new Reaction();
-    @SerializedName("NOTLIKE")
-    private Reaction notLike = new Reaction();
-    @SerializedName("ENJOY")
-    private Reaction enjoy = new Reaction();
-    @SerializedName("GETBORED")
-    private Reaction bored = new Reaction();
+import tallerii.stories.R;
 
-    public Reaction getLike() {
+public class Reactions {
+    private static final String I_LIKE_REACTION = "LIKE";
+    private static final String I_NOTLIKE_REACTION = "NOTLIKE";
+    private static final String I_ENJOY_REACTION = "ENJOY";
+    private static final String I_GETBORED_REACTION = "GETBORED";
+
+    @SerializedName(I_LIKE_REACTION)
+    private ReactionResume like = new ReactionResume();
+    @SerializedName(I_NOTLIKE_REACTION)
+    private ReactionResume notLike = new ReactionResume();
+    @SerializedName(I_ENJOY_REACTION)
+    private ReactionResume enjoy = new ReactionResume();
+    @SerializedName(I_GETBORED_REACTION)
+    private ReactionResume bored = new ReactionResume();
+
+    public ReactionResume getLike() {
         return like;
     }
 
-    public void setLike(Reaction like) {
+    public void setLike(ReactionResume like) {
         this.like = like;
     }
 
-    public Reaction getNotLike() {
+    public ReactionResume getNotLike() {
         return notLike;
     }
 
-    public void setNotLike(Reaction notLike) {
+    public void setNotLike(ReactionResume notLike) {
         this.notLike = notLike;
     }
 
-    public Reaction getEnjoy() {
+    public ReactionResume getEnjoy() {
         return enjoy;
     }
 
-    public void setEnjoy(Reaction enjoy) {
+    public void setEnjoy(ReactionResume enjoy) {
         this.enjoy = enjoy;
     }
 
-    public Reaction getBored() {
+    public ReactionResume getBored() {
         return bored;
     }
 
-    public void setBored(Reaction bored) {
+    public void setBored(ReactionResume bored) {
         this.bored = bored;
     }
 
-    public List<Reaction> obtainReactions() {
-        List<Reaction> reactions = new ArrayList<>();
-        like.setReactionType("LIKE");
-        reactions.add(like);
-        notLike.setReactionType("NOTLIKE");
-        reactions.add(like);
-        enjoy.setReactionType("ENJOY");
-        reactions.add(like);
-        bored.setReactionType("GETBORED");
-        reactions.add(like);
-        return reactions;
+    // TODO unfuck, maybe set id's programatically?
+    // Fuck encapsulation and single responsibility
+    public List<ReactionResume> obtainReactions() {
+        List<ReactionResume> reactionResumes = new ArrayList<>();
+        addReactionButton(reactionResumes, like, I_LIKE_REACTION, R.id.likeButton, R.id.likeButtonCount);
+        addReactionButton(reactionResumes, notLike, I_NOTLIKE_REACTION, R.id.dontLikeButton, R.id.dontLikeButtonCount);
+        addReactionButton(reactionResumes, enjoy, I_ENJOY_REACTION, R.id.enjoyButton, R.id.enjoyButtonCount);
+        addReactionButton(reactionResumes, bored, I_GETBORED_REACTION, R.id.getBoredButton, R.id.getBoredButtonCount);
+        return reactionResumes;
+    }
+
+    private void addReactionButton(List<ReactionResume> reactionResumes, ReactionResume reactionResume,
+                                   String reactionType, int reactionViewId, int countViewId) {
+        reactionResume.setReactionType(reactionType);
+        reactionResume.setViewId(reactionViewId);
+        reactionResume.setCountViewId(countViewId);
+        reactionResumes.add(reactionResume);
     }
 }

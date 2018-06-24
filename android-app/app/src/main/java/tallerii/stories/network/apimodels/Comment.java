@@ -5,25 +5,25 @@ import com.google.gson.annotations.SerializedName;
 public class Comment extends ObjectApiApp {
 
     @SerializedName("storie_id")
-    public String storieId;
+    private String storieId;
 
     @SerializedName("user_id")
-    public String userId;
+    private String userId;
 
     @SerializedName("name")
-    public String userName;
+    private String userName;
 
     @SerializedName("last_name")
-    public String userLastName;
+    private String userLastName;
 
     @SerializedName("picture")
     private String userPicture;
 
     @SerializedName("date")
-    public String date;
+    private String date;
 
     @SerializedName("message")
-    public String message;
+    private String message;
 
     public Comment(String storieId, String userId,String userName,String userPicture, String date, String message) {
         this.storieId = storieId;

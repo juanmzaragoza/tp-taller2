@@ -10,49 +10,49 @@ import java.util.List;
 public class Storie extends ObjectApiApp{
 
     @SerializedName("user_id")
-    public String userId;
+    private String userId;
 
     @SerializedName("created_time")
-    public String createdTime;
+    private String createdTime;
 
     @SerializedName("updated_time")
-    public String updatedTime;
+    private String updatedTime;
 
     @SerializedName("title")
-    public String title;
+    private String title;
 
     @SerializedName("description")
-    public String description;
+    private String description;
 
     @SerializedName("location")
-    public String location;
+    private String location;
 
     @SerializedName("visibility")
-    public String visibility;
+    private String visibility;
 
     @SerializedName("multimedia")
-    public String multimedia;
+    private String multimedia;
 
     @SerializedName("story_type")
-    public String storieType;
+    private String storieType;
 
     @SerializedName("name")
-    public String userName;
+    private String userName;
 
     @SerializedName("last_name")
-    public String userLastName;
+    private String userLastName;
 
     @SerializedName("user_email")
-    public String userEmail;
+    private String userEmail;
 
     @SerializedName("picture")
-    public String userPicture;
+    private String userPicture;
 
     @SerializedName("comments")
-    public List<Comment> comments = new ArrayList<Comment>();
+    private List<Comment> comments = new ArrayList<Comment>();
 
     @SerializedName("reactions")
-    public Reactions reactions = new Reactions();
+    private Reactions reactions = new Reactions();
 
     public String getUserId() {
         return userId;
