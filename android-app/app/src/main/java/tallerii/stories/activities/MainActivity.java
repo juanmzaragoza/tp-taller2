@@ -30,6 +30,7 @@ public class MainActivity extends StoriesLoggedInActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
@@ -45,7 +46,7 @@ public class MainActivity extends StoriesLoggedInActivity {
             showMessage(intent.getStringExtra(EXTRA_MESSAGE), 10);
         }
         // by default show home
-        setHomeFragment(ProfileActivity.PROFILE_ID);
+        setHomeFragment(intent.getStringExtra(ProfileActivity.PROFILE_ID));
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_container, fragment).commit();
 
