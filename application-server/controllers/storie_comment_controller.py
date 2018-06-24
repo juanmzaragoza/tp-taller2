@@ -15,6 +15,7 @@ class StorieCommentController(flask_restful.Resource):
 	def __init__(self):
 		self.parser = reqparse.RequestParser(bundle_errors=True)
 	
+	@login_required
 	def get(self, storie_id):
 		try:
 			 comments = CommentModel.get_storie_comments(storie_id)
