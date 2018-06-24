@@ -2,7 +2,7 @@ from functools import wraps
 from controllers.error_handler import ErrorHandler
 from constants import JWT_SECRET
 import jwt
-from jwt import ExpiredSignatureError
+from jwt import ExpiredSignatureError, DecodeError
 from flask import request
 from models.user_activity import UserActivityModel
 from errors_exceptions.user_mismatch_exception import UserMismatchException
@@ -52,6 +52,8 @@ def login_required(f):
 			if (not is_authenticated()):
 				return ErrorHandler.create_error_response('invalid_token', 401)
 			return f(*args, **kwargs)
+		except DecodeError:
+			return ErrorHandler.create_error_response('invalid_token', 401)
 		except ExpiredSignatureError:
 			return ErrorHandler.create_error_response('token-expired', 401)
 
