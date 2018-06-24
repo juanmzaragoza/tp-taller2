@@ -29,6 +29,7 @@
                 android:id="@+id/profilePic"
                 android:layout_width="@dimen/stories_item_profile_pic"
                 android:layout_height="@dimen/stories_item_profile_pic"
+                android:adjustViewBounds="true"
                 android:scaleType="fitCenter" />
 
             <LinearLayout
@@ -76,9 +77,12 @@
             android:id="@+id/storieImage1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxHeight="200dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
             android:background="@color/white"
-            android:scaleType="fitXY"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:contentDescription="@string/storie_picture" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,7 +94,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="217dp"
                 android:clickable="true"
-                android:focusable="false"
+                android:focusable="true"
                 android:scaleType="fitXY"
                 android:visibility="gone" />
         </LinearLayout>
@@ -175,7 +179,7 @@
         <View
             android:id="@+id/divider2"
             android:layout_width="fill_parent"
-            android:layout_height="1dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:background="?android:attr/listDivider"
             android:paddingBottom="5dp"/>
@@ -193,15 +197,16 @@
                 android:id="@+id/userCommentPic"
                 android:layout_width="@dimen/stories_item_profile_pic"
                 android:layout_height="@dimen/stories_item_profile_pic"
-                android:paddingRight="@dimen/stories_item_padding_left_right"
-                android:scaleType="fitCenter" />
+                android:paddingEnd="@dimen/stories_item_padding_left_right"
+                android:scaleType="fitCenter"
+                android:contentDescription="@string/commnet_user_picture" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/stories_item_profile_info_padd"
-                android:paddingRight="@dimen/stories_item_padding_left_right"
+                android:paddingStart="@dimen/stories_item_profile_info_padd"
+                android:paddingEnd="@dimen/stories_item_padding_left_right"
                 android:background="@drawable/commentroundcorner">
 
                 <TextView
@@ -231,7 +236,7 @@
                 android:id="@+id/messageCommentText"
                 android:layout_width="wrap_content"
                 android:layout_weight="3"
-                android:hint="I want to say..."
+                android:hint="@string/i_want_to_say"
                 android:layout_height="wrap_content" />
 
             <ImageButton
@@ -239,7 +244,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingLeft="@dimen/stories_item_status_pad_left_right"
+                android:paddingStart="@dimen/stories_item_status_pad_left_right"
                 android:src="@drawable/ic_send_black_24dp" />
 
         </LinearLayout>

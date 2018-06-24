@@ -109,6 +109,9 @@ public class StoriesAdapter extends BaseAdapter {
         if (storie.getMultimedia() != null && !storie.getMultimedia().isEmpty()) {
             imageHelper.setFirebaseImage(storie.getMultimedia(), holder.storieImageView);
             imageHelper.setFirebaseVideo(storie.getMultimedia(), holder.storieVideoView);
+        } else {
+            holder.storieImageView.setVisibility(View.GONE);
+            holder.storieVideoView.setVisibility(View.GONE);
         }
 
         prepareReactionButtons(holder.layout, storie.getId(), position, storie.getReactions().obtainReactions());
