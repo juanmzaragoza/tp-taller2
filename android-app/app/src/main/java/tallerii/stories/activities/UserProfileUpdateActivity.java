@@ -1,17 +1,23 @@
 package tallerii.stories.activities;
 
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.UUID;
 
 import tallerii.stories.R;
 import tallerii.stories.controller.ProfileController;
 import tallerii.stories.controller.ProfileUpdateController;
+import tallerii.stories.fragments.profile.DatePickerFragment;
+import tallerii.stories.helpers.DateUtils;
 import tallerii.stories.helpers.ImageHelper;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 
@@ -20,6 +26,8 @@ public class UserProfileUpdateActivity extends ProfileActivity {
     private Uri filePath = null;
     private EditText firstName;
     private EditText lastName;
+    private TextView birthday;
+    private EditText gender;
 
     private Runnable onSuccess = new Runnable() {
         @Override
@@ -41,11 +49,24 @@ public class UserProfileUpdateActivity extends ProfileActivity {
         imageView = findViewById(R.id.profile_picture);
         firstName = findViewById(R.id.first_name);
         lastName = findViewById(R.id.last_name);
+        birthday = findViewById(R.id.birthday);
+        gender = findViewById(R.id.gender);
         setTitle("Update Profile");
     }
 
     @Override
-    protected void setUserName(ApplicationProfile applicationProfile) {
+    public void initializeProfile(ApplicationProfile applicationProfile) {
+        super.initializeProfile(applicationProfile);
+        String birthdayText = applicationProfile.getBirthday();
+        this.birthday.setText(birthdayText != null ? birthdayText: DateUtils.getTimeFromTimestamp(DateUtils.getNowTime()));
+        String gender = applicationProfile.getGender();
+        if (gender != null){
+            this.gender.setText(gender);
+        }
+    }
+
+    @Override
+    protected void setUserInfo(ApplicationProfile applicationProfile) {
         firstName.setText(applicationProfile.getName());
         lastName.setText(applicationProfile.getLastName());
     }
@@ -94,6 +115,8 @@ public class UserProfileUpdateActivity extends ProfileActivity {
         ApplicationProfile applicationProfile = getProfile();
         applicationProfile.setFirstName(getStringFrom(R.id.first_name));
         applicationProfile.setLastName(getStringFrom(R.id.last_name));
+        applicationProfile.setGender(getStringFrom(R.id.gender));
+        applicationProfile.setBirthday(getStringFrom(R.id.birthday));
         if (filePath != null) {
             applicationProfile.setProfilePicture(UUID.randomUUID().toString().replace("-", ""));
             imageHelper.uploadMedia(applicationProfile.getProfilePicture(), filePath, onSuccess, onError);//updates profile only if picture loaded
@@ -101,5 +124,10 @@ public class UserProfileUpdateActivity extends ProfileActivity {
         } else {
             ((ProfileUpdateController)controller).putApplicationProfile(getProfile());
         }
+    }
+
+    public void chooseDate(View view) {
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getFragmentManager(), "datePicker");
     }
 }

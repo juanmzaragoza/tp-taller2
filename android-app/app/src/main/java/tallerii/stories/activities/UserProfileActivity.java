@@ -19,10 +19,12 @@ import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import tallerii.stories.R;
 import tallerii.stories.controller.ProfileController;
 import tallerii.stories.controller.ProfileUserController;
+import tallerii.stories.helpers.DateUtils;
 import tallerii.stories.network.apimodels.ApplicationProfile;
 import tallerii.stories.network.apimodels.Friend;
 import tallerii.stories.network.apimodels.FriendRequest;
@@ -31,20 +33,27 @@ public class UserProfileActivity extends ProfileActivity {
 
     private ProfileUserController profileUserController;
     private Button actionButton;
-    public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
     private String requestMessage;
+    private TextView birthday;
+    private TextView gender;
 
     @Override
     protected void initWithChildResource() {
         setContentView(R.layout.activity_user_profile);
         imageView = findViewById(R.id.profile_picture);
         actionButton = findViewById(R.id.profile_action_button);
+        birthday = findViewById(R.id.birthday);
+        gender = findViewById(R.id.gender);
         setTitle("Profile");
     }
 
     @Override
     public void initializeProfile(ApplicationProfile applicationProfile) {
         super.initializeProfile(applicationProfile);
+        String birthdayText = applicationProfile.getBirthday();
+        this.birthday.setText(birthdayText != null ? birthdayText : "Unknown");
+        String gender = applicationProfile.getGender();
+        this.gender.setText(gender  != null ? gender : "Unknown");
         ApplicationProfile.ProfileType type = applicationProfile.getType();
         if (type == null) return;
         switch (type) {
@@ -198,7 +207,7 @@ public class UserProfileActivity extends ProfileActivity {
         friendRequest.setPicture(currentUser.getProfilePicture());
         friendRequest.setSenderUserId(currentUser.getUserId());
         friendRequest.setRcvUserId(applicationProfile.getUserId());
-        friendRequest.setCreatedTime(SIMPLE_DATE_FORMAT.format(Calendar.getInstance().getTime()));
+        friendRequest.setCreatedTime(DateUtils.getTimeFromTimestamp(DateUtils.getNowTime()));
         profileUserController.requestFriendship(friendRequest);
     }
 
@@ -217,7 +226,7 @@ public class UserProfileActivity extends ProfileActivity {
         return UserProfileActivity.this;
     }
 
-    protected void setUserName(ApplicationProfile applicationProfile) {
+    protected void setUserInfo(ApplicationProfile applicationProfile) {
         TextView username = findViewById(R.id.user_name);
         username.setText(applicationProfile.getFullName());
     }

@@ -41,11 +41,11 @@ public abstract class ProfileActivity extends StoriesLoggedInActivity {
         }
         TextView friendsCount = findViewById(R.id.friend_count);
         friendsCount.setText(String.valueOf(applicationProfile.getFriends().size()));
-        setUserName(applicationProfile);
+        setUserInfo(applicationProfile);
         imageHelper.setFirebaseImage(applicationProfile.getProfilePicture(), imageView);
     }
 
-    abstract protected void setUserName(ApplicationProfile applicationProfile);
+    abstract protected void setUserInfo(ApplicationProfile applicationProfile);
 
     abstract protected ProfileController getNewController();
 }

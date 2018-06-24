@@ -23,6 +23,8 @@ public class ApplicationProfile {
     private String profilePicture;
     private List<Storie> stories = new ArrayList<>();
     private List<Friend> friends = new ArrayList<>();
+    private String birthday;
+    private String gender;
 
     public List<Friend> getFriends() {
         return friends;
@@ -104,6 +106,22 @@ public class ApplicationProfile {
             }
         }
         return false;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
     public enum ProfileType {
