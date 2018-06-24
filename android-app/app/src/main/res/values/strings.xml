@@ -51,6 +51,7 @@
     <string name="last_name">Last name:</string>
     <string name="birthday">Birthday:</string>
     <string name="gender">Gender:</string>
+    <string name="unknown_date">Unknown</string>
 
 
 </resources>

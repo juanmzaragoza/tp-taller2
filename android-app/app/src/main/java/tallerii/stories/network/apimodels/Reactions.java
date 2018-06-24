@@ -69,7 +69,7 @@ public class Reactions {
                                    String reactionType, int reactionViewId, int countViewId) {
         reactionResume.setReactionType(reactionType);
         reactionResume.setViewId(reactionViewId);
-        reactionResume.setCountId(countViewId);
+        reactionResume.setCountViewId(countViewId);
         reactionResumes.add(reactionResume);
     }
 }
