@@ -27,40 +27,13 @@ public class LocationHelper {
     private Context context;
     private Activity activity;
 
-    private static Location location;
+    private Location location;
     private double longitude;
     private double latitude;
 
     public LocationHelper(Activity activity, Context context){
         this.activity = activity;
         this.context = context;
-        locationListener = getLocationListener();
-    }
-
-    // location listener for get location
-    private LocationListener getLocationListener() {
-        return new LocationListener() {
-
-            @Override
-            public void onLocationChanged(final Location location) {
-                LocationHelper.location = location;
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
     }
 
     public Location getLocation(){
@@ -71,11 +44,12 @@ public class LocationHelper {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
         }
         locationManger.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, locationListener);
+        location = locationManger.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         return location;
     }
 
     /**
-     * Function to get latitude
+     * Get latitude mathod
      * */
     public double getLatitude() {
         if (location != null) {
@@ -87,7 +61,7 @@ public class LocationHelper {
     }
 
     /**
-     * Function to get longitude
+     * Get longitude method
      * */
     public double getLongitude() {
         if (location != null) {
