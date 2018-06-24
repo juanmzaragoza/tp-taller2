@@ -1,5 +1,6 @@
 import unittest
 import unittest.mock as mock
+from unittest.mock import patch
 from models.user_data import UserDataModel
 from controllers.storie_detail_controller import StorieDetailController
 from controllers.friend_controller import FriendController
@@ -15,7 +16,9 @@ from errors_exceptions.no_user_data_found_exception import NoUserDataFoundExcept
 
 class TestProfileApi(unittest.TestCase):
 
-    def test_user_profile_db_conn_failed(self):
+    @patch('auth_service.is_authenticated')
+    def test_user_profile_db_conn_failed(self, mock_is_authenticated):
+        mock_is_authenticated.return_value = True
         user_id = '1'
         UserDataModel.get_user_data_by_user_id = \
             mock.MagicMock(side_effect=DBConnectionError(""))
@@ -26,7 +29,9 @@ class TestProfileApi(unittest.TestCase):
             mock.MagicMock(return_value=profile_successful_mock)
         self.assertEqual(service.get(user_id), no_db_conn_mock)
 
-    def test_user_profile_not_exists(self):
+    @patch('auth_service.is_authenticated')
+    def test_user_profile_not_exists(self, mock_is_authenticated):
+        mock_is_authenticated.return_value = True
         user_id = '1'
         UserDataModel.get_user_data_by_user_id = \
             mock.MagicMock(side_effect=NoUserDataFoundException)
@@ -37,7 +42,9 @@ class TestProfileApi(unittest.TestCase):
             mock.MagicMock(return_value=profile_successful_mock)
         self.assertEqual(service.get(user_id), no_user_data_found_mock)
 
-    def test_user_profile_successful(self):
+    @patch('auth_service.is_authenticated')
+    def test_user_profile_successful(self, mock_is_authenticated):
+        mock_is_authenticated.return_value = True
         user_id = '1'
         UserDataModel.get_user_data_by_user_id = \
             mock.MagicMock(return_value=user_data_successful_mock)
