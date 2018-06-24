@@ -12,6 +12,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import tallerii.stories.network.apimodels.Comment;
 import tallerii.stories.network.apimodels.FriendRequest;
 import tallerii.stories.network.apimodels.Storie;
@@ -82,4 +83,8 @@ public interface EndpointsApplicationApiRest {
     @Headers({ACCEPT_APPLICATION_JSON})
     @GET(ConstantsApplicationApiRest.GET_COMMENTS_BY_STORIE)
     Call<List<Comment>> getStorieComments(@Path("id") String storieId);
+
+    @Headers({ACCEPT_APPLICATION_JSON})
+    @GET(ConstantsApplicationApiRest.GET_STORIES_BY_USER)
+    Call<List<Storie>> getStoriesByUserId(@Path("id") String userId, @Query("story_type") String type);
 }

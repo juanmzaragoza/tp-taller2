@@ -82,6 +82,34 @@ public class StoriesController {
             @Override
             public void onFailure(Call<List<Storie>> call, Throwable t) {
                 Log.e("Error", t.toString());
+                StoriesAppActivity activity = context.getLoggedInActivity();
+                activity.showMessage("Cannot load stories! Please, retry in a minutes", 5);
+            }
+
+            @Override
+            public void onResponse(Call<List<Storie>> call, Response<List<Storie>> response) {
+                if (response.isSuccessful()) {
+                    List<Storie> stories = response.body();
+                    if (stories != null) {
+                        context.populateStories(stories);
+                    }
+                }
+            }
+        });
+    }
+
+
+    public void getFlashStories(final String userId) {
+        EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
+        Call<List<Storie>> responseCall = endpointsApi.getStoriesByUserId(userId,"fast");
+
+        responseCall.enqueue(new Callback<List<Storie>>() {
+
+            @Override
+            public void onFailure(Call<List<Storie>> call, Throwable t) {
+                Log.e("Error", t.toString());
+                StoriesAppActivity activity = context.getLoggedInActivity();
+                activity.showMessage("Cannot load flash stories! Please, retry in a minutes", 5);
             }
 
             @Override

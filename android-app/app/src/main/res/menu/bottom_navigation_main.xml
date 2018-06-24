@@ -15,10 +15,16 @@
         android:title="@string/text_add_content"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_account"
+        android:id="@+id/action_take_flash"
         android:enabled="true"
         android:icon="@drawable/ic_flash_on_white_24dp"
         android:title="@string/action_take_flash"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_flash_stories"
+        android:enabled="true"
+        android:icon="@drawable/ic_access_time_white_24dp"
+        android:title="@string/action_flash_stories"
         app:showAsAction="ifRoom" />
 
 </menu>

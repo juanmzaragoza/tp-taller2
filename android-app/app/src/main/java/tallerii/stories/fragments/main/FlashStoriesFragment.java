@@ -2,6 +2,8 @@ package tallerii.stories.fragments.main;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +15,12 @@ import tallerii.stories.R;
 import tallerii.stories.activities.ProfileActivity;
 import tallerii.stories.activities.StoriesLoggedInActivity;
 import tallerii.stories.controller.StoriesController;
+import tallerii.stories.helpers.FlashStoriesAdapter;
 import tallerii.stories.helpers.StoriesAdapter;
 import tallerii.stories.interfaces.StoriesAware;
 import tallerii.stories.network.apimodels.Storie;
 
-public class HomeFragment extends Fragment implements StoriesAware {
+public class FlashStoriesFragment extends Fragment implements StoriesAware {
 
     private StoriesController controller;
     private View rootView;
@@ -30,25 +33,25 @@ public class HomeFragment extends Fragment implements StoriesAware {
         controller = new StoriesController(this);
 
         // get root view and then access to objects like R.id.usernameView
-        rootView = inflater.inflate(R.layout.fragment_stories, container, false);
+        rootView = inflater.inflate(R.layout.fragment_flash_stories, container, false);
 
-        getStories();
+        getFlashStories();
 
         return rootView;
     }
 
-    private void getStories(){
+    private void getFlashStories(){
         Bundle arguments = getArguments();
         if (arguments != null) {
-            controller.getStories(arguments.getString(ProfileActivity.PROFILE_ID));
-            helperFragment.showMessageLoading("Wait while loading stories...");
+            controller.getFlashStories(arguments.getString(ProfileActivity.PROFILE_ID));
+            helperFragment.showMessageLoading("Wait while loading flash stories...");
         }
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //getStories();
+        //getFlashStories();
     }
 
     @Override
@@ -59,9 +62,17 @@ public class HomeFragment extends Fragment implements StoriesAware {
     @Override
     public void populateStories(List<Storie> storiesToPopulate) {
 
-        ListView listView = rootView.findViewById(R.id.list);
+        RecyclerView listView = (RecyclerView) rootView.findViewById(R.id.list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
 
-        StoriesAdapter listAdapter = new StoriesAdapter(getActivity(), getContext(), controller, storiesToPopulate);
+        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        layoutManager.scrollToPosition(0);
+
+        listView.setLayoutManager(layoutManager);
+        listView.setHasFixedSize(true);
+        listView.setVisibility(View.VISIBLE);
+
+        FlashStoriesAdapter listAdapter = new FlashStoriesAdapter(getActivity(), storiesToPopulate);
         listView.setAdapter(listAdapter);
 
         // notify data changes to list adapater
