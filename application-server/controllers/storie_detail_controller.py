@@ -10,7 +10,8 @@ from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_data_found_exception import NoDataFoundException
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
-from auth_service import login_required
+from errors_exceptions.user_mismatch_exception import UserMismatchException
+from auth_service import login_required, validate_sender
 from models.user_activity import UserActivityModel
 
 import flask
@@ -45,8 +46,7 @@ class StorieDetailController(flask_restful.Resource):
 			self.parser.add_argument('user_id', required=True, help="Field user_id is mandatory")
 
 			args = self.parser.parse_args()
-			#app.logger.error('args: %s', args)
-
+			self._validate_author(id)
 			body = json.loads(request.data.decode('utf-8'))
 			
 			storie = StorieModel.update_storie(id, body)
@@ -58,6 +58,8 @@ class StorieDetailController(flask_restful.Resource):
 		except NoStorieFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DataVersionException as e:
+			return ErrorHandler.create_error_response(str(e), 409)
+		except UserMismatchException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
@@ -89,3 +91,8 @@ class StorieDetailController(flask_restful.Resource):
 		for storie in stories:
 			response.append(storie)
 		return response
+
+	def _validate_author(self, storie_id):
+		storie = StorieModel.get_storie(storie_id)
+		author_id = storie.get('user_id')
+		validate_sender(author_id)
