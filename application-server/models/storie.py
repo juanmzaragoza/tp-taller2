@@ -9,10 +9,12 @@ from models.friend import FriendModel
 from constants import MONGODB_USER, MONGODB_PASSWD
 from controllers.db_controller import MongoController
 from controllers.date_controller import DateController
-from controllers.rule_machine_proxy import RuleMachineProxy
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
 from models.user_activity import UserActivityModel
+from rules.rules import RulesMachine
+from rules.storie_priority_data import StoriePriorityData
+
 import datetime
 
 class StorieModel:
@@ -95,6 +97,7 @@ class StorieModel:
 	@staticmethod
 	def get_stories(user_id, story_type = 'normal'):
 		data = []
+		sp_list = []
 		stories_list = {}
 		users_activity = {}
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
@@ -125,9 +128,6 @@ class StorieModel:
 				}
 			]}).sort("created_time",pymongo.DESCENDING)
 		
-		#rules_machine = RuleMachineProxy()
-		#rules_machine.new_rule_process()
-		
 		for storie in stories:
 			storie_user_id = storie["user_id"]
 			storie_id = storie["_id"]
@@ -135,27 +135,21 @@ class StorieModel:
 			storie = StorieModel.get_storie_with_user_data(storie)
 			storie["comments"] = CommentModel.get_last_storie_comment(storie_id)
 			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
-			'''
-			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
+			
+			storie_data = StorieModel.get_storie_resume(storie)
+			
 			if (storie_user_id not in users_activity):
 				users_activity[storie_user_id] = UserActivityModel.log_user_activity_resume(storie_user_id, 10)
 			
-			rule_src_data = {
-						"user_data": users_activity[storie_user_id],
-						"storie_data": StorieModel.get_storie_resume(storie)
-			}
-			'''
-			data.append(storie)
-			#rules_machine.process_storie_data(rule_src_data)
-			#stories_list[storie_id] = storie
+			storie_priority_data = StoriePriorityData(storie_id, storie_data["past"], storie_data["num_comments"], storie_data["num_reactions"], users_activity[storie_user_id]["num_friends"], users_activity[storie_user_id]["num_stories"])
+			sp_list.append(storie_priority_data)
+			RulesMachine.process_data(storie_priority_data)
 			
-		#result = rules_machine.get_results()
-		#stories_importance = result["result"]
-		#sorted_by_importance = sorted(stories_importance.items(), key=lambda kv: kv[1], reverse=True)
+			stories_list[storie_id] = storie
 		
-		#for storie in sorted_by_importance:
-			#storie_id = storie[0]
-			#data.append(stories_list[storie_id])
+		sp_list.sort(key=lambda x: x.get_priority(), reverse=True)
+		for sp in sp_list:
+			data.append(stories_list[sp.get_storie_id()])
 		
 		return data
 	
