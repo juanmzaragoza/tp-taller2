@@ -130,7 +130,13 @@ class CommentModel:
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		count = db.storie_comments.find().count()
 		return count
-
+	
+	@staticmethod
+	def count_storie_comments(storie_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+		count = db.storie_comments.find({"storie_id": storie_id}).count()
+		return count
+		
 	@staticmethod
 	def count_today_comments():
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
