@@ -39,6 +39,7 @@ class FriendController(flask_restful.Resource):
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 	
+	# lo usa FriendRequestController
 	def create_friendship(self, friend):
 		friend = FriendModel.create_friend(friend)
 		return friend
