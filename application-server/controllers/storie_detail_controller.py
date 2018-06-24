@@ -64,9 +64,10 @@ class StorieDetailController(flask_restful.Resource):
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 
-	#@login_required				
+	@login_required				
 	def delete(self, id):
 		try:
+			self._validate_author(id)
 			body = json.loads(request.data.decode('utf-8'))
 			storie_user_id = body['user_id']
 			storie = StorieModel.delete_storie(id, storie_user_id)
@@ -74,6 +75,8 @@ class StorieDetailController(flask_restful.Resource):
 			return ResponseBuilder.build_response(storie, 200)
 		except NoStorieFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
+		except UserMismatchException as e:
+			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 						
