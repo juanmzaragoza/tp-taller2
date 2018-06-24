@@ -10,6 +10,7 @@ from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
 from errors_exceptions.storie_reaction_already_exists_exception import StorieReactionAlreadyFoundException
 from auth_service import login_required
+from models.user_activity import UserActivityModel
 
 class ReactionController(flask_restful.Resource):
 	
@@ -24,6 +25,7 @@ class ReactionController(flask_restful.Resource):
 
 			args = self.parser.parse_args()
 			reaction = ReactionModel.create_reaction(args)
+			UserActivityModel.log_reaction_activity(reaction["user_id"], reaction["storie_id"], reaction["reaction"], "ADD")
 			return reaction
 			 
 		except BadRequest as ex:

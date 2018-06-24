@@ -11,8 +11,10 @@ from auth_service import login_required
 class FriendDetailController(flask_restful.Resource):
 	def delete(self, friend_id):
 		try:
-			friend_response = FriendModel.delete_friend(friend_id)
-			return ResponseBuilder.build_response(friend_response, 200)
+			friend = FriendModel.delete_friend(friend_id)
+			UserActivityModel.log_friend_activity(friend["user_id_rcv"], friend["user_id_sender"], "DELETE")
+			UserActivityModel.log_friend_activity(friend["user_id_sender"], friend["user_id_rcv"], "DELETE")
+			return ResponseBuilder.build_response(friend, 200)
 		except NoFriendFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:

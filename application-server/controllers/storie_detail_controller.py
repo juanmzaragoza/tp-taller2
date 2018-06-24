@@ -11,6 +11,7 @@ from errors_exceptions.no_data_found_exception import NoDataFoundException
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
 from auth_service import login_required
+from models.user_activity import UserActivityModel
 
 import flask
 app = flask.Flask(__name__)
@@ -23,8 +24,11 @@ class StorieDetailController(flask_restful.Resource):
 	#@login_required	
 	def get(self, id):
 		try:
-			 stories = StorieModel.get_stories(id)
-			 return self._create_get_stories_response(stories)
+			storie_type = request.args.get('story_type')
+			if (storie_type not in ['normal', 'fast']):
+				storie_type = 'normal'
+			stories = StorieModel.get_stories(id, storie_type)
+			return self._create_get_stories_response(stories)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 	
@@ -45,8 +49,9 @@ class StorieDetailController(flask_restful.Resource):
 
 			body = json.loads(request.data.decode('utf-8'))
 			
-			storie_response = StorieModel.update_storie(id, body)
-			return ResponseBuilder.build_response(storie_response, 200)
+			storie = StorieModel.update_storie(id, body)
+			UserActivityModel.log_storie_activity(storie["user_id"], storie["_id"], "EDIT")
+			return ResponseBuilder.build_response(storie, 200)
 			
 		except BadRequest as ex:
 			return ErrorHandler.create_error_response("Fields id, rev, title, location, user_id, visibility, multimedia and story_type are mandatory", 400)
@@ -62,8 +67,9 @@ class StorieDetailController(flask_restful.Resource):
 		try:
 			body = json.loads(request.data.decode('utf-8'))
 			storie_user_id = body['user_id']
-			storie_response = StorieModel.delete_storie(id, storie_user_id)
-			return ResponseBuilder.build_response(storie_response, 200)
+			storie = StorieModel.delete_storie(id, storie_user_id)
+			UserActivityModel.log_storie_activity(storie["user_id"], storie["_id"], "DELETE")
+			return ResponseBuilder.build_response(storie, 200)
 		except NoStorieFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
