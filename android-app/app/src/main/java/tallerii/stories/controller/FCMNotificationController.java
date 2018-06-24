@@ -17,7 +17,6 @@ import tallerii.stories.network.EndpointsApplicationApiRest;
 
 public class FCMNotificationController {
 
-    //TODO make controller
     //Sends to partner, so that server can send to fcm. This is as stipulated in documentation for FCM
     public static void sendNotification(final StoriesAppActivity context, String userId, final String message) {
         DatabaseReference tokensRef = MyFirebaseInstanceIdService.getTokensRef();

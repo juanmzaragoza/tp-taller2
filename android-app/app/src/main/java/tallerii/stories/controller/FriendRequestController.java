@@ -8,10 +8,12 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Response;
 import tallerii.stories.activities.FriendRequestActivity;
+import tallerii.stories.activities.StoriesLoggedInActivity;
 import tallerii.stories.helpers.FriendRequestAdapter;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
@@ -48,12 +50,15 @@ public class FriendRequestController {
             });
     }
 
-    public void acceptFriendRequest(final String requestId, final FriendRequestAdapter adapter) {
+    public void acceptFriendRequest(final FriendRequest friendRequest, final FriendRequestAdapter adapter) {
         EndpointsApplicationApiRest endpointsApi = AdapterApplicationApiRest.getRawEndpoint();
         JsonObject request = new JsonObject();
-        request.addProperty("request_id", requestId);
+        request.addProperty("request_id", friendRequest.getId());
         Call<JsonObject> responseCall = endpointsApi.acceptFriendRequest(request);
-        setOnSuccessRemove(responseCall, adapter, requestId, "Request Accepted");
+        setOnSuccessRemove(responseCall, adapter, friendRequest.getId(), "Request Accepted");
+        String userName = StoriesLoggedInActivity.getProfile().getName();
+        String message = String.format(Locale.getDefault(), "%s has accepted your friendship request!", userName);
+        FCMNotificationController.sendNotification(activity, friendRequest.getSenderUserId(), message);
     }
 
     private void setOnSuccessRemove(Call<JsonObject> responseCall, final FriendRequestAdapter adapter, final String requestId, final String onSuccessMessage) {

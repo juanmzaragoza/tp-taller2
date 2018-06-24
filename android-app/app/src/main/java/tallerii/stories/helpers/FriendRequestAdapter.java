@@ -65,21 +65,21 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
         setDeclineListener(holder, friend);
     }
 
-    private void setAcceptListener(@NonNull final ViewHolder holder, final FriendRequest friend) {
+    private void setAcceptListener(@NonNull final ViewHolder holder, final FriendRequest friendRequest) {
         holder.acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.acceptFriendRequest(friend.getId(), FriendRequestAdapter.this);
+                controller.acceptFriendRequest(friendRequest, FriendRequestAdapter.this);
                 removeRequest(holder);
             }
         });
     }
 
-    private void setDeclineListener(@NonNull final ViewHolder holder, final FriendRequest friend) {
+    private void setDeclineListener(@NonNull final ViewHolder holder, final FriendRequest friendRequest) {
         holder.declineBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.declineFriendRequest(friend.getId(), FriendRequestAdapter.this);
+                controller.declineFriendRequest(friendRequest.getId(), FriendRequestAdapter.this);
                 removeRequest(holder);
             }
         });
