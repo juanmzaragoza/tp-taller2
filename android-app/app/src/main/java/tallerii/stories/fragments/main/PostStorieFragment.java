@@ -45,45 +45,46 @@ import tallerii.stories.helpers.MediaFile;
 import tallerii.stories.helpers.ThumbnailItem;
 import tallerii.stories.helpers.ThumbnailsAdapter;
 import tallerii.stories.helpers.ThumbnailsManager;
+import tallerii.stories.interfaces.ShowStoriesAware;
 import tallerii.stories.interfaces.StoriesAware;
 import tallerii.stories.interfaces.ThumbnailCallback;
 import tallerii.stories.network.apimodels.Storie;
 
 import static android.app.Activity.RESULT_OK;
 
-public class PostStorieFragment extends Fragment implements StoriesAware, ThumbnailCallback {
+public class PostStorieFragment extends Fragment implements StoriesAware, ShowStoriesAware, ThumbnailCallback {
 
-    private final static int REQUEST_CODE_TAKE_IMAGE = 0;
-    private final static int REQUEST_CODE_CHOOSE_IMAGE = 1;
-    private final static int REQUEST_CODE_TAKE_VIDEO = 2;
-    private final static int REQUEST_CODE_CHOOSE_VIDEO = 3;
+    protected final static int REQUEST_CODE_TAKE_IMAGE = 0;
+    protected final static int REQUEST_CODE_CHOOSE_IMAGE = 1;
+    protected final static int REQUEST_CODE_TAKE_VIDEO = 2;
+    protected final static int REQUEST_CODE_CHOOSE_VIDEO = 3;
 
-    private StoriesController controller;
+    protected StoriesController controller;
 
-    private View rootView;
-    private ImageView imageView;
-    private VideoView videoView;
-    private RecyclerView thumbListView;
+    protected View rootView;
+    protected ImageView imageView;
+    protected VideoView videoView;
+    protected RecyclerView thumbListView;
 
-    private View choosePictureButton;
-    private View publishButton;
+    protected View choosePictureButton;
+    protected View publishButton;
 
-    private TextView locationText;
-    private CheckBox visibilityCheckBox;
-    private EditText titleText;
-    private EditText descriptionText;
-    private Switch togleTakeMedia;
+    protected TextView locationText;
+    protected CheckBox visibilityCheckBox;
+    protected EditText titleText;
+    protected EditText descriptionText;
+    protected Switch togleTakeMedia;
 
     // Referer to https://github.com/ravi8x/AndroidPhotoFilters
     static {
         System.loadLibrary("NativeImageProcessor");
     }
 
-    private boolean takeVideo = false;
-    private Uri fileUri;
-    private Bitmap filteredBitmap;
+    protected boolean takeVideo = false;
+    protected Uri fileUri;
+    protected Bitmap filteredBitmap;
 
-    Runnable takeMedia = new Runnable() { // from camera
+    protected Runnable takeMedia = new Runnable() { // from camera
         public void run() {
             // check for permissions
             if (Build.VERSION.SDK_INT >= 23 &&
@@ -117,7 +118,7 @@ public class PostStorieFragment extends Fragment implements StoriesAware, Thumbn
         }
     };
 
-    Runnable chooseMedia = new Runnable() { // from gallery
+    protected Runnable chooseMedia = new Runnable() { // from gallery
         public void run() {
 
             Intent pickMediaIntent;
@@ -136,35 +137,39 @@ public class PostStorieFragment extends Fragment implements StoriesAware, Thumbn
     };
 
     /** Is called when the user taps the Submit button **/
-    Runnable publish = new Runnable() {
-        public void run() {
+    protected Runnable publish;
 
-            titleText = rootView.findViewById(R.id.titleText);
-            String title = titleText.getText().toString();
+    public PostStorieFragment(){
+        publish = new Runnable() {
+            public void run() {
 
-            descriptionText = rootView.findViewById(R.id.descriptionText);
-            String description = descriptionText.getText().toString();
+                titleText = rootView.findViewById(R.id.titleText);
+                String title = titleText.getText().toString();
 
-            visibilityCheckBox = rootView.findViewById(R.id.visibilityCheckBox);
-            boolean isPublic = visibilityCheckBox.isChecked();
+                descriptionText = rootView.findViewById(R.id.descriptionText);
+                String description = descriptionText.getText().toString();
 
-            locationText = rootView.findViewById(R.id.locationText);
-            String location = locationText.getText().toString();
+                visibilityCheckBox = rootView.findViewById(R.id.visibilityCheckBox);
+                boolean isPublic = visibilityCheckBox.isChecked();
 
-            if(fileUri != null){
+                locationText = rootView.findViewById(R.id.locationText);
+                String location = locationText.getText().toString();
 
-                if(!takeVideo && filteredBitmap != null){
-                    fileUri = BitmapHelper.getImageUri(getContext(),filteredBitmap);
+                if(fileUri != null){
+
+                    if(!takeVideo && filteredBitmap != null){
+                        fileUri = BitmapHelper.getImageUri(getContext(),filteredBitmap);
+                    }
+
+                    controller.publishStorie(fileUri, title, description, isPublic, location, "normal");
+
+                } else{
+                    StoriesAppActivity activity = (StoriesAppActivity) getActivity();
+                    activity.showMessage("Please, select a  content media to post!", Toast.LENGTH_SHORT);
                 }
-
-                controller.publishStorie(fileUri, title, description, isPublic, location, "normal");
-
-            } else{
-                StoriesAppActivity activity = (StoriesAppActivity) getActivity();
-                activity.showMessage("Please, select a  content media to post!", Toast.LENGTH_SHORT);
             }
-        }
-    };
+        };
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -172,9 +177,14 @@ public class PostStorieFragment extends Fragment implements StoriesAware, Thumbn
         controller = new StoriesController(this);
 
         // get root view and then access to objects like R.id.usernameView
-        rootView = inflater.inflate(R.layout.fragment_post_storie, container, false);
+        rootView = getRootView(inflater, container);
 
         return rootView;
+    }
+
+    @Override
+    public View getRootView(LayoutInflater inflater, ViewGroup container){
+        return inflater.inflate(R.layout.fragment_post_storie, container, false);
     }
 
     @Override
@@ -215,7 +225,7 @@ public class PostStorieFragment extends Fragment implements StoriesAware, Thumbn
         }
     }
 
-    private boolean isVideoTimeDurationCorrect(Uri fileUri){
+    protected boolean isVideoTimeDurationCorrect(Uri fileUri){
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         //use one of overloaded setDataSource() functions to set your data source
         retriever.setDataSource(getContext(), fileUri);
@@ -237,16 +247,8 @@ public class PostStorieFragment extends Fragment implements StoriesAware, Thumbn
         bindVideoViewAction();
 
         // choose a photo or a video
-        togleTakeMedia = rootView.findViewById(R.id.toogleTakeMedia);
-        togleTakeMedia.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // isChecked will be true if the switch is in the On position
-                takeVideo = isChecked;
+        bindToggleMediaAction();
 
-                updateViewOnChangeMediaType();
-
-            }
-        });
         thumbListView = (RecyclerView) rootView.findViewById(R.id.thumbnails);
 
         updateViewOnChangeMediaType();
@@ -265,7 +267,7 @@ public class PostStorieFragment extends Fragment implements StoriesAware, Thumbn
 
     }
 
-    private void updateViewOnChangeMediaType(){
+    public void updateViewOnChangeMediaType(){
         if(takeVideo){
             imageView.setVisibility(View.GONE);
             videoView.setVisibility(View.VISIBLE);
@@ -283,14 +285,14 @@ public class PostStorieFragment extends Fragment implements StoriesAware, Thumbn
 
     }
 
-    private void initUIWidgets() {
+    protected void initUIWidgets() {
         if(fileUri != null){
             imageView.setImageBitmap(Bitmap.createScaledBitmap(BitmapHelper.loadBitmap(getActivity().getContentResolver(),fileUri), 640, 640, false));
         }
         initHorizontalList();
     }
 
-    private void initHorizontalList() {
+    protected void initHorizontalList() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         layoutManager.scrollToPosition(0);
@@ -300,7 +302,7 @@ public class PostStorieFragment extends Fragment implements StoriesAware, Thumbn
         bindDataToAdapter();
     }
 
-    private void bindDataToAdapter() {
+    protected void bindDataToAdapter() {
         final Context context = getContext();
         Handler handler = new Handler();
         Runnable r = new Runnable() {
@@ -357,12 +359,25 @@ public class PostStorieFragment extends Fragment implements StoriesAware, Thumbn
         }
     }
 
-    private void bindVideoViewAction(){
+    public void bindVideoViewAction(){
         // take video from camera
         videoView = (VideoView) executeActionOnTouchToBy(R.id.storieVideoView,takeMedia);
     }
 
-    private void bindImageViewAction(){
+    public void bindToggleMediaAction(){
+        togleTakeMedia = rootView.findViewById(R.id.toogleTakeMedia);
+        togleTakeMedia.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // isChecked will be true if the switch is in the On position
+                takeVideo = isChecked;
+
+                updateViewOnChangeMediaType();
+
+            }
+        });
+    }
+
+    public void bindImageViewAction(){
         // take picture from camera
         imageView = (ImageView) executeActionOnClickBy(R.id.storieImageView,takeMedia);
     }

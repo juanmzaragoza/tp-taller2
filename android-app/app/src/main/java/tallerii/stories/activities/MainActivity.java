@@ -12,7 +12,9 @@ import android.view.MenuItem;
 
 import tallerii.stories.R;
 import tallerii.stories.fragments.main.AnotherFragment;
+import tallerii.stories.fragments.main.FlashStoriesFragment;
 import tallerii.stories.fragments.main.HomeFragment;
+import tallerii.stories.fragments.main.PostFlashStorieFragment;
 import tallerii.stories.fragments.main.PostStorieFragment;
 import tallerii.stories.helpers.Store;
 
@@ -68,11 +70,14 @@ public class MainActivity extends StoriesLoggedInActivity {
             case R.id.action_home:
                 setHomeFragment(null); // if null -> take id from getProfile()
                 break;
-            case R.id.action_account:
-                fragment = new AnotherFragment();
-                break;
             case R.id.action_new:
                 setPostStorieFragment();
+                break;
+            case R.id.action_take_flash:
+                setPostFlashStorieFragment();
+                break;
+            case R.id.action_flash_stories:
+                setFlashStoriesFragment();
                 break;
         }
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -93,8 +98,16 @@ public class MainActivity extends StoriesLoggedInActivity {
         fragment = new PostStorieFragment();
     }
 
-    private void commitFragment(Fragment fragment){
-        final FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.main_container, fragment).commit();
+    private void setPostFlashStorieFragment() {
+        fragment = null;
+        fragment = new PostFlashStorieFragment();
+    }
+
+    private void setFlashStoriesFragment(){
+        fragment = null;
+        fragment = new FlashStoriesFragment();
+        // get profile id and pass it to fragment
+        Bundle bundle = getIntent().getExtras();
+        fragment.setArguments(bundle);
     }
 }
