@@ -86,6 +86,7 @@ public class StoriesAdapter extends BaseAdapter {
         final Storie storie = stories.get(position);
 
         holder.name.setText(String.format("%s %s", storie.getUserName(), storie.getUserLastName()));
+        setGoToProfileClickListener(storie.getUserId(), holder.name);
 
         // Converting timestamp into x ago format
         try {
@@ -127,6 +128,7 @@ public class StoriesAdapter extends BaseAdapter {
             Comment comment = storie.getComments().get(0);
             imageHelper.setFirebaseImage(comment.getUserPicture(), holder.userCommentPic);
             holder.usernameLastComment.setText(comment.getUserName());
+            setGoToProfileClickListener(comment.getUserId(), holder.usernameLastComment);
             holder.lastComment.setText(comment.getMessage());
             holder.lastCommentView.setVisibility(View.VISIBLE);
         } else{
@@ -145,6 +147,15 @@ public class StoriesAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 showCommentsDialog(storie.getId());
+            }
+        });
+    }
+
+    private void setGoToProfileClickListener(final String userId, TextView usernameLastComment) {
+        usernameLastComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().startProfileActivity(userId);
             }
         });
     }
