@@ -19,7 +19,7 @@ import static android.content.Context.LOCATION_SERVICE;
 
 public class LocationHelper {
 
-    public static final Integer LOCATION_REFRESH_TIME = 0;
+    public static final Integer LOCATION_REFRESH_TIME = 10000;
     public static final Integer LOCATION_REFRESH_DISTANCE = 0;
 
     private LocationManager locationManger;
@@ -43,7 +43,7 @@ public class LocationHelper {
 
             @Override
             public void onLocationChanged(final Location location) {
-                //location = location;
+                setLocation(location);
             }
 
             @Override
@@ -63,6 +63,10 @@ public class LocationHelper {
         };
     }
 
+    protected void setLocation(Location location){
+        this.location = location;
+    }
+
     public Location getLocation(){
         locationManger = (LocationManager) context.getSystemService(LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
@@ -70,8 +74,23 @@ public class LocationHelper {
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
             ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
         }
-        locationManger.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_REFRESH_TIME, LOCATION_REFRESH_DISTANCE, locationListener);
-        location = locationManger.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        if(locationManger.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            locationManger.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, locationListener,null);
+            Location location = locationManger.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            if(location != null){
+                this.location = location;
+            }
+
+        } else{
+            locationManger.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener,null);
+            Location location = locationManger.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if(location != null){
+                this.location = location;
+            }
+        }
+
+        locationManger.removeUpdates(locationListener);
         return location;
     }
 
