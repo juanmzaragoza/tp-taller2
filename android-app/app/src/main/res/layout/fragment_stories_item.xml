@@ -29,6 +29,7 @@
                 android:id="@+id/profilePic"
                 android:layout_width="@dimen/stories_item_profile_pic"
                 android:layout_height="@dimen/stories_item_profile_pic"
+                android:adjustViewBounds="true"
                 android:scaleType="fitCenter" />
 
             <LinearLayout
@@ -76,9 +77,12 @@
             android:id="@+id/storieImage1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxHeight="200dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
             android:background="@color/white"
-            android:scaleType="fitXY"
-            android:visibility="visible" />
+            android:visibility="visible"
+            android:contentDescription="@string/storie_picture" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,7 +94,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="217dp"
                 android:clickable="true"
-                android:focusable="false"
+                android:focusable="true"
                 android:scaleType="fitXY"
                 android:visibility="gone" />
         </LinearLayout>
@@ -115,6 +119,12 @@
                 android:background="@drawable/roundcorner"
                 android:focusable="false"
                 app:srcCompat="@drawable/ic_sentiment_satisfied_black_24dp" />
+            <TextView
+                android:id="@+id/likeButtonCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/stories_item_status_count_pad_left_right"
+                android:text="0"/>
 
             <ImageButton
                 android:id="@+id/dontLikeButton"
@@ -125,6 +135,12 @@
                 android:background="@drawable/roundcorner"
                 android:clickable="true"
                 app:srcCompat="@drawable/ic_sentiment_dissatisfied_black_24dp" />
+            <TextView
+                android:id="@+id/dontLikeButtonCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/stories_item_status_count_pad_left_right"
+                android:text="0"/>
 
             <ImageButton
                 android:id="@+id/enjoyButton"
@@ -135,6 +151,12 @@
                 android:paddingRight="@dimen/stories_item_status_pad_left_right"
                 android:background="@drawable/roundcorner"
                 app:srcCompat="@drawable/ic_sentiment_very_satisfied_black_24dp" />
+            <TextView
+                android:id="@+id/enjoyButtonCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/stories_item_status_count_pad_left_right"
+                android:text="0"/>
 
             <ImageButton
                 android:id="@+id/getBoredButton"
@@ -145,13 +167,19 @@
                 android:paddingRight="@dimen/stories_item_status_pad_left_right"
                 android:background="@drawable/roundcorner"
                 app:srcCompat="@drawable/ic_sentiment_very_dissatisfied_black_24dp" />
+            <TextView
+                android:id="@+id/getBoredButtonCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="@dimen/stories_item_status_count_pad_left_right"
+                android:text="0"/>
 
         </LinearLayout>
 
         <View
             android:id="@+id/divider2"
             android:layout_width="fill_parent"
-            android:layout_height="1dp"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:background="?android:attr/listDivider"
             android:paddingBottom="5dp"/>
@@ -169,15 +197,16 @@
                 android:id="@+id/userCommentPic"
                 android:layout_width="@dimen/stories_item_profile_pic"
                 android:layout_height="@dimen/stories_item_profile_pic"
-                android:paddingRight="@dimen/stories_item_padding_left_right"
-                android:scaleType="fitCenter" />
+                android:paddingEnd="@dimen/stories_item_padding_left_right"
+                android:scaleType="fitCenter"
+                android:contentDescription="@string/commnet_user_picture" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/stories_item_profile_info_padd"
-                android:paddingRight="@dimen/stories_item_padding_left_right"
+                android:paddingStart="@dimen/stories_item_profile_info_padd"
+                android:paddingEnd="@dimen/stories_item_padding_left_right"
                 android:background="@drawable/commentroundcorner">
 
                 <TextView
@@ -207,7 +236,7 @@
                 android:id="@+id/messageCommentText"
                 android:layout_width="wrap_content"
                 android:layout_weight="3"
-                android:hint="I want to say..."
+                android:hint="@string/i_want_to_say"
                 android:layout_height="wrap_content" />
 
             <ImageButton
@@ -215,7 +244,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingLeft="@dimen/stories_item_status_pad_left_right"
+                android:paddingStart="@dimen/stories_item_status_pad_left_right"
                 android:src="@drawable/ic_send_black_24dp" />
 
         </LinearLayout>

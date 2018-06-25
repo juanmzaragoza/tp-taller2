@@ -32,6 +32,7 @@ public class MainActivity extends StoriesLoggedInActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fragmentManager = getSupportFragmentManager();
@@ -43,11 +44,10 @@ public class MainActivity extends StoriesLoggedInActivity {
             store.save("token", intent.getStringExtra(TOKEN));
         }
         if(intent.getStringExtra(EXTRA_MESSAGE) != null) {
-            final Store store = new Store();
             showMessage(intent.getStringExtra(EXTRA_MESSAGE), 10);
         }
         // by default show home
-        setHomeFragment(ProfileActivity.PROFILE_ID);
+        setHomeFragment(intent.getStringExtra(ProfileActivity.PROFILE_ID));
         final FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_container, fragment).commit();
 
@@ -107,6 +107,9 @@ public class MainActivity extends StoriesLoggedInActivity {
         fragment = new FlashStoriesFragment();
         // get profile id and pass it to fragment
         Bundle bundle = getIntent().getExtras();
+        if (bundle.getString(ProfileActivity.PROFILE_ID) == null){
+            bundle.putString(ProfileActivity.PROFILE_ID, getProfile().getUserId());
+        }
         fragment.setArguments(bundle);
     }
 }

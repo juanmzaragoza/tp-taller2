@@ -48,7 +48,6 @@ public class HomeFragment extends Fragment implements StoriesAware {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //getStories();
     }
 
     @Override
@@ -61,7 +60,7 @@ public class HomeFragment extends Fragment implements StoriesAware {
 
         ListView listView = rootView.findViewById(R.id.list);
 
-        StoriesAdapter listAdapter = new StoriesAdapter(getActivity(), getContext(), controller, storiesToPopulate);
+        StoriesAdapter listAdapter = new StoriesAdapter(getLoggedInActivity(), getContext(), controller, storiesToPopulate);
         listView.setAdapter(listAdapter);
 
         // notify data changes to list adapater

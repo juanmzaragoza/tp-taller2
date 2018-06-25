@@ -1,5 +1,6 @@
 import flask
 import flask_restful
+from flask import request
 from constants import MONGODB_USER, MONGODB_PASSWD
 
 from controllers.db_controller import MongoController
@@ -28,11 +29,12 @@ from controllers.notification_controller import NotificationsController
 from request_middleware import RequestMiddleware
 
 app = flask.Flask(__name__)
+app.debug = True;
 app.wsgi_app = RequestMiddleware(app.wsgi_app)
 
 with app.app_context():
 	api = flask_restful.Api(app, prefix="/api/v1")
-	
+
 	class HelloWorld(flask_restful.Resource):
 		def get(self):
 			response = {'hello': "appServer"}
@@ -49,7 +51,7 @@ with app.app_context():
 	api.add_resource(PingController, '/ping')
 	api.add_resource(StatsController, '/stats')
 	api.add_resource(RequestCounterController, '/requests')
-	
+
 	# app endpoints
 	api.add_resource(UserAppController, '/users/<string:user_id>')
 	api.add_resource(StorieController, '/stories')
@@ -69,3 +71,14 @@ with app.app_context():
 
 	if __name__ == "__main__":
     		app.run(host='0.0.0.0', port=5858,debug=True)
+
+@app.before_request
+def log_request_info():
+    app.logger.debug('Request Headers: %s', request.headers)
+    app.logger.debug('Request Body: %s', request.get_data())
+
+@app.after_request
+def log_request_output(response):
+    app.logger.debug('Response Status: %s', response.status)
+    app.logger.debug('Response Body: %s', response.get_data())
+    return response
