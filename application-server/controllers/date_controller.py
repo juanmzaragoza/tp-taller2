@@ -1,7 +1,6 @@
 import pymongo
 import datetime
 import time
-import pytz
 
 class DateController():
 	
@@ -25,10 +24,7 @@ class DateController():
 	def get_date_time_with_format(date):
 		date_time = ""
 		if (date != ""):
-			bsas = pytz.timezone('America/Argentina/Buenos_Aires')
-			loc_dt = bsas.localize(date)
-			date_time = loc_dt.strftime('%d/%m/%Y %H:%M:%S')
-			#date_time = date.strftime('%d/%m/%Y %H:%M:%S')
+			date_time = date.strftime('%d/%m/%Y %H:%M:%S')
 		return date_time
 	
 	@staticmethod
