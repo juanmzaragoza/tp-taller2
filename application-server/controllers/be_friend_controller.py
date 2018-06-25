@@ -52,8 +52,8 @@ class BeFriendController(flask_restful.Resource):
 	def _get_friend_request_data(self, args):
 		user_id = args.get('user_id')
 		rcv_user_id = args.get('rcv_user_id')
-		message = args.get('message', None)
-		picture = args.get('picture', None)
+		message = args.get('message', '')
+		picture = args.get('picture', '')
 		return user_id, rcv_user_id, message, picture
 		
 	def _create_be_friend_request(self, user_sender_id, user_rcv_id, msg, picture):

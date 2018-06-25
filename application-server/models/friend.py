@@ -7,30 +7,7 @@ from errors_exceptions.no_friend_found_exception import NoFriendFoundException
 from errors_exceptions.friendship_already_exists_exception import FriendshipAlreadyExistsException
 
 class FriendModel():
-	'''
-	@staticmethod
-	def get_friends_by_user_id(user_id):
-		data = {}
-		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
-
-		friends = db.friends.find({'user_id_sender': user_id})
-		
-		opt1 = {'user_id_sender': user_id}
-		opt2 = {'user_id_rcv': user_id}
-		friends = db.friends.find({ "$or": [ opt1, opt2 ]})
-		
-		for friend in friends:
-			user_id_rcv = friend['user_id_rcv']
-			user_id_sender = friend['user_id_sender']
-			friend_user_id = user_id_rcv if (user_id == user_id_sender) else user_id_sender
-			
-			data[friend_user_id] = UserDataModel.get_user_reduced_data_by_user_id(friend_user_id)
-			data[friend_user_id]["user_id"] = data[friend_user_id].pop("_id")
-			data[friend_user_id]["_id"] = friend["_id"]
-			data[friend_user_id]["date"] = DateController.get_date_time_with_format(friend["date"])
-
-		return data.values()
-	'''
+	
 	@staticmethod
 	def get_friends_array_by_user_id(user_id):
 		data = []
