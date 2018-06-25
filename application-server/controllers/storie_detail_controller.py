@@ -81,9 +81,14 @@ class StorieDetailController(flask_restful.Resource):
 			return ErrorHandler.create_error_response(str(e), 500)
 						
 	def get_stories_by_user_id(self, user_id):
-		stories = StorieModel.get_profile_stories_by_user_id(user_id)
-		return self._create_get_stories_response(stories)
-		
+		try:
+			stories = StorieModel.get_profile_stories_by_user_id(user_id)
+			return self._create_get_stories_response(stories)
+		except NoDataFoundException as e:
+			return ErrorHandler.create_error_response(str(e), 404)
+		except DBConnectionError as e:
+			return ErrorHandler.create_error_response(str(e), 500)
+
 	def _create_get_stories_response(self, stories):
 		response = []
 		for storie in stories:
