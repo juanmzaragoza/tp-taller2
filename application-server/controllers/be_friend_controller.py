@@ -6,8 +6,6 @@ from werkzeug.exceptions import BadRequest
 from models.user_data import UserDataModel
 from controllers.error_handler import ErrorHandler
 from models.friend_request import FriendRequestModel
-from controllers.friend_controller import FriendController
-from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
 from errors_exceptions.data_already_exists_exception import DataAlreadyExistsException
@@ -41,11 +39,11 @@ class BeFriendController(flask_restful.Resource):
 		except DataAlreadyExistsException as e:
 			return ErrorHandler.create_error_response(str(e), 400)
 		except FriendRequestAlreadyExistsException as e:
-			return ErrorHandler.create_error_response(str(e), 409)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except FriendshipAlreadyExistsException as e:
-			return ErrorHandler.create_error_response(str(e), 409)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except NoUserDataFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 404)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except UserMismatchException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:

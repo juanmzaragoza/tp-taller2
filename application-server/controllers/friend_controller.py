@@ -5,7 +5,6 @@ from models.friend import FriendModel
 from controllers.error_handler import ErrorHandler
 from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
-from errors_exceptions.no_data_found_exception import NoDataFoundException
 from errors_exceptions.no_friend_found_exception import NoFriendFoundException
 from errors_exceptions.user_mismatch_exception import UserMismatchException
 from auth_service import login_required, get_user_id
@@ -26,7 +25,7 @@ class FriendController(flask_restful.Resource):
 			UserActivityModel.log_friend_activity(friend["user_id_sender"], friend["user_id_rcv"], "DELETE")
 			return ResponseBuilder.build_response(friend, 200)
 		except NoFriendFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 404)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except UserMismatchException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
