@@ -256,3 +256,11 @@ class StorieModel:
 		}).count()
 		return count
 
+	@staticmethod
+	def get_storie(storie_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+		storie = db.stories.find_one({"_id": storie_id})
+		if storie is None:
+			raise NoStorieFoundException
+		return storie
+

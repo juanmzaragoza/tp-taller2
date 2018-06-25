@@ -7,19 +7,24 @@ from models.friend_request import FriendRequestModel
 from controllers.response_builder import ResponseBuilder
 from controllers.friend_controller import FriendController
 from api_client.db_connection_error import DBConnectionError
-from errors_exceptions.no_data_found_exception import NoDataFoundException
+from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
 from errors_exceptions.data_already_exists_exception import DataAlreadyExistsException
-from auth_service import login_required
+from auth_service import login_required, validate_sender
+from errors_exceptions.user_mismatch_exception import UserMismatchException
 
 class BeFriendDetailController(flask_restful.Resource):
 
+	@login_required
 	def get(self, user_id):
 		try:
-			 self._validate_user_id(user_id)
-			 friends_requests = FriendRequestModel.get_friends_requests_rcv_by_user_id(user_id)
-			 return self._create_get_response(friends_requests)
+			self._validate_user_id(user_id)
+			validate_sender(user_id)
+			friends_requests = FriendRequestModel.get_friends_requests_rcv_by_user_id(user_id)
+			return self._create_get_response(friends_requests)
 		except NoUserDataFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
+		except UserMismatchException as e:
+			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 	
@@ -29,7 +34,8 @@ class BeFriendDetailController(flask_restful.Resource):
 	def _get_friends_user_id(self, request):
 		body = request.get_json()
 		return body['UserId']
-			
+	
+	# se usa? Si, lo llaman otros modulos	
 	def get_friends_requests_rcv_by_user_id(self, user_id):
 		try:
 			friends_requests = FriendRequestModel.get_friends_requests_rcv_by_user_id(user_id)
@@ -37,6 +43,7 @@ class BeFriendDetailController(flask_restful.Resource):
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 	
+	# se usa? Si, lo llaman otros modulos	
 	def get_friends_requests_sent_by_user_id(self, user_id):
 		try:
 			friends_requests = FriendRequestModel.get_friends_requests_sent_by_user_id(user_id)

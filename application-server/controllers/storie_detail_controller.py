@@ -10,7 +10,8 @@ from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_data_found_exception import NoDataFoundException
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
-from auth_service import login_required
+from errors_exceptions.user_mismatch_exception import UserMismatchException
+from auth_service import login_required, validate_sender
 from models.user_activity import UserActivityModel
 
 import flask
@@ -21,7 +22,7 @@ class StorieDetailController(flask_restful.Resource):
 	def __init__(self):
 		self.parser = reqparse.RequestParser(bundle_errors=True)
 	
-	#@login_required	
+	@login_required	
 	def get(self, id):
 		try:
 			storie_type = request.args.get('story_type')
@@ -32,7 +33,7 @@ class StorieDetailController(flask_restful.Resource):
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 	
-	#@login_required	
+	@login_required	
 	def put(self, id):
 		try:
 			self.parser.add_argument('_id', required=True, help="Field id is mandatory")
@@ -45,8 +46,7 @@ class StorieDetailController(flask_restful.Resource):
 			self.parser.add_argument('user_id', required=True, help="Field user_id is mandatory")
 
 			args = self.parser.parse_args()
-			#app.logger.error('args: %s', args)
-
+			self._validate_author(id)
 			body = json.loads(request.data.decode('utf-8'))
 			
 			storie = StorieModel.update_storie(id, body)
@@ -59,12 +59,15 @@ class StorieDetailController(flask_restful.Resource):
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DataVersionException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
+		except UserMismatchException as e:
+			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 
-	#@login_required				
+	@login_required				
 	def delete(self, id):
 		try:
+			self._validate_author(id)
 			body = json.loads(request.data.decode('utf-8'))
 			storie_user_id = body['user_id']
 			storie = StorieModel.delete_storie(id, storie_user_id)
@@ -72,6 +75,8 @@ class StorieDetailController(flask_restful.Resource):
 			return ResponseBuilder.build_response(storie, 200)
 		except NoStorieFoundException as e:
 			return ErrorHandler.create_error_response(str(e), 404)
+		except UserMismatchException as e:
+			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 						
@@ -89,3 +94,8 @@ class StorieDetailController(flask_restful.Resource):
 		for storie in stories:
 			response.append(storie)
 		return response
+
+	def _validate_author(self, storie_id):
+		storie = StorieModel.get_storie(storie_id)
+		author_id = storie.get('user_id')
+		validate_sender(author_id)
