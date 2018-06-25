@@ -5,11 +5,13 @@ import requests
 import json
 import sys
 import app
+from test.helper_db_controller import HelperMongoController
 
 class TestUserApi(unittest.TestCase):
 
     def setUp(self):
         self.app = app.app.test_client()
+        HelperMongoController.drop_db()
 
     def __make_post_request(self, data):
         url = "api/v1/user"
@@ -58,8 +60,9 @@ class TestUserApi(unittest.TestCase):
         self.assertEqual(400,response_data["code"])
         self.assertIn("message", response_data)
         
+    @patch('controllers.db_controller.MongoController.get_mongodb_instance')
     @patch('api_client.shared_api_client.requests.post')
-    def test_user_create_successfull(self, mock_post):
+    def test_user_create_successfull(self, mock_post, mock_db_instance):
         # set up
         data = {"id": 1, "username": "jmz", "password": "1234"}
         mock_post.return_value.status_code = 200
@@ -75,6 +78,9 @@ class TestUserApi(unittest.TestCase):
                 "username": "jmz"
             }
         }
+
+        mock_db_instance = HelperMongoController.get_mongodb_instance
+
         # execution
         response = self.__make_post_request(data)
         #assertions
