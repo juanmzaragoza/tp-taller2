@@ -1,5 +1,3 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
 import unittest
 import unittest.mock as mock
 from rules.rules import RulesMachine
@@ -53,7 +51,8 @@ class TestRulesMachine(unittest.TestCase):
         storieDV = StoriePriorityDataVariables(storiePD)
 
         self.assertEqual(storieDV.current_num_comments(), num_comments)
-        self.assertEqual(storieDV.current_num_reactions(), num_reactions)
+        self.assertEqual(storieDV.current_num_reactions(),
+                         num_reactions)
         self.assertEqual(storieDV.current_num_past_days(), past_days)
         self.assertEqual(storieDV.current_num_friends(), num_friends)
         self.assertEqual(storieDV.current_num_stories(), num_stories)
@@ -80,24 +79,23 @@ class TestRulesMachine(unittest.TestCase):
 
         self.assertTrue(priority > 0)
 
-        def test_rules_successfull_process_priority_250(self):
-            storie_id = 1
-            past_days = 1
-            num_comments = 10
-            num_reactions = 15
-            num_friends = 10
-            num_stories = 5
+    def test_rules_successfull_process_priority_125(self):
+        storie_id = 1
+        past_days = 1
+        num_comments = 10
+        num_reactions = 15
+        num_friends = 10
+        num_stories = 5
 
-            storiePD = StoriePriorityData(
-                storie_id,
-                past_days,
-                num_comments,
-                num_reactions,
-                num_friends,
-                num_stories,
-                )
-
+        storiePD = StoriePriorityData(
+            storie_id,
+            past_days,
+            num_comments,
+            num_reactions,
+            num_friends,
+            num_stories,
+            )
         RulesMachine.process_data(storiePD)
         priority = storiePD.get_priority()
 
-        self.assertEqual(priority, 250)
+        self.assertEqual(priority, 125)
