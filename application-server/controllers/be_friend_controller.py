@@ -6,8 +6,6 @@ from werkzeug.exceptions import BadRequest
 from models.user_data import UserDataModel
 from controllers.error_handler import ErrorHandler
 from models.friend_request import FriendRequestModel
-from controllers.friend_controller import FriendController
-from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
 from errors_exceptions.data_already_exists_exception import DataAlreadyExistsException
@@ -41,11 +39,11 @@ class BeFriendController(flask_restful.Resource):
 		except DataAlreadyExistsException as e:
 			return ErrorHandler.create_error_response(str(e), 400)
 		except FriendRequestAlreadyExistsException as e:
-			return ErrorHandler.create_error_response(str(e), 409)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except FriendshipAlreadyExistsException as e:
-			return ErrorHandler.create_error_response(str(e), 409)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except NoUserDataFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 404)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except UserMismatchException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
@@ -54,8 +52,8 @@ class BeFriendController(flask_restful.Resource):
 	def _get_friend_request_data(self, args):
 		user_id = args.get('user_id')
 		rcv_user_id = args.get('rcv_user_id')
-		message = args.get('message', None)
-		picture = args.get('picture', None)
+		message = args.get('message', '')
+		picture = args.get('picture', '')
 		return user_id, rcv_user_id, message, picture
 		
 	def _create_be_friend_request(self, user_sender_id, user_rcv_id, msg, picture):

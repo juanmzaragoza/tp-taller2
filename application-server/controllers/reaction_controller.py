@@ -5,7 +5,6 @@ from flask_restful import reqparse
 from models.reaction import ReactionModel
 from werkzeug.exceptions import BadRequest
 from controllers.error_handler import ErrorHandler
-from controllers.response_builder import ResponseBuilder
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
 from errors_exceptions.storie_reaction_already_exists_exception import StorieReactionAlreadyFoundException
@@ -34,10 +33,10 @@ class ReactionController(flask_restful.Resource):
 		except BadRequest as ex:
 			return ErrorHandler.create_error_response("Fields reaction, user_id and storie_id are mandatory", 400)
 		except NoStorieFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 404)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except UserMismatchException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except StorieReactionAlreadyFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 500)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)

@@ -56,7 +56,7 @@ class StorieDetailController(flask_restful.Resource):
 		except BadRequest as ex:
 			return ErrorHandler.create_error_response("Fields id, rev, title, location, user_id, visibility, multimedia and story_type are mandatory", 400)
 		except NoStorieFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 404)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except DataVersionException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except UserMismatchException as e:
@@ -74,7 +74,7 @@ class StorieDetailController(flask_restful.Resource):
 			UserActivityModel.log_storie_activity(storie["user_id"], storie["_id"], "DELETE")
 			return ResponseBuilder.build_response(storie, 200)
 		except NoStorieFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 404)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except UserMismatchException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:

@@ -158,7 +158,6 @@ class StorieModel:
 		storie_resume = {
 				"storie_id": storie["_id"],
 				"past": DateController.get_past_days(storie["created_time"]),
-				#"num_comments": len(storie["comments"]),
 				"num_comments": CommentModel.count_storie_comments(storie["_id"]),
 				"num_reactions": (storie["reactions"]["LIKE"]["count"] +
 								storie["reactions"]["NOTLIKE"]["count"] +
@@ -263,4 +262,3 @@ class StorieModel:
 		if storie is None:
 			raise NoStorieFoundException
 		return storie
-

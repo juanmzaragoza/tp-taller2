@@ -27,7 +27,7 @@ class CommentDetailController(flask_restful.Resource):
 			UserActivityModel.log_comment_activity(comment["user_id"], comment["storie_id"], "DELETE")
 			return self._get_comments_response(comment)
 		except NoCommentFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 404)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except UserMismatchException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
@@ -54,9 +54,9 @@ class CommentDetailController(flask_restful.Resource):
 		except BadRequest as ex:
 			return ErrorHandler.create_error_response("Fields id, rev, storie_id, user_id and message are mandatory", 400)
 		except NoUserDataFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 404)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except NoCommentFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 404)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except DataVersionException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except UserMismatchException as e:

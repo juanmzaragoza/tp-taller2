@@ -5,7 +5,6 @@ from flask_restful import reqparse
 from werkzeug.exceptions import BadRequest
 from controllers.error_handler import ErrorHandler
 from models.friend_request import FriendRequestModel
-from controllers.response_builder import ResponseBuilder
 from controllers.friend_controller import FriendController
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_friend_request_found_exception import NoFriendRequestFoundException
@@ -55,14 +54,14 @@ class FriendRequestController(flask_restful.Resource):
 		return friend
 
 	def _validate_request_id(self, requestId):
-		 return FriendRequestModel.exists_request(requestId)
+		return FriendRequestModel.exists_request(requestId)
 	
 	def _get_friends_requests_response(self, friends_requests):
 		return friends_requests
 		
 	def _get_request_id(self, request):
-		 body = request.get_json()
-		 return body['request_id']
+		body = request.get_json()
+		return body['request_id']
 
 	def _validate_receiver(self, request_id):
 		friend_request = FriendRequestModel.get_friend_request(request_id)

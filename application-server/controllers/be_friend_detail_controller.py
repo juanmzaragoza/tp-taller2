@@ -5,10 +5,8 @@ from models.user_data import UserDataModel
 from controllers.error_handler import ErrorHandler
 from models.friend_request import FriendRequestModel
 from controllers.response_builder import ResponseBuilder
-from controllers.friend_controller import FriendController
 from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
-from errors_exceptions.data_already_exists_exception import DataAlreadyExistsException
 from auth_service import login_required, validate_sender
 from errors_exceptions.user_mismatch_exception import UserMismatchException
 
@@ -30,10 +28,6 @@ class BeFriendDetailController(flask_restful.Resource):
 	
 	def _create_get_response(self, friends_requests):
 		return ResponseBuilder.get_build_response(friends_requests, 'requests', 200)
-		
-	def _get_friends_user_id(self, request):
-		body = request.get_json()
-		return body['UserId']
 	
 	# se usa? Si, lo llaman otros modulos	
 	def get_friends_requests_rcv_by_user_id(self, user_id):
