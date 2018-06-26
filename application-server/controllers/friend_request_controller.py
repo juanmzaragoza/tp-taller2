@@ -38,9 +38,9 @@ class FriendRequestController(flask_restful.Resource):
 		except BadRequest as ex:
 			return ErrorHandler.create_error_response("Fields request_id are mandatory", 400)
 		except NoFriendRequestFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 404)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except FriendshipAlreadyExistsException as e:
-			return ErrorHandler.create_error_response(str(e), 500)
+			return ErrorHandler.create_error_response(str(e), 400)
 		except UserMismatchException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:

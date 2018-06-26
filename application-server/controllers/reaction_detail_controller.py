@@ -21,7 +21,7 @@ class ReactionDetailController(flask_restful.Resource):
 			UserActivityModel.log_reaction_activity(reaction["user_id"], reaction["storie_id"], reaction["reaction"], "DELETE")
 			return self._get_reactions_response(reaction)
 		except NoReactionFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 400)
+			return ErrorHandler.create_error_response(str(e), 404)
 		except UserMismatchException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:

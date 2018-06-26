@@ -30,6 +30,7 @@ class FriendModel():
 		data = []
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 		
+		UserDataModel.exist_user(user_id)
 		opt1 = {'user_id_sender': user_id}
 		opt2 = {'user_id_rcv': user_id}
 		friends = db.friends.find({ "$or": [ opt1, opt2 ]})

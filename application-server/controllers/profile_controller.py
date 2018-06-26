@@ -61,7 +61,7 @@ class ProfileController(flask_restful.Resource):
 		except BadRequest as ex:
 			return ErrorHandler.create_error_response("Fields id, rev, last_name, name, birthday, gender, and email are mandatory", 400)
 		except NoUserDataFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 400)
+			return ErrorHandler.create_error_response(str(e), 404)
 		except DataVersionException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except UserMismatchException as e:

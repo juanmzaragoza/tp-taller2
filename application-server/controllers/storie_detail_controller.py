@@ -11,6 +11,7 @@ from errors_exceptions.no_data_found_exception import NoDataFoundException
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
 from errors_exceptions.user_mismatch_exception import UserMismatchException
+from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
 from auth_service import login_required, validate_sender
 from models.user_activity import UserActivityModel
 
@@ -30,6 +31,8 @@ class StorieDetailController(flask_restful.Resource):
 				storie_type = 'normal'
 			stories = StorieModel.get_stories(id, storie_type)
 			return self._create_get_stories_response(stories)
+		except NoUserDataFoundException as e:
+			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
 	
@@ -56,7 +59,7 @@ class StorieDetailController(flask_restful.Resource):
 		except BadRequest as ex:
 			return ErrorHandler.create_error_response("Fields id, rev, title, location, user_id, visibility, multimedia and story_type are mandatory", 400)
 		except NoStorieFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 400)
+			return ErrorHandler.create_error_response(str(e), 404)
 		except DataVersionException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except UserMismatchException as e:
@@ -72,9 +75,9 @@ class StorieDetailController(flask_restful.Resource):
 			storie_user_id = body['user_id']
 			storie = StorieModel.delete_storie(id, storie_user_id)
 			UserActivityModel.log_storie_activity(storie["user_id"], storie["_id"], "DELETE")
-			return ResponseBuilder.build_response(storie, 200)
+			return ResponseBuilder.build_response(storie, 204)
 		except NoStorieFoundException as e:
-			return ErrorHandler.create_error_response(str(e), 400)
+			return ErrorHandler.create_error_response(str(e), 404)
 		except UserMismatchException as e:
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:

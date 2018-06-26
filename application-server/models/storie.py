@@ -101,7 +101,7 @@ class StorieModel:
 		stories_list = {}
 		users_activity = {}
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
-		
+		UserDataModel.exist_user(user_id)
 		friends_id = FriendModel.get_friends_array_by_user_id(user_id)
 		friends_id.append(user_id)
 		

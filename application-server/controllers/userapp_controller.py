@@ -10,7 +10,7 @@ from errors_exceptions.no_user_data_found_exception import NoUserDataFoundExcept
 from auth_service import login_required
 
 class UserAppController(flask_restful.Resource):
-	
+	@login_required
 	def get(self, user_id):
 		try:
 			user_data_response = UserDataModel.get_all_users_except(user_id)
