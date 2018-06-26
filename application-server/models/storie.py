@@ -32,6 +32,7 @@ class StorieModel:
 		
 	@staticmethod
 	def create_user_storie(body):
+		HOURS_FAST_STORIES = 4
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 		
 		storie_id = str(uuid.uuid4().hex)
@@ -44,7 +45,7 @@ class StorieModel:
 		visibility = body['visibility']
 		mult = body['multimedia']
 		story_type = body['story_type']
-		expired_time = DateController.get_date_time_inc_by_hours(4) if (story_type == "fast") else ""
+		expired_time = DateController.get_date_time_inc_by_hours(HOURS_FAST_STORIES) if (story_type == "fast") else ""
 		user_id = body['user_id']	
 		
 		
@@ -137,9 +138,9 @@ class StorieModel:
 			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
 			
 			storie_data = StorieModel.get_storie_resume(storie)
-			
+			USER_ACT_PAST_DAYS = 10
 			if (storie_user_id not in users_activity):
-				users_activity[storie_user_id] = UserActivityModel.log_user_activity_resume(storie_user_id, 10)
+				users_activity[storie_user_id] = UserActivityModel.log_user_activity_resume(storie_user_id, USER_ACT_PAST_DAYS)
 			
 			storie_priority_data = StoriePriorityData(storie_id, storie_data["past"], storie_data["num_comments"], storie_data["num_reactions"], users_activity[storie_user_id]["num_friends"], users_activity[storie_user_id]["num_stories"])
 			sp_list.append(storie_priority_data)
