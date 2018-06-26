@@ -17,7 +17,7 @@ class CommentController(flask_restful.Resource):
 	def __init__(self):
 		self.parser = reqparse.RequestParser(bundle_errors=True)
 	
-	#@login_required
+	@login_required
 	def post(self):
 		try:
 			self.parser.add_argument('message', required=True, help="Field message is mandatory")
@@ -25,7 +25,7 @@ class CommentController(flask_restful.Resource):
 			self.parser.add_argument('storie_id', required=True, help="Field storie_id is mandatory")
 
 			args = self.parser.parse_args()
-			#validate_sender(args.get('user_id'))
+			validate_sender(args.get('user_id'))
 
 			comment = CommentModel.create_comment(args)
 			UserActivityModel.log_comment_activity(comment["user_id"], comment["storie_id"], "ADD")

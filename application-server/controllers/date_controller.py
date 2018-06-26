@@ -41,12 +41,12 @@ class DateController():
 
 	@staticmethod
 	def get_date_time_inc_by_hours(hours):
-		date = DateController.get_date_time() + datetime.timedelta(hours=hours)
+		date = DateController.get_date_time() + timedelta(hours=hours)
 		return date
 	
 	@staticmethod
 	def get_date_time_dec_by_days(days):
-		date = DateController.get_date_time() - datetime.timedelta(days=days)
+		date = DateController.get_date_time() - timedelta(days=days)
 		return date
 		
 	@staticmethod
@@ -58,7 +58,7 @@ class DateController():
 	@staticmethod
 	def tomorrow():
 		today = DateController.today()
-		tomorrow = today + datetime.timedelta(1)
+		tomorrow = today + timedelta(1)
 		return tomorrow
 
 	@staticmethod
