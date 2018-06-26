@@ -1,7 +1,8 @@
 import pymongo
-import datetime
 import time
 import pytz
+import calendar
+from datetime import datetime, timedelta
 
 class DateController():
 	
@@ -17,17 +18,24 @@ class DateController():
 				
 	@staticmethod
 	def get_date_time():
-		date_time = datetime.datetime.now(pytz.timezone('America/Argentina/Buenos_Aires'))
-		#date_time = datetime.datetime.now()
+		#date_time = datetime.datetime.now(pytz.timezone('America/Argentina/Buenos_Aires'))
+		date_time = datetime.utcnow()
 		return date_time
-		
+	
 	@staticmethod
 	def get_date_time_with_format(date):
 		date_time = ""
 		if (date != ""):
-			date_time = date.strftime('%d/%m/%Y %H:%M:%S')
+			##date_time = date.strftime('%d/%m/%Y %H:%M:%S')
+			date_time = DateController.utc_to_bsas(date)
 		return date_time
 	
+	@staticmethod
+	def utc_to_bsas(utc_datetime):
+		bsas_tz = pytz.timezone('America/Argentina/Buenos_Aires')
+		bsas_datetime = utc_datetime.replace(tzinfo=pytz.utc).astimezone(bsas_tz)
+		return bsas_tz.normalize(bsas_datetime).strftime("%d/%m/%Y %H:%M:%S")
+
 	@staticmethod
 	def get_date_time_inc_by_hours(hours):
 		date = DateController.get_date_time() + datetime.timedelta(hours=hours)
@@ -40,8 +48,8 @@ class DateController():
 		
 	@staticmethod
 	def today():
-		now = datetime.datetime.now(pytz.timezone('America/Argentina/Buenos_Aires'))
-		today = datetime.datetime(now.year, now.month, now.day)
+		now = datetime.utcnow()
+		today = datetime(now.year, now.month, now.day)
 		return today
 
 	@staticmethod
@@ -52,12 +60,13 @@ class DateController():
 
 	@staticmethod
 	def now():
-		now = datetime.datetime.now(pytz.timezone('America/Argentina/Buenos_Aires'))
+		now = datetime.utcnow()
 		return now
 	
 	@staticmethod
 	def get_past_days(date):
-		date = datetime.datetime.strptime(date, "%d/%m/%Y %H:%M:%S")
+		date = datetime.strptime(date, "%d/%m/%Y %H:%M:%S")
 		now = DateController.get_date_time()
 		diff = now - date
 		return diff.days
+	
