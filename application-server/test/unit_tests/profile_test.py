@@ -8,11 +8,12 @@ from controllers.be_friend_detail_controller import BeFriendDetailController
 from controllers.profile_controller import ProfileController
 from controllers.response_builder import ResponseBuilder
 from mocks.profile_successful_mock import *
-from mocks.errors_mock import no_data_found_mock, no_db_conn_mock, no_user_data_found_mock
+from mocks.errors_mock import no_data_found_mock, no_db_conn_mock, no_user_data_found_mock, user_mismatch_mock
 from errors_exceptions.no_data_found_exception import NoDataFoundException
 from api_client.db_connection_error import DBConnectionError
 from controllers.error_handler import ErrorHandler
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
+from errors_exceptions.user_mismatch_exception import UserMismatchException
 
 class TestProfileApi(unittest.TestCase):
 
@@ -51,3 +52,12 @@ class TestProfileApi(unittest.TestCase):
         service = ProfileController()
         ResponseBuilder.get_build_response = mock.MagicMock(return_value=profile_successful_mock)
         self.assertEqual(service.get(user_id), profile_successful_mock)
+
+    @patch('auth_service.get_user_id')
+    @patch('auth_service.is_authenticated')
+    def test_update_profile_user_mismatch(self, mock_is_authenticated, mock_get_user_id):
+        mock_is_authenticated.return_value = True
+        mock_get_user_id.return_value = 2
+        ErrorHandler.create_error_response = mock.MagicMock(return_value=user_mismatch_mock)
+        service = ProfileController()
+        self.assertEqual(service.put(1), user_mismatch_mock)
