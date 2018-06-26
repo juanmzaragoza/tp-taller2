@@ -1,6 +1,7 @@
 import pymongo
 import datetime
 import time
+import pytz
 
 class DateController():
 	
@@ -16,8 +17,8 @@ class DateController():
 				
 	@staticmethod
 	def get_date_time():
-		date_time = datetime.datetime.now()
-		#date_time = time.strftime('%d/%m/%Y %H:%M:%S', time.localtime())
+		date_time = datetime.datetime.now(pytz.timezone('America/Argentina/Buenos_Aires'))
+		#date_time = datetime.datetime.now()
 		return date_time
 		
 	@staticmethod
@@ -39,7 +40,7 @@ class DateController():
 		
 	@staticmethod
 	def today():
-		now = datetime.datetime.now()
+		now = datetime.datetime.now(pytz.timezone('America/Argentina/Buenos_Aires'))
 		today = datetime.datetime(now.year, now.month, now.day)
 		return today
 
@@ -51,7 +52,7 @@ class DateController():
 
 	@staticmethod
 	def now():
-		now = datetime.datetime.now()
+		now = datetime.datetime.now(pytz.timezone('America/Argentina/Buenos_Aires'))
 		return now
 	
 	@staticmethod
@@ -60,4 +61,3 @@ class DateController():
 		now = DateController.get_date_time()
 		diff = now - date
 		return diff.days
-	
