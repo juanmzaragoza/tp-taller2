@@ -17,14 +17,14 @@ export class FileComponent {
     uploadByFirebase: boolean;
     data: string
     public file:File = new File();
-    public isCreation: boolean
+    public modalShow: number
     public selected: string
     constructor(public FileServ: FileService,
                 public JsonServ: JsonService){
         this.files = []
         this.title = 'File'
         this.uploadByFirebase = false
-        this.isCreation = false
+        this.modalShow = 1
         this.selected = undefined
     }
     
@@ -32,7 +32,7 @@ export class FileComponent {
       this.get()
     }
     open(){
-        this.isCreation = true
+        this.modalShow = 1
         this.openModal();
         $('.modal').modal();
           setTimeout(()=>{
@@ -62,7 +62,7 @@ export class FileComponent {
         }
     }
     view = (url:string):void =>{
-        this.isCreation = false
+        this.modalShow = 2
         this.selected = url
         this.openModal();
     }
