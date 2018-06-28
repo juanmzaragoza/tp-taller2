@@ -6,6 +6,8 @@ import { JsonService }        from '../../services/common/json.service'
 
 declare var $ :any;
 
+declare var _:any
+
 @Component({
     templateUrl: './file.component.html'
 })
@@ -13,18 +15,24 @@ export class FileComponent {
     title: string;
     files: Array<any>;
     uploadByFirebase: boolean;
+    data: string
     public file:File = new File();
+    public isCreation: boolean
+    public selected: string
     constructor(public FileServ: FileService,
                 public JsonServ: JsonService){
         this.files = []
         this.title = 'File'
         this.uploadByFirebase = false
+        this.isCreation = false
+        this.selected = undefined
     }
     
     ngOnInit() {
       this.get()
     }
     open(){
+        this.isCreation = true
         this.openModal();
         $('.modal').modal();
           setTimeout(()=>{
@@ -50,16 +58,17 @@ export class FileComponent {
         }
         else{
           file.createdTime = Date.now()
-          if(vm.uploadByFirebase){
-            vm.createbyFirebase(file);
-          }
-          else{
-            vm.create(file);
-          }
+          vm.create(file);
         }
+    }
+    view = (url:string):void =>{
+        this.isCreation = false
+        this.selected = url
+        this.openModal();
     }
     delete(id:string){
       var me = this
+      console.info(id)
       me.FileServ.delete(id).subscribe((res) => {
         me.files = me.JsonServ.removeItem(me.files, {id:id})
         toast("the server was deleted",4000)
@@ -76,7 +85,8 @@ export class FileComponent {
           reader.readAsDataURL(file);
           reader.onload = () => {
             vm.file.size = file.size
-            vm.file.resource = reader.result.split(',')[1]
+            //vm.file.resource = reader.result.split(',')[1]
+            vm.data = reader.result.split(',')[1]
           };
         }
       }
@@ -108,8 +118,16 @@ export class FileComponent {
         var vm = this
         vm.FileServ.create(file).subscribe((file) => {
           vm.files.push(file)
-          vm.file = new File()
-          toast("the file was created",4000)
+          file.resource = vm.data
+          console.info("creo el archivo y agrego la data",_.clone(file))
+          vm.FileServ.createbyFirebase(file).subscribe((file) => {
+            vm.file = new File()
+            console.info("objeto que me retorna el upload",file)
+            toast("the file was created",4000)
+          },
+          error =>{
+            console.log(error)
+          });
         },
         error =>{
           console.log(error)

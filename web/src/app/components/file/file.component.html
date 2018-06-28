@@ -63,9 +63,13 @@
 <!-- Modal Structure -->
 <div id="modal1" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
     <div class="modal-content">
-      <h4 class="indigo-text">New File</h4>
+      <h4 [hidden]="!(isCreation==true)" class="indigo-text">New File</h4>
       
-      <div class="row">
+      <div [hidden]="!(isCreation==false)" class="row">
+        <img src="{{selected}}">
+      </div>
+
+      <div [hidden]="!(isCreation==true)" class="row">
         <form class="col s12">
             <div class="row">
                 <div class="input-field col s12">
@@ -89,11 +93,15 @@
         </form>
       </div>
     </div>
-    <div class="modal-footer">
+    <div [hidden]="!(isCreation==true)"  class="modal-footer">
       <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Close</a>
       <a [eventClickbyKey]="13" (click)="save(file)" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
     </div>
+    <div [hidden]="!(isCreation==false)"  class="modal-footer">
+      <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Close</a>
+    </div>
   </div>
+
   
 
 <footer style="position:fixed;bottom:1em;left:-1em;width:100%;">

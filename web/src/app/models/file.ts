@@ -1,7 +1,7 @@
 
 export class File{
     public id: string
-    public rev: string
+    public _rev: string
     public createdTime: number
     public updatedTime: number
     public size: number
