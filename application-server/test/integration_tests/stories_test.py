@@ -4,6 +4,7 @@
 import json
 import sys
 import unittest
+from unittest.mock import patch
 
 import app
 
@@ -20,15 +21,13 @@ class TestStoriesApi(unittest.TestCase):
         response = self.app.get(url, headers=headers)
         return response
 
-    def _make_post_request(self, request):
-        headers = {'Content-type': 'application/json', 'Accept': 'application/json'}
-        return self.app.post('api/v1/stories', data=json.dumps(request), headers=headers)
-
     @staticmethod
     def __get_response_data(response):
         return json.loads(response.get_data().decode(sys.getdefaultencoding()))
 
-    def test_successful_get_stories_should_return_status_200(self):
+    @patch('auth_service.is_authenticated')
+    def test_successful_get_stories_should_return_status_200(self, auth_mock):
+        auth_mock.return_value = True
         user_id = '10'
         response = self.__make_get_request(user_id)
 
