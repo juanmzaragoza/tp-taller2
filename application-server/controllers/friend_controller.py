@@ -1,18 +1,18 @@
-import json
 import flask_restful
-from flask import request
-from models.friend import FriendModel
+
+from api_client.db_connection_error import DBConnectionError
+from auth_service import login_required, get_user_id
 from controllers.error_handler import ErrorHandler
 from controllers.response_builder import ResponseBuilder
-from api_client.db_connection_error import DBConnectionError
 from errors_exceptions.no_friend_found_exception import NoFriendFoundException
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
 from errors_exceptions.user_mismatch_exception import UserMismatchException
-from auth_service import login_required, get_user_id
+from models.friend import FriendModel
 from models.user_activity import UserActivityModel
 
+
 class FriendController(flask_restful.Resource):
-	
+
 	@login_required
 	def get(self, id):
 		try:
@@ -21,7 +21,7 @@ class FriendController(flask_restful.Resource):
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
-	
+
 	@login_required
 	def delete(self, id):
 		try:
@@ -36,19 +36,19 @@ class FriendController(flask_restful.Resource):
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
-	
+
 	def get_friends_by_user_id(self, user_id):
 		try:
 			friends = FriendModel.get_friends_by_user_id(user_id)
 			return self._create_get_friends_response(friends)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
-	
+
 	# lo usa FriendRequestController
 	def create_friendship(self, friend):
 		friend = FriendModel.create_friend(friend)
 		return friend
-		
+
 	def _create_get_friends_response(self, friends):
 		response = []
 		for friend in friends:

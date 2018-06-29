@@ -1,10 +1,10 @@
-import unittest
-import unittest.mock as mock
-from unittest.mock import patch
-import requests
 import json
 import sys
+import unittest
+from unittest.mock import patch
+
 import app
+
 
 class TestFlaskGetUserApi(unittest.TestCase):
 

@@ -1,21 +1,23 @@
 import flask_restful
+
+from api_client.db_connection_error import DBConnectionError
 from controllers.error_handler import ErrorHandler
 from controllers.response_builder import ResponseBuilder
-from api_client.db_connection_error import DBConnectionError
-from models.user_data import UserDataModel
-from models.user_activity import UserActivityModel
-from models.storie import StorieModel
 from models.comment import CommentModel
 from models.friend import FriendModel
+from models.storie import StorieModel
+from models.user_activity import UserActivityModel
+from models.user_data import UserDataModel
+
 
 class StatsController(flask_restful.Resource):
-	
+
 	def get(self):
 		try:
 			return self._get_appserver_stats_response()
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
-		
+
 	def _get_appserver_stats_response(self):
 		stats = {
 			"numUsers": self._get_num_users(),
@@ -27,7 +29,7 @@ class StatsController(flask_restful.Resource):
 			"numUsersMessagesToday": self._get_num_user_messages_today(),
 			"numAcceptedContactsToday": self._get_num_accepted_contacts_today()
 		}
-		
+
 		return ResponseBuilder.get_build_response(stats, 'stats', 200)
 
 

@@ -1,12 +1,12 @@
 from business_rules import run_all
-from business_rules import engine
-from rules.rules_definition import comments_rules, reactions_rules, past_days_rules, friends_rules, stories_rules 
-from rules.storie_priority_data import StoriePriorityData
-from rules.storie_priority_data_variables import StoriePriorityDataVariables
+
+from rules.rules_definition import comments_rules, reactions_rules, past_days_rules, friends_rules, stories_rules
 from rules.storie_priority_data_actions import StoriePriorityDataActions
+from rules.storie_priority_data_variables import StoriePriorityDataVariables
+
 
 class RulesMachine:
-	
+
 	@staticmethod
 	def process_data(data):
 		rules = []
@@ -15,7 +15,7 @@ class RulesMachine:
 		rules.extend(past_days_rules)
 		rules.extend(friends_rules)
 		rules.extend(stories_rules)
-		
+
 		run_all(rule_list=rules,
 				defined_variables=StoriePriorityDataVariables(data),
 				defined_actions=StoriePriorityDataActions(data),

@@ -1,10 +1,10 @@
-import unittest
-import unittest.mock as mock
-from unittest.mock import patch
-import requests
 import json
 import sys
+import unittest
+from unittest.mock import patch
+
 import app
+
 
 class TestLoginApi(unittest.TestCase):
 
@@ -45,7 +45,7 @@ class TestLoginApi(unittest.TestCase):
         self.assertIn("code", response_data)
         self.assertEqual(400,response_data["code"])
         self.assertIn("message", response_data)
-        
+
     @patch('api_client.shared_api_client.requests.post')
     def test_token(self, mock_post):
         # set up

@@ -1,11 +1,11 @@
 import uuid
+
 from constants import MONGODB_USER, MONGODB_PASSWD
-from controllers.db_controller import MongoController
 from controllers.date_controller import DateController
-from errors_exceptions.data_version_exception import DataVersionException
-from errors_exceptions.no_storie_found_exception import NoStorieFoundException
+from controllers.db_controller import MongoController
 from errors_exceptions.no_reaction_found_exception import NoReactionFoundException
-from errors_exceptions.storie_reaction_already_exists_exception import StorieReactionAlreadyFoundException
+from errors_exceptions.no_storie_found_exception import NoStorieFoundException
+
 
 class ReactionModel:
 
@@ -13,7 +13,7 @@ class ReactionModel:
 	def remove_reaction_by_storie_id(storie_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 		db.storie_reactions.remove({"storie_id": storie_id})
-		
+
 	@staticmethod
 	def remove_reaction(reaction_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
@@ -36,7 +36,7 @@ class ReactionModel:
 		if StorieModel.storie_exists(storie_id) == False:
 			raise NoStorieFoundException
 
-		
+
 		user_id = body["user_id"]
 		reaction = body["reaction"]
 
@@ -45,7 +45,7 @@ class ReactionModel:
 			if ReactionModel.reaction_exists(storie_id, user_id) == True:
 				#raise StorieReactionAlreadyFoundException
 				db.storie_reactions.remove({"user_id": user_id, "storie_id": storie_id})
-				
+
 			reaction_id = str(uuid.uuid4().hex)
 			rev = ""
 			reaction_date = DateController.get_date_time()
@@ -61,7 +61,7 @@ class ReactionModel:
 				raise NoReactionFoundException
 
 			db.storie_reactions.remove({"user_id": user_id, "storie_id": storie_id})
-			
+
 		reaction["date"] = DateController.get_date_time_with_format(reaction["date"])
 		return reaction
 

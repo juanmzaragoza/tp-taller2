@@ -1,31 +1,29 @@
 import flask
 import flask_restful
 from flask import request
-from constants import MONGODB_USER, MONGODB_PASSWD
 
-from controllers.db_controller import MongoController
-from controllers.login_controller import LoginController
-from controllers.user_controller import UserController
-from controllers.user_detail_controller import UserDetailController
-from controllers.userapp_controller import UserAppController
-from controllers.ping_controller import PingController
+from controllers.be_friend_controller import BeFriendController
+from controllers.be_friend_detail_controller import BeFriendDetailController
 from controllers.comment_controller import CommentController
 from controllers.comment_detail_controller import CommentDetailController
-from controllers.reaction_controller import ReactionController
-from controllers.reaction_detail_controller import ReactionDetailController
-from controllers.stats_controller import StatsController
-from controllers.profile_controller import ProfileController
-from controllers.storie_controller import StorieController
-from controllers.storie_comment_controller import StorieCommentController
-from controllers.storie_detail_controller import StorieDetailController
 from controllers.friend_controller import FriendController
 from controllers.friend_request_controller import FriendRequestController
 from controllers.friend_request_detail_controller import FriendRequestDetailController
-from controllers.be_friend_controller import BeFriendController
-from controllers.be_friend_detail_controller import BeFriendDetailController
-from controllers.response_builder import ResponseBuilder
-from controllers.request_counter_controller import RequestCounterController
+from controllers.login_controller import LoginController
 from controllers.notification_controller import NotificationsController
+from controllers.ping_controller import PingController
+from controllers.profile_controller import ProfileController
+from controllers.reaction_controller import ReactionController
+from controllers.reaction_detail_controller import ReactionDetailController
+from controllers.request_counter_controller import RequestCounterController
+from controllers.response_builder import ResponseBuilder
+from controllers.stats_controller import StatsController
+from controllers.storie_comment_controller import StorieCommentController
+from controllers.storie_controller import StorieController
+from controllers.storie_detail_controller import StorieDetailController
+from controllers.user_controller import UserController
+from controllers.user_detail_controller import UserDetailController
+from controllers.userapp_controller import UserAppController
 from request_middleware import RequestMiddleware
 
 app = flask.Flask(__name__)

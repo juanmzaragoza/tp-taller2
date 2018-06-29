@@ -1,5 +1,5 @@
 import unittest
-import unittest.mock as mock
+
 from rules.rules import RulesMachine
 from rules.storie_priority_data import StoriePriorityData
 from rules.storie_priority_data_variables import StoriePriorityDataVariables

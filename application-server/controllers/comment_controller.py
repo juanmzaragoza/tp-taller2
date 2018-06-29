@@ -1,22 +1,22 @@
-import json
 import flask_restful
-from flask import request
 from flask_restful import reqparse
-from models.comment import CommentModel
 from werkzeug.exceptions import BadRequest
-from controllers.error_handler import ErrorHandler
+
 from api_client.db_connection_error import DBConnectionError
+from auth_service import login_required, validate_sender
+from controllers.error_handler import ErrorHandler
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
-from auth_service import login_required, validate_sender
-from models.user_activity import UserActivityModel
 from errors_exceptions.user_mismatch_exception import UserMismatchException
+from models.comment import CommentModel
+from models.user_activity import UserActivityModel
+
 
 class CommentController(flask_restful.Resource):
-	
+
 	def __init__(self):
 		self.parser = reqparse.RequestParser(bundle_errors=True)
-	
+
 	@login_required
 	def post(self):
 		try:
@@ -31,7 +31,7 @@ class CommentController(flask_restful.Resource):
 			UserActivityModel.log_comment_activity(comment["user_id"], comment["storie_id"], "ADD")
 
 			return comment
-			 
+
 		except BadRequest as ex:
 			return ErrorHandler.create_error_response("Fields message, user_id and storie_id are mandatory", 400)
 		except NoUserDataFoundException as e:

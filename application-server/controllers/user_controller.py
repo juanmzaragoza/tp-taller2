@@ -2,14 +2,12 @@ import flask_restful
 from flask_restful import reqparse
 from werkzeug.exceptions import BadRequest
 
-from api_client.shared_api_client import SharedApiClient
 from api_client.request_exception import RequestException
-
+from api_client.shared_api_client import SharedApiClient
+from controllers.error_handler import ErrorHandler
+from controllers.response_builder import ResponseBuilder
 from models.user_data import UserDataModel
 
-from controllers.response_builder import ResponseBuilder
-from controllers.error_handler import ErrorHandler
-from auth_service import login_required
 
 class UserController(flask_restful.Resource):
 	def __init__(self):
@@ -40,7 +38,7 @@ class UserController(flask_restful.Resource):
 			response = self.shared_api_client.userCreate(args["id"],args["username"],args["password"])
 			if not response:
 				return ErrorHandler.create_error_response("You don't have authorization", 401)
-			
+
 			user_id = response["user"]["id"]
 			username = response["user"]["username"]
 			UserDataModel.insert_user(user_id, username)
