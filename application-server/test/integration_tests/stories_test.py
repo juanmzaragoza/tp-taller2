@@ -4,7 +4,7 @@
 import json
 import sys
 import unittest
-from mocks.storie_successful_mock import stories_request_mock, stories_request_response_mock
+
 import app
 
 
@@ -36,18 +36,3 @@ class TestStoriesApi(unittest.TestCase):
         response_data = self.__get_response_data(response)
         self.assertTrue(isinstance(response_data, list))
         self.assertTrue(all(story["story_type"] == "normal" for story in response_data))
-
-    def test_successful_create_storie(self):
-        response = self._make_post_request(stories_request_mock)
-        self.assertEqual(200, response.status_code)
-        data = self.__get_response_data(response)
-        self.assertEqual(stories_request_response_mock["description"], data["description"])
-        self.assertEqual(stories_request_response_mock["expired_time"], data["expired_time"])
-        self.assertEqual(stories_request_response_mock["location"], data["location"])
-        self.assertEqual(stories_request_response_mock["multimedia"], data["multimedia"])
-        self.assertEqual(stories_request_response_mock["story_type"], data["story_type"])
-        self.assertEqual(stories_request_response_mock["title"], data["title"])
-        self.assertEqual(stories_request_response_mock["updated_time"], data["updated_time"])
-        self.assertEqual(stories_request_response_mock["user_id"], data["user_id"])
-        self.assertEqual(stories_request_response_mock["visibility"], data["visibility"])
-
