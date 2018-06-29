@@ -3,17 +3,7 @@ from controllers.db_controller import MongoController
 from controllers.date_controller import DateController
 
 class UserActivityModel():
-	'''
-	@staticmethod
-	def update_user_activiy(user_id):
-		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
-		UserActivityModel._delete_user_activiy(user_id)
-		activity = {
-			"user_id": user_id,
-			"date": DateController.now()
-		}
-		db.user_activities.insert(activity)
-	'''
+	
 	@staticmethod
 	def _delete_user_activiy(user_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)

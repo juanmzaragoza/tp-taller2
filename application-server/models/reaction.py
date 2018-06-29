@@ -121,3 +121,11 @@ class ReactionModel:
 			"date": date,
 			"reaction": reaction
 		}
+
+	@staticmethod
+	def get_reaction_with_id(reaction_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+		reaction = db.storie_reactions.find_one({'_id': reaction_id})
+		if reaction is None:
+			raise NoReactionFoundException
+		return reaction

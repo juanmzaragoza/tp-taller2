@@ -1,16 +1,41 @@
 package tallerii.stories.network.apimodels;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Reaction extends ObjectApiApp {
+public class Reaction {
+    @SerializedName("_id")
+    private String id;
+    @SerializedName("storie_id")
+    private String storieId;
+    @SerializedName("user_id")
+    private String userId;
     private String date;
-    @SerializedName("count")
-    private int count;
-    private String reactionType;
-    @SerializedName("react")
-    private JsonElement react;
+    private String reaction;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getStorieId() {
+        return storieId;
+    }
+
+    public void setStorieId(String storieId) {
+        this.storieId = storieId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getDate() {
         return date;
@@ -20,23 +45,7 @@ public class Reaction extends ObjectApiApp {
         this.date = date;
     }
 
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public String getReactionType() {
-        return reactionType;
-    }
-
-    public void setReactionType(String reactionType) {
-        this.reactionType = reactionType;
-    }
-
-    public boolean imVoted(){
-        return !this.react.isJsonNull();
+    public String getReaction() {
+        return reaction;
     }
 }

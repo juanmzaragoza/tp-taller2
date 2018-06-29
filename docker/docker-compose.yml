@@ -33,14 +33,6 @@ services:
     command: bash -c "npm install && ng serve --host 0.0.0.0"
     depends_on:
       - node
-  python:
-    container_name: python
-    build: ./python
-    ports:
-      - 5000:5000
-    volumes:
-      - ../rules-server:/usr/src/rules-server
-    command: bash -c "chmod +x init.sh && ./init.sh"
   gunicorn:
     container_name: gunicorn
     build: ./gunicorn

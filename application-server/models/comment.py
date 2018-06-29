@@ -75,7 +75,7 @@ class CommentModel:
 		
 		storie_id = body["storie_id"]
 
-		if StorieModel.storie_exists(storie_id) == None:
+		if not StorieModel.storie_exists(storie_id):
 			raise NoStorieFoundException
 			
 		comment_id = str(uuid.uuid4().hex)
@@ -130,7 +130,13 @@ class CommentModel:
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		count = db.storie_comments.find().count()
 		return count
-
+	
+	@staticmethod
+	def count_storie_comments(storie_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+		count = db.storie_comments.find({"storie_id": storie_id}).count()
+		return count
+		
 	@staticmethod
 	def count_today_comments():
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
@@ -143,3 +149,11 @@ class CommentModel:
 			]
 		}).count()
 		return count
+
+	@staticmethod
+	def get_comment_with_id(comment_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
+		comment = db.storie_comments.find_one({"_id": comment_id})
+		if comment == None:
+			raise NoCommentFoundException
+		return comment

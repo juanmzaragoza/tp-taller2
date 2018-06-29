@@ -1,19 +1,19 @@
 import uuid
-import json
+
 import pymongo
-import requests
-from models.comment import CommentModel
-from models.reaction import ReactionModel
-from models.user_data import UserDataModel
-from models.friend import FriendModel
+
 from constants import MONGODB_USER, MONGODB_PASSWD
-from controllers.db_controller import MongoController
 from controllers.date_controller import DateController
-from controllers.rule_machine_proxy import RuleMachineProxy
+from controllers.db_controller import MongoController
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
+from models.comment import CommentModel
+from models.friend import FriendModel
+from models.reaction import ReactionModel
 from models.user_activity import UserActivityModel
-import datetime
+from models.user_data import UserDataModel
+from rules.rules import RulesMachine
+from rules.storie_priority_data import StoriePriorityData
 
 
 class StorieModel:
@@ -31,6 +31,7 @@ class StorieModel:
 
 	@staticmethod
 	def create_user_storie(body):
+		HOURS_FAST_STORIES = 4
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 
 		storie_id = str(uuid.uuid4().hex)
@@ -43,7 +44,7 @@ class StorieModel:
 		visibility = body['visibility']
 		mult = body['multimedia']
 		story_type = body['story_type']
-		expired_time = DateController.get_date_time_inc_by_hours(4) if (story_type == "fast") else ""
+		expired_time = DateController.get_date_time_inc_by_hours(HOURS_FAST_STORIES) if (story_type == "fast") else ""
 		user_id = body['user_id']
 
 		storie = StorieModel.get_new_storie(storie_id, rev, user_id, created_time, updated_time, expired_time, title, desc, location, visibility, mult, story_type)
@@ -95,16 +96,16 @@ class StorieModel:
 	@staticmethod
 	def get_stories(user_id, story_type = 'normal'):
 		data = []
+		sp_list = []
 		stories_list = {}
 		users_activity = {}
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
-
+		UserDataModel.exist_user(user_id)
 		friends_id = FriendModel.get_friends_array_by_user_id(user_id)
 		friends_id.append(user_id)
 
 		opt1 = {"expired_time": ""}
 		opt2 = {"expired_time": {"$gte": DateController.get_date_time()}}
-
 
 		stories = db.stories.find({
 			"$or" : [
@@ -125,9 +126,6 @@ class StorieModel:
 				}
 			]}).sort("created_time",pymongo.DESCENDING)
 
-		#rules_machine = RuleMachineProxy()
-		#rules_machine.new_rule_process()
-
 		for storie in stories:
 			storie_user_id = storie["user_id"]
 			storie_id = storie["_id"]
@@ -135,27 +133,21 @@ class StorieModel:
 			storie = StorieModel.get_storie_with_user_data(storie)
 			storie["comments"] = CommentModel.get_last_storie_comment(storie_id)
 			storie["reactions"] = ReactionModel.get_storie_reactions(storie_id, user_id)
-			'''
-			storie_with_user_data = StorieModel.get_storie_with_user_data(storie)
+
+			storie_data = StorieModel.get_storie_resume(storie)
+			USER_ACT_PAST_DAYS = 10
 			if (storie_user_id not in users_activity):
-				users_activity[storie_user_id] = UserActivityModel.log_user_activity_resume(storie_user_id, 10)
-			
-			rule_src_data = {
-						"user_data": users_activity[storie_user_id],
-						"storie_data": StorieModel.get_storie_resume(storie)
-			}
-			'''
-			data.append(storie)
-			#rules_machine.process_storie_data(rule_src_data)
-			#stories_list[storie_id] = storie
+				users_activity[storie_user_id] = UserActivityModel.log_user_activity_resume(storie_user_id, USER_ACT_PAST_DAYS)
 
-		#result = rules_machine.get_results()
-		#stories_importance = result["result"]
-		#sorted_by_importance = sorted(stories_importance.items(), key=lambda kv: kv[1], reverse=True)
+			storie_priority_data = StoriePriorityData(storie_id, storie_data["past"], storie_data["num_comments"], storie_data["num_reactions"], users_activity[storie_user_id]["num_friends"], users_activity[storie_user_id]["num_stories"])
+			sp_list.append(storie_priority_data)
+			RulesMachine.process_data(storie_priority_data)
 
-		#for storie in sorted_by_importance:
-			#storie_id = storie[0]
-			#data.append(stories_list[storie_id])
+			stories_list[storie_id] = storie
+
+		sp_list.sort(key=lambda x: x.get_priority(), reverse=True)
+		for sp in sp_list:
+			data.append(stories_list[sp.get_storie_id()])
 
 		return data
 
@@ -164,7 +156,7 @@ class StorieModel:
 		storie_resume = {
 				"storie_id": storie["_id"],
 				"past": DateController.get_past_days(storie["created_time"]),
-				"num_comments": len(storie["comments"]),
+				"num_comments": CommentModel.count_storie_comments(storie["_id"]),
 				"num_reactions": (storie["reactions"]["LIKE"]["count"] +
 								storie["reactions"]["NOTLIKE"]["count"] +
 								storie["reactions"]["GETBORED"]["count"] +
@@ -261,3 +253,10 @@ class StorieModel:
 		}).count()
 		return count
 
+	@staticmethod
+	def get_storie(storie_id):
+		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
+		storie = db.stories.find_one({"_id": storie_id})
+		if storie is None:
+			raise NoStorieFoundException
+		return storie

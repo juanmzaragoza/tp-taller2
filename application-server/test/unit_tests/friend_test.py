@@ -14,20 +14,15 @@ class TestFriendApi(unittest.TestCase):
 
     def test_user_friends_db_conn_failed(self):
         user_id = '1'
-        FriendModel.get_friends_by_user_id = \
-            mock.MagicMock(side_effect=DBConnectionError(""))
-        ErrorHandler.create_error_response = \
-            mock.MagicMock(return_value=no_db_conn_mock)
+        FriendModel.get_friends_by_user_id = mock.MagicMock(side_effect=DBConnectionError(""))
+        ErrorHandler.create_error_response = mock.MagicMock(return_value=no_db_conn_mock)
         service = FriendController()
-        service._create_get_friends_response = \
-            mock.MagicMock(return_value=friends_successful_mock)
+        service._create_get_friends_response = mock.MagicMock(return_value=friends_successful_mock)
         self.assertEqual(service.get_friends_by_user_id(user_id), no_db_conn_mock)
 
     def test_user_friends_successful(self):
         user_id = '1'
-        FriendModel.get_friends_by_user_id = \
-            mock.MagicMock(return_value=friends_raw_mock)
+        FriendModel.get_friends_by_user_id = mock.MagicMock(return_value=friends_raw_mock)
         service = FriendController()
-        service._create_get_friends_response = \
-            mock.MagicMock(return_value=friends_successful_mock)
+        service._create_get_friends_response = mock.MagicMock(return_value=friends_successful_mock)
         self.assertEqual(service.get_friends_by_user_id(user_id), friends_successful_mock)

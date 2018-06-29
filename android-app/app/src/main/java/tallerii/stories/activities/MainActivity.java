@@ -44,7 +44,6 @@ public class MainActivity extends StoriesLoggedInActivity {
             store.save("token", intent.getStringExtra(TOKEN));
         }
         if(intent.getStringExtra(EXTRA_MESSAGE) != null) {
-            final Store store = new Store();
             showMessage(intent.getStringExtra(EXTRA_MESSAGE), 10);
         }
         // by default show home
@@ -108,6 +107,9 @@ public class MainActivity extends StoriesLoggedInActivity {
         fragment = new FlashStoriesFragment();
         // get profile id and pass it to fragment
         Bundle bundle = getIntent().getExtras();
+        if (bundle.getString(ProfileActivity.PROFILE_ID) == null){
+            bundle.putString(ProfileActivity.PROFILE_ID, getProfile().getUserId());
+        }
         fragment.setArguments(bundle);
     }
 }

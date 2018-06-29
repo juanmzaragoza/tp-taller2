@@ -12,38 +12,43 @@ from errors_exceptions.friend_request_already_exists_exception import FriendRequ
 class FriendRequestModel():
 
 	@staticmethod
+	def get_friend_request_with_user_data(fr, key):
+		user_id = fr[key]
+		user_data = UserDataModel.get_user_reduced_data_by_user_id(user_id)
+		fr_with_user_data = {**user_data, **fr}
+		return fr_with_user_data
+	
+	@staticmethod
 	def get_friends_requests_rcv_by_user_id(user_id):
-		data = {}
+		data = []
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 
 		friends_requests_rcv = db.friends_request.find({'user_id_rcv': user_id})
 		
-		for freq in friends_requests_rcv:
-			friend_req_id = freq["user_id_sender"]
-			data[friend_req_id] = UserDataModel.get_user_reduced_data_by_user_id(friend_req_id)
-			data[friend_req_id]["user_id"] = data[friend_req_id].pop("_id")
-			data[friend_req_id]["_id"] = freq["_id"]
-			data[friend_req_id]["date"] = DateController.get_date_time_with_format(freq["date"])
-			data[friend_req_id]["message"] = freq["message"]
+		for fr in friends_requests_rcv:
+			friend_request = FriendRequestModel.get_friend_request_with_user_data(fr, "user_id_sender")
+			friend_request["date"] = DateController.get_date_time_with_format(friend_request["date"])
+			friend_request["user_id"] = friend_request.pop("user_id_sender")
+			friend_request.pop("user_id_rcv")
+			data.append(friend_request)
 		
-		return list(data.values())
-		
+		return data
+	
 	@staticmethod
 	def get_friends_requests_sent_by_user_id(user_id):
-		data = {}
+		data = []
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
 
-		friends_requests_sent = db.friends_request.find({"user_id_sender": user_id})
+		friends_requests_rcv = db.friends_request.find({'user_id_sender': user_id})
 		
-		for freq in friends_requests_sent:
-			friend_req_id = freq["user_id_rcv"]
-			data[friend_req_id] = UserDataModel.get_user_reduced_data_by_user_id(friend_req_id)
-			data[friend_req_id]["user_id"] = data[friend_req_id].pop("_id")
-			data[friend_req_id]["_id"] = freq["_id"]
-			data[friend_req_id]["date"] = DateController.get_date_time_with_format(freq["date"])
-			data[friend_req_id]["message"] = freq["message"]
+		for fr in friends_requests_rcv:
+			friend_request = FriendRequestModel.get_friend_request_with_user_data(fr, "user_id_rcv")
+			friend_request["date"] = DateController.get_date_time_with_format(friend_request["date"])
+			friend_request["user_id"] = friend_request.pop("user_id_rcv")
+			friend_request.pop("user_id_sender")
+			data.append(friend_request)
 		
-		return list(data.values())
+		return data
 
 	@staticmethod
 	def exists_request(request_id):
