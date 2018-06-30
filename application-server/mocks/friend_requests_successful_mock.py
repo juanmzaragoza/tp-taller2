@@ -25,3 +25,10 @@ friends_requests_creation_successful_mock = {
 	'date': ''
 }
 
+request_detail_success = {
+	"_id": "6ae66a31d4ef925dac59a95b",
+	"date": "06/05/2018 10:10:40",
+	"message": "Hello ...",
+	"user_id_rcv": "2",
+	"user_id_sender": "4"
+}

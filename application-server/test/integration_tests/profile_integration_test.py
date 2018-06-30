@@ -7,6 +7,7 @@ from unittest.mock import patch
 from flask import json
 
 import app
+from mocks.profile_successful_mock import profile1
 
 
 class ProfileTest(unittest.TestCase):
@@ -34,6 +35,5 @@ class ProfileTest(unittest.TestCase):
 
         self.assertEqual(200, response.status_code)
         response_data = self.__get_response_data(response)
-        print(response_data)
-        self.assertEqual("Erik", response_data["profile"]["name"])
+        self.assertEqual(profile1, response_data)
 
