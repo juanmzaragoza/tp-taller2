@@ -5,7 +5,7 @@ from unittest.mock import patch
 from models.reaction import ReactionModel
 
 
-class TestFriendApi(unittest.TestCase):
+class TestReactionModel(unittest.TestCase):
 
     @patch('models.storie.MongoController')
     def test_create_reaction(self, mock_db):

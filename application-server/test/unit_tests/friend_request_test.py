@@ -15,7 +15,7 @@ from models.friend_request import FriendRequestModel
 class TestFriendRequestApi(unittest.TestCase):
 
     def test_user_friends_rcv_requests_db_conn_failed(self):
-        user_id = '1'
+        user_id = '2'
         FriendRequestModel.get_friends_requests_rcv_by_user_id = mock.MagicMock(side_effect=DBConnectionError(""))
         ErrorHandler.create_error_response = mock.MagicMock(return_value=no_db_conn_mock)
         service = BeFriendDetailController()
@@ -23,14 +23,14 @@ class TestFriendRequestApi(unittest.TestCase):
         self.assertEqual(service.get_friends_requests_rcv_by_user_id(user_id), no_db_conn_mock)
 
     def test_user_friends_rcv_requests_successful(self):
-        user_id = '1'
+        user_id = '2'
         FriendRequestModel.get_friends_requests_rcv_by_user_id = mock.MagicMock(return_value=friends_requests_raw_mock)
         service = BeFriendDetailController()
         service._create_get_friends_requests_response = mock.MagicMock(return_value=friends_requests_successful_mock)
         self.assertEqual(service.get_friends_requests_rcv_by_user_id(user_id), friends_requests_successful_mock)
 
     def test_user_friends_sent_requests_db_conn_failed(self):
-        user_id = '1'
+        user_id = '4'
         FriendRequestModel.get_friends_requests_sent_by_user_id = mock.MagicMock(side_effect=DBConnectionError(""))
         ErrorHandler.create_error_response = mock.MagicMock(return_value=no_db_conn_mock)
         service = BeFriendDetailController()
@@ -38,7 +38,7 @@ class TestFriendRequestApi(unittest.TestCase):
         self.assertEqual(service.get_friends_requests_sent_by_user_id(user_id), no_db_conn_mock)
 
     def test_user_friends_sent_requests_successful(self):
-        user_id = '1'
+        user_id = '4'
         FriendRequestModel.get_friends_requests_sent_by_user_id = mock.MagicMock(return_value=friends_requests_raw_mock)
         service = BeFriendDetailController()
         service._create_get_friends_requests_response = mock.MagicMock(return_value=friends_requests_successful_mock)

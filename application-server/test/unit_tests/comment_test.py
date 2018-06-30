@@ -5,7 +5,7 @@ from unittest.mock import patch
 from models.comment import CommentModel
 
 
-class TestFriendApi(unittest.TestCase):
+class TestCommentModel(unittest.TestCase):
 
     @patch('models.storie.MongoController')
     def test_create_comment(self, mock_db):

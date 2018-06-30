@@ -12,7 +12,7 @@ from mocks.storie_successful_mock import stories_successful_mock, stories_raw_mo
 from models.storie import StorieModel
 
 
-class TestStorieApi(unittest.TestCase):
+class TestStorieModel(unittest.TestCase):
 
     def test_user_stories_db_conn_failed(self):
         user_id = '1'

@@ -21,7 +21,7 @@ class LoginController(flask_restful.Resource):
 			args = self.parser.parse_args()
 			response = self.shared_api_client.login(args["username"],args["password"])
 			if not response:
-				return ErrorHandler.create_error_response("You don't have authorization", 401)
+				return ErrorHandler.create_error_response("Invalid Login", 401)
 
 			return ResponseBuilder.build_response(response, 201)
 

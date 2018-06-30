@@ -89,7 +89,7 @@ class TestLoginApi(unittest.TestCase):
         self.assertIn("code", response_data)
         self.assertEqual(401,response_data["code"])
         self.assertIn("message", response_data)
-        self.assertEqual(response_data["message"], "You don't have authorization")
+        self.assertEqual(response_data["message"], "Invalid Login")
 
     @patch('api_client.shared_api_client.requests.post')
     def test_invalid_password_should_status_401(self, mock_post):
@@ -104,7 +104,7 @@ class TestLoginApi(unittest.TestCase):
         self.assertIn("code", response_data)
         self.assertEqual(401,response_data["code"])
         self.assertIn("message", response_data)
-        self.assertEqual(response_data["message"], "You don't have authorization")
+        self.assertEqual(response_data["message"], "Invalid Login")
 
     @patch('api_client.shared_api_client.requests.post')
     def test_remote_server_down_should_status_500(self, mock_post):
