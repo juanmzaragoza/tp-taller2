@@ -24,6 +24,8 @@ class BeFriendController(flask_restful.Resource):
 		try:
 			self.parser.add_argument('user_id', required=True, help="Field user_id is mandatory")
 			self.parser.add_argument('rcv_user_id', required=True, help="Field rcv_user_id is mandatory")
+			self.parser.add_argument('message', help="Message of the request")
+			self.parser.add_argument('picture', help="Profile picture firebase id")
 
 			args = self.parser.parse_args()
 			user_sender_id, user_rcv_id, msg, picture = self._get_friend_request_data(args)
