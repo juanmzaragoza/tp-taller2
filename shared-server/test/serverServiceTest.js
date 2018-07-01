@@ -24,7 +24,10 @@ var models;
 describe('Server Service Tests', function(){
 
 	before(function() {
-	    mockery.enable();
+	    mockery.enable({
+		    warnOnReplace: false,
+		    warnOnUnregistered: false
+		});
 
 	    serverService   = require("../app/services/server.service");
 	});	
