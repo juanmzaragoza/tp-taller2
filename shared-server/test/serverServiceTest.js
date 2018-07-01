@@ -1,12 +1,37 @@
 var expect = require('chai').expect;
 var assert = require('chai').assert;
 var request = require('request');
-var serverService   = require("../app/services/server.service");
+
+var mockery = require('mockery');
+
+var mockRemote = {
+	get: function() {
+		return new Promise((resolve, reject)=>{
+			resolve("123");
+        })
+	},
+	hola: "hola"
+}
+
+mockery.registerMock('../services/remote.service', mockRemote);
+
+var serverService;
 var SequelizeMock = require('sequelize-mock');
+
 
 var models;
 
 describe('Server Service Tests', function(){
+
+	before(function() {
+	    mockery.enable();
+
+	    serverService   = require("../app/services/server.service");
+	});	
+
+	after(function() {
+		mockery.disable();
+	});
 
 	beforeEach(function() {
 		var dbMock = new SequelizeMock();
@@ -541,6 +566,138 @@ describe('Server Service Tests', function(){
 		})
 		.catch((reason) => {
 			assert(false, "getById failed: "+reason);
+			done();
+		});
+	});
+
+	it ('Ping with invalid server should fail', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findOne') {
+		    	return null;
+		    }
+		});
+
+		serverService.ping(2, models)
+		.then((response) => {
+			assert(false);
+			done();
+		})
+		.catch((reason) => {
+			assert.equal(reason, 'not-found');
+			done();
+		});
+	});
+
+	it ('Ping with valid server should success', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findOne') {
+		    	return models.app_server.build({ 
+	            	"id": 8,
+	            	"rev": "123",
+					"createdBy": 4,
+					"createdTime": "2018-05-26T17:19:51.342Z",
+					"name": "dummy",
+					"lastConnection": null,
+					"host": "http://localhost"
+			    });
+		    }
+		});
+
+		serverService.ping(8, models)
+		.then((response) => {
+			assert(true);
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "Failed: "+reason);
+			done();
+		});
+	});
+
+	it ('Stats with invalid server should fail', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findOne') {
+		    	return null;
+		    }
+		});
+
+		serverService.stats(2, models)
+		.then((response) => {
+			assert(false);
+			done();
+		})
+		.catch((reason) => {
+			assert.equal(reason, 'not-found');
+			done();
+		});
+	});
+
+	it ('Stats with valid server should success', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findOne') {
+		    	return models.app_server.build({ 
+	            	"id": 8,
+	            	"rev": "123",
+					"createdBy": 4,
+					"createdTime": "2018-05-26T17:19:51.342Z",
+					"name": "dummy",
+					"lastConnection": null,
+					"host": "http://localhost"
+			    });
+		    }
+		});
+
+		serverService.stats(8, models)
+		.then((response) => {
+			assert(true);
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "Failed: "+reason);
+			done();
+		});
+	});
+
+	it ('Requests with invalid server should fail', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findOne') {
+		    	return null;
+		    }
+		});
+
+		serverService.requests(2, {}, models)
+		.then((response) => {
+			assert(false);
+			done();
+		})
+		.catch((reason) => {
+			assert.equal(reason, 'not-found');
+			done();
+		});
+	});
+
+	it ('Requests with valid server should success', function(done) {
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findOne') {
+		    	return models.app_server.build({ 
+	            	"id": 8,
+	            	"rev": "123",
+					"createdBy": 4,
+					"createdTime": "2018-05-26T17:19:51.342Z",
+					"name": "dummy",
+					"lastConnection": null,
+					"host": "http://localhost"
+			    });
+		    }
+		});
+
+		serverService.requests(8, {}, models)
+		.then((response) => {
+			assert(true);
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "Failed: "+reason);
 			done();
 		});
 	});

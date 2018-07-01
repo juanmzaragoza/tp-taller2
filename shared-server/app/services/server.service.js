@@ -211,8 +211,7 @@ class ServerService {
                 var filter = {"id": id};
                 DaoService.findOne(filter, models.app_server)
                 .then( function(server) {
-                    var url = server.host + '/ping'
-                    console.log(url)
+                    var url = server.host + '/ping';
                     RemoteServ.get(url)
                     .then(res=>{
                         resolve(res.server)
@@ -228,7 +227,6 @@ class ServerService {
                 DaoService.findOne(filter, models.app_server)
                 .then( function(server) {
                     var url = server.host + '/stats'
-                    console.log(url)
                     RemoteServ.get(url)
                     .then(res=>{
                         resolve(res.stats)
