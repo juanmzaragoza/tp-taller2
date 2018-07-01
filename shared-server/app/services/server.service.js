@@ -1,6 +1,5 @@
 "use strict";
 const AuthService       = require('./auth.service')
-const StorageServ       = require('./storage.service')
 const DaoService    = require('../services/dao.service')
 const RemoteServ  = require('../services/remote.service')
 var _               = require("underscore")
@@ -106,30 +105,6 @@ class ServerService {
                     reject(err);
                 })
             });            
-        }
-
-
-        this.refreshToken = (id, cb)=>{
-            var me = this
-            me.getById(id, (err, server)=>{
-                if(err){
-                    console.log(err)
-                    cb(err);
-                }else{
-                    server["token"]  =  { 
-                        token: AuthService.token(server.name),
-                        expiresAt: 3600
-                    };
-                    StorageServ.update("server", server, (err, server)=>{
-                        if(err){
-                            console.log(err)
-                            cb(err);
-                        }else{
-                            cb(undefined, server);
-                        }
-                    })
-                }
-            })
         }
         
         this.delete = (id, models)=>{

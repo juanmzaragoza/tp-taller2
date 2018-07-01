@@ -1,6 +1,5 @@
 "use strict";
 const AuthService       = require('./auth.service')
-const StorageServ       = require('./storage.service')
 const bcrypt            = require('bcrypt');
 const DaoService    = require('../services/dao.service')
 

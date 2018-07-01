@@ -47,6 +47,16 @@ class UserController {
                 }
             })
         };
+
+        this.getById = (req, res, next) => {
+            UserService.getById(req.params.id, req.models)
+            .then(user => {
+                ResServ.ok(ResEnum.Values, "user", user, res, next);
+            })
+            .catch( e => {
+                ResServ.error(res, messages.NotFound);
+            });
+        };
     }
 }
 module.exports = new UserController();
