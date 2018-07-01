@@ -496,4 +496,53 @@ describe('Server Service Tests', function(){
 		});
 	});
 
+	it ('Update last connection', function(done) {
+		var apiKey = '12345';
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findOne') {
+		    	if (queryOptions[0] == apiKey) {
+		            return models.app_server.build({ 
+		            	"id": 8,
+		            	"rev": "123",
+						"createdBy": 4,
+						"createdTime": "2018-05-26T17:19:51.342Z",
+						"name": "dummy",
+						"lastConnection": null
+				    });
+		        } else {
+		        	return null;
+		        }
+		    }
+		});
+
+		serverService.updateLastConnection(apiKey, models)
+		.then((response) => {
+			assert(true);
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "getById failed: "+reason);
+			done();
+		});
+	});
+
+	it ('Update last connection without server should fail silently', function(done) {
+		var apiKey = '12345';
+		models.app_server.$queryInterface.$useHandler(function(query, queryOptions, done) {
+			if (query === 'findOne') {
+		    	return null;
+		    }
+		});
+
+		serverService.updateLastConnection(apiKey, models)
+		.then((response) => {
+			assert(true);
+			done();
+		})
+		.catch((reason) => {
+			assert(false, "getById failed: "+reason);
+			done();
+		});
+	});
+
 });
