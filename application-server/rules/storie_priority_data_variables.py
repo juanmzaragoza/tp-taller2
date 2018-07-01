@@ -1,4 +1,5 @@
-from business_rules.variables import BaseVariables, string_rule_variable, numeric_rule_variable, boolean_rule_variable
+from business_rules.variables import BaseVariables, numeric_rule_variable
+
 
 class StoriePriorityDataVariables(BaseVariables):
 

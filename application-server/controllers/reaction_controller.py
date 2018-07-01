@@ -1,22 +1,22 @@
-import json
 import flask_restful
-from flask import request
 from flask_restful import reqparse
-from models.reaction import ReactionModel
 from werkzeug.exceptions import BadRequest
-from controllers.error_handler import ErrorHandler
+
 from api_client.db_connection_error import DBConnectionError
+from auth_service import login_required, validate_sender
+from controllers.error_handler import ErrorHandler
 from errors_exceptions.no_storie_found_exception import NoStorieFoundException
 from errors_exceptions.storie_reaction_already_exists_exception import StorieReactionAlreadyFoundException
 from errors_exceptions.user_mismatch_exception import UserMismatchException
-from auth_service import login_required, validate_sender
+from models.reaction import ReactionModel
 from models.user_activity import UserActivityModel
 
+
 class ReactionController(flask_restful.Resource):
-	
+
 	def __init__(self):
 		self.parser = reqparse.RequestParser(bundle_errors=True)
-	
+
 	@login_required
 	def post(self):
 		try:
@@ -29,7 +29,7 @@ class ReactionController(flask_restful.Resource):
 			reaction = ReactionModel.create_reaction(args)
 			UserActivityModel.log_reaction_activity(reaction["user_id"], reaction["storie_id"], reaction["reaction"], "ADD")
 			return reaction
-			 
+
 		except BadRequest as ex:
 			return ErrorHandler.create_error_response("Fields reaction, user_id and storie_id are mandatory", 400)
 		except NoStorieFoundException as e:

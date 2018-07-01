@@ -1,26 +1,28 @@
 import json
+
 import flask_restful
-from bson.json_util import dumps
-from flask import request, jsonify
+from flask import request
 from flask_restful import reqparse
-from models.user_data import UserDataModel
 from werkzeug.exceptions import BadRequest
-from controllers.error_handler import ErrorHandler
-from controllers.response_builder import ResponseBuilder
-from controllers.friend_controller import FriendController
+
 from api_client.db_connection_error import DBConnectionError
+from auth_service import login_required, validate_sender
+from controllers.be_friend_detail_controller import BeFriendDetailController
+from controllers.error_handler import ErrorHandler
+from controllers.friend_controller import FriendController
+from controllers.response_builder import ResponseBuilder
 from controllers.storie_detail_controller import StorieDetailController
 from errors_exceptions.data_version_exception import DataVersionException
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
 from errors_exceptions.user_mismatch_exception import UserMismatchException
-from controllers.be_friend_detail_controller import BeFriendDetailController
-from auth_service import login_required, validate_sender
+from models.user_data import UserDataModel
+
 
 class ProfileController(flask_restful.Resource):
 
 	def __init__(self):
 		self.parser = reqparse.RequestParser(bundle_errors=True)
-		
+
 	@login_required
 	def get(self, user_id):
 		try:
@@ -37,7 +39,7 @@ class ProfileController(flask_restful.Resource):
 			return ErrorHandler.create_error_response(str(e), 404)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
-	
+
 	@login_required
 	def put(self, user_id):
 		try:

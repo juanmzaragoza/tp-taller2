@@ -1,13 +1,11 @@
 from flask_restful import Resource
 from werkzeug.exceptions import BadRequest
 
-from api_client.shared_api_client import SharedApiClient
 from api_client.request_exception import RequestException
-
-
-from controllers.response_builder import ResponseBuilder
+from api_client.shared_api_client import SharedApiClient
 from controllers.error_handler import ErrorHandler
-from auth_service import login_required
+from controllers.response_builder import ResponseBuilder
+
 
 class UserDetailController(Resource):
 	def __init__(self):
@@ -21,7 +19,7 @@ class UserDetailController(Resource):
 			response = self.shared_api_client.getUserById(user_id)
 			if not response:
 				return ErrorHandler.create_error_response("User doesn't exists", 404)
-			
+
 			return ResponseBuilder.build_response(response, 200)
 
 		except RequestException as e:

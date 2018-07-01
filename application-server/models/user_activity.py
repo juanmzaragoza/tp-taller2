@@ -1,9 +1,10 @@
 from constants import MONGODB_USER, MONGODB_PASSWD
-from controllers.db_controller import MongoController
 from controllers.date_controller import DateController
+from controllers.db_controller import MongoController
+
 
 class UserActivityModel():
-	
+
 	@staticmethod
 	def _delete_user_activiy(user_id):
 		db = MongoController.get_mongodb_instance(MONGODB_USER, MONGODB_PASSWD)
@@ -21,7 +22,7 @@ class UserActivityModel():
 			]
 		}).count()
 		return count
-	
+
 	@staticmethod
 	def log_user_login_activity(user_id):
 		login_activity = {
@@ -29,10 +30,10 @@ class UserActivityModel():
 			"date": DateController.get_date_time(),
 			"user_id": user_id
 		}
-		
+
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		db.user_activities.insert(login_activity)
-		
+
 	@staticmethod
 	def log_friend_activity(user_id, friend_id, op):
 		friend_activity = {
@@ -42,10 +43,10 @@ class UserActivityModel():
 			"friend_id": friend_id,
 			"operation": op
 		}
-		
+
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		db.user_activities.insert(friend_activity)
-	
+
 	@staticmethod
 	def log_comment_activity(user_id, storie_id, op):
 		comment_activity = {
@@ -55,10 +56,10 @@ class UserActivityModel():
 			"storie_id": storie_id,
 			"operation": op
 		}
-		
+
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		db.user_activities.insert(comment_activity)
-	
+
 	@staticmethod
 	def log_reaction_activity(user_id, storie_id, reaction, op):
 		reaction_activity = {
@@ -69,10 +70,10 @@ class UserActivityModel():
 			"reaction": reaction,
 			"operation": op
 		}
-		
+
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		db.user_activities.insert(reaction_activity)
-	
+
 	@staticmethod
 	def log_storie_activity(user_id, storie_id, op):
 		storie_activity = {
@@ -82,7 +83,7 @@ class UserActivityModel():
 			"storie_id": storie_id,
 			"operation": op
 		}
-		
+
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
 		db.user_activities.insert(storie_activity)
 
@@ -99,9 +100,9 @@ class UserActivityModel():
 			"num_reactions": UserActivityModel.get_size_reactions_by_user_id(user_id, date_from, date_to),
 			"num_friends": UserActivityModel.get_size_friends_by_user_id(user_id, date_from, date_to)
 		}
-		
+
 		return user_resume
-	
+
 	@staticmethod
 	def get_size_stories_by_user_id(user_id, date_from, date_to):
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
@@ -114,7 +115,7 @@ class UserActivityModel():
 			]
 		}).count()
 		return count
-	
+
 	@staticmethod
 	def get_size_comments_by_user_id(user_id, date_from, date_to):
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
@@ -127,7 +128,7 @@ class UserActivityModel():
 			]
 		}).count()
 		return count
-	
+
 	@staticmethod
 	def get_size_reactions_by_user_id(user_id, date_from, date_to):
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)
@@ -140,7 +141,7 @@ class UserActivityModel():
 			]
 		}).count()
 		return count
-	
+
 	@staticmethod
 	def get_size_friends_by_user_id(user_id, date_from, date_to):
 		db = MongoController.get_mongodb_instance(MONGODB_USER,MONGODB_PASSWD)

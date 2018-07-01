@@ -1,11 +1,14 @@
 from functools import wraps
-from controllers.error_handler import ErrorHandler
-from constants import JWT_SECRET
+
 import jwt
-from jwt import ExpiredSignatureError, DecodeError
 from flask import request
-from models.user_activity import UserActivityModel
+from jwt import ExpiredSignatureError, DecodeError
+
+from constants import JWT_SECRET
+from controllers.error_handler import ErrorHandler
 from errors_exceptions.user_mismatch_exception import UserMismatchException
+from models.user_activity import UserActivityModel
+
 
 def is_authenticated():
 	token = _get_token()
@@ -44,7 +47,7 @@ def _save_user_activity():
 	user_id = get_user_id()
 	#UserActivityModel.update_user_activiy(user_id)
 	UserActivityModel.log_user_login_activity(user_id)
-	
+
 def login_required(f):
 	@wraps(f)
 	def decorated_function(*args, **kwargs):
