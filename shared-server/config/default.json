@@ -19,9 +19,10 @@
 		}
 	},
 	"firebase":{
-		"keyFilename": "./private_key.json",
-		"projectId": "storageservice-d467a",
-		"storage": "@google-cloud/storage"
+		"keyFilename": "./androidstoriesg4-firebase-private-key.json",
+		"projectId": "androidstoriesg4",
+		"storage": "@google-cloud/storage",
+		"baseDirectory": "media/"
 	},
 	"bcrypt":{
 		"saltRounds": 1
