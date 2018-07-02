@@ -9,7 +9,7 @@ Una importante empresa AppMaker© ha decidido encargarnos el desarrollo de una r
 AppMaker busca posicionarse en el mercado de aplicaciones, busca conectar esta aplicación con sus otras aplicaciones que poseen gran cantidad de usuarios.
 
 ## Especificaciones
-La aplicaicón desarrollada consta de tres componentes:
+La aplicaicón desarrollada consta de los siguientes componentes:
 * Un servidor (Application Server), el cual será responsable de conectar a los usuarios.
   * Lenguaje: [Python 3](https://www.python.org/) (`3.6.4`)
   * Web Framework: [Flask](http://flask.pocoo.org/) (`0.12.2`)
