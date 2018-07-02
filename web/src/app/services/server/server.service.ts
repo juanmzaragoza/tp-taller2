@@ -88,7 +88,7 @@ export class ServerService {
       return this.RemoteServ.get('/servers/stats/'+ id).map(res => res.stats);
     }
     request(id:string , from:string, to:string){
-      var req:Array<Request> = []
+      /*var req:Array<Request> = []
       var hours:Array<String> = [
         '00','01','02','03','04','05',
         '06','07','08','09','10','11',
@@ -107,8 +107,12 @@ export class ServerService {
         if(nhour>=nfrom && nhour<=nto){
           res.push(_.clone(r))
         }
-      });
-      return Observable.of(res)
+      });*/
+
+      return this.RemoteServ.get('/servers/request/'+ id
+      + '?from=' + from + '&to=' + to).map(res => res.requests);
+
+       //Observable.of(res)
     }
     mapper(obj:any){
       var serv = _.clone(obj.server)
