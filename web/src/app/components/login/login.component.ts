@@ -26,7 +26,6 @@ export class LoginComponent {
       $('input[name=name]').focus()
     }
     login(user: User) {
-      console.info(user)
         this.loginServ.token(user).subscribe((val) => {
           if(val){
                 this.message = ""
