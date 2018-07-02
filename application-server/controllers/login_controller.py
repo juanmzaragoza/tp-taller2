@@ -2,14 +2,12 @@ import flask_restful
 from flask_restful import reqparse
 from werkzeug.exceptions import BadRequest
 
-from api_client.shared_api_client import SharedApiClient
 from api_client.request_exception import RequestException
+from api_client.shared_api_client import SharedApiClient
 from api_client.user_not_exists_exception import UserNotExistsException
-
-from controllers.response_builder import ResponseBuilder
 from controllers.error_handler import ErrorHandler
+from controllers.response_builder import ResponseBuilder
 
-import json
 
 class LoginController(flask_restful.Resource):
 	def __init__(self):
@@ -23,7 +21,7 @@ class LoginController(flask_restful.Resource):
 			args = self.parser.parse_args()
 			response = self.shared_api_client.login(args["username"],args["password"])
 			if not response:
-				return ErrorHandler.create_error_response("You don't have authorization", 401)
+				return ErrorHandler.create_error_response("Invalid Login", 401)
 
 			return ResponseBuilder.build_response(response, 201)
 

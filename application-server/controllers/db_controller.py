@@ -1,12 +1,14 @@
 import os
+
 import pymongo
-from api_client.db_connection_error import DBConnectionError
 from pymongo import ReturnDocument
+
+from api_client.db_connection_error import DBConnectionError
 
 RETURN_DOCUMENT_AFTER = ReturnDocument.AFTER
 
 class MongoController():
-	
+
 	@staticmethod
 	def get_mongodb_instance(user, passwd):
 		try:

@@ -1,10 +1,10 @@
-import unittest
-import unittest.mock as mock
-from unittest.mock import patch
-import requests
 import json
 import sys
+import unittest
+from unittest.mock import patch
+
 import app
+
 
 class TestUserApi(unittest.TestCase):
 
@@ -17,29 +17,28 @@ class TestUserApi(unittest.TestCase):
         response = self.app.post(url, data=json.dumps(data), headers=headers)
         return response
 
-    def __get_response_data(self, response):
+    @staticmethod
+    def __get_response_data(response):
         return json.loads(response.get_data().decode(sys.getdefaultencoding()))
-
 
     def test_missing_username_should_status_400(self):
         # set up
         data = {"password": "123", "id": 1}
         # execution
         response = self.__make_post_request(data)
-        #assertions
+        # assertions
         self.assertEqual(response.status_code,400)
         response_data = self.__get_response_data(response)
         self.assertIn("code", response_data)
         self.assertEqual(400,response_data["code"])
         self.assertIn("message", response_data)
 
-
     def test_missing_password_should_status_400(self):
         # set up
         data = {"username": "jj", "id": 1}
         # execution
         response = self.__make_post_request(data)
-        #assertions
+        # assertions
         self.assertEqual(response.status_code,400)
         response_data = self.__get_response_data(response)
         self.assertIn("code", response_data)
@@ -51,16 +50,18 @@ class TestUserApi(unittest.TestCase):
         data = {"username": "jj", "password": "123"}
         # execution
         response = self.__make_post_request(data)
-        #assertions
+        # assertions
         self.assertEqual(response.status_code,400)
         response_data = self.__get_response_data(response)
         self.assertIn("code", response_data)
         self.assertEqual(400,response_data["code"])
         self.assertIn("message", response_data)
-        
+
+    @patch('controllers.user_controller.UserDataModel')
     @patch('api_client.shared_api_client.requests.post')
-    def test_user_create_successfull(self, mock_post):
+    def test_user_create_successful(self, mock_post, mock_model):
         # set up
+        mock_model.return_value.insert_user.return_value = 'mock'
         data = {"id": 1, "username": "jmz", "password": "1234"}
         mock_post.return_value.status_code = 200
         mock_post.return_value.json.return_value = {
@@ -77,7 +78,7 @@ class TestUserApi(unittest.TestCase):
         }
         # execution
         response = self.__make_post_request(data)
-        #assertions
+        # assertions
         self.assertEqual(response.status_code,200)
         response_data = self.__get_response_data(response)
 
@@ -105,7 +106,7 @@ class TestUserApi(unittest.TestCase):
         mock_post.return_value.status_code = 500
         # execution
         response = self.__make_post_request(data)
-        #assertions
+        # assertions
         self.assertEqual(response.status_code,500)
         response_data = self.__get_response_data(response)
         self.assertIn("code", response_data)
