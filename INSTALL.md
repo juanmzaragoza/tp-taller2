@@ -9,11 +9,16 @@ Para instalar la última versión estable de nuestros sistemas procure estar ubi
 * [docker-compose](https://docs.docker.com/compose/) (`1.16.1, build 6d1ac21`)
 
 ## Instalación
+
+### Servidores y web
 Para levantar un entorno de desarrollo totalmente funcional es suficiente con ejecutar dentro de la carpeta `/docker`:
 
     docker-compose up --build
     
 Para más información y detaller ver `docker/README.md`.
+
+### Android
+La aplicación Android requiere un tratamiento especial debido a que debe instalarse 
 
 ## Depliegue en Heroku
 La instalación productiva se puede realizar siguiendo los pasos de [DEPLOY.md](DEPLOY.md)
