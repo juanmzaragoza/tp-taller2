@@ -8,7 +8,7 @@
     <th class="indigo-text"> LastConnection </th> 
     <th class="indigo-text"> Host </th>
     <th class="indigo-text"> Token </th>
-    <th class="indigo-text"> R. Token </th>
+    <!--<th class="indigo-text"> R. Token </th>-->
     <th class="indigo-text"> Drop </th>
     <th class="indigo-text"> active </th>
   </tr>
@@ -19,7 +19,7 @@
     <td (click)="edit(server)"> {{server.lastConnection | date: 'dd/MM/yyyy'}} </td>
     <td (click)="edit(server)"> {{server.host}} </td>
     <td (click)="copyToken(server.token)"><a><i class="material-icons">content_copy</i></a></td>
-    <td (click)="refreshToken(server.id)"><a><i class="material-icons">update</i></a></td>
+    <!--<td (click)="refreshToken(server.id)"><a><i class="material-icons">update</i></a></td>-->
     <td (click)="delete(server.id)"><a><i class="material-icons">delete</i></a></td>
     <td (click)="edit(server)"> {{server.active}}</td>
   </tr>
@@ -51,10 +51,10 @@
         <div class="indigo-text left-align col s4 tam-font-s">Token:</div>
         <div class="left-align col s8"><a><i class="material-icons tam-icons-s">content_copy</i></a></div>
     </div>
-    <div class="row">
+    <!--<div class="row">
         <div class="indigo-text left-align col s4 tam-font-s">R. Token:</div>
         <div class="left-align col s8 tam-font-s"><a><i class="material-icons tam-icons-s">update</i></a></div>
-    </div>
+    </div>-->
     <div class="row">
         <div class="indigo-text left-align col s4 tam-font-s">Drop:</div>
         <div class="left-align col s8 tam-font-s"><a><i class="material-icons tam-icons-s">delete</i></a></div>
