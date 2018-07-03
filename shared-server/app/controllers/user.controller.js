@@ -37,15 +37,13 @@ class UserController {
         };
         
         this.getById = (req, res, next) => {
-            var id = req.params.id;
-            UserService.getById(id,(err, user)=>{
-                if(err){
-                    ResServ.error(res, messages.NotFound);
-                }
-                else{
-                    ResServ.ok(ResEnum.Value, "user", user, res, next);
-                }
+            UserService.getById(req.params.id, req.models)
+            .then(user => {
+                ResServ.ok(ResEnum.Values, "user", user, res, next);
             })
+            .catch( e => {
+                ResServ.error(res, messages.NotFound);
+            });
         };
     }
 }

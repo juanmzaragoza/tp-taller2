@@ -1,6 +1,5 @@
 "use strict";
 const AuthService   = require('./auth.service')
-const StorageServ   = require('./storage.service')
 const bcrypt        = require('bcrypt')
 const config        = require('../../config/default')
 const DaoService    = require('../services/dao.service')
@@ -77,14 +76,18 @@ class UserService {
         };
 
 
-        this.getById = (id, cb)=>{
-            StorageServ.load("user", "id", id, (err, user)=>{
-                if(err){
-                    cb(err);
-                }else{
-                    cb(undefined, user);
-                }
-            })
+        this.getById = (id, models) => {
+            return new Promise((resolve, reject) => {
+                DaoService.findById(id, models.user)
+                .then( function(user) {
+                    var userResponse = user.toJSON();
+                    delete userResponse.password;
+                    resolve(userResponse);
+                })
+                .catch(function(err){
+                    reject(err);
+                })
+            });
         }
 
         this.getUserForToken = (token, models) => {
