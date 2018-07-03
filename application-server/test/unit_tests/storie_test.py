@@ -4,7 +4,7 @@ from mock import patch
 from api_client.db_connection_error import DBConnectionError
 from controllers.error_handler import ErrorHandler
 from controllers.storie_detail_controller import StorieDetailController
-from mocks.errors_mock import no_db_conn_mock
+from mocks.errors_mock import no_db_conn_mock, user_mismatch_mock
 from mocks.storie_successful_mock import stories_successful_mock, stories_raw_mock, stories_request_response_mock, \
     stories_request_mock
 from models.storie import StorieModel

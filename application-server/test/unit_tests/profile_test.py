@@ -10,7 +10,7 @@ from controllers.profile_controller import ProfileController
 from controllers.response_builder import ResponseBuilder
 from controllers.storie_detail_controller import StorieDetailController
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
-from mocks.errors_mock import no_db_conn_mock, no_user_data_found_mock
+from mocks.errors_mock import no_db_conn_mock, no_user_data_found_mock, user_mismatch_mock
 from mocks.profile_successful_mock import *
 from models.user_data import UserDataModel
 
