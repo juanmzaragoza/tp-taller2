@@ -1,0 +1,103 @@
+<table class="hide-on-small-only">
+    <tr> 
+      <th class="indigo-text"> Filename </th> 
+      <th class="indigo-text"> CreatedTime </th> 
+      <th class="indigo-text"> UpdatedTime </th> 
+      <th class="indigo-text"> Size </th>
+      <th class="indigo-text"> View Image </th>
+      <th class="indigo-text"> Drop </th>
+    </tr>
+    <tr class="pointer" *ngFor="let file of files">
+      <td (click)="edit(file)"> {{file.filename}} </td>
+      <td (click)="edit(file)"> {{file.createdTime | date: 'dd/MM/yyyy'}} </td>
+      <td (click)="edit(file)"> {{file.updatedTime | date: 'dd/MM/yyyy'}} </td>
+      <td (click)="edit(file)"> {{file.size}} </td>
+      <td (click)="view(file.resource)"><a><i class="material-icons">visibility</i></a></td>
+      <td (click)="delete(file.id)"><a><i class="material-icons">delete</i></a></td>
+    </tr>
+  </table>
+  
+  <div class="show-for-small-only hide-on-med-only hide-on-large-only">
+    <div style="border-bottom:1px solid #3f51b5" class="row pointer" *ngFor="let file of files">
+        <div (click)="edit(file)" class="row">
+            <div class="indigo-text left-align col s4 tam-font-s">Filename:</div>
+            <div class="left-align col s8 tam-font-s">{{file.filename}}</div>
+        </div>
+        <div (click)="edit(file)" class="row">
+            <div class="indigo-text left-align col s4 tam-font-s">CreatedTime:</div>
+            <div class="left-align col s8 tam-font-s">{{file.createdTime | date: 'dd/MM/yyyy'}}</div>
+        </div>
+        <div (click)="edit(file)" class="row">
+            <div class="indigo-text left-align col s4 tam-font-s">UpdatedTime:</div>
+            <div class="left-align col s8 tam-font-s">{{file.updatedTime | date: 'dd/MM/yyyy'}}</div>
+        </div>
+        <div (click)="edit(file)" class="row">
+            <div class="indigo-text left-align col s4 tam-font-s">Size:</div>
+            <div class="left-align col s8 tam-font-s">{{file.size}}</div>
+        </div>
+        <div class="row">
+            <div class="indigo-text left-align col s4 tam-font-s">View Image:</div>
+            <div (click)="view(file.resource)" class="left-align col s8 tam-font-s"><a><i class="material-icons">visibility</i></a></div>
+        </div>
+        <div class="row">
+            <div class="indigo-text left-align col s4 tam-font-s">Drop:</div>
+            <div (click)="delete(file.id)" class="left-align col s8 tam-font-s"><a><i class="material-icons">delete</i></a></div>
+        </div>
+    </div>
+  </div>
+
+
+
+<!-- Modal Structure -->
+<div id="modal1" class="modal" materialize="modal" [materializeParams]="[{dismissible: false}]" [materializeActions]="modalActions">
+        <div [hidden]="!(modalShow==1)">
+            <div class="modal-content">
+                <h4 class="indigo-text">New File</h4>
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input name='filename' [(ngModel)]="file.filename" type="text" class="validate">
+                                <label for="filename">Filename</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input name='resource' type="file" (change)="onFileChange($event)" class="validate">
+                            </div>
+                        </div>
+                        <!--<br>
+                        <br>
+                        <div class="row">
+                            <div class="col s12">
+                                <input type="checkbox" id="check" name="upFire" [(ngModel)]="uploadByFirebase">
+                                <label for="check">Upload by Firebase</label>
+                            </div>
+                        </div>-->
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Close</a>
+                <a [eventClickbyKey]="13" (click)="save(file)" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+            </div>
+        </div>
+        <div [hidden]="!(modalShow==2)" class="modal-content">
+            <div class="modal-content">
+                <img src="{{selected}}">
+            </div>
+            <div class="modal-footer">
+                <a class="waves-effect waves-green btn-flat" (click)="closeModal()">Close</a>
+            </div>
+        </div>
+        <div [hidden]="!(modalShow==3)" class="modal-content">
+
+        </div>
+  </div>
+
+  
+
+<footer style="position:fixed;bottom:1em;left:-1em;width:100%;">
+    <div class="left" style="margin-left: 1.8em"><h5 class="indigo-text">{{title}}</h5></div>
+      <a (click)="open()" class="btn-floating btn-small waves-effect waves-light #3f51b5 indigo right"><i class="material-icons">add</i></a>
+</footer>

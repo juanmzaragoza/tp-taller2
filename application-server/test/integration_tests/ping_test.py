@@ -1,10 +1,9 @@
-import unittest
-import unittest.mock as mock
-from unittest.mock import patch
-import requests
 import json
 import sys
+import unittest
+
 import app
+
 
 class TestPingApi(unittest.TestCase):
 

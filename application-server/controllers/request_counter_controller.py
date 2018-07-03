@@ -1,14 +1,14 @@
-import json
 import flask_restful
 from flask import request
-from controllers.error_handler import ErrorHandler
-from models.request_counter import RequestCounterModel
-from controllers.response_builder import ResponseBuilder
+
 from api_client.db_connection_error import DBConnectionError
-from auth_service import login_required
+from controllers.error_handler import ErrorHandler
+from controllers.response_builder import ResponseBuilder
+from models.request_counter import RequestCounterModel
+
 
 class RequestCounterController(flask_restful.Resource):
-	
+
 	@staticmethod
 	def save_new_request():
 		RequestCounterModel.inc_requests()

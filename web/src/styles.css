@@ -36,3 +36,18 @@
 .version {
   font-size: 11px;
 }
+
+
+.tam-font-s {
+  font-size: 12px;
+}
+.tam-icons-s {
+  font-size: 15px;
+}
+
+
+[type="radio"]:not(:checked), [type="radio"]:checked {
+    position: absolute;
+    opacity: 0; 
+    pointer-events: none;
+}

@@ -37,7 +37,7 @@ describe('LoginService', ()=>{
         service.token(new User("erikschmoll", "root")).subscribe((data: any) => {
             expect(data).toBe(true);
           });
-        const req = httpMock.expectOne(`http://127.0.0.1:8081/api/token`, 'call to api');
+        const req = httpMock.expectOne(`https://heroku-sharedserver.herokuapp.com/api/token`, 'call to api');
         expect(req.request.method).toBe('POST');
     
         req.flush(
@@ -68,7 +68,7 @@ describe('LoginService', ()=>{
           expect(error.statusText).toBe("Unauthorized")
         }
       );
-      const req = httpMock.expectOne(`http://127.0.0.1:8081/api/token`, 'call to api');
+      const req = httpMock.expectOne(`https://heroku-sharedserver.herokuapp.com/api/token`, 'call to api');
       expect(req.request.method).toBe('POST');
       
       const errorResponse = new HttpErrorResponse({

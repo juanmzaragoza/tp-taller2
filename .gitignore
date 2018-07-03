@@ -8,7 +8,7 @@ logs
 .idea
 .directory
 ../.directory
-
+*.iml
 controller/.hidden
 bin/.hidden
 routes/.hidden

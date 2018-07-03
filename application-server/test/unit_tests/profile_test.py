@@ -1,19 +1,18 @@
 import unittest
 import unittest.mock as mock
 from unittest.mock import patch
-from models.user_data import UserDataModel
-from controllers.storie_detail_controller import StorieDetailController
-from controllers.friend_controller import FriendController
+
+from api_client.db_connection_error import DBConnectionError
 from controllers.be_friend_detail_controller import BeFriendDetailController
+from controllers.error_handler import ErrorHandler
+from controllers.friend_controller import FriendController
 from controllers.profile_controller import ProfileController
 from controllers.response_builder import ResponseBuilder
-from mocks.profile_successful_mock import *
-from mocks.errors_mock import no_data_found_mock, no_db_conn_mock, no_user_data_found_mock, user_mismatch_mock
-from errors_exceptions.no_data_found_exception import NoDataFoundException
-from api_client.db_connection_error import DBConnectionError
-from controllers.error_handler import ErrorHandler
+from controllers.storie_detail_controller import StorieDetailController
 from errors_exceptions.no_user_data_found_exception import NoUserDataFoundException
-from errors_exceptions.user_mismatch_exception import UserMismatchException
+from mocks.errors_mock import no_db_conn_mock, no_user_data_found_mock
+from mocks.profile_successful_mock import *
+from models.user_data import UserDataModel
 
 class TestProfileApi(unittest.TestCase):
 

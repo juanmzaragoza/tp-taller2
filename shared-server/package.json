@@ -17,7 +17,7 @@
     "bcrypt": "^2.0.0",
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
-    "firebase": "^4.12.1",
+    "firebase": "^4.13.1",
     "http-errors": "^1.6.3",
     "json-storage": "^2.1.1",
     "jsonwebtoken": "^8.2.1",
@@ -27,13 +27,13 @@
     "moment": "^2.22.0",
     "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
+    "request": "^2.85.0",
     "sequelize": "^4.37.6",
     "sequelize-cli": "^4.0.0",
     "sequelize-mock": "^0.10.2",
     "stream": "0.0.2",
     "underscore": "^1.9.0",
-    "uuid": "^3.2.1",
-    "request": "^2.85.0"
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",

@@ -1,16 +1,15 @@
-import json
 import flask_restful
-from flask import request
-from controllers.error_handler import ErrorHandler
-from models.friend_request import FriendRequestModel
+
 from api_client.db_connection_error import DBConnectionError
-from errors_exceptions.no_data_found_exception import NoDataFoundException
+from auth_service import login_required, get_user_id
+from controllers.error_handler import ErrorHandler
 from errors_exceptions.no_friend_request_found_exception import NoFriendRequestFoundException
 from errors_exceptions.user_mismatch_exception import UserMismatchException
-from auth_service import login_required, get_user_id
+from models.friend_request import FriendRequestModel
+
 
 class FriendRequestDetailController(flask_restful.Resource):
-	
+
 	@login_required
 	def get(self, request_id):
 		try:
@@ -24,7 +23,7 @@ class FriendRequestDetailController(flask_restful.Resource):
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
-			
+
 	@login_required
 	def delete(self, request_id):
 		try:
@@ -41,10 +40,10 @@ class FriendRequestDetailController(flask_restful.Resource):
 			return ErrorHandler.create_error_response(str(e), 409)
 		except DBConnectionError as e:
 			return ErrorHandler.create_error_response(str(e), 500)
-			
+
 	def _validate_request_id(self, requestId):
 		 return FriendRequestModel.exists_request(requestId)
-		 		 
+
 	def _get_friends_requests_response(self, friends_requests):
 		return friends_requests
 

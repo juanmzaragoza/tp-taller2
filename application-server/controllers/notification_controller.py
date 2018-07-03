@@ -1,11 +1,11 @@
 import flask_restful
-import json
-from pyfcm import FCMNotification
 from flask import Flask
-import logging
 from flask import request
+from pyfcm import FCMNotification
+
 from constants import FCM_SERVER_KEY
 from controllers.response_builder import ResponseBuilder
+
 
 class NotificationsController(flask_restful.Resource):
 

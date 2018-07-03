@@ -75,10 +75,31 @@ class FileService {
             return _.pick(data, ['id','_rev','createdTime','updatedTime','size','filename','resource']);
         }
 
+        function getResourceUrl(attrs){
+            return new Promise((resolve, reject) => {
+                if (attrs.hasOwnProperty('resource') && attrs.resource){
+                    var fileId = attrs.resource;
+                    FireBaseService.getResourceUrl(fileId)
+                    .then(function(url){
+                        attrs.resource = url;
+                        resolve(attrs);
+                    })
+                    .catch(function(e){
+                        resolve(attrs);
+                    });
+                } else {
+                    resolve(attrs);
+                }
+            });
+        }
+
     	this.add = (attrs, models) => {
             return new Promise((resolve, reject) => {
                 validateCreationAttrs(attrs)
-                .then( function() {
+                .then( function(attrs) {
+                    return getResourceUrl(attrs);
+                })
+                .then( function(attrs) {
                     return createFile(attrs, models);                    
                 })
                 .then(function(file){
