@@ -1,8 +1,6 @@
 import unittest
 import unittest.mock as mock
-
 from mock import patch
-
 from api_client.db_connection_error import DBConnectionError
 from controllers.error_handler import ErrorHandler
 from controllers.storie_detail_controller import StorieDetailController
@@ -28,6 +26,26 @@ class TestStorieModel(unittest.TestCase):
         service = StorieDetailController()
         service._create_get_stories_response = mock.MagicMock(return_value=stories_successful_mock)
         self.assertEqual(service.get_stories_by_user_id(user_id), stories_successful_mock)
+
+    @patch('auth_service.get_user_id')
+    @patch('auth_service.is_authenticated')
+    def test_update_storie_user_mismatch(self, mock_is_authenticated, mock_get_user_id):
+        mock_is_authenticated.return_value = True
+        mock_get_user_id.return_value = 2
+        StorieModel.get_storie = mock.MagicMock(return_value={"user_id": 1})
+        ErrorHandler.create_error_response = mock.MagicMock(return_value=user_mismatch_mock)
+        service = StorieDetailController()
+        self.assertEqual(service.put(1), user_mismatch_mock)
+
+    @patch('auth_service.get_user_id')
+    @patch('auth_service.is_authenticated')
+    def test_delete_storie_user_mismatch(self, mock_is_authenticated, mock_get_user_id):
+        mock_is_authenticated.return_value = True
+        mock_get_user_id.return_value = 2
+        StorieModel.get_storie = mock.MagicMock(return_value={"user_id": 1})
+        ErrorHandler.create_error_response = mock.MagicMock(return_value=user_mismatch_mock)
+        service = StorieDetailController()
+        self.assertEqual(service.delete(1), user_mismatch_mock)
 
     @patch('models.storie.MongoController')
     def test_successful_create_story(self, mock_db):

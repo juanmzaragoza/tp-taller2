@@ -14,7 +14,6 @@ from mocks.errors_mock import no_db_conn_mock, no_user_data_found_mock
 from mocks.profile_successful_mock import *
 from models.user_data import UserDataModel
 
-
 class TestProfileApi(unittest.TestCase):
 
     @patch('auth_service.is_authenticated')
@@ -52,3 +51,12 @@ class TestProfileApi(unittest.TestCase):
         service = ProfileController()
         ResponseBuilder.get_build_response = mock.MagicMock(return_value=profile_successful_mock)
         self.assertEqual(service.get(user_id), profile_successful_mock)
+
+    @patch('auth_service.get_user_id')
+    @patch('auth_service.is_authenticated')
+    def test_update_profile_user_mismatch(self, mock_is_authenticated, mock_get_user_id):
+        mock_is_authenticated.return_value = True
+        mock_get_user_id.return_value = 2
+        ErrorHandler.create_error_response = mock.MagicMock(return_value=user_mismatch_mock)
+        service = ProfileController()
+        self.assertEqual(service.put(1), user_mismatch_mock)

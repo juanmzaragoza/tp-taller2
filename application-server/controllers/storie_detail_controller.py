@@ -53,8 +53,9 @@ class StorieDetailController(flask_restful.Resource):
 			self.parser.add_argument('story_type', required=True, help="Field story_type is mandatory")
 			self.parser.add_argument('user_id', required=True, help="Field user_id is mandatory")
 
-			args = self.parser.parse_args()
 			self._validate_author(id)
+			args = self.parser.parse_args()
+			
 			body = json.loads(request.data.decode('utf-8'))
 
 			storie = StorieModel.update_storie(id, body)

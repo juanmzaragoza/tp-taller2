@@ -4,12 +4,14 @@ import unittest
 from unittest.mock import patch
 
 import app
+from test.helper_db_controller import HelperMongoController
 
 
 class TestUserApi(unittest.TestCase):
 
     def setUp(self):
         self.app = app.app.test_client()
+        HelperMongoController.drop_db()
 
     def __make_post_request(self, data):
         url = "api/v1/user"
@@ -76,6 +78,9 @@ class TestUserApi(unittest.TestCase):
                 "username": "jmz"
             }
         }
+
+        mock_db_instance = HelperMongoController.get_mongodb_instance
+
         # execution
         response = self.__make_post_request(data)
         # assertions
