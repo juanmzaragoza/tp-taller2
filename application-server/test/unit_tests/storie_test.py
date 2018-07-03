@@ -1,6 +1,7 @@
 import unittest
 import unittest.mock as mock
-from mock import patch
+#from mock import patch
+from unittest.mock import patch
 from api_client.db_connection_error import DBConnectionError
 from controllers.error_handler import ErrorHandler
 from controllers.storie_detail_controller import StorieDetailController
