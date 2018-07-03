@@ -55,6 +55,29 @@ class FireBaseService{
             var fileName = currentDate + '_image';
             return 'test/' + fileName;
         }
+
+        this.getResourceUrl = function(fileId) {
+
+            return new Promise((resolve, reject) => {
+                var filePath = config.firebase.baseDirectory + fileId;
+                const options = {
+                    action: 'read',
+                    expires: '03-17-2025',
+                };    
+
+                gcs.bucket(bucketName)
+                .file(filePath)
+                .getSignedUrl(options)
+                .then(results => {
+                    const url = results[0];
+                    resolve(url)
+                })
+                .catch(err => {
+                    console.error('ERROR:', err);
+                    reject(err);
+                });
+            })
+        }
     }
 }
 

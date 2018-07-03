@@ -7,6 +7,7 @@ import os
 from .request_exception import RequestException
 from api_client.user_not_exists_exception import UserNotExistsException
 from constants import APPLICATION_OWNER, API_KEY
+from flask import request
 
 app = flask.Flask(__name__)
 
@@ -87,6 +88,28 @@ class SharedApiClient():
 				raise RequestException("shared server error")
 
 			if (response.status_code == 404):
+				return False
+
+			return response.json()
+		except:
+			raise RequestException("internal error")
+
+	def fileCreate(self, filename, resource):
+		try:
+			data = {
+				'filename': filename,
+				'resource': resource
+			}
+			url = self.url + '/files'
+
+			headers = self.headers
+			headers['authorization'] = request.headers.get('authorization')
+			response = requests.post(url, data=json.dumps(data), headers=headers)
+
+			if (response.status_code == 500):
+				raise RequestException("shared server error")
+
+			if (response.status_code == 401):
 				return False
 
 			return response.json()

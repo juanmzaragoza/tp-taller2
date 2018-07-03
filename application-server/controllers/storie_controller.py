@@ -7,14 +7,15 @@ from api_client.db_connection_error import DBConnectionError
 from auth_service import login_required, validate_sender
 from controllers.error_handler import ErrorHandler
 from errors_exceptions.user_mismatch_exception import UserMismatchException
+from api_client.shared_api_client import SharedApiClient
 from models.storie import StorieModel
 from models.user_activity import UserActivityModel
-
 
 class StorieController(flask_restful.Resource):
 
 	def __init__(self):
 		self.parser = reqparse.RequestParser(bundle_errors=True)
+		self.shared_api_client = SharedApiClient()
 
 	@login_required
 	def post(self):
@@ -31,7 +32,9 @@ class StorieController(flask_restful.Resource):
 			validate_sender(args.get("user_id"))
 
 			storie = self._create_user_storie_request(request)
+
 			UserActivityModel.log_storie_activity(storie["user_id"], storie["_id"], "ADD")
+			self._create_multimedia_file(args.get('title'), args.get('multimedia'))
 			return storie
 
 		except BadRequest as ex:
@@ -45,3 +48,6 @@ class StorieController(flask_restful.Resource):
 		body = request.get_json()
 		storie = StorieModel.create_user_storie(body)
 		return storie
+
+	def _create_multimedia_file(self, filename, multimedia):
+		self.shared_api_client.fileCreate(filename, multimedia)
