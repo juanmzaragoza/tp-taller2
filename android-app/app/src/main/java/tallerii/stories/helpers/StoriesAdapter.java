@@ -134,14 +134,6 @@ public class StoriesAdapter extends BaseAdapter {
             holder.lastCommentView.setVisibility(View.GONE);
         }
 
-        holder.messageComment.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    showCommentsDialog(storie.getId());
-                }
-            }
-        });
         holder.sendCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
