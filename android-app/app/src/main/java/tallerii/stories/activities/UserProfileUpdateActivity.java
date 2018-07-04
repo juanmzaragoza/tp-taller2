@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.util.UUID;
 
 import tallerii.stories.R;
@@ -130,6 +131,9 @@ public class UserProfileUpdateActivity extends ProfileActivity {
 
     public void chooseDate(View view) {
         DialogFragment newFragment = new DatePickerFragment();
+        Bundle args = new Bundle();
+        args.putString("date", getStringFrom(R.id.birthday));
+        newFragment.setArguments(args);
         newFragment.show(getFragmentManager(), "datePicker");
     }
 }

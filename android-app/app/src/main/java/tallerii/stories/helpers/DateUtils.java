@@ -1,8 +1,10 @@
 package tallerii.stories.helpers;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import static java.text.DateFormat.getDateTimeInstance;
 
@@ -19,6 +21,11 @@ public class DateUtils {
         } catch(Exception e) {
             return "date fucking error";
         }
+    }
+
+    public static Date getDateWithDayPrecision(String date) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("M/d/yyyy", Locale.getDefault());
+        return dateFormat.parse(date);
     }
 
     //1 minute = 60 seconds
