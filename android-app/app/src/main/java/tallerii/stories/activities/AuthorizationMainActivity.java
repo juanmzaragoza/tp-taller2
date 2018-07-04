@@ -28,10 +28,7 @@ public class AuthorizationMainActivity extends AppCompatActivity {
         Intent activityIntent;
         Store store = new Store();
 
-        /* TODO:  we have to validate that token is not expired, for now we will eliminate it */
-        store.remove("token");
-        // go straight to main if a token is stored
-        if ( store.get("token") != null) {
+        if ( StoriesLoggedInActivity.getProfile() != null) {
             activityIntent = new Intent(this, MainActivity.class);
         } else {// else not logged in
             // clean fb access token because we handle the access to the application
