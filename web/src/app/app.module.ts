@@ -16,6 +16,7 @@ import { ClipBoardService } from './services/common/clipboard.service'
 import { StatusService } from './services/status/status.service'
 import { ServerService } from './services/server/server.service'
 import { FileService } from './services/file/file.service'
+import {AuthGuard}     from './services/remote/auth.guard'
 
 
 import { AppComponent } from './app.component';
@@ -68,7 +69,8 @@ import { FixButtonDirective } from './directives/fix.button.directive'
     DatePipe,
     StatusService,
     ServerService,
-    FileService
+    FileService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })

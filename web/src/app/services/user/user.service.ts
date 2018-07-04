@@ -11,6 +11,9 @@ export class UserService {
             this.user = JSON.parse(this.cookieService.get('user'));
         }
     }
+    isAuthenticated =()=>{
+        return this.getUser();
+    }
     setUser = (u:User)=>{
         this.cookieService.set('user', JSON.stringify(u));
         this.user = u;

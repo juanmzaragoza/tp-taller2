@@ -44,7 +44,7 @@ export class LoginComponent {
       }
       back(){
         //this.Location.back();
-        this.RouterServ.navigate(['/home']);
+        this.RouterServ.navigate(['/']);
       }
 }
 

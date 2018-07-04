@@ -11,6 +11,7 @@ import { UserListComponent }    from './components/user/user.list.component'
 import { HttpClient }           from '@angular/common/http';
 import { LoginService }         from './services/login/login.service';
 import { UserService }          from './services/user/user.service';
+import {AuthGuard}              from './services/remote/auth.guard';
 
 const loginRoutes: Routes = [
     {
@@ -19,22 +20,27 @@ const loginRoutes: Routes = [
     },
     {
         path: 'home',
+        canActivate: [AuthGuard],
         component: HomeComponent
     },
     {
         path: 'server',
+        canActivate: [AuthGuard],
         component: ServerComponent
     },
     {
         path: 'status',
+        canActivate: [AuthGuard],
         component: StatusComponent
     },
     {
         path: 'file',
+        canActivate: [AuthGuard],
         component: FileComponent
     },
     {
         path: 'user',
+        canActivate: [AuthGuard],
         component: UserListComponent
     }
 ];
