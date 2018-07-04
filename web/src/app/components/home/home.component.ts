@@ -5,14 +5,11 @@ import { UserService }  from '../../services/user/user.service';
     templateUrl: './home.component.html'
 })
 export class HomeComponent {
-    hi:string;
+    public title:string;
     constructor(public UserServ: UserService){}
     
     ngOnInit() {
-        this.hi = ''
-        if(this.UserServ.user && this.UserServ.user.username){
-            this.hi = 'Hola ' + this.UserServ.user.username + ', estas en la Home.'
-        }
+        this.title = 'Home'
       }
 
 }

@@ -1,7 +1,7 @@
 
 <nav class="#3f51b5 indigo" role="navigation">
   <div class="nav-wrapper">
-      <a id="logo-container" href="#" class="brand-logo">AppMaker</a>
+      <a id="logo-container" routerLink="/home" class="brand-logo">AppMaker</a>
     <ul class="right hide-on-med-and-down">
         <ng-template [ngIf]="role=='admin'">
             <li *ngFor="let tag of tags">
