@@ -1,0 +1,44 @@
+<h4 class="indigo-text">
+        Staff
+    </h4>
+<table class="hide-on-small-only">
+    <tr> 
+        <th class="indigo-text"> Name </th> 
+        <th class="indigo-text"> Lastname </th> 
+        <th class="indigo-text"> Mail </th> 
+        <th class="indigo-text"> Code </th>
+    </tr>
+    <tr class="pointer" *ngFor="let s of staff">
+        <td> {{s.name}} </td>
+        <td> {{s.lastname}} </td>
+        <td> {{s.mail}} </td>
+        <td> {{s.code}} </td>
+    </tr>
+</table>
+<div class="show-for-small-only hide-on-med-only hide-on-large-only">
+    <div style="border-bottom:1px solid #3f51b5" class="row pointer" *ngFor="let s of staff">
+        <div (click)="edit(file)" class="row">
+            <div class="indigo-text left-align col s4 tam-font-s">Name:</div>
+            <div class="left-align col s8 tam-font-s">{{s.name}}</div>
+        </div>
+        <div (click)="edit(file)" class="row">
+            <div class="indigo-text left-align col s4 tam-font-s">Lastname:</div>
+            <div class="left-align col s8 tam-font-s">{{s.lastname}}</div>
+        </div>
+        <div (click)="edit(file)" class="row">
+            <div class="indigo-text left-align col s4 tam-font-s">Mail:</div>
+            <div class="left-align col s8 tam-font-s">{{s.mail}}</div>
+        </div>
+        <div (click)="edit(file)" class="row">
+            <div class="indigo-text left-align col s4 tam-font-s">Code:</div>
+            <div class="left-align col s8 tam-font-s">{{s.code}}</div>
+        </div>
+    </div>
+</div>
+<br/>
+<br/>
+<br/>
+<footer style="position:fixed;bottom:1em;left:-1em;width:100%;">
+    <div class="left" style="margin-left: 1.8em"><h5 class="indigo-text">{{title}}</h5></div>
+    <a (click)="open()" title="User Manual" class="btn-floating btn-small waves-effect waves-light #3f51b5 indigo right">man</a>
+</footer>

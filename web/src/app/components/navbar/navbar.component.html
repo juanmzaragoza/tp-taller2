@@ -10,14 +10,23 @@
         </ng-template>
       <!--<li *ngIf="role=='admin'"><a routerLink="status" title="View Status">Status</a></li>
       <li *ngIf="role=='admin'"><a routerLink="server" title="view servers">Servers</a></li>-->
+      
+      <li>
+        <a routerLink="/help" title="Help">Help</a>
+      </li>
       <app-user></app-user>
     </ul>
 
     <ul id="nav-mobile" class="right side-nav" style="transform: translateX(-100%);">
         <app-user></app-user>
-        <li *ngFor="let tag of tags">
+        <ng-template [ngIf]="role=='admin'">
+          <li *ngFor="let tag of tags">
             <a routerLink="{{tag.routerLink}}" title="{{tag.title}}">{{tag.name}}</a>
           </li>
+        </ng-template>
+        <li>
+            <a routerLink="/help" title="Help">Help</a>
+        </li>
         <!--<li><a routerLink="server" title="view servers">Servers</a></li>
         <li><a routerLink="status" title="view status">Status</a></li>-->
     </ul>

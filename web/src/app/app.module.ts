@@ -28,6 +28,7 @@ import { ServerComponent } from './components/server/server.component'
 import { NavBarComponent } from './components/navbar/navbar.component'
 import { StatusComponent } from './components/status/status.component'
 import { FileComponent } from './components/file/file.component'
+import {HelpComponent}  from './components/help/help.component'
 
 import { EventKeyDirective } from './directives/event.key.directive'
 import { FixButtonDirective } from './directives/fix.button.directive'
@@ -45,7 +46,8 @@ import { FixButtonDirective } from './directives/fix.button.directive'
     EventKeyDirective,
     FixButtonDirective,
     UserListComponent,
-    FileComponent
+    FileComponent,
+    HelpComponent
   ],
   imports: [
     BrowserModule,
