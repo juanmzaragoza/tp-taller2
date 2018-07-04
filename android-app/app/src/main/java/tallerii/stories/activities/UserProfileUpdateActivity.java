@@ -58,7 +58,9 @@ public class UserProfileUpdateActivity extends ProfileActivity {
     public void initializeProfile(ApplicationProfile applicationProfile) {
         super.initializeProfile(applicationProfile);
         String birthdayText = applicationProfile.getBirthday();
-        this.birthday.setText(birthdayText != null ? birthdayText: DateUtils.getTimeFromTimestamp(DateUtils.getNowTime()));
+        String birthday = birthdayText != null && birthdayText.length() > 0 ? birthdayText :
+                DateUtils.getTimeFromTimestamp(DateUtils.getNowTime());
+        this.birthday.setText(birthday);
         String gender = applicationProfile.getGender();
         if (gender != null){
             this.gender.setText(gender);

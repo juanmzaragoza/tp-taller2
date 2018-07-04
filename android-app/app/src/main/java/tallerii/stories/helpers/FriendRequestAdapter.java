@@ -14,16 +14,17 @@ import java.util.List;
 
 import tallerii.stories.R;
 import tallerii.stories.activities.StoriesAppActivity;
+import tallerii.stories.activities.StoriesLoggedInActivity;
 import tallerii.stories.controller.FriendRequestController;
 import tallerii.stories.network.apimodels.FriendRequest;
 
 public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdapter.ViewHolder> {
     private final ImageHelper imageHelper;
     private List<FriendRequest> friendsList;
-    private final StoriesAppActivity appActivity;
+    private final StoriesLoggedInActivity appActivity;
     private FriendRequestController controller;
 
-    public FriendRequestAdapter(List<FriendRequest> dataSet, StoriesAppActivity appActivity, FriendRequestController controller) {
+    public FriendRequestAdapter(List<FriendRequest> dataSet, StoriesLoggedInActivity appActivity, FriendRequestController controller) {
         this.friendsList = dataSet;
         this.appActivity = appActivity;
         this.controller = controller;
@@ -71,6 +72,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestAdap
             public void onClick(View v) {
                 controller.acceptFriendRequest(friendRequest, FriendRequestAdapter.this);
                 removeRequest(holder);
+                appActivity.updateProfile();
             }
         });
     }
