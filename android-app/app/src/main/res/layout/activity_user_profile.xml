@@ -115,7 +115,8 @@
             android:includeFontPadding="false"/>
         <HorizontalScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp">
             <LinearLayout
                 android:id="@+id/friends_holder"
                 android:layout_width="wrap_content"
@@ -123,22 +124,22 @@
                 android:orientation="horizontal">
             </LinearLayout>
         </HorizontalScrollView>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:includeFontPadding="false"/>
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/stories"
-            android:layout_margin="5dp"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/darker_gray"
-            android:includeFontPadding="false"/>
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:background="@android:color/darker_gray"-->
+            <!--android:includeFontPadding="false"/>-->
+        <!--<TextView-->
+            <!--android:id="@+id/textView4"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/stories"-->
+            <!--android:layout_margin="5dp"/>-->
+        <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:background="@android:color/darker_gray"-->
+            <!--android:includeFontPadding="false"/>-->
 
         <!--Insert StoriesFragment here??-->
     </LinearLayout>
