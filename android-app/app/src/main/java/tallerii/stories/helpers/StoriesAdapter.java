@@ -134,7 +134,12 @@ public class StoriesAdapter extends BaseAdapter {
             holder.lastCommentView.setVisibility(View.GONE);
         }
 
-        holder.sendCommentButton.setOnClickListener(new View.OnClickListener() {
+        setShowComments(storie, holder.messageComment);
+        setShowComments(storie, holder.sendCommentButton);
+    }
+
+    private void setShowComments(final Storie storie, View view) {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showCommentsDialog(storie.getId());

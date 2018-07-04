@@ -55,6 +55,7 @@
     <string name="storie_picture">Storie picture</string>
     <string name="commnet_user_picture">Commnet user picture</string>
     <string name="i_want_to_say">I want to say...</string>
+    <string name="press_to_view_and_send_comment">Press to view and send comment</string>
 
 
 </resources>
