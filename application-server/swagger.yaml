@@ -32,9 +32,6 @@ tags:
   - name: user stories
     description: |
       Llamados que pueden realizar los usuarios acerca de las historias
-  - name: user chats
-    description: |
-      Llamados que pueden realizar los usuarios acerca de las conversaciones
   - name: server activity
     description: |
       Llamados relaciondos a la actividad del servidor
@@ -138,8 +135,6 @@ paths:
           description: Alta correcta
           schema:
             properties:
-              metadata:
-                $ref: '#/definitions/EntityMetadata'
               request:
                 $ref: '#/definitions/FriendRequest'
         '400':
@@ -151,6 +146,35 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       summary: Servicio de alta de solicitud de contacto de usuario
+  '/friends/{friendshipId}':
+    parameters:
+      - description: Identificador de la solicitud
+        in: path
+        name: friendshipId
+        required: true
+        type: string
+    delete:
+      tags:
+        - user contacts
+      security:
+        - BusinessToken: []
+      description: Endpoint para dar de baja una amistad
+      responses:
+        '204':
+          description: Baja correcta
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: No existe el recurso solicitado
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: 'Eliminar una amistad'
   '/befriend/{userId}':
     get:
       parameters:
@@ -283,7 +307,7 @@ paths:
           name: body
           required: true
           schema:
-            $ref: '#/definitions/ApplicationProfileUpdate'
+            $ref: '#/definitions/ApplicationProfile'
       responses:
         '200':
           description: Modificación correcta
@@ -292,7 +316,7 @@ paths:
               metadata:
                 $ref: '#/definitions/EntityMetadata'
               profile:
-                $ref: '#/definitions/ApplicationProfileUpdate'
+                $ref: '#/definitions/ApplicationProfile'
         '400':
           description: Incumplimiento de precondiciones (parámetros faltantes)
           schema:
@@ -471,7 +495,7 @@ paths:
           description: Unexpected error
           schema:
             $ref: '#/definitions/Error'
-      summary: Servicio de aceptación de solicitud de contacto
+      summary: Servicio para registrar la reacción a una historia. Elimina reacciones del mismo usuario
   '/stories/reaction/{reactionId}':
     parameters:
       - description: Datos para dar de baja una reacción a una historia.
@@ -603,199 +627,6 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       summary: 'Eliminar un comentario a una historia de contacto '
-  /chats/conversation:
-    post:
-      tags:
-        - user chats
-      security:
-        - BusinessToken: []
-      description: >
-        Endpoint para iniciar una conversación. Se ignorarán los campos de id,
-        _rev
-      parameters:
-        - description: Datos necesarios para iniciar una conversación.
-          in: body
-          name: body
-          required: true
-          schema:
-            $ref: '#/definitions/Conversation'
-      responses:
-        '201':
-          description: Alta correcta
-          schema:
-            properties:
-              metadata:
-                $ref: '#/definitions/EntityMetadata'
-              server:
-                $ref: '#/definitions/Conversation'
-        '400':
-          description: Incumplimiento de precondiciones (parámetros faltantes)
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-      summary: Servicio de creación de una conversación.
-  '/chats/conversation/{convId}':
-    parameters:
-      - description: Identificador de la conversación
-        in: path
-        name: convId
-        required: true
-        type: string
-    get:
-      tags:
-        - user chats
-      security:
-        - BusinessToken: []
-      description: Endpoint para obtener datos de una conversación
-      responses:
-        '200':
-          description: datos de la conversación
-          schema:
-            properties:
-              metadata:
-                $ref: '#/definitions/EntityMetadata'
-              server:
-                $ref: '#/definitions/Conversation'
-        '401':
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/Error'
-        '404':
-          description: Conversación inexistente
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-      summary: Obtener información de una conversación
-    delete:
-      tags:
-        - user chats
-      security:
-        - BusinessToken: []
-      description: Endpoint para dar de baja una conversación
-      responses:
-        '204':
-          description: Baja correcta
-        '401':
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/Error'
-        '404':
-          description: No existe el recurso solicitado
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-      summary: 'Eliminar una conversación '
-  /chats/conversation/message:
-    post:
-      tags:
-        - user chats
-      security:
-        - BusinessToken: []
-      description: |
-        Endpoint para agregar mensaje. Se ignorarán los campos de id, _rev
-      parameters:
-        - description: Datos necesarios para agregar un mensaje.
-          in: body
-          name: body
-          required: true
-          schema:
-            $ref: '#/definitions/Message'
-      responses:
-        '201':
-          description: Alta correcta
-          schema:
-            properties:
-              metadata:
-                $ref: '#/definitions/EntityMetadata'
-              message:
-                $ref: '#/definitions/Message'
-        '400':
-          description: Incumplimiento de precondiciones (parámetros faltantes)
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-      summary: Servicio de mensaje directo a usuario.
-  '/chats/conversation/message/{messageId}':
-    parameters:
-      - description: Identificador del mensaje
-        in: path
-        name: messageId
-        required: true
-        type: string
-    put:
-      tags:
-        - user chats
-      security:
-        - BusinessToken: []
-      description: |
-        Endpoint para modificar un mensaje en una conversación
-      parameters:
-        - description: Datos para modificar un mensaje
-          in: body
-          name: body
-          required: true
-          schema:
-            $ref: '#/definitions/Message'
-      responses:
-        '200':
-          description: Modificación correcta
-          schema:
-            properties:
-              metadata:
-                $ref: '#/definitions/EntityMetadata'
-              message:
-                $ref: '#/definitions/Message'
-        '400':
-          description: Incumplimiento de precondiciones (parámetros faltantes)
-          schema:
-            $ref: '#/definitions/Error'
-        '404':
-          description: No existe el recurso solicitado
-          schema:
-            $ref: '#/definitions/Error'
-        '409':
-          description: Conflicto en el update (esta mal el valor de `_rev`)
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-      summary: Servicio de modificación de mensaje
-    delete:
-      tags:
-        - user chats
-      security:
-        - BusinessToken: []
-      description: Endpoint para dar de baja un mensaje en la conversación
-      responses:
-        '204':
-          description: Baja correcta
-        '401':
-          description: Unauthorized
-          schema:
-            $ref: '#/definitions/Error'
-        '404':
-          description: No existe el recurso solicitado
-          schema:
-            $ref: '#/definitions/Error'
-        '500':
-          description: Unexpected error
-          schema:
-            $ref: '#/definitions/Error'
-      summary: 'Eliminar una solicitud de contacto '
   /ping:
     get:
       tags:
@@ -972,12 +803,8 @@ definitions:
     properties:
       id:
         $ref: '#/definitions/Id'
-      _rev:
-        $ref: '#/definitions/Ref'
       password:
         type: string
-      applicationOwner:
-        $ref: '#/definitions/Id'
       username:
         description: Nombre del usuario en la aplicación
         type: string
@@ -999,7 +826,7 @@ definitions:
         type: string
       email:
         type: string
-      profile_picture:
+      picture:
         type: string
       friends:
         items:
@@ -1007,6 +834,10 @@ definitions:
       stories:
         items:
           $ref: '#/definitions/Story'
+      birthday:
+        type: string
+      gender:
+        type: string
   Friends:
     properties:
       id:
@@ -1021,39 +852,32 @@ definitions:
         type: string
       picture:
         type: string
-  ApplicationProfileUpdate:
-    properties:
-      id:
-        $ref: '#/definitions/Id'
-      _rev:
-        $ref: '#/definitions/Ref'
-      userId:
-        type: string
-      last_name:
-        type: string
-      name:
-        type: string
-      email:
-        type: string
-      profile_picture:
-        type: string
   FriendRequest:
     properties:
       id:
         $ref: '#/definitions/Id'
       _rev:
         $ref: '#/definitions/Ref'
-      createdTime:
+      date:
         $ref: '#/definitions/Timestamp'
         description: fecha y hora de creación
-      senderUserId:
-        type: string
+      user_id:
         description: id del usuario remitente
+        type: string
       rcvUserId:
         description: id del usuario destinatario
         type: string
       message:
         description: mensaje que acompaña la solicitud de contacto
+        type: string
+      picture:
+        description: id imagen de usuario que lo pidio
+        type: string
+      last_name:
+        description: apellido usuario que pidio
+        type: string
+      name:
+        description: nombre remitente
         type: string
   StoryReaction:
     properties:
@@ -1061,77 +885,67 @@ definitions:
         $ref: '#/definitions/Id'
       _rev:
         $ref: '#/definitions/Ref'
-      createdTime:
+      date:
         $ref: '#/definitions/Timestamp'
-      storyId:
+      storie_id:
         type: string
         description: id de la historia
-      senderUserId:
+      user_id:
         type: string
         description: id del usuario remitente
       reaction:
         type: string
         description: reacción del usuario ante la historia
+  ReactionResume:
+    properties:
+      count:
+        type: number
+        description: cantidad de reacciones de este tipo
+      react:
+        type: string
+        description: reacción del usuario ante la historia
+  StoryReactionResume:
+    properties:
+      LIKE:
+        $ref: '#/definitions/ReactionResume'
+      NOTLIKE:
+        $ref: '#/definitions/ReactionResume'
+      ENJOY:
+        $ref: '#/definitions/ReactionResume'
+      BORED:
+        $ref: '#/definitions/ReactionResume'
   StoryComment:
     properties:
-      id:
-        $ref: '#/definitions/Id'
-      _rev:
-        $ref: '#/definitions/Ref'
       createdTime:
         $ref: '#/definitions/Timestamp'
-      storyId:
+      storie_id:
         type: string
         description: id de la historia
-      userId:
+      user_id:
         type: string
         description: id del usuario remitente
       message:
         type: string
         description: mensaje del usuario ante la historia
-  Message:
-    properties:
-      id:
-        $ref: '#/definitions/Id'
-      _rev:
-        $ref: '#/definitions/Ref'
-      createdTime:
-        $ref: '#/definitions/Timestamp'
-      convId:
-        description: id de la conversación
+      name:
         type: string
-      userId:
+        description: nombre del usuario remitente
+      last_name:
         type: string
-        description: id del usuario remitente
-      rcvUserId:
-        description: id del usuario destinatario
+        description: apellido del usuario remitente
+      picture:
         type: string
-  Conversation:
-    properties:
-      id:
-        $ref: '#/definitions/Id'
-      _rev:
-        $ref: '#/definitions/Ref'
-      createdTime:
-        $ref: '#/definitions/Timestamp'
-      senderUserId:
+        description: imagen del usuario remitente
+      date:
         type: string
-        description: id del usuario remitente
-      rcvUserId:
-        description: id del usuario destinatario
-        type: string
-      messages:
-        items:
-          $ref: '#/definitions/Message'
+        description: fecha de creacion
   Story:
     properties:
-      id:
+      user_Id:
         $ref: '#/definitions/Id'
-      _rev:
-        $ref: '#/definitions/Ref'
-      userId:
-        $ref: '#/definitions/Id'
-      createdTime:
+      created_time:
+        $ref: '#/definitions/Timestamp'
+      updated_time:
         $ref: '#/definitions/Timestamp'
       title:
         type: string
@@ -1148,9 +962,29 @@ definitions:
       multimedia:
         type: string
         description: multimedia de una historia
-      storyType:
+      story_type:
         type: string
         description: indica el tipo de historia (rápida o normal)
+      name:
+        type: string
+        description: nombre autor
+      last_name:
+        type: string
+        description: apellido autor
+      user_email:
+        type: string
+        description: email autor
+      picture:
+        type: string
+        description: imagen perfil autor
+      comments:
+        items:
+          $ref: '#/definitions/StoryComment'
+        description: lista comentarios historia
+      reactions:
+        items:
+          $ref: '#/definitions/StoryReactionResume'
+        description: resumen reacciones de historia
   Stats:
     properties:
       id:
