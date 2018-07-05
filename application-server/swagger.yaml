@@ -661,6 +661,23 @@ paths:
           schema:
             $ref: '#/definitions/Error'
       summary: Obtener información del appServer
+  /requests:
+    get:
+      tags:
+        - server activity
+      description: Endpoint para obtener peticiones por hora recibidas por el application server
+      responses:
+        '200':
+          description: Cantidad de peticiones recibidas por el appServer en las ultimas 24 horas
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Request'
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+      summary: Cantidad de peticiones recibidas por el appServer en las ultimas 24 horas
   /notification:
     post:
       tags:
@@ -987,14 +1004,6 @@ definitions:
         description: resumen reacciones de historia
   Stats:
     properties:
-      id:
-        $ref: '#/definitions/Id'
-      _rev:
-        $ref: '#/definitions/Ref'
-      createdBy:
-        $ref: '#/definitions/Id'
-      createdTime:
-        $ref: '#/definitions/Timestamp'
       numUsers:
         type: string
         description: cantidad de usuarios
@@ -1012,10 +1021,10 @@ definitions:
         description: cantidad de historias publicadas
       numUsersMessages:
         type: string
-        description: cantidad de mensajes enviados entre usuarios
+        description: cantidad de comentarios
       numUsersMessagesToday:
         type: string
-        description: cantidad de mensajes enviados entre usuarios hoy
+        description: cantidad de comentarios hoy
       numAcceptedContactsToday:
         type: string
         description: cantidad de solicitudes de contacto aceptadas hoy
@@ -1029,3 +1038,14 @@ definitions:
         type: string
       picture:
         type: string
+  Request:
+    properties:
+      date:
+        type: string
+        description: fecha de la hora asociada
+      hour:
+        type: string
+        description: hora
+      count:
+        type: string
+        description: cantidad de peticiones
