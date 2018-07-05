@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,7 +60,7 @@ public class UserProfileUpdateActivity extends ProfileActivity {
     public void initializeProfile(ApplicationProfile applicationProfile) {
         super.initializeProfile(applicationProfile);
         String birthdayText = applicationProfile.getBirthday();
-        String birthday = birthdayText != null && birthdayText.length() > 0 ? birthdayText :
+        String birthday = !TextUtils.isEmpty(birthdayText) ? birthdayText :
                 DateUtils.getTimeFromTimestamp(DateUtils.getNowTime());
         this.birthday.setText(birthday);
         String gender = applicationProfile.getGender();

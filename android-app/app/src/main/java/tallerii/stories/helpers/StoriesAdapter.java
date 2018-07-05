@@ -106,7 +106,7 @@ public class StoriesAdapter extends BaseAdapter {
         // user profile pic
         imageHelper.setFirebaseImage(storie.getUserPicture(), holder.profilePic);
         // storie image
-        if (storie.getMultimedia() != null && !storie.getMultimedia().isEmpty()) {
+        if (!TextUtils.isEmpty(storie.getMultimedia())) {
             imageHelper.setFirebaseImage(storie.getMultimedia(), holder.storieImageView);
             imageHelper.setFirebaseVideo(storie.getMultimedia(), holder.storieVideoView);
         } else {

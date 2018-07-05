@@ -1,5 +1,6 @@
 package tallerii.stories.helpers;
 
+import android.text.TextUtils;
 import android.widget.Filter;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ class UsersFilter extends Filter {
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
         FilterResults results = new FilterResults();
-        if (constraint != null && constraint.length() > 0) {
+        if (!TextUtils.isEmpty(constraint)) {
             constraint = constraint.toString().toUpperCase();
             ArrayList<Users> filteredPlayers = new ArrayList<>();
             for (Users user : filterList) {

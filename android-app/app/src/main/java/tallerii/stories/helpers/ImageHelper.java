@@ -8,6 +8,7 @@ import android.graphics.Path;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -36,7 +37,7 @@ public class ImageHelper {
     }
 
     public void setFirebaseImage(final String imageId, final ImageView imageView) {
-        if (imageId != null && imageId.length() > 0) {
+        if (!TextUtils.isEmpty(imageId)) {
             final StorageReference imageRef = storageReference.child("media").child(imageId);
             imageRef.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
                 @Override
@@ -70,7 +71,7 @@ public class ImageHelper {
     }
 
     public void setFirebaseVideo(final String videoId, final VideoView videoView) {
-        if (videoId != null && videoId.length() > 0) {
+        if (!TextUtils.isEmpty(videoId)) {
             final StorageReference videoRef = storageReference.child("media").child(videoId);
             videoRef.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
                 @Override
