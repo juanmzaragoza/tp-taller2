@@ -6,22 +6,16 @@ public class Comment extends ObjectApiApp {
 
     @SerializedName("storie_id")
     private String storieId;
-
     @SerializedName("user_id")
     private String userId;
-
     @SerializedName("name")
     private String userName;
-
     @SerializedName("last_name")
     private String userLastName;
-
     @SerializedName("picture")
     private String userPicture;
-
     @SerializedName("date")
     private String date;
-
     @SerializedName("message")
     private String message;
 

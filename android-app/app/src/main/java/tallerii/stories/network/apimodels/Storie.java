@@ -11,46 +11,32 @@ public class Storie extends ObjectApiApp{
 
     @SerializedName("user_id")
     private String userId;
-
     @SerializedName("created_time")
     private String createdTime;
-
     @SerializedName("updated_time")
     private String updatedTime;
-
     @SerializedName("title")
     private String title;
-
     @SerializedName("description")
     private String description;
-
     @SerializedName("location")
     private String location;
-
     @SerializedName("visibility")
     private String visibility;
-
     @SerializedName("multimedia")
     private String multimedia;
-
     @SerializedName("story_type")
     private String storieType;
-
     @SerializedName("name")
     private String userName;
-
     @SerializedName("last_name")
     private String userLastName;
-
     @SerializedName("user_email")
     private String userEmail;
-
     @SerializedName("picture")
     private String userPicture;
-
     @SerializedName("comments")
     private List<Comment> comments = new ArrayList<Comment>();
-
     @SerializedName("reactions")
     private Reactions reactions = new Reactions();
 
