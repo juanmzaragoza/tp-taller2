@@ -6,7 +6,7 @@ import { ServerComponent }       from './components/server/server.component'
 import { StatusComponent }       from './components/status/status.component'
 import { FileComponent }        from './components/file/file.component'
 import { UserListComponent }    from './components/user/user.list.component'
-
+import {HelpComponent}          from './components/help/help.component'
 
 import { HttpClient }           from '@angular/common/http';
 import { LoginService }         from './services/login/login.service';
@@ -42,6 +42,10 @@ const loginRoutes: Routes = [
         path: 'user',
         canActivate: [AuthGuard],
         component: UserListComponent
+    },
+    {
+        path: 'help',
+        component: HelpComponent
     }
 ];
 
