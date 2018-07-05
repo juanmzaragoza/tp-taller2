@@ -4,23 +4,27 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.text.TextUtils;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static android.content.Context.LOCATION_SERVICE;
 
 public class LocationHelper {
-
-    public static final Integer LOCATION_REFRESH_TIME = 10000;
-    public static final Integer LOCATION_REFRESH_DISTANCE = 0;
 
     private LocationManager locationManger;
     private LocationListener locationListener;
@@ -30,7 +34,11 @@ public class LocationHelper {
     private Location location;
     private double longitude;
     private double latitude;
+    private static Geocoder geocoder;
 
+    public static void initializeGeocoder(Context context) {
+        geocoder = new Geocoder(context.getApplicationContext(), Locale.getDefault());
+    }
     public LocationHelper(Activity activity, Context context){
         this.activity = activity;
         this.context = context;
@@ -119,7 +127,26 @@ public class LocationHelper {
     }
 
     public static String getLocationString(double latitude, double longitude) {
-        return String.format("(%s,%s)", latitude, longitude);
+        String location = String.format("(%s,%s)", latitude, longitude);
+        try {
+            List<Address> listAddresses = geocoder.getFromLocation(latitude, longitude, 1);
+            if (null != listAddresses && listAddresses.size() > 0) {
+                Address address = listAddresses.get(0);
+                List<String> locationValues = new ArrayList<>();
+                appendNotNull(locationValues, address.getLocality());
+                appendNotNull(locationValues, address.getCountryName());
+                location = TextUtils.join(", ", locationValues);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return location;
+    }
+
+    private static void appendNotNull(List<String> locationValues, String locality) {
+        if (!TextUtils.isEmpty(locality)) {
+           locationValues.add(locality);
+        }
     }
 
     public static LatLng getLocation(String location) {

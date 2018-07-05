@@ -13,6 +13,7 @@ import tallerii.stories.R;
 import tallerii.stories.activities.ProfileActivity;
 import tallerii.stories.activities.StoriesLoggedInActivity;
 import tallerii.stories.controller.StoriesController;
+import tallerii.stories.helpers.LocationHelper;
 import tallerii.stories.helpers.StoriesAdapter;
 import tallerii.stories.interfaces.StoriesAware;
 import tallerii.stories.network.apimodels.Storie;
@@ -25,7 +26,7 @@ public class HomeFragment extends Fragment implements StoriesAware {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        LocationHelper.initializeGeocoder(container.getContext());
         helperFragment = new HelperFragment(getContext());
         controller = new StoriesController(this);
 

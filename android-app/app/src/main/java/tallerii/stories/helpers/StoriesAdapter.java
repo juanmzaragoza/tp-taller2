@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -107,6 +109,9 @@ public class StoriesAdapter extends BaseAdapter {
             holder.storieImageView.setVisibility(View.GONE);
             holder.storieVideoView.setVisibility(View.GONE);
         }
+        LatLng location = LocationHelper.getLocation(storie.getLocation());
+        String text = String.format("Sent from: %s", LocationHelper.getLocationString(location.latitude, location.longitude));
+        holder.locationLabel.setText(text);
 
         prepareReactionButtons(holder.layout, storie.getId(), position, storie.getReactions().obtainReactions());
 
@@ -248,6 +253,7 @@ public class StoriesAdapter extends BaseAdapter {
         public final ImageView profilePic;
         public final ImageView storieImageView;
         public final VideoView storieVideoView;
+        public TextView locationLabel;
         public View layout;
 
         public View lastCommentView;
@@ -266,6 +272,7 @@ public class StoriesAdapter extends BaseAdapter {
             profilePic = v.findViewById(R.id.profilePic);
             storieImageView = v.findViewById(R.id.storieImage1);
             storieVideoView = v.findViewById(R.id.storieVideoView);
+            locationLabel = v.findViewById(R.id.locationLabel);
 
             lastCommentView = layout.findViewById(R.id.lastCommentView);
             messageComment = layout.findViewById(R.id.messageCommentText);

@@ -109,6 +109,13 @@
                 android:visibility="gone" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/locationLabel"
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:layout_height="wrap_content" />
+
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -255,11 +262,10 @@
                 android:id="@+id/sendMessageCommentButton"
                 android:layout_width="0dp"
                 android:minWidth="45dp"
-                android:layout_weight="2"
+                android:layout_weight="2.5"
                 android:layout_height="wrap_content"
                 android:paddingStart="@dimen/stories_item_status_pad_left_right"
                 android:src="@drawable/ic_send_black_24dp" />
-
         </LinearLayout>
 
     </LinearLayout>
