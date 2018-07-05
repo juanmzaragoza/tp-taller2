@@ -55,6 +55,16 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/txtTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:textStyle="bold"
+            android:paddingLeft="@dimen/stories_item_status_pad_left_right"
+            android:paddingRight="@dimen/stories_item_status_pad_left_right"
+            android:paddingTop="@dimen/stories_item_status_pad_top" />
+
+        <TextView
             android:id="@+id/txtStatusMsg"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

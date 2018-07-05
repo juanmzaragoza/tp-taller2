@@ -94,14 +94,8 @@ public class StoriesAdapter extends BaseAdapter {
             holder.timestamp.setText(R.string.unknown_date);
         }
 
-        // Check for empty status message
-        if (!TextUtils.isEmpty(storie.getDescription())) {
-            holder.statusMsg.setText(storie.getDescription());
-            holder.statusMsg.setVisibility(View.VISIBLE);
-        } else {
-            // status is empty, remove from view
-            holder.statusMsg.setVisibility(View.GONE);
-        }
+        setText(storie.getTitle(), holder.title);
+        setText(storie.getDescription(), holder.statusMsg);
 
         // user profile pic
         imageHelper.setFirebaseImage(storie.getUserPicture(), holder.profilePic);
@@ -119,6 +113,16 @@ public class StoriesAdapter extends BaseAdapter {
         setUpComment(holder, storie);
 
         return holder.layout;
+    }
+
+    private void setText(String string, TextView title) {
+        // Check for empty string
+        if (!TextUtils.isEmpty(string)) {
+            title.setText(string);
+            title.setVisibility(View.VISIBLE);
+        } else {
+            title.setVisibility(View.GONE);
+        }
     }
 
     private void setUpComment(ViewHolder holder, final Storie storie) {
@@ -239,6 +243,7 @@ public class StoriesAdapter extends BaseAdapter {
     class ViewHolder {
         public final TextView name;
         public final TextView timestamp;
+        public final TextView title;
         public final TextView statusMsg;
         public final ImageView profilePic;
         public final ImageView storieImageView;
@@ -256,6 +261,7 @@ public class StoriesAdapter extends BaseAdapter {
             layout = v;
             name = v.findViewById(R.id.name);
             timestamp = v.findViewById(R.id.timestamp);
+            title = v.findViewById(R.id.txtTitle);
             statusMsg = v.findViewById(R.id.txtStatusMsg);
             profilePic = v.findViewById(R.id.profilePic);
             storieImageView = v.findViewById(R.id.storieImage1);
