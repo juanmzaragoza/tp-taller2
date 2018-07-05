@@ -31,6 +31,14 @@ public interface EndpointsApplicationApiRest {
     Call<JsonObject> postLogin(@Body JsonObject parameters);
 
     @Headers({CONTENT_TYPE_APPLICATION_JSON})
+    @POST(ConstantsApplicationApiRest.FCM_SEND)
+    Call<JsonObject> sendFCMNotification(@Body JsonObject notification);
+
+    @Headers({ACCEPT_APPLICATION_JSON})
+    @GET(ConstantsApplicationApiRest.USERS)
+    Call<JsonObject> getUsers(@Path("id")String userId);
+
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
     @GET(ConstantsApplicationApiRest.PROFILE_ENDPOINT)
     Call<JsonObject> getProfileById(@Path("id") String user_id);
 
@@ -39,8 +47,22 @@ public interface EndpointsApplicationApiRest {
     Call<JsonObject> putProfileById(@Path("id") String user_id, @Body JsonObject profile);
 
     @Headers({CONTENT_TYPE_APPLICATION_JSON})
-    @POST(ConstantsApplicationApiRest.FCM_SEND)
-    Call<JsonObject> sendFCMNotification(@Body JsonObject notification);
+    @POST(ConstantsApplicationApiRest.BEFRIEND)
+    Call<JsonObject> postFriendRequest(@Body FriendRequest request);
+
+    @Headers({ACCEPT_APPLICATION_JSON})
+    @GET(ConstantsApplicationApiRest.GET_FRIEND_REQUESTS)
+    Call<JsonObject> getFriendRequestsByUserId(@Path("id") String user_id);
+
+    @Headers({CONTENT_TYPE_APPLICATION_JSON})
+    @POST(ConstantsApplicationApiRest.FRIEND_ACCEPT_ENDPOINT)
+    Call<JsonObject> acceptFriendRequest(@Body JsonObject requestId);
+
+    @DELETE(ConstantsApplicationApiRest.FRIEND_REQUEST_ENDPOINT)
+    Call<JsonObject> declineFriendRequest(@Path("id") String requestId);
+
+    @DELETE(ConstantsApplicationApiRest.UNFRIEND)
+    Call<JsonObject> unfriend(@Path("id")String friendshipId);
 
     @Headers({ACCEPT_APPLICATION_JSON})
     @GET(ConstantsApplicationApiRest.GET_STORIES_BY_USER)
@@ -59,32 +81,11 @@ public interface EndpointsApplicationApiRest {
     Call<Storie> postStorieReaction(@Body JsonObject parameters);
 
     @Headers({ACCEPT_APPLICATION_JSON})
-    @GET(ConstantsApplicationApiRest.GET_FRIEND_REQUESTS)
-    Call<JsonObject> getFriendRequestsByUserId(@Path("id") String user_id);
-
-    @Headers({CONTENT_TYPE_APPLICATION_JSON})
-    @POST(ConstantsApplicationApiRest.FRIEND_ACCEPT_ENDPOINT)
-    Call<JsonObject> acceptFriendRequest(@Body JsonObject requestId);
-
-    @DELETE(ConstantsApplicationApiRest.FRIEND_REQUEST_ENDPOINT)
-    Call<JsonObject> declineFriendRequest(@Path("id") String requestId);
-
-    @Headers({CONTENT_TYPE_APPLICATION_JSON})
-    @POST(ConstantsApplicationApiRest.BEFRIEND)
-    Call<JsonObject> postFriendRequest(@Body FriendRequest request);
-
-    @DELETE(ConstantsApplicationApiRest.UNFRIEND)
-    Call<JsonObject> unfriend(@Path("id")String friendshipId);
-
-    @Headers({ACCEPT_APPLICATION_JSON})
-    @GET(ConstantsApplicationApiRest.USERS)
-    Call<JsonObject> getUsers(@Path("id")String userId);
-
-    @Headers({ACCEPT_APPLICATION_JSON})
     @GET(ConstantsApplicationApiRest.GET_COMMENTS_BY_STORIE)
     Call<List<Comment>> getStorieComments(@Path("id") String storieId);
 
     @Headers({ACCEPT_APPLICATION_JSON})
     @GET(ConstantsApplicationApiRest.GET_STORIES_BY_USER)
     Call<List<Storie>> getStoriesByUserId(@Path("id") String userId, @Query("story_type") String type);
+
 }
