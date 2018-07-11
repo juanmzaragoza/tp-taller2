@@ -70,10 +70,10 @@ class UserDataModel():
 		name = "name " + user_name
 		birthday = ""
 		gender = ""
-		email = user_name+"@email.com"
+		email = "email " + user_name
 		pic = ""
 
-		user = UserDataModel.get_new_user(user_id, rev, user_name, last_name, name, birthday, gender, email, pic)
+		user = UserDataModel.get_new_user(str(user_id), rev, user_name, last_name, name, birthday, gender, email, pic)
 
 		db.users.insert(user)
 
