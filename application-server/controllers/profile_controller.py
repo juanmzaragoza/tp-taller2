@@ -23,7 +23,7 @@ class ProfileController(flask_restful.Resource):
 	def __init__(self):
 		self.parser = reqparse.RequestParser(bundle_errors=True)
 
-	@login_required
+	#@login_required
 	def get(self, user_id):
 		try:
 			user_data_response = UserDataModel.get_user_data_by_user_id(user_id)
