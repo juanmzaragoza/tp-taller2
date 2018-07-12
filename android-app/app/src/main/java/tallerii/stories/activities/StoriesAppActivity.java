@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 
@@ -132,5 +134,11 @@ public abstract class StoriesAppActivity extends AppCompatActivity {
             return text.substring(0, length - 3) + "...";
         }
         return text;
+    }
+
+    public void logOutFromFB() {
+        if (AccessToken.getCurrentAccessToken() != null) {
+            LoginManager.getInstance().logOut();
+        }
     }
 }

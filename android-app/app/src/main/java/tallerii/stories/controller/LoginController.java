@@ -6,13 +6,14 @@ import com.google.gson.JsonObject;
 import retrofit2.Call;
 import retrofit2.Response;
 import tallerii.stories.activities.LoginActivity;
+import tallerii.stories.activities.StoriesAppActivity;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
 
 public class LoginController {
-    LoginActivity activity;
+    StoriesAppActivity activity;
 
-    public LoginController(LoginActivity activity) {
+    public LoginController(StoriesAppActivity activity) {
         this.activity = activity;
     }
 

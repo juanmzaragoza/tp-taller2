@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.Response;
+import tallerii.stories.activities.LoginActivity;
 import tallerii.stories.activities.RegistrationActivity;
 import tallerii.stories.network.AdapterApplicationApiRest;
 import tallerii.stories.network.EndpointsApplicationApiRest;
@@ -29,9 +30,12 @@ public class RegistrationController {
             public void onResponse(Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
+
+                        LoginController controller = new LoginController(activity);
+                        controller.login(username, password);
+
                         activity.showMessage("Registration successful\nWelcome to stories!!");
-                        JsonObject user = response.body().getAsJsonObject("user");
-                        activity.startProfileUpdateActivity(String.valueOf(id), user.get("token").getAsString());
+
                     }
                 } else {
                     manageErrors(response);
