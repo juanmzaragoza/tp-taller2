@@ -16,7 +16,7 @@
     "@google-cloud/storage": "^0.4.0",
     "bcrypt": "^2.0.0",
     "body-parser": "^1.18.2",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "firebase": "^4.13.1",
     "http-errors": "^1.6.3",
     "json-storage": "^2.1.1",
