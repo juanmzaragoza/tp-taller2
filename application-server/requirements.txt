@@ -3,7 +3,7 @@ aniso8601==3.0.0
 async-timeout==2.0.1
 attrs==17.4.0
 business-rules==1.0.1
-certifi==2018.1.18
+certifi==2022.12.7
 chardet==3.0.4
 click==6.7
 codecov==2.0.15
