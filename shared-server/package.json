@@ -20,7 +20,7 @@
     "firebase": "^4.13.1",
     "http-errors": "^1.6.3",
     "json-storage": "^2.1.1",
-    "jsonwebtoken": "^8.2.1",
+    "jsonwebtoken": "^9.0.0",
     "localStorage": "^1.0.3",
     "mime": "^1.6.0",
     "mock-require": "^3.0.2",
